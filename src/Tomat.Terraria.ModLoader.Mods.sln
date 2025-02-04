@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mod.VanillaNetworking", "Mod.VanillaNetworking\Mod.VanillaNetworking.csproj", "{6163EF7B-839F-4E4C-BCEF-949941F9E794}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VanillaNetworking", "VanillaNetworking\VanillaNetworking.csproj", "{6163EF7B-839F-4E4C-BCEF-949941F9E794}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SourceGenerator", "SourceGenerator\SourceGenerator.csproj", "{A0F6B152-6A52-48CB-ACA0-46E88FB154CB}"
 EndProject

@@ -1,7 +1,7 @@
 const path = require("path");
 const fs = require("fs");
 
-const dirs = ["Mod.VanillaNetworking"];
+const dirs = ["VanillaNetworking"];
 
 const sourceDirs = dirs.map((dir) => path.join(__dirname, dir));
 const targetDirs = dirs.map((dir) => path.join(__dirname, "..", "..", dir));
