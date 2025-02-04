@@ -8,7 +8,7 @@
         <IncludeBuildOutput>false</IncludeBuildOutput>
         <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
 
-        <RootNamespace>Tomat.Terraria.ModLoader.SourceGenerator</RootNamespace>
+        <RootNamespace>Tomat.Terraria.TML.SourceGenerator</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

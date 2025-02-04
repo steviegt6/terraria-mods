@@ -4,7 +4,7 @@
 
     <PropertyGroup>
         <AssemblyName>VanillaNetworking</AssemblyName>
-        <RootNamespace>Tomat.Terraria.ModLoader.VanillaNetworking</RootNamespace>
+        <RootNamespace>Tomat.Terraria.TML.VanillaNetworking</RootNamespace>
     </PropertyGroup>
 
 </Project>

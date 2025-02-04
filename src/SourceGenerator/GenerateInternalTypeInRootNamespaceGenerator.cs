@@ -3,7 +3,7 @@ using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Tomat.Terraria.ModLoader.SourceGenerator;
+namespace Tomat.Terraria.TML.SourceGenerator;
 
 [Generator]
 public sealed class GenerateInternalTypeInRootNamespaceGenerator : IIncrementalGenerator
