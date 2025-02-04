@@ -650,11 +650,11 @@ partial class NetworkOverrideSystem
                     bitsByte4[0] = nPC2.statsAreScaledForThisManyPlayers > 1;
                     bitsByte4[1] = nPC2.SpawnedFromStatue;
                     bitsByte4[2] = nPC2.strengthMultiplier != 1f;
-                    
+
                     // byte[] extraAI    = NPCLoader.WriteExtraAI(nPC2);
                     // bool   hasExtraAI = extraAI?.Length > 0;
                     // bitsByte4[3] = hasExtraAI; // This bit is unused by vanilla
-                    
+
                     writer.Write(bitsByte4);
                     for (int m = 0; m < NPC.maxAI; m++)
                     {
@@ -859,7 +859,7 @@ partial class NetworkOverrideSystem
                     short value4 = (short)item7.netID;
                     if (item7.Name == null)
                         value4 = 0;
-                    
+
                     writer.Write((short)item7.stack);
                     writer.Write((byte)item7.prefix);
                     writer.Write(value4);
@@ -1339,7 +1339,7 @@ partial class NetworkOverrideSystem
                     writer.Write((short)number2);
                     // ItemIO.Send(Main.player[(int)number4].inventory[(int)number3], writer);
                     // writer.Write7BitEncodedInt(number5);
-                    
+
                     Item item4 = Main.player[(int)number4].inventory[(int)number3];
                     writer.Write((short)item4.netID);
                     writer.Write((byte)item4.prefix);
@@ -1497,7 +1497,7 @@ partial class NetworkOverrideSystem
                     break;
 
                 case 117:
-                    if (/*number7 == 1*/ false)
+                    if ( /*number7 == 1*/ false)
                     {
                         writer.Write(byte.MaxValue);
                         writer.Write((byte)number);
@@ -1565,7 +1565,7 @@ partial class NetworkOverrideSystem
                     writer.Write((short)number);
                     writer.Write((short)number2);
                     // ItemIO.Send(Main.player[(int)number4].inventory[(int)number3], writer, writeStack: true);
-                    
+
                     Item item2 = Main.player[(int)number4].inventory[(int)number3];
                     writer.Write((short)item2.netID);
                     writer.Write((byte)item2.prefix);
@@ -1640,7 +1640,7 @@ partial class NetworkOverrideSystem
                     writer.Write((short)number);
                     writer.Write((short)number2);
                     // ItemIO.Send(Main.player[(int)number4].inventory[(int)number3], writer, writeStack: true);
-                    
+
                     Item item = Main.player[(int)number4].inventory[(int)number3];
                     writer.Write((short)item.netID);
                     writer.Write((byte)item.prefix);
@@ -2006,5 +2006,236 @@ partial class NetworkOverrideSystem
                 Netplay.Clients[num].PendingTerminationApproved = true;
             }
         }
+    }
+
+    private static void NetMessage_DecompressTileBlock_Inner(
+        On_NetMessage.orig_DecompressTileBlock_Inner orig,
+        BinaryReader                                 reader,
+        int                                          xStart,
+        int                                          yStart,
+        int                                          width,
+        int                                          height
+    )
+    {
+        Tile tile = default(Tile);
+        int  num  = 0;
+        for (int i = yStart; i < yStart + height; i++)
+        {
+            for (int j = xStart; j < xStart + width; j++)
+            {
+                if (num != 0)
+                {
+                    num--;
+                    Main.tile[j, i].CopyFrom(tile);
+                    continue;
+                }
+                byte b2;
+                byte b;
+                byte b3 = (b2 = (b = 0));
+                tile = Main.tile[j, i];
+                if (tile == null)
+                {
+                    tile = (Main.tile[j, i] = default(Tile));
+                }
+                else
+                {
+                    tile.ClearEverything();
+                }
+                byte b4   = reader.ReadByte();
+                bool flag = false;
+                if ((b4 & 1) == 1)
+                {
+                    flag = true;
+                    b3   = reader.ReadByte();
+                }
+                bool flag2 = false;
+                if (flag && (b3 & 1) == 1)
+                {
+                    flag2 = true;
+                    b2    = reader.ReadByte();
+                }
+                if (flag2 && (b2 & 1) == 1)
+                {
+                    b = reader.ReadByte();
+                }
+                bool flag3 = tile.active();
+                byte b5;
+                if ((b4 & 2) == 2)
+                {
+                    tile.active(active: true);
+                    ushort type = tile.type;
+                    int    num2;
+                    if ((b4 & 0x20) == 32)
+                    {
+                        b5   = reader.ReadByte();
+                        num2 = reader.ReadByte();
+                        num2 = (num2 << 8) | b5;
+                    }
+                    else
+                    {
+                        num2 = reader.ReadByte();
+                    }
+                    tile.type = (ushort)num2;
+                    if (Main.tileFrameImportant[num2])
+                    {
+                        tile.frameX = reader.ReadInt16();
+                        tile.frameY = reader.ReadInt16();
+                    }
+                    else if (!flag3 || tile.type != type)
+                    {
+                        tile.frameX = -1;
+                        tile.frameY = -1;
+                    }
+                    if ((b2 & 8) == 8)
+                    {
+                        tile.color(reader.ReadByte());
+                    }
+                }
+                if ((b4 & 4) == 4)
+                {
+                    tile.wall = reader.ReadByte();
+                    if ((b2 & 0x10) == 16)
+                    {
+                        tile.wallColor(reader.ReadByte());
+                    }
+                }
+                b5 = (byte)((b4 & 0x18) >> 3);
+                if (b5 != 0)
+                {
+                    tile.liquid = reader.ReadByte();
+                    if ((b2 & 0x80) == 128)
+                    {
+                        tile.shimmer(shimmer: true);
+                    }
+                    else if (b5 > 1)
+                    {
+                        if (b5 == 2)
+                        {
+                            tile.lava(lava: true);
+                        }
+                        else
+                        {
+                            tile.honey(honey: true);
+                        }
+                    }
+                }
+                if (b3 > 1)
+                {
+                    if ((b3 & 2) == 2)
+                    {
+                        tile.wire(wire: true);
+                    }
+                    if ((b3 & 4) == 4)
+                    {
+                        tile.wire2(wire2: true);
+                    }
+                    if ((b3 & 8) == 8)
+                    {
+                        tile.wire3(wire3: true);
+                    }
+                    b5 = (byte)((b3 & 0x70) >> 4);
+                    if (b5 != 0 && Main.tileSolid[tile.type])
+                    {
+                        if (b5 == 1)
+                        {
+                            tile.halfBrick(halfBrick: true);
+                        }
+                        else
+                        {
+                            tile.slope((byte)(b5 - 1));
+                        }
+                    }
+                }
+                if (b2 > 1)
+                {
+                    if ((b2 & 2) == 2)
+                    {
+                        tile.actuator(actuator: true);
+                    }
+                    if ((b2 & 4) == 4)
+                    {
+                        tile.inActive(inActive: true);
+                    }
+                    if ((b2 & 0x20) == 32)
+                    {
+                        tile.wire4(wire4: true);
+                    }
+                    if ((b2 & 0x40) == 64)
+                    {
+                        b5        = reader.ReadByte();
+                        tile.wall = (ushort)((b5 << 8) | tile.wall);
+                    }
+                }
+                if (b > 1)
+                {
+                    if ((b & 2) == 2)
+                    {
+                        tile.invisibleBlock(invisibleBlock: true);
+                    }
+                    if ((b & 4) == 4)
+                    {
+                        tile.invisibleWall(invisibleWall: true);
+                    }
+                    if ((b & 8) == 8)
+                    {
+                        tile.fullbrightBlock(fullbrightBlock: true);
+                    }
+                    if ((b & 0x10) == 16)
+                    {
+                        tile.fullbrightWall(fullbrightWall: true);
+                    }
+                }
+                num = (byte)((b4 & 0xC0) >> 6) switch
+                {
+                    0 => 0,
+                    1 => reader.ReadByte(),
+                    _ => reader.ReadInt16(),
+                };
+            }
+        }
+        short num3 = reader.ReadInt16();
+        for (int k = 0; k < num3; k++)
+        {
+            short  num4 = reader.ReadInt16();
+            short  x    = reader.ReadInt16();
+            short  y    = reader.ReadInt16();
+            string name = reader.ReadString();
+            if (num4 >= 0 && num4 < 8000)
+            {
+                if (Main.chest[num4] == null)
+                {
+                    Main.chest[num4] = new Chest();
+                }
+                Main.chest[num4].name = name;
+                Main.chest[num4].x    = x;
+                Main.chest[num4].y    = y;
+            }
+        }
+        num3 = reader.ReadInt16();
+        for (int l = 0; l < num3; l++)
+        {
+            short  num5 = reader.ReadInt16();
+            short  x2   = reader.ReadInt16();
+            short  y2   = reader.ReadInt16();
+            string text = reader.ReadString();
+            if (num5 >= 0 && num5 < 1000)
+            {
+                if (Main.sign[num5] == null)
+                {
+                    Main.sign[num5] = new Sign();
+                }
+                Main.sign[num5].text = text;
+                Main.sign[num5].x    = x2;
+                Main.sign[num5].y    = y2;
+            }
+        }
+        num3 = reader.ReadInt16();
+        for (int m = 0; m < num3; m++)
+        {
+            TileEntity tileEntity = TileEntity.Read(reader /*, networkSend: true*/);
+            TileEntity.ByID[tileEntity.ID]             = tileEntity;
+            TileEntity.ByPosition[tileEntity.Position] = tileEntity;
+        }
+        Main.sectionManager.SetTilesLoaded(xStart, yStart, xStart + width - 1, yStart + height - 1);
     }
 }

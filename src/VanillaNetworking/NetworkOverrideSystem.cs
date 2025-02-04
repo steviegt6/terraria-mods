@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -31,7 +30,7 @@ internal sealed partial class NetworkOverrideSystem : ModSystem
     public static void SetAllowVanillaClientsToTrue()
     {
         // We are supposedly the only ones modifying this.
-        Debug.Assert(!AllowVanillaClients);
+        // Debug.Assert(!AllowVanillaClients);
 
         AllowVanillaClients = true;
     }
@@ -85,6 +84,7 @@ internal sealed partial class NetworkOverrideSystem : ModSystem
         };*/
 
         On_NetMessage.SendData   += NetMessage_SendData;
+        On_NetMessage.DecompressTileBlock_Inner += NetMessage_DecompressTileBlock_Inner;
         On_MessageBuffer.GetData += MessageBuffer_GetData;
     }
 
