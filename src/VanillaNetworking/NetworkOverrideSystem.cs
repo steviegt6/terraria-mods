@@ -84,7 +84,8 @@ internal sealed partial class NetworkOverrideSystem : ModSystem
             );
         };*/
 
-        On_NetMessage.SendData += NetMessage_SendData;
+        On_NetMessage.SendData   += NetMessage_SendData;
+        On_MessageBuffer.GetData += MessageBuffer_GetData;
     }
 
     public override void Unload()
