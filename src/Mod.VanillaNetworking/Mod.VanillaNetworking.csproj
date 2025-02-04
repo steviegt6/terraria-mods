@@ -1,0 +1,10 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <Import Project="../Mod.targets"/>
+
+    <PropertyGroup>
+        <AssemblyName>VanillaNetworking</AssemblyName>
+        <RootNamespace>Tomat.Terraria.ModLoader.VanillaNetworking</RootNamespace>
+    </PropertyGroup>
+
+</Project>
