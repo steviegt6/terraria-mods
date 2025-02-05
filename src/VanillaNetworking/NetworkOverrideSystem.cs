@@ -90,6 +90,7 @@ internal sealed partial class NetworkOverrideSystem : ModSystem
         On_NetMessage.SyncOnePlayer += NetMessage_SyncOnePlayer;
         On_MessageBuffer.GetData += MessageBuffer_GetData;
         On_PlayerDeathReason.FromReader += PlayerDeathReason_FromReader;
+        On_PlayerDeathReason.WriteSelfTo += PlayerDeathReason_WriteSelfTo;
     }
 
     public override void Unload()

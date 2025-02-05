@@ -2314,4 +2314,50 @@ partial class NetworkOverrideSystem
 
 		Player.Hooks.PlayerDisconnect(plr);
     }
+    
+    private static void PlayerDeathReason_WriteSelfTo(On_PlayerDeathReason.orig_WriteSelfTo orig, PlayerDeathReason self, BinaryWriter writer)
+    {
+        BitsByte bitsByte = (byte)0;
+        bitsByte[0] = self._sourcePlayerIndex          != -1;
+        bitsByte[1] = self._sourceNPCIndex             != -1;
+        bitsByte[2] = self._sourceProjectileLocalIndex != -1;
+        bitsByte[3] = self._sourceOtherIndex           != -1;
+        bitsByte[4] = self._sourceProjectileType       != 0;
+        bitsByte[5] = self._sourceItemType             != 0;
+        bitsByte[6] = self._sourceItemPrefix           != 0;
+        bitsByte[7] = self._sourceCustomReason         != null;
+        writer.Write(bitsByte);
+        if (bitsByte[0])
+        {
+            writer.Write((short)self._sourcePlayerIndex);
+        }
+        if (bitsByte[1])
+        {
+            writer.Write((short)self._sourceNPCIndex);
+        }
+        if (bitsByte[2])
+        {
+            writer.Write((short)self._sourceProjectileLocalIndex);
+        }
+        if (bitsByte[3])
+        {
+            writer.Write((byte)self._sourceOtherIndex);
+        }
+        if (bitsByte[4])
+        {
+            writer.Write((short)self._sourceProjectileType);
+        }
+        if (bitsByte[5])
+        {
+            writer.Write((short)self._sourceItemType);
+        }
+        if (bitsByte[6])
+        {
+            writer.Write((byte)self._sourceItemPrefix);
+        }
+        if (bitsByte[7])
+        {
+            writer.Write(self._sourceCustomReason);
+        }
+    }
 }
