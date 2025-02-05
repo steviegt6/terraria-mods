@@ -13,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{622C79
 		Mod.targets = Mod.targets
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrowsWhoMow", "CrowsWhoMow\CrowsWhoMow.csproj", "{49A3AF60-73C1-4231-A030-932090011B04}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{A0F6B152-6A52-48CB-ACA0-46E88FB154CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A0F6B152-6A52-48CB-ACA0-46E88FB154CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A0F6B152-6A52-48CB-ACA0-46E88FB154CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49A3AF60-73C1-4231-A030-932090011B04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49A3AF60-73C1-4231-A030-932090011B04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49A3AF60-73C1-4231-A030-932090011B04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49A3AF60-73C1-4231-A030-932090011B04}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
