@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -7,6 +8,7 @@ using System.Threading;
 using MonoMod.RuntimeDetour;
 
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ModLoader;
 
 namespace Tomat.Terraria.TML.VanillaNetworking;
@@ -87,6 +89,7 @@ internal sealed partial class NetworkOverrideSystem : ModSystem
         On_NetMessage.DecompressTileBlock_Inner += NetMessage_DecompressTileBlock_Inner;
         On_NetMessage.SyncOnePlayer += NetMessage_SyncOnePlayer;
         On_MessageBuffer.GetData += MessageBuffer_GetData;
+        On_PlayerDeathReason.FromReader += PlayerDeathReason_FromReader;
     }
 
     public override void Unload()

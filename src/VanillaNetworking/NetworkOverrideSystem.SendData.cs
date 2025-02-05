@@ -828,10 +828,17 @@ partial class NetworkOverrideSystem
                     // writer.Write(hit.Knockback);
                     // BitsByte flags = new BitsByte(hit.Crit, hit.InstantKill, hit.HideCombatText);
                     // writer.Write(flags);
-                    writer.Write((short)number2);
+                    
+                    // writer.Write((short)number2);
+                    // writer.Write(number3);
+                    // writer.Write((byte)(number4 + 1f));
+                    // writer.Write((byte)number5);
+                    
+                    var hit = number7 == 1 ? NetMessage._currentStrike : NetMessage._lastLegacyStrike;
+                    writer.Write((short)hit.Damage);
                     writer.Write(number3);
-                    writer.Write((byte)(number4 + 1f));
-                    writer.Write((byte)number5);
+                    writer.Write((byte)(hit.HitDirection + 1));
+                    writer.Write((byte)(hit.Crit ? 1 : 0));
                     break;
                 }
 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 
@@ -4720,5 +4721,58 @@ partial class NetworkOverrideSystem
                 }
                 break;
         }
+    }
+
+    private static PlayerDeathReason PlayerDeathReason_FromReader(
+        On_PlayerDeathReason.orig_FromReader orig,
+        BinaryReader                         reader
+    )
+    {
+        var hasItem    = false;
+        var itemType   = 0;
+        var itemPrefix = 0;
+        
+        PlayerDeathReason playerDeathReason = new PlayerDeathReason();
+        BitsByte          bitsByte          = reader.ReadByte();
+        if (bitsByte[0])
+        {
+            playerDeathReason._sourcePlayerIndex = reader.ReadInt16();
+        }
+        if (bitsByte[1])
+        {
+            playerDeathReason._sourceNPCIndex = reader.ReadInt16();
+        }
+        if (bitsByte[2])
+        {
+            playerDeathReason._sourceProjectileLocalIndex = reader.ReadInt16();
+        }
+        if (bitsByte[3])
+        {
+            playerDeathReason._sourceOtherIndex = reader.ReadByte();
+        }
+        if (bitsByte[4])
+        {
+            playerDeathReason._sourceProjectileType = reader.ReadInt16();
+        }
+        if (bitsByte[5])
+        {
+            hasItem  = true;
+            itemType = reader.ReadInt16();
+        }
+        if (bitsByte[6])
+        {
+            itemPrefix = reader.ReadByte();
+        }
+        if (bitsByte[7])
+        {
+            playerDeathReason._sourceCustomReason = reader.ReadString();
+        }
+
+        if (hasItem)
+        {
+            playerDeathReason._sourceItem = new Item(itemType, 1, itemPrefix);
+        }
+        
+        return playerDeathReason;
     }
 }
