@@ -85,6 +85,7 @@ internal sealed partial class NetworkOverrideSystem : ModSystem
 
         On_NetMessage.SendData   += NetMessage_SendData;
         On_NetMessage.DecompressTileBlock_Inner += NetMessage_DecompressTileBlock_Inner;
+        On_NetMessage.SyncOnePlayer += NetMessage_SyncOnePlayer;
         On_MessageBuffer.GetData += MessageBuffer_GetData;
     }
 

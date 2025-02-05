@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics.PackedVector;
 
 using Terraria;
+using Terraria.Chat;
 using Terraria.DataStructures;
 using Terraria.GameContent.Events;
 using Terraria.GameContent.Tile_Entities;
@@ -94,7 +95,7 @@ partial class NetworkOverrideSystem
                     writer.Write((byte)player4.hair);
                     writer.Write(player4.name);
                     // writer.Write7BitEncodedInt(player4.hairDye);
-                    writer.Write(player4.hairDye);
+                    writer.Write((byte)player4.hairDye);
                     NetMessage.WriteAccessoryVisibility(writer, player4.hideVisibleAccessory);
                     writer.Write(player4.hideMisc);
                     writer.WriteRGB(player4.hairColor);
@@ -2237,5 +2238,73 @@ partial class NetworkOverrideSystem
             TileEntity.ByPosition[tileEntity.Position] = tileEntity;
         }
         Main.sectionManager.SetTilesLoaded(xStart, yStart, xStart + width - 1, yStart + height - 1);
+    }
+    
+    private static void NetMessage_SyncOnePlayer(On_NetMessage.orig_SyncOnePlayer orig, int plr, int toWho, int fromWho)
+    {
+        int num = 0;
+		if (Main.player[plr].active)
+			num = 1;
+
+		if (Netplay.Clients[plr].State == 10) {
+			NetMessage.SendData(14, toWho, fromWho, null, plr, num);
+			NetMessage.SendData(4, toWho, fromWho, null, plr);
+			NetMessage.SendData(13, toWho, fromWho, null, plr);
+			if (Main.player[plr].statLife <= 0)
+                NetMessage.SendData(135, toWho, fromWho, null, plr);
+
+			NetMessage.SendData(16, toWho, fromWho, null, plr);
+			NetMessage.SendData(30, toWho, fromWho, null, plr);
+			NetMessage.SendData(45, toWho, fromWho, null, plr);
+			NetMessage.SendData(42, toWho, fromWho, null, plr);
+			NetMessage.SendData(50, toWho, fromWho, null, plr);
+			NetMessage.SendData(80, toWho, fromWho, null, plr, Main.player[plr].chest);
+			NetMessage.SendData(142, toWho, fromWho, null, plr);
+			NetMessage.SendData(147, toWho, fromWho, null, plr, Main.player[plr].CurrentLoadoutIndex);
+			for (int i = 0; i < 59; i++) {
+                NetMessage.SendData(5, toWho, fromWho, null, plr, PlayerItemSlotID.Inventory0 + i, (int)Main.player[plr].inventory[i].prefix);
+			}
+
+			for (int j = 0; j < Main.player[plr].armor.Length; j++) {
+                NetMessage.SendData(5, toWho, fromWho, null, plr, PlayerItemSlotID.Armor0 + j, (int)Main.player[plr].armor[j].prefix);
+			}
+
+			for (int k = 0; k < Main.player[plr].dye.Length; k++) {
+                NetMessage.SendData(5, toWho, fromWho, null, plr, PlayerItemSlotID.Dye0 + k, (int)Main.player[plr].dye[k].prefix);
+			}
+
+			NetMessage.SyncOnePlayer_ItemArray(plr, toWho, fromWho, Main.player[plr].miscEquips, PlayerItemSlotID.Misc0);
+			NetMessage.SyncOnePlayer_ItemArray(plr, toWho, fromWho, Main.player[plr].miscDyes, PlayerItemSlotID.MiscDye0);
+			NetMessage.SyncOnePlayer_ItemArray(plr, toWho, fromWho, Main.player[plr].Loadouts[0].Armor, PlayerItemSlotID.Loadout1_Armor_0);
+			NetMessage.SyncOnePlayer_ItemArray(plr, toWho, fromWho, Main.player[plr].Loadouts[0].Dye, PlayerItemSlotID.Loadout1_Dye_0);
+			NetMessage.SyncOnePlayer_ItemArray(plr, toWho, fromWho, Main.player[plr].Loadouts[1].Armor, PlayerItemSlotID.Loadout2_Armor_0);
+			NetMessage.SyncOnePlayer_ItemArray(plr, toWho, fromWho, Main.player[plr].Loadouts[1].Dye, PlayerItemSlotID.Loadout2_Dye_0);
+			NetMessage.SyncOnePlayer_ItemArray(plr, toWho, fromWho, Main.player[plr].Loadouts[2].Armor, PlayerItemSlotID.Loadout3_Armor_0);
+			NetMessage.SyncOnePlayer_ItemArray(plr, toWho, fromWho, Main.player[plr].Loadouts[2].Dye, PlayerItemSlotID.Loadout3_Dye_0);
+
+			// PlayerLoader.SyncPlayer(Main.player[plr], toWho, fromWho, false);
+
+			if (!Netplay.Clients[plr].IsAnnouncementCompleted) {
+				Netplay.Clients[plr].IsAnnouncementCompleted = true;
+				ChatHelper.BroadcastChatMessage(NetworkText.FromKey(Lang.mp[19].Key, Main.player[plr].name), new Color(255, 240, 20), plr);
+				if (Main.dedServ)
+					Logging.ServerConsoleLine(Lang.mp[19].Format(Main.player[plr].name));
+			}
+
+			return;
+		}
+
+		num = 0;
+		NetMessage.SendData(14, -1, plr, null, plr, num);
+		if (Netplay.Clients[plr].IsAnnouncementCompleted) {
+			Netplay.Clients[plr].IsAnnouncementCompleted = false;
+			ChatHelper.BroadcastChatMessage(NetworkText.FromKey(Lang.mp[20].Key, Netplay.Clients[plr].Name), new Color(255, 240, 20), plr);
+			if (Main.dedServ)
+				Logging.ServerConsoleLine(Lang.mp[20].Format(Netplay.Clients[plr].Name));
+
+			Netplay.Clients[plr].Name = "Anonymous";
+		}
+
+		Player.Hooks.PlayerDisconnect(plr);
     }
 }

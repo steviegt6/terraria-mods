@@ -218,7 +218,7 @@ partial class NetworkOverrideSystem
                 player14.skinVariant = self.reader.ReadByte();
                 player14.skinVariant = (int)MathHelper.Clamp(player14.skinVariant, 0f, PlayerVariantID.Count - 1);
                 player14.hair        = self.reader.ReadByte();
-                if (player14.hair >= HairLoader.Count)
+                if (player14.hair >= HairID.Count)
                 {
                     player14.hair = 0;
                 }
@@ -831,7 +831,7 @@ partial class NetworkOverrideSystem
                         NetMessage.TrySendData(27, self.whoAmI, -1, null, num90);
                     }
                 }
-                for (int num91 = 0; num91 < NPCLoader.NPCCount; num91++)
+                for (int num91 = 0; num91 < NPCID.Count /*NPCLoader.NPCCount*/; num91++)
                 {
                     NetMessage.TrySendData(83, self.whoAmI, -1, null, num91);
                 }
