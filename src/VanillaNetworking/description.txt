@@ -4,5 +4,7 @@ This will prevent non-client-side-only (or no-side) mods from being loaded. Do n
 
 THIS MOD IS STILL IN ITS TESTING PHASE: I believe all packets should work, but some issues may arise! Notable, tML rewrites ItemCheck logic, so if item usage is weird, please report those issues to me!!
 
+In the future, I'd like to transition this mod to a full rewrite of packet handling on both the client and server, we'll see.
+
 Join the homepage for support: https://discord.gg/UTXC8fM3NK
 Send me money to support me: https://ko-fi.com/steviegt6
