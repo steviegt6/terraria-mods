@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 
 using Terraria;
 using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
@@ -92,6 +93,13 @@ public sealed class CrowThatMows : ModNPC
         NPC.frame.Y      = (NPC.frame.Y + frameHeight) % (Main.npcFrameCount[NPC.type] * frameHeight);
     }
 
+    public override void ModifyNPCLoot(NPCLoot npcLoot)
+    {
+        base.ModifyNPCLoot(npcLoot);
+        
+        npcLoot.Add(ItemDropRule.Common(ItemID.LawnMower));
+    }
+
     private static void MowGrassTile(Vector2 pos)
     {
         var point = pos.ToTileCoordinates();
@@ -101,7 +109,7 @@ public sealed class CrowThatMows : ModNPC
             return;
         }
 
-        var resType = tile.type switch
+        var resType = tile.TileType switch
         {
             TileID.Grass         => TileID.GolfGrass,
             TileID.HallowedGrass => TileID.GolfGrassHallowed,
@@ -118,7 +126,7 @@ public sealed class CrowThatMows : ModNPC
         {
             WorldGen.KillTile_MakeTileDust(point.X, point.Y, tile);
         }
-        tile.type = resType;
+        tile.TileType = resType;
 
         if (Main.netMode == NetmodeID.MultiplayerClient)
         {
