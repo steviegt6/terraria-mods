@@ -1,0 +1,4 @@
+Adds support for modded liquids to the game with an API usable by other mods so they can add their own modded liquids.
+
+Code and design roughly based on several of Dradon's attempts at modded liquid.
+Invigorated by -- but not based on -- whatever mod adds glue to the game.
