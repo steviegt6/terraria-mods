@@ -4731,7 +4731,7 @@ partial class NetworkOverrideSystem
         var hasItem    = false;
         var itemType   = 0;
         var itemPrefix = 0;
-        
+
         PlayerDeathReason playerDeathReason = new PlayerDeathReason();
         BitsByte          bitsByte          = reader.ReadByte();
         if (bitsByte[0])
@@ -4772,7 +4772,20 @@ partial class NetworkOverrideSystem
         {
             playerDeathReason._sourceItem = new Item(itemType, 1, itemPrefix);
         }
-        
+
         return playerDeathReason;
+    }
+
+    private static void PlayerLoader_ResetMaxStatsToVanilla(
+        Action<Player> orig,
+        Player         player
+    )
+    {
+        if (Main.ServerSideCharacter)
+        {
+            return;
+        }
+
+        orig(player);
     }
 }
