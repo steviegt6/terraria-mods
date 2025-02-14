@@ -169,7 +169,7 @@ partial class NetworkOverrideSystem
                     _ = item6.netID;
                     _ = 0;
                     // ItemIO.Send(item6, writer, writeStack: true);
-                    var stack = item6.stack > 0 ? 0 : item6.stack;
+                    var stack = item6.stack < 0 ? 0 : item6.stack;
                     var netId = item6.netID;
                     writer.Write((short)stack);
                     writer.Write((byte)number3);
