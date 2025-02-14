@@ -26,7 +26,6 @@ internal sealed partial class NetworkOverrideSystem : ModSystem
 #pragma warning restore CS0618 // Type or member is obsolete
 
     private static Hook? modContentLoadHook;
-    private static Hook? playerLoaderResetMaxStatsToVanillaHook;
 
 #pragma warning disable CA2255
     [ModuleInitializer]
@@ -92,10 +91,6 @@ internal sealed partial class NetworkOverrideSystem : ModSystem
         On_MessageBuffer.GetData                += MessageBuffer_GetData;
         On_PlayerDeathReason.FromReader         += PlayerDeathReason_FromReader;
         On_PlayerDeathReason.WriteSelfTo        += PlayerDeathReason_WriteSelfTo;
-        playerLoaderResetMaxStatsToVanillaHook = new Hook(
-            typeof(PlayerLoader).GetMethod(nameof(PlayerLoader.ResetMaxStatsToVanilla), BindingFlags.Public | BindingFlags.Static)!,
-            PlayerLoader_ResetMaxStatsToVanilla
-        );
     }
 
     public override void Unload()
@@ -106,8 +101,6 @@ internal sealed partial class NetworkOverrideSystem : ModSystem
 
         modContentLoadHook?.Dispose();
         modContentLoadHook = null;
-        playerLoaderResetMaxStatsToVanillaHook?.Dispose();
-        playerLoaderResetMaxStatsToVanillaHook = null;
     }
 
     // ReSharper disable once InconsistentNaming

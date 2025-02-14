@@ -4775,17 +4775,4 @@ partial class NetworkOverrideSystem
 
         return playerDeathReason;
     }
-
-    private static void PlayerLoader_ResetMaxStatsToVanilla(
-        Action<Player> orig,
-        Player         player
-    )
-    {
-        if (Main.ServerSideCharacter)
-        {
-            return;
-        }
-
-        orig(player);
-    }
 }
