@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -1053,6 +1054,7 @@ partial class NetworkOverrideSystem
                     obj6.statLifeMax = self.reader.ReadInt16();
                     if (obj6.statLifeMax < 100)
                         obj6.statLifeMax = 100;
+                    SyncStatLifeMax(obj6);
                     obj6.dead = obj6.statLife <= 0;
                     if (Main.netMode == 2)
                     {
@@ -2491,6 +2493,7 @@ partial class NetworkOverrideSystem
                 int statManaMax = self.reader.ReadInt16();
                 Main.player[num202].statMana    = statMana;
                 Main.player[num202].statManaMax = statManaMax;
+                SyncStatManaMax(Main.player[num202]);
                 break;
             }
 
@@ -4774,5 +4777,43 @@ partial class NetworkOverrideSystem
         }
 
         return playerDeathReason;
+    }
+
+    private static void SyncStatLifeMax(Player player)
+    {
+        var lifeCrystals = player.statLifeMax switch
+        {
+            <= 100 => 0,
+            >= 400 => 15,
+            _      => (player.statLifeMax - 100) / 20,
+        };
+
+        var lifeFruit = player.statLifeMax switch
+        {
+            <= 400 => 0,
+            >= 500 => 20,
+            _      => player.statLifeMax - 400 / 5,
+        };
+
+        player.ConsumedLifeCrystals = lifeCrystals;
+        player.ConsumedLifeFruit    = lifeFruit;
+        
+        Debug.Assert(player.statLifeMax is >= 100 and <= 500);
+        Debug.Assert(player.statLifeMax <= 400 ? player.statLifeMax % 20 == 0 : player.statLifeMax % 5 == 0);
+    }
+
+    private static void SyncStatManaMax(Player player)
+    {
+        var manaCrystals = player.statManaMax switch
+        {
+            <= 20  => 0,
+            >= 200 => 9,
+            _      => (player.statManaMax - 20) / 20,
+        };
+
+        player.ConsumedManaCrystals = manaCrystals;
+
+        Debug.Assert(player.statManaMax is >= 20 and <= 200);
+        Debug.Assert(player.statLifeMax % 20 == 0);
     }
 }
