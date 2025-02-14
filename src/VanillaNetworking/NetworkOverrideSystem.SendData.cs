@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 
 using Microsoft.Xna.Framework;
@@ -1521,8 +1522,11 @@ partial class NetworkOverrideSystem
                     }
                     else
                     {
+                        var deathReason = number7 == 1 ? NetMessage._currentPlayerHurtInfo.DamageSource : NetMessage._currentPlayerDeathReason;
+                        Debug.Assert(deathReason != null, "deathReason != null");
+                        
                         writer.Write((byte)number);
-                        NetMessage._currentPlayerDeathReason.WriteSelfTo(writer);
+                        deathReason.WriteSelfTo(writer);
                         writer.Write((short)number2);
                         writer.Write((byte)(number3 + 1f));
                         writer.Write((byte)number4);
