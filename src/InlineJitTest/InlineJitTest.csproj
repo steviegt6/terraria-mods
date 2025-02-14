@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <Import Project="../Mod.targets"/>
+
+    <PropertyGroup>
+        <AssemblyName>InlineJitTest</AssemblyName>
+        <RootNamespace>Tomat.Terraria.TML.InlineJitTest</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Krafs.Publicizer" Version="2.3.0">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Publicize Include="tModLoader"/>
+    </ItemGroup>
+
+</Project>
