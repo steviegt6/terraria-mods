@@ -8,3 +8,9 @@ In the future, I'd like to transition this mod to a full rewrite of packet handl
 
 Join the homepage for support: https://discord.gg/UTXC8fM3NK
 Send me money to support me: https://ko-fi.com/steviegt6
+
+0.1.1
+- Fixed syncing issues with life and mana
+- Fixed syncing issues with everything in the inventory (packet 5)
+- Fixed nullref when syncing hurt packets (null damage source)
+- Disable running of various ModPlayer netsync hooks

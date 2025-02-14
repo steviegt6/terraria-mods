@@ -1,7 +1,7 @@
 const path = require("path");
 const fs = require("fs");
 
-const dirs = ["VanillaNetworking", "CrowsWhoMow"];
+const dirs = ["CrowsWhoMow", "LiquidLib", "VanillaNetworking"];
 
 const sourceDirs = dirs.map((dir) => path.join(__dirname, dir));
 const targetDirs = dirs.map((dir) => path.join(__dirname, "..", "..", dir));
