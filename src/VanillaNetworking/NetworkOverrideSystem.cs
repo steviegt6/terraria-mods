@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -25,7 +26,8 @@ internal sealed partial class NetworkOverrideSystem : ModSystem
     private static readonly PropertyInfo allow_vanilla_clients_property = typeof(ModNet).GetProperty(nameof(ModNet.AllowVanillaClients), BindingFlags.Public | BindingFlags.Static)!;
 #pragma warning restore CS0618 // Type or member is obsolete
 
-    private static Hook? modContentLoadHook;
+    private static          Hook?      modContentLoadHook;
+    private static readonly List<Hook> hooks = [];
 
 #pragma warning disable CA2255
     [ModuleInitializer]
@@ -91,6 +93,19 @@ internal sealed partial class NetworkOverrideSystem : ModSystem
         On_MessageBuffer.GetData                += MessageBuffer_GetData;
         On_PlayerDeathReason.FromReader         += PlayerDeathReason_FromReader;
         On_PlayerDeathReason.WriteSelfTo        += PlayerDeathReason_WriteSelfTo;
+
+        var playerLoaderType = typeof(PlayerLoader);
+        var playerLoaderMethods = new (MethodInfo, Delegate)[]
+        {
+            (playerLoaderType.GetMethod("SyncPlayer",        BindingFlags.Public | BindingFlags.Static)!, (Player player, int    toWho, int fromWho, bool newPlayer) => { }),
+            (playerLoaderType.GetMethod("SendClientChanges", BindingFlags.Public | BindingFlags.Static)!, (Player player, Player clientPlayer) => { }),
+            (playerLoaderType.GetMethod("CopyClientState",   BindingFlags.Public | BindingFlags.Static)!, (Player player, Player targetCopy) => { }),
+        };
+
+        foreach (var meth in playerLoaderMethods)
+        {
+            hooks.Add(new Hook(meth.Item1, meth.Item2));
+        }
     }
 
     public override void Unload()
@@ -101,6 +116,13 @@ internal sealed partial class NetworkOverrideSystem : ModSystem
 
         modContentLoadHook?.Dispose();
         modContentLoadHook = null;
+
+        foreach (var hook in hooks)
+        {
+            hook.Dispose();
+        }
+
+        hooks.Clear();
     }
 
     // ReSharper disable once InconsistentNaming

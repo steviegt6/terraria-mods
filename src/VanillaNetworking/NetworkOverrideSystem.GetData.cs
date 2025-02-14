@@ -4814,6 +4814,6 @@ partial class NetworkOverrideSystem
         player.ConsumedManaCrystals = manaCrystals;
 
         Debug.Assert(player.statManaMax is >= 20 and <= 200);
-        Debug.Assert(player.statLifeMax % 20 == 0);
+        Debug.Assert(player.statManaMax % 20 == 0);
     }
 }
