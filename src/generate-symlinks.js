@@ -1,16 +1,16 @@
 const path = require("path");
 const fs = require("fs");
 
-const dirs = ["CrowsWhoMow", "LiquidLib", "VanillaNetworking"];
+const dirs = ["CrowsWhoMow", "InlineJitTest", "LiquidLib", "UnlockedZoom", "VanillaNetworking"];
 
 const sourceDirs = dirs.map((dir) => path.join(__dirname, dir));
 const targetDirs = dirs.map((dir) => path.join(__dirname, "..", "..", dir));
 
 for (let i = 0; i < sourceDirs.length; i++) {
-  const sourceDir = sourceDirs[i];
-  const targetDir = targetDirs[i];
+    const sourceDir = sourceDirs[i];
+    const targetDir = targetDirs[i];
 
-  if (!fs.existsSync(targetDir)) {
-    fs.symlinkSync(sourceDir, targetDir, "dir");
-  }
+    if (!fs.existsSync(targetDir)) {
+        fs.symlinkSync(sourceDir, targetDir, "dir");
+    }
 }
