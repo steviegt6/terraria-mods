@@ -16,7 +16,7 @@
         <PackageReference Include="JetBrains.Annotations" Version="2024.3.0"/>
 
         <!-- Use Fody to weave IL after regular building. -->
-        <PackageReference Include="Fody" Version="6.9.1"/>
+        <!-- <PackageReference Include="Fody" Version="6.9.1"/> -->
     </ItemGroup>
 
     <ItemGroup>
