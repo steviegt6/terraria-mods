@@ -24,9 +24,9 @@ public sealed class GenerateInternalTypeInRootNamespaceGenerator : IIncrementalG
         var sb = new StringBuilder();
         {
             sb.AppendLine($"namespace {rootNamespace};");
-            sb.AppendLine($"");
-            sb.AppendLine($"[System.Runtime.CompilerServices.CompilerGenerated]");
-            sb.AppendLine($"internal static class Exists;");
+            sb.AppendLine();
+            sb.AppendLine("[global::System.Runtime.CompilerServices.CompilerGenerated]");
+            sb.AppendLine("internal static class Exists;");
         }
         return sb.ToString();
     }
