@@ -36,8 +36,6 @@ public sealed class CrowThatMows : ModNPC
         base.SetDefaults();
 
         NPC.CloneDefaults(NPCID.Bunny);
-
-        // TODO: lol
         AIType = NPCID.Bunny;
     }
 
@@ -96,7 +94,7 @@ public sealed class CrowThatMows : ModNPC
     public override void ModifyNPCLoot(NPCLoot npcLoot)
     {
         base.ModifyNPCLoot(npcLoot);
-        
+
         npcLoot.Add(ItemDropRule.Common(ItemID.LawnMower));
     }
 

@@ -1,8 +1,6 @@
 using JetBrains.Annotations;
 
-using Terraria.ModLoader;
-
-namespace Tomat.Terraria.TML.VanillaNetworking;
+namespace Tomat.TML.Mod.VanillaNetworking;
 
 [UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
-public sealed class VnMod : Mod;
+public sealed class VnMod : global::Terraria.ModLoader.Mod;
