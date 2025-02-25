@@ -7,15 +7,4 @@
         <RootNamespace>Tomat.Terraria.TML.CrowsWhoMow</RootNamespace>
     </PropertyGroup>
 
-    <ItemGroup>
-        <PackageReference Include="Krafs.Publicizer" Version="2.3.0">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-    </ItemGroup>
-
-    <ItemGroup>
-        <Publicize Include="tModLoader"/>
-    </ItemGroup>
-
 </Project>
