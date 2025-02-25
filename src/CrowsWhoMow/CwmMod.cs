@@ -1,8 +1,6 @@
 using JetBrains.Annotations;
 
-using Terraria.ModLoader;
-
-namespace Tomat.Terraria.TML.CrowsWhoMow;
+namespace Tomat.TML.Mod.CrowsWhoMow;
 
 [UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
-public sealed class CwmMod : Mod;
+public sealed class CwmMod : global::Terraria.ModLoader.Mod;

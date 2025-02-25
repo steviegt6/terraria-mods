@@ -4,7 +4,7 @@
 
     <PropertyGroup>
         <AssemblyName>UnlockedZoom</AssemblyName>
-        <RootNamespace>Tomat.Terraria.TML.UnlockedZoom</RootNamespace>
+        <RootNamespace>Tomat.TML.Mod.UnlockedZoom</RootNamespace>
     </PropertyGroup>
 
 </Project>

@@ -14,10 +14,10 @@ using Terraria.Graphics.Light;
 using Terraria.ModLoader;
 using Terraria.WorldBuilding;
 
-namespace Tomat.Terraria.TML.UnlockedZoom;
+namespace Tomat.TML.Mod.UnlockedZoom;
 
 [UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
-public sealed class UzMod : Mod;
+public sealed class UzMod : global::Terraria.ModLoader.Mod;
 
 [UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
 internal sealed class ZoomAndScreenParamOverride : ModSystem

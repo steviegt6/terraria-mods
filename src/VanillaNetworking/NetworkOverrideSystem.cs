@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -12,7 +11,7 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
 
-namespace Tomat.Terraria.TML.VanillaNetworking;
+namespace Tomat.TML.Mod.VanillaNetworking;
 
 internal sealed partial class NetworkOverrideSystem : ModSystem
 {

@@ -16,7 +16,7 @@ using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.Social;
 
-namespace Tomat.Terraria.TML.VanillaNetworking;
+namespace Tomat.TML.Mod.VanillaNetworking;
 
 partial class NetworkOverrideSystem
 {

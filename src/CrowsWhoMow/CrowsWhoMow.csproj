@@ -4,7 +4,7 @@
 
     <PropertyGroup>
         <AssemblyName>CrowsWhoMow</AssemblyName>
-        <RootNamespace>Tomat.Terraria.TML.CrowsWhoMow</RootNamespace>
+        <RootNamespace>Tomat.TML.Mod.CrowsWhoMow</RootNamespace>
     </PropertyGroup>
 
 </Project>

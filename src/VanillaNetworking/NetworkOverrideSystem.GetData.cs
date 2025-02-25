@@ -24,11 +24,10 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
-using Terraria.ModLoader.IO;
 using Terraria.Net;
 using Terraria.UI;
 
-namespace Tomat.Terraria.TML.VanillaNetworking;
+namespace Tomat.TML.Mod.VanillaNetworking;
 
 partial class NetworkOverrideSystem
 {
