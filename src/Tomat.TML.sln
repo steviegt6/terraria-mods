@@ -9,7 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SourceGenerator", "SourceGe
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{622C7980-4AE3-4832-8519-A7D7F7C10BFD}"
 	ProjectSection(SolutionItems) = preProject
-		generate-symlinks.js = generate-symlinks.js
 		Mod.targets = Mod.targets
 	EndProjectSection
 EndProject
