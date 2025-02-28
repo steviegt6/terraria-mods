@@ -5,6 +5,7 @@ using JetBrains.Annotations;
 
 using Microsoft.Xna.Framework;
 
+using Mono.Cecil;
 using Mono.Cecil.Cil;
 
 using MonoMod.Cil;
@@ -32,13 +33,9 @@ public sealed class BetterTextStroke : ModSystem
     {
         var c = new ILCursor(il);
 
-        var color       = il.Method.Parameters.FirstOrDefault(x => string.Equals(x.Name, "color",       StringComparison.InvariantCultureIgnoreCase));
+        var color = il.Method.Parameters.FirstOrDefault(x => string.Equals(x.Name, "color",     StringComparison.InvariantCultureIgnoreCase))
+                 ?? il.Method.Parameters.FirstOrDefault(x => string.Equals(x.Name, "baseColor", StringComparison.InvariantCultureIgnoreCase));
         var shadowColor = il.Method.Parameters.FirstOrDefault(x => string.Equals(x.Name, "shadowColor", StringComparison.InvariantCultureIgnoreCase));
-
-        if (color is null)
-        {
-            throw new InvalidOperationException("Cannot perform stroke edit on method with no color, is this a mistake?");
-        }
 
         if (shadowColor is null)
         {
@@ -49,12 +46,12 @@ public sealed class BetterTextStroke : ModSystem
             {
                 throw new InvalidOperationException("Could not find Color::get_Black in simple case");
             }
+            c.EmitPop();
 
-            c.EmitLdarg(color.Index);
+            EmitColor(c, color);
             c.EmitDelegate(
                 static (Color color) => DarkenColor(color)
             );
-            c.EmitStarg(color.Index);
         }
         else
         {
@@ -64,7 +61,7 @@ public sealed class BetterTextStroke : ModSystem
             // of the method instead of trying to modify it when it's being
             // consumed by an invocation.
 
-            c.EmitLdarg(color.Index);
+            EmitColor(c, color);
             c.EmitLdarg(shadowColor.Index);
             c.EmitDelegate(
                 static (Color color, Color shadowColor) => shadowColor == Color.Black ? DarkenColor(color) : color
@@ -73,6 +70,20 @@ public sealed class BetterTextStroke : ModSystem
         }
 
         return;
+
+        // Helper to emit Color::get_White when there is no color parameter
+        // (single case, currently).
+        static void EmitColor(ILCursor c, ParameterDefinition? color)
+        {
+            if (color is null)
+            {
+                c.EmitDelegate(() => Color.White);
+            }
+            else
+            {
+                c.EmitLdarg(color.Index);
+            }
+        }
 
         static Color DarkenColor(Color color)
         {
