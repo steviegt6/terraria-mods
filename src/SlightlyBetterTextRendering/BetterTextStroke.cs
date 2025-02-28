@@ -40,11 +40,12 @@ public sealed class BetterTextStroke : ModSystem
         if (shadowColor is null)
         {
             // Simpler case: if there is no shadow color, search and replace
-            // Color::Black (Color::get_Black).
+            // Color::get_Black or Color::.ctor(int32, int32, int32, int32).
 
-            if (!c.TryGotoNext(MoveType.After, x => x.MatchCall<Color>("get_Black")))
+            if (!c.TryGotoNext(MoveType.After, x => x.MatchCall<Color>("get_Black"))
+             && !c.TryGotoNext(MoveType.After, x => x.MatchNewobj(typeof(Color).GetConstructor([typeof(int), typeof(int), typeof(int), typeof(int)])!)))
             {
-                throw new InvalidOperationException("Could not find Color::get_Black in simple case");
+                throw new InvalidOperationException("Could not find Color::get_Black or Color::.ctor(int32, int32, int32, int32) in simple case");
             }
             c.EmitPop();
 
@@ -88,7 +89,7 @@ public sealed class BetterTextStroke : ModSystem
         static Color DarkenColor(Color color)
         {
             // TODO: Mess around with this.  Make it a config?
-            const float factor = 0.5f;
+            const float factor = 0.85f;
 
             return new Color(
                 Math.Clamp((byte)(color.R * factor), (byte)0, (byte)255),
