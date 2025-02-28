@@ -89,7 +89,7 @@ public sealed class BetterTextStroke : ModSystem
         static Color DarkenColor(Color color)
         {
             // TODO: Mess around with this.  Make it a config?
-            const float factor = 0.15f;
+            const float factor = 0.1f;
 
             return new Color(
                 Math.Clamp((byte)(color.R * factor), (byte)0, (byte)255),
