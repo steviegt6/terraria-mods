@@ -1,0 +1,10 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <Import Project="../Mod.targets"/>
+
+    <PropertyGroup>
+        <AssemblyName>SlightlyBetterTextRendering</AssemblyName>
+        <RootNamespace>Tomat.TML.Mod.SlightlyBetterTextRendering</RootNamespace>
+    </PropertyGroup>
+
+</Project>

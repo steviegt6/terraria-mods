@@ -1,0 +1,5 @@
+displayName = Tomat's Slightly Better Text Rendering
+author = Tomat
+version = 1.0.0
+homepage = https://discord.gg/UTXC8fM3NK
+side = Client
