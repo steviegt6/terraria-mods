@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Threading;
 
 using JetBrains.Annotations;
 
@@ -12,6 +13,9 @@ namespace Tomat.TML.Mod.NotQuiteNitrate.Patches;
 [UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
 internal sealed class FasterBfsPlotTile : ModSystem
 {
+    private static readonly ThreadLocal<Queue<Point>>   tl_queue   = new(() => new Queue<Point>(100));
+    private static readonly ThreadLocal<HashSet<Point>> tl_visited = new(() => new HashSet<Point>(100));
+
     public override void Load()
     {
         base.Load();
@@ -31,13 +35,15 @@ internal sealed class FasterBfsPlotTile : ModSystem
             return false;
         }
 
-        var queue = new Queue<Point>();
-        var visited = new HashSet<Point>
+        var queue = tl_queue.Value!;
         {
-            new(x, y),
-        };
+            queue.Enqueue(new Point(x, y));
+        }
 
-        queue.Enqueue(new Point(x, y));
+        var visited = tl_visited.Value!;
+        {
+            visited.Add(new Point(x, y));
+        }
 
         while (queue.TryDequeue(out var current))
         {
@@ -68,6 +74,7 @@ internal sealed class FasterBfsPlotTile : ModSystem
             }
         }
 
+        visited.Clear();
         return true;
     }
 }
