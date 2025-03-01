@@ -27,3 +27,15 @@ Terraria.NPC::DoDeathEvents(Player):
 // Note that downed booleans are synced and always true once set to true.  This
 // means they persist through additional events, etc.
 // TowerActiveX is used for the current temporal condition.
+
+// There is also Terraria.NPC::downedTowers which will need to be modified (but
+// it's never used in vanilla).
+
+// Each tower has its own CustomSky (e.g. StardustSky), needs manual
+// implementing.
+
+// There is also RGB support for each pillar... lol.
+
+// Also look into implementing new LunarPillarBigProgressBar instances.
+
+// Look into how to support monoliths.
