@@ -51,15 +51,14 @@ internal sealed class BetterGetColorSlice : ModSystem
         var colors = (Span<Vector3>)stackalloc Vector3[9];
         ColorBuffer.GetSquare(Lighting._activeEngine, centerX, centerY, padding: 1, colors);
 
-        // TODO: SIMD this.
         ColorBuffer.FastVector3ToColor(ref slices[0], colors[0], globalBrightness);
-        ColorBuffer.FastVector3ToColor(ref slices[3], colors[3], globalBrightness);
-        ColorBuffer.FastVector3ToColor(ref slices[6], colors[6], globalBrightness);
         ColorBuffer.FastVector3ToColor(ref slices[1], colors[1], globalBrightness);
-        ColorBuffer.FastVector3ToColor(ref slices[4], colors[4], globalBrightness);
-        ColorBuffer.FastVector3ToColor(ref slices[7], colors[7], globalBrightness);
         ColorBuffer.FastVector3ToColor(ref slices[2], colors[2], globalBrightness);
+        ColorBuffer.FastVector3ToColor(ref slices[3], colors[3], globalBrightness);
+        ColorBuffer.FastVector3ToColor(ref slices[4], colors[4], globalBrightness);
         ColorBuffer.FastVector3ToColor(ref slices[5], colors[5], globalBrightness);
+        ColorBuffer.FastVector3ToColor(ref slices[6], colors[6], globalBrightness);
+        ColorBuffer.FastVector3ToColor(ref slices[7], colors[7], globalBrightness);
         ColorBuffer.FastVector3ToColor(ref slices[8], colors[8], globalBrightness);
     }
 
@@ -75,15 +74,14 @@ internal sealed class BetterGetColorSlice : ModSystem
         var colors = (Span<Vector3>)stackalloc Vector3[9];
         ColorBuffer.GetSquare(Lighting._activeEngine, x, y, padding: 1, colors);
 
-        // TODO: SIMD this.
         slices[0] = colors[0] * globalBrightness;
-        slices[3] = colors[3] * globalBrightness;
-        slices[6] = colors[6] * globalBrightness;
         slices[1] = colors[1] * globalBrightness;
-        slices[4] = colors[4] * globalBrightness;
-        slices[7] = colors[7] * globalBrightness;
         slices[2] = colors[2] * globalBrightness;
+        slices[3] = colors[3] * globalBrightness;
+        slices[4] = colors[4] * globalBrightness;
         slices[5] = colors[5] * globalBrightness;
+        slices[6] = colors[6] * globalBrightness;
+        slices[7] = colors[7] * globalBrightness;
         slices[8] = colors[8] * globalBrightness;
     }
 }
