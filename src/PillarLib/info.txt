@@ -16,3 +16,14 @@ Terraria.WorldGen::MessageLunarApocalypse():
 // Updates the status of pillars (whether they've been downed) and starts Impending Doom if there are none.
 Terraria.WorldGen::UpdateLunarApocalypse():
     Honestly just rewrite the whole thing.
+
+Terraria.NPC::DoDeathEvents(Player):
+    For each pillar, runs:
+        downedTowerX = true;
+        TowerActiveX = false;
+        WorldGen.UpdateLunarApocalypse();
+        WorldGen.MessageLunarApocalypse();
+
+// Note that downed booleans are synced and always true once set to true.  This
+// means they persist through additional events, etc.
+// TowerActiveX is used for the current temporal condition.
