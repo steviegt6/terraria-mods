@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.CompilerServices;
 
 using Microsoft.Xna.Framework;
 
@@ -169,35 +168,6 @@ public static class ColorBuffer
                 }
                 break;
             }
-        }
-    }
-
-    // TODO: I'm not confident this is a meaningful performance gain?
-    [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-    public static void FastVector3ToColor(ref Color color, Vector3 vector, float brightness)
-    {
-        var r = (int)(255f * vector.X * brightness);
-        if (r > 255)
-        {
-            r = 255;
-        }
-
-        var g = (int)(255f * vector.Y * brightness);
-        if (g > 255)
-        {
-            g = 255;
-        }
-
-        var b = (int)(255f * vector.Z * brightness);
-        if (b > 255)
-        {
-            b = 255;
-        }
-
-        b <<= 16;
-        g <<= 8;
-        {
-            color.PackedValue = (uint)(r | g | b) | 0xFF000000u;
         }
     }
 }

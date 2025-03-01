@@ -47,10 +47,10 @@ internal sealed class BetterGetColorSlice : ModSystem
         var total3 = color4.X + color4.Y + color4.Z;
         var total4 = color3.X + color3.Y + color3.Z;
 
-        ColorBuffer.FastVector3ToColor(ref slices[0], total1 >= total4 ? color3 : color,  globalBrightness);
-        ColorBuffer.FastVector3ToColor(ref slices[1], total1 >= total3 ? color4 : color,  globalBrightness);
-        ColorBuffer.FastVector3ToColor(ref slices[2], total2 >= total4 ? color3 : color2, globalBrightness);
-        ColorBuffer.FastVector3ToColor(ref slices[3], total2 >= total3 ? color4 : color2, globalBrightness);
+        slices[0] = new Color((total1 >= total4 ? color3 : color)  * globalBrightness);
+        slices[1] = new Color((total1 >= total3 ? color4 : color)  * globalBrightness);
+        slices[2] = new Color((total2 >= total4 ? color3 : color2) * globalBrightness);
+        slices[3] = new Color((total2 >= total3 ? color4 : color2) * globalBrightness);
     }
 
     private static void GetColor4Slice(
@@ -93,15 +93,15 @@ internal sealed class BetterGetColorSlice : ModSystem
         var colors = (Span<Vector3>)stackalloc Vector3[9];
         ColorBuffer.GetSquare(Lighting._activeEngine, centerX, centerY, colors);
 
-        ColorBuffer.FastVector3ToColor(ref slices[0], colors[0], globalBrightness);
-        ColorBuffer.FastVector3ToColor(ref slices[1], colors[1], globalBrightness);
-        ColorBuffer.FastVector3ToColor(ref slices[2], colors[2], globalBrightness);
-        ColorBuffer.FastVector3ToColor(ref slices[3], colors[3], globalBrightness);
-        ColorBuffer.FastVector3ToColor(ref slices[4], colors[4], globalBrightness);
-        ColorBuffer.FastVector3ToColor(ref slices[5], colors[5], globalBrightness);
-        ColorBuffer.FastVector3ToColor(ref slices[6], colors[6], globalBrightness);
-        ColorBuffer.FastVector3ToColor(ref slices[7], colors[7], globalBrightness);
-        ColorBuffer.FastVector3ToColor(ref slices[8], colors[8], globalBrightness);
+        slices[0] = new Color(colors[0] * globalBrightness);
+        slices[1] = new Color(colors[1] * globalBrightness);
+        slices[2] = new Color(colors[2] * globalBrightness);
+        slices[3] = new Color(colors[3] * globalBrightness);
+        slices[4] = new Color(colors[4] * globalBrightness);
+        slices[5] = new Color(colors[5] * globalBrightness);
+        slices[6] = new Color(colors[6] * globalBrightness);
+        slices[7] = new Color(colors[7] * globalBrightness);
+        slices[8] = new Color(colors[8] * globalBrightness);
     }
 
     private static void GetColor9Slice(
