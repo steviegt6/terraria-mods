@@ -1,0 +1,5 @@
+displayName = Not Quite Nitrate
+author = Tomat
+version = 1.0.0
+homepage = https://discord.gg/vPTUZcvXjg
+side = NoSync

@@ -1,0 +1,8 @@
+Implements smaller, more compatible tweaks to boost performance... it's not quite Nitrate.
+
+Of course, made by me, Tomat, a developer of Nitrate.
+
+May or may not work with Nitrate, I haven't tested.
+
+Join the homepage for support: https://discord.gg/vPTUZcvXjg
+Send me money to support me: https://ko-fi.com/steviegt6
