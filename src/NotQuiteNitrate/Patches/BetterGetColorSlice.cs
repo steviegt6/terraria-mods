@@ -91,7 +91,7 @@ internal sealed class BetterGetColorSlice : ModSystem
         var globalBrightness = Lighting.GlobalBrightness;
 
         var colors = (Span<Vector3>)stackalloc Vector3[9];
-        ColorBuffer.GetSquare(Lighting._activeEngine, centerX, centerY, padding: 1, colors);
+        ColorBuffer.GetSquare(Lighting._activeEngine, centerX, centerY, colors);
 
         ColorBuffer.FastVector3ToColor(ref slices[0], colors[0], globalBrightness);
         ColorBuffer.FastVector3ToColor(ref slices[1], colors[1], globalBrightness);
@@ -114,7 +114,7 @@ internal sealed class BetterGetColorSlice : ModSystem
         var globalBrightness = Lighting.GlobalBrightness;
 
         var colors = (Span<Vector3>)stackalloc Vector3[9];
-        ColorBuffer.GetSquare(Lighting._activeEngine, x, y, padding: 1, colors);
+        ColorBuffer.GetSquare(Lighting._activeEngine, x, y, colors);
 
         slices[0] = colors[0] * globalBrightness;
         slices[1] = colors[1] * globalBrightness;

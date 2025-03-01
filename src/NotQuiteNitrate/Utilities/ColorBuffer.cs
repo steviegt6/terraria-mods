@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 using Microsoft.Xna.Framework;
@@ -11,6 +10,29 @@ namespace Tomat.TML.Mod.NotQuiteNitrate.Utilities;
 
 public static class ColorBuffer
 {
+    private static readonly (int x, int y)[] plus_offsets =
+    [
+        (+0, -1),
+        (+0, +1),
+        (-1, +0),
+        (+1, +0),
+    ];
+
+    private static readonly (int x, int y)[] square_offsets =
+    [
+        (-1, -1),
+        (-1, +0),
+        (-1, +1),
+
+        (+0, -1),
+        (+0, +0),
+        (+0, +1),
+
+        (+1, -1),
+        (+1, +0),
+        (+1, +1),
+    ];
+
     /// <summary>
     ///     Reads a "plus" section to a buffer.
     /// </summary>
@@ -28,14 +50,6 @@ public static class ColorBuffer
         Span<Vector3>   colors
     )
     {
-        var offsets = (Span<(int x, int y)>)
-        [
-            (+0, -1),
-            (+0, +1),
-            (-1, +0),
-            (+1, +0),
-        ];
-
         switch (engine)
         {
             case LegacyLighting legacy:
@@ -48,9 +62,9 @@ public static class ColorBuffer
                 var unscaledX    = unscaledSize.X / 16f + Lighting.OffScreenTiles * 2 + 10;
                 var unscaledY    = unscaledSize.Y / 16f + Lighting.OffScreenTiles * 2;
 
-                for (var i = 0; i < offsets.Length; i++)
+                for (var i = 0; i < plus_offsets.Length; i++)
                 {
-                    var offset = offsets[i];
+                    var offset = plus_offsets[i];
                     var localX = realX + offset.x;
                     var localY = realY + offset.y;
 
@@ -69,9 +83,9 @@ public static class ColorBuffer
 
             case LightingEngine modern:
             {
-                for (var i = 0; i < offsets.Length; i++)
+                for (var i = 0; i < plus_offsets.Length; i++)
                 {
-                    var offset = offsets[i];
+                    var offset = plus_offsets[i];
                     var localX = x + offset.x;
                     var localY = y + offset.y;
 
@@ -90,20 +104,17 @@ public static class ColorBuffer
                 break;
             }
 
-            default:
-                throw new InvalidOperationException("The engine is not supported.");
+            // default:
+            //     throw new InvalidOperationException("The engine is not supported.");
         }
     }
 
     /// <summary>
-    ///     Reads a square section to a buffer.
+    ///     Reads a 3x3 square section to a buffer.
     /// </summary>
     /// <param name="engine">The engine to get the color from.</param>
     /// <param name="x">The center X position.</param>
     /// <param name="y">The center Y position.</param>
-    /// <param name="padding">
-    ///     Padding around the center to make the square.
-    /// </param>
     /// <param name="colors">
     ///     The buffer to write to.  Expected to be an ample size to write all
     ///     the colors to.
@@ -112,14 +123,9 @@ public static class ColorBuffer
         ILightingEngine engine,
         int             x,
         int             y,
-        int             padding,
         Span<Vector3>   colors
     )
     {
-        var width = 1 + padding * 2;
-
-        var offset = (width * width - 1) / 2;
-
         switch (engine)
         {
             case LegacyLighting legacy:
@@ -132,23 +138,20 @@ public static class ColorBuffer
                 var unscaledX    = unscaledSize.X / 16f + Lighting.OffScreenTiles * 2 + 10;
                 var unscaledY    = unscaledSize.Y / 16f + Lighting.OffScreenTiles * 2;
 
-                var xMin = realX - padding;
-                var xMax = realX + padding;
-                var yMin = realY - padding;
-                var yMax = realY + padding;
-                for (var localX = xMin; localX <= xMax; localX++)
-                for (var localY = yMin; localY <= yMax; localY++)
+                for (var i = 0; i < square_offsets.Length; i++)
                 {
-                    var idx = (localY - realY) * width + (localX - realX) + offset;
+                    var offset = square_offsets[i];
+                    var localX = realX + offset.x;
+                    var localY = realY + offset.y;
 
                     if (localX < 0 || localY < 0 || localX > unscaledX || localY > unscaledY)
                     {
-                        colors[idx] = Vector3.Zero;
+                        colors[i] = Vector3.Zero;
                     }
                     else
                     {
                         var state = legacy._states[localX][localY];
-                        colors[idx] = new Vector3(state.R, state.G, state.B);
+                        colors[i] = new Vector3(state.R, state.G, state.B);
                     }
                 }
                 break;
@@ -156,33 +159,29 @@ public static class ColorBuffer
 
             case LightingEngine modern:
             {
-                var xMin = x - padding;
-                var xMax = x + padding;
-                var yMin = y - padding;
-                var yMax = y + padding;
-                for (var localX = xMin; localX <= xMax; localX++)
-                for (var localY = yMin; localY <= yMax; localY++)
+                for (var i = 0; i < square_offsets.Length; i++)
                 {
-                    var idx = (localY - y) * width + (localX - x) + offset;
+                    var offset = square_offsets[i];
+                    var localX = x + offset.x;
+                    var localY = y + offset.y;
 
                     if (!modern._activeProcessedArea.Contains(localX, localY))
                     {
-                        colors[idx] = Vector3.Zero;
+                        colors[i] = Vector3.Zero;
                     }
                     else
                     {
-                        colors[idx] = modern._activeLightMap[
+                        colors[i] = modern._activeLightMap[
                             localX - modern._activeProcessedArea.X,
                             localY - modern._activeProcessedArea.Y
                         ];
                     }
                 }
-
                 break;
             }
 
-            default:
-                throw new InvalidOperationException("The engine is not supported.");
+            // default:
+            //     throw new InvalidOperationException("The engine is not supported.");
         }
     }
 
