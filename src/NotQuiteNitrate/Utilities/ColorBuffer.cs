@@ -21,15 +21,13 @@ public static class ColorBuffer
     private static readonly (int x, int y)[] square_offsets =
     [
         (-1, -1),
-        (-1, +0),
-        (-1, +1),
-
         (+0, -1),
-        (+0, +0),
-        (+0, +1),
-
         (+1, -1),
+        (-1, +0),
+        (+0, +0),
         (+1, +0),
+        (-1, +1),
+        (+0, +1),
         (+1, +1),
     ];
 
