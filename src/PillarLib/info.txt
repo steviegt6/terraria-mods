@@ -1,0 +1,18 @@
+"lunar apocalypse" documentation
+
+// Starts the Celestial Pillar event.
+Terraria.WorldGen::TriggerLunarApocalypse():
+    Edit list to include additional NPC IDs
+    Edit `4` constants to be list.Count
+    Set additional variables for new pillars (Terraria.NPC::TowerActiveX, Terraria.NPC::ShieldStrengthTowerX)
+    SendData(101)            -> Sync additional shield strengths!
+    MessageLunarApocalypse() -> See changes #Terraria.WorldGen::MessageLunarApocalypse()
+
+// Called whenever a pillar dies to send a new message in chat.
+Terraria.WorldGen::MessageLunarApocalypse():
+    Add to num for each additional downed pillar.
+    Change NetworkText.FromKey to use Lang.misc[43 + num] only up to FOUR, then use our own provided keys (not random!) (switch to a list instead??)
+
+// Updates the status of pillars (whether they've been downed) and starts Impending Doom if there are none.
+Terraria.WorldGen::UpdateLunarApocalypse():
+    Honestly just rewrite the whole thing.
