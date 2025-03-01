@@ -39,10 +39,8 @@ internal sealed class FasterBfsPlotTile : ModSystem
 
         queue.Enqueue(new Point(x, y));
 
-        while (queue.Count > 0)
+        while (queue.TryDequeue(out var current))
         {
-            var current = queue.Dequeue();
-
             if (!WorldGen.InWorld(current.X, current.Y, 1))
             {
                 continue;
