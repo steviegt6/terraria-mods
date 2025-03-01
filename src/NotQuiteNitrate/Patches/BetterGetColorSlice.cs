@@ -75,6 +75,7 @@ internal sealed class BetterGetColorSlice : ModSystem
         var total3 = color4.X + color4.Y + color4.Z;
         var total4 = color3.X + color3.Y + color3.Z;
 
+        // TODO: It's possible to remove branching with SIMD.  Later?
         slices[0] = (total1 >= total4 ? color3 : color)  * globalBrightness;
         slices[1] = (total1 >= total3 ? color4 : color)  * globalBrightness;
         slices[2] = (total2 >= total4 ? color3 : color2) * globalBrightness;
