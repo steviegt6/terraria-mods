@@ -12,14 +12,98 @@ namespace Tomat.TML.Mod.NotQuiteNitrate.Utilities;
 public static class ColorBuffer
 {
     /// <summary>
+    ///     Reads a "plus" section to a buffer.
+    /// </summary>
+    /// <param name="engine">The engine to get the color from.</param>
+    /// <param name="x">The center X position.</param>
+    /// <param name="y">The center Y position.</param>
+    /// <param name="colors">
+    ///     The buffer to write to.  Expected to be an ample size to write all
+    ///     the colors to.
+    /// </param>
+    public static void GetPlus(
+        ILightingEngine engine,
+        int             x,
+        int             y,
+        Span<Vector3>   colors
+    )
+    {
+        var offsets = (Span<(int x, int y)>)
+        [
+            (+0, -1),
+            (+0, +1),
+            (-1, +0),
+            (+1, +0),
+        ];
+
+        switch (engine)
+        {
+            case LegacyLighting legacy:
+            {
+                var realX = x - legacy._requestedRectLeft + Lighting.OffScreenTiles;
+                var realY = y - legacy._requestedRectTop  + Lighting.OffScreenTiles;
+
+                // TODO: Squeeze out nanoseconds by not duplicating OffScreenTiles?
+                var unscaledSize = legacy._camera.UnscaledSize;
+                var unscaledX    = unscaledSize.X / 16f + Lighting.OffScreenTiles * 2 + 10;
+                var unscaledY    = unscaledSize.Y / 16f + Lighting.OffScreenTiles * 2;
+
+                for (var i = 0; i < offsets.Length; i++)
+                {
+                    var offset = offsets[i];
+                    var localX = realX + offset.x;
+                    var localY = realY + offset.y;
+
+                    if (localX < 0 || localY < 0 || localX > unscaledX || localY > unscaledY)
+                    {
+                        colors[i] = Vector3.Zero;
+                    }
+                    else
+                    {
+                        var state = legacy._states[localX][localY];
+                        colors[i] = new Vector3(state.R, state.G, state.B);
+                    }
+                }
+                break;
+            }
+
+            case LightingEngine modern:
+            {
+                for (var i = 0; i < offsets.Length; i++)
+                {
+                    var offset = offsets[i];
+                    var localX = x + offset.x;
+                    var localY = y + offset.y;
+
+                    if (!modern._activeProcessedArea.Contains(localX, localY))
+                    {
+                        colors[i] = Vector3.Zero;
+                    }
+                    else
+                    {
+                        colors[i] = modern._activeLightMap[
+                            localX - modern._activeProcessedArea.X,
+                            localY - modern._activeProcessedArea.Y
+                        ];
+                    }
+                }
+                break;
+            }
+
+            default:
+                throw new InvalidOperationException("The engine is not supported.");
+        }
+    }
+
+    /// <summary>
     ///     Reads a square section to a buffer.
     /// </summary>
     /// <param name="engine">The engine to get the color from.</param>
     /// <param name="x">The center X position.</param>
     /// <param name="y">The center Y position.</param>
     /// <param name="padding">
-    ///     Padding around the center to make the square
-    /// .</param>
+    ///     Padding around the center to make the square.
+    /// </param>
     /// <param name="colors">
     ///     The buffer to write to.  Expected to be an ample size to write all
     ///     the colors to.
@@ -101,27 +185,6 @@ public static class ColorBuffer
                 throw new InvalidOperationException("The engine is not supported.");
         }
     }
-
-    /*/// <summary>
-    ///     Gets the <see cref="colors"/> at the given <see cref="positions"/>.
-    /// </summary>
-    /// <param name="engine">The lighting engine in use.</param>
-    /// <param name="positions">The requested positions.</param>
-    /// <param name="colors">A buffer to write the colors to.</param>
-    public static void GetSpan(ILightingEngine engine, Span<int> positions, Span<Vector3> colors)
-    {
-        Debug.Assert(positions.Length == colors.Length);
-
-        if (engine is LegacyLighting legacy)
-        {
-            var realX =
-        }
-        else if (engine is LightingEngine modern) { }
-        else
-        {
-            throw new InvalidOperationException("The engine is not supported.");
-        }
-    }*/
 
     // TODO: I'm not confident this is a meaningful performance gain?
     [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
