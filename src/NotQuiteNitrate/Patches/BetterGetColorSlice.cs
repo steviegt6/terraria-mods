@@ -66,9 +66,9 @@ internal sealed class BetterGetColorSlice : ModSystem
         ColorBuffer.GetPlus(Lighting._activeEngine, x, y, colors);
 
         var color  = colors[0];
-        var color2 = colors[2];
-        var color3 = colors[3];
-        var color4 = colors[4];
+        var color2 = colors[1];
+        var color3 = colors[2];
+        var color4 = colors[3];
 
         var total1 = color.X  + color.Y  + color.Z;
         var total2 = color2.X + color2.Y + color2.Z;
