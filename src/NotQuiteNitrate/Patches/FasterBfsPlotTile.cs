@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 
@@ -30,11 +31,13 @@ internal sealed class FasterBfsPlotTile : ModSystem
             return false;
         }
 
-        var queue   = new Queue<Point>();
-        var visited = new HashSet<Point>();
+        var queue = new Queue<Point>();
+        var visited = new HashSet<Point>
+        {
+            new(x, y),
+        };
 
         queue.Enqueue(new Point(x, y));
-        visited.Add(new Point(x,   y));
 
         while (queue.Count > 0)
         {
@@ -50,13 +53,13 @@ internal sealed class FasterBfsPlotTile : ModSystem
                 continue;
             }
 
-            var neighbors = new[]
-            {
+            var neighbors = (Span<Point>)
+            [
                 current with { X = current.X - 1 },
                 current with { X = current.X + 1 },
                 current with { Y = current.Y - 1 },
                 current with { Y = current.Y + 1 },
-            };
+            ];
 
             foreach (var neighbor in neighbors)
             {
