@@ -1,4 +1,4 @@
-displayName = Tomat's Slightly Better Text Rendering
+displayName = Tomat's Slightly Better Text Renderings
 author = Tomat
 version = 1.0.0
 homepage = https://discord.gg/UTXC8fM3NK
