@@ -1,9 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+    <Import Project="../Mod.targets"/>
+
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
+        <AssemblyName>VanillaNetworking</AssemblyName>
+        <RootNamespace>Tomat.TML.Mod.PillarLib</RootNamespace>
     </PropertyGroup>
 
 </Project>
