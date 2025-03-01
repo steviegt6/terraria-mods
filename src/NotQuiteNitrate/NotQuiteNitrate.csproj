@@ -7,8 +7,4 @@
         <RootNamespace>Tomat.TML.Mod.NotQuiteNitrate</RootNamespace>
     </PropertyGroup>
 
-    <ItemGroup>
-      <Folder Include="Utilities\" />
-    </ItemGroup>
-
 </Project>
