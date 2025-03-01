@@ -48,63 +48,7 @@ public static class ColorBuffer
         Span<Vector3>   colors
     )
     {
-        switch (engine)
-        {
-            case LegacyLighting legacy:
-            {
-                var realX = x - legacy._requestedRectLeft + Lighting.OffScreenTiles;
-                var realY = y - legacy._requestedRectTop  + Lighting.OffScreenTiles;
-
-                // TODO: Squeeze out nanoseconds by not duplicating OffScreenTiles?
-                var unscaledSize = legacy._camera.UnscaledSize;
-                var unscaledX    = unscaledSize.X / 16f + Lighting.OffScreenTiles * 2 + 10;
-                var unscaledY    = unscaledSize.Y / 16f + Lighting.OffScreenTiles * 2;
-
-                for (var i = 0; i < plus_offsets.Length; i++)
-                {
-                    var offset = plus_offsets[i];
-                    var localX = realX + offset.x;
-                    var localY = realY + offset.y;
-
-                    if (localX < 0 || localY < 0 || localX > unscaledX || localY > unscaledY)
-                    {
-                        colors[i] = Vector3.Zero;
-                    }
-                    else
-                    {
-                        var state = legacy._states[localX][localY];
-                        colors[i] = new Vector3(state.R, state.G, state.B);
-                    }
-                }
-                break;
-            }
-
-            case LightingEngine modern:
-            {
-                for (var i = 0; i < plus_offsets.Length; i++)
-                {
-                    var offset = plus_offsets[i];
-                    var localX = x + offset.x;
-                    var localY = y + offset.y;
-
-                    if (!modern._activeProcessedArea.Contains(localX, localY))
-                    {
-                        colors[i] = Vector3.Zero;
-                    }
-                    else
-                    {
-                        colors[i] = modern._activeLightMap[
-                            localX - modern._activeProcessedArea.X,
-                            localY - modern._activeProcessedArea.Y
-                        ];
-                    }
-                }
-                break;
-            }
-
-            // default:
-            //     throw new InvalidOperationException("The engine is not supported.");
-        }
+        GetBuffer(engine, x, y, colors, plus_offsets);
     }
 
     /// <summary>
@@ -124,6 +68,17 @@ public static class ColorBuffer
         Span<Vector3>   colors
     )
     {
+        GetBuffer(engine, x, y, colors, square_offsets);
+    }
+
+    private static void GetBuffer(
+        ILightingEngine  engine,
+        int              x,
+        int              y,
+        Span<Vector3>    colors,
+        (int x, int y)[] offsets
+    )
+    {
         switch (engine)
         {
             case LegacyLighting legacy:
@@ -136,20 +91,39 @@ public static class ColorBuffer
                 var unscaledX    = unscaledSize.X / 16f + Lighting.OffScreenTiles * 2 + 10;
                 var unscaledY    = unscaledSize.Y / 16f + Lighting.OffScreenTiles * 2;
 
-                for (var i = 0; i < square_offsets.Length; i++)
+                // Simplify the condition by taking advantage of obvious logic
+                // of a bounding box.
+                //    (realX - 1 >= 0 && realY - 1 >= 0 && realX - 1 <= unscaledX && realY - 1 <= unscaledY)
+                // && (realX + 1 >= 0 && realY + 1 >= 0 && realX + 1 <= unscaledX && realY + 1 <= unscaledY)
+                if (realX - 1 >= 0 && realY - 1 >= 0 && realX + 1 <= unscaledX && realY + 1 <= unscaledY)
                 {
-                    var offset = square_offsets[i];
-                    var localX = realX + offset.x;
-                    var localY = realY + offset.y;
+                    for (var i = 0; i < offsets.Length; i++)
+                    {
+                        var offset = offsets[i];
+                        var localX = realX + offset.x;
+                        var localY = realY + offset.y;
 
-                    if (localX < 0 || localY < 0 || localX > unscaledX || localY > unscaledY)
-                    {
-                        colors[i] = Vector3.Zero;
-                    }
-                    else
-                    {
                         var state = legacy._states[localX][localY];
                         colors[i] = new Vector3(state.R, state.G, state.B);
+                    }
+                }
+                else
+                {
+                    for (var i = 0; i < offsets.Length; i++)
+                    {
+                        var offset = offsets[i];
+                        var localX = realX + offset.x;
+                        var localY = realY + offset.y;
+
+                        if (localX < 0 || localY < 0 || localX > unscaledX || localY > unscaledY)
+                        {
+                            colors[i] = Vector3.Zero;
+                        }
+                        else
+                        {
+                            var state = legacy._states[localX][localY];
+                            colors[i] = new Vector3(state.R, state.G, state.B);
+                        }
                     }
                 }
                 break;
@@ -157,29 +131,44 @@ public static class ColorBuffer
 
             case LightingEngine modern:
             {
-                for (var i = 0; i < square_offsets.Length; i++)
+                if (modern._activeProcessedArea.Contains(x - 1, y - 1)
+                 && modern._activeProcessedArea.Contains(x + 1, y + 1))
                 {
-                    var offset = square_offsets[i];
-                    var localX = x + offset.x;
-                    var localY = y + offset.y;
+                    for (var i = 0; i < offsets.Length; i++)
+                    {
+                        var offset = offsets[i];
+                        var localX = x + offset.x;
+                        var localY = y + offset.y;
 
-                    if (!modern._activeProcessedArea.Contains(localX, localY))
-                    {
-                        colors[i] = Vector3.Zero;
-                    }
-                    else
-                    {
                         colors[i] = modern._activeLightMap[
                             localX - modern._activeProcessedArea.X,
                             localY - modern._activeProcessedArea.Y
                         ];
                     }
                 }
+                else
+                {
+                    for (var i = 0; i < offsets.Length; i++)
+                    {
+                        var offset = offsets[i];
+                        var localX = x + offset.x;
+                        var localY = y + offset.y;
+
+                        if (!modern._activeProcessedArea.Contains(localX, localY))
+                        {
+                            colors[i] = Vector3.Zero;
+                        }
+                        else
+                        {
+                            colors[i] = modern._activeLightMap[
+                                localX - modern._activeProcessedArea.X,
+                                localY - modern._activeProcessedArea.Y
+                            ];
+                        }
+                    }
+                }
                 break;
             }
-
-            // default:
-            //     throw new InvalidOperationException("The engine is not supported.");
         }
     }
 
