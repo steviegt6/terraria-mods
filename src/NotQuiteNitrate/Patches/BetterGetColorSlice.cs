@@ -11,6 +11,18 @@ using Tomat.TML.Mod.NotQuiteNitrate.Utilities;
 
 namespace Tomat.TML.Mod.NotQuiteNitrate.Patches;
 
+// TODO(perf): We can vectorize (SIMD) the totalX >= totalY ? colorA : colorB
+//             conditions.
+// TODO(perf): Look into directly reinterpreting Vector3s to Colors and maybe
+//             vectorize multiplication against GlobalBrightness?
+
+/// <summary>
+///     Reimplements the <c>GetColor4Slice</c> and <c>GetColor9Slice</c>
+///     lighting methods to directly fetch the necessary light data from the
+///     engine without stacking virtual calls.  Also caches some property
+///     results for a cheap gain.  Achieves an ~8x performance gain from limited
+///     testing.
+/// </summary>
 [UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
 internal sealed class BetterGetColorSlice : ModSystem
 {

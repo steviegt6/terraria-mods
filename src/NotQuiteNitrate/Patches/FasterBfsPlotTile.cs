@@ -11,6 +11,15 @@ using Terraria.ModLoader;
 
 namespace Tomat.TML.Mod.NotQuiteNitrate.Patches;
 
+// TODO(perf): Look into scrapping ThreadLocal<T>s in favor of manually managing
+//             ThreadStatic values (saves additional get_Value overhead).
+// TODO(perf): Look into unrolling neighbor loops and optimizing InWorld
+//             (according to Mirs)?
+
+/// <summary>
+///     Reimplements the breadth-first search algorithm implemented in
+///     PlotTileArea to be ~25x faster.
+/// </summary>
 [UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
 internal sealed class FasterBfsPlotTile : ModSystem
 {
