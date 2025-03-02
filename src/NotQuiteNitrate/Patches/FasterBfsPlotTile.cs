@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -15,20 +16,20 @@ namespace Tomat.TML.Mod.NotQuiteNitrate.Patches;
 internal sealed class FasterBfsPlotTile : ModSystem
 {
     [StructLayout(LayoutKind.Explicit)]
-    private readonly struct PackedPoint(int x, int y) : IEquatable<PackedPoint>
+    private readonly struct PackedPoint(short x, short y) : IEquatable<PackedPoint>
     {
         [FieldOffset(0)]
-        private readonly ulong data;
+        private readonly int data;
 
         [FieldOffset(0)]
-        public readonly int X = x;
+        public readonly short X = x;
 
         [FieldOffset(4)]
-        public readonly int Y = y;
+        public readonly short Y = y;
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(data, X, Y);
+            return data;
         }
 
         public bool Equals(PackedPoint other)
@@ -54,11 +55,16 @@ internal sealed class FasterBfsPlotTile : ModSystem
 
     private static bool PlotTileArea(
         On_Utils.orig_PlotTileArea orig,
-        int                        x,
-        int                        y,
+        int                        xInt,
+        int                        yInt,
         Utils.TileActionAttempt    plot
     )
     {
+        Debug.Assert(xInt <= short.MaxValue && yInt <= short.MaxValue);
+
+        var x = (short)xInt;
+        var y = (short)yInt;
+
         if (!WorldGen.InWorld(x, y))
         {
             return false;
@@ -88,10 +94,10 @@ internal sealed class FasterBfsPlotTile : ModSystem
 
             var neighbors = (Span<PackedPoint>)
             [
-                new PackedPoint(current.X - 1, current.Y),
-                new PackedPoint(current.X + 1, current.Y),
-                new PackedPoint(current.X,     current.Y - 1),
-                new PackedPoint(current.X,     current.Y + 1),
+                new PackedPoint((short)(current.X - 1), current.Y),
+                new PackedPoint((short)(current.X + 1), current.Y),
+                new PackedPoint(current.X,              (short)(current.Y - 1)),
+                new PackedPoint(current.X,              (short)(current.Y + 1)),
             ];
 
             foreach (var neighbor in neighbors)
