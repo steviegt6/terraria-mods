@@ -1,8 +1,14 @@
-Implements smaller, more compatible tweaks to boost performance... it's not quite Nitrate.
+Implements smaller, more compatible tweaks to boost performance: it's *not quite* Nitrate.
 
-Of course, made by me, Tomat, a developer of Nitrate.
+Made by me, Tomat, 50% of Nitrate.
 
-May or may not work with Nitrate, I haven't tested.
+Should work fine with Nitrate.
 
 Join the homepage for support: https://discord.gg/vPTUZcvXjg
 Send me money to support me: https://ko-fi.com/steviegt6
+
+Below is a brief summary of patches made by this mod and their impact on their respective targets.
+
+BetterGetColorSlice: Makes GetColor4Slice and GetColor9Slice ~8x faster from limited testing. Small general performance boost during tile rendering.
+
+FasterBfsPlotTile: Makes PlotTileArea ~25x faster. Massive performance boost to Fairy Glowsticks and Dirt Bombs; allows 1000 Fairy Glowsticks to consume <4% of frame time (vs 89% in vanilla).
