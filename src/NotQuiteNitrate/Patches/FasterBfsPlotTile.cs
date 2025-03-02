@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Runtime.InteropServices;
 using System.Threading;
 
 using JetBrains.Annotations;
@@ -13,8 +14,36 @@ namespace Tomat.TML.Mod.NotQuiteNitrate.Patches;
 [UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
 internal sealed class FasterBfsPlotTile : ModSystem
 {
-    private static readonly ThreadLocal<Queue<Point>>   tl_queue   = new(() => new Queue<Point>(100));
-    private static readonly ThreadLocal<HashSet<Point>> tl_visited = new(() => new HashSet<Point>(100));
+    [StructLayout(LayoutKind.Explicit)]
+    private readonly struct PackedPoint(int x, int y) : IEquatable<PackedPoint>
+    {
+        [FieldOffset(0)]
+        private readonly ulong data;
+
+        [FieldOffset(0)]
+        public readonly int X = x;
+
+        [FieldOffset(4)]
+        public readonly int Y = y;
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(data, X, Y);
+        }
+
+        public bool Equals(PackedPoint other)
+        {
+            return data == other.data;
+        }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is PackedPoint other && Equals(other);
+        }
+    }
+
+    private static readonly ThreadLocal<Queue<PackedPoint>>   tl_queue   = new(() => new Queue<PackedPoint>(100));
+    private static readonly ThreadLocal<HashSet<PackedPoint>> tl_visited = new(() => new HashSet<PackedPoint>(100));
 
     public override void Load()
     {
@@ -37,12 +66,12 @@ internal sealed class FasterBfsPlotTile : ModSystem
 
         var queue = tl_queue.Value!;
         {
-            queue.Enqueue(new Point(x, y));
+            queue.Enqueue(new PackedPoint(x, y));
         }
 
         var visited = tl_visited.Value!;
         {
-            visited.Add(new Point(x, y));
+            visited.Add(new PackedPoint(x, y));
         }
 
         while (queue.TryDequeue(out var current))
@@ -57,12 +86,12 @@ internal sealed class FasterBfsPlotTile : ModSystem
                 continue;
             }
 
-            var neighbors = (Span<Point>)
+            var neighbors = (Span<PackedPoint>)
             [
-                current with { X = current.X - 1 },
-                current with { X = current.X + 1 },
-                current with { Y = current.Y - 1 },
-                current with { Y = current.Y + 1 },
+                new PackedPoint(current.X - 1, current.Y),
+                new PackedPoint(current.X + 1, current.Y),
+                new PackedPoint(current.X,     current.Y - 1),
+                new PackedPoint(current.X,     current.Y + 1),
             ];
 
             foreach (var neighbor in neighbors)
