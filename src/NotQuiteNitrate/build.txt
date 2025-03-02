@@ -1,4 +1,4 @@
-displayName = Not Quite Nitrate
+displayName = Not Quite Nitrate (Compatible Performance Tweaks)
 author = Tomat
 version = 1.0.2
 homepage = https://discord.gg/vPTUZcvXjg
