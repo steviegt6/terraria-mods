@@ -12,6 +12,16 @@ public interface IConfigEntry
 {
 #region Identity
     /// <summary>
+    ///     A unique key to identify this entry with (paired with the
+    ///     <see cref="Mod"/>).
+    /// </summary>
+    /// <remarks>
+    ///     The key should <b>not</b> contain the mod name.  The key needs to
+    ///     only be unique when compared against other keys in the same mod.
+    /// </remarks>
+    string UniqueKey { get; }
+
+    /// <summary>
     ///     The mod this entry belongs to.  If the mod is <see langword="null"/>
     ///     then the entry is considered belonging to vanilla.
     /// </summary>
