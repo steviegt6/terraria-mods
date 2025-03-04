@@ -1,0 +1,1 @@
+"Revised Configuration" is an opinionated library for implementing useful and optimized configuration UIs for various mods. It also reimplements vanilla settings in a similar format.
