@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 
 using JetBrains.Annotations;
@@ -26,18 +25,6 @@ namespace Tomat.TML.Mod.NotQuiteNitrate.Fixes;
 [UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
 internal sealed class RenderActualLiquidTiles : ModSystem
 {
-    private sealed class LiquidSlopeGenerator : ILoadable
-    {
-        // private readonly Dictionary<>
-
-        void ILoadable.Load(global::Terraria.ModLoader.Mod mod) { }
-
-        void ILoadable.Unload() { }
-    }
-
-    /*private readonly record struct LiquidSlopeKey(
-    )*/
-
     public override void Load()
     {
         base.Load();
@@ -47,9 +34,6 @@ internal sealed class RenderActualLiquidTiles : ModSystem
         On_Main.DrawLiquid += DrawLiquid;
     }
 
-    // Rewrite "partial liquid rendering" to use our generated liquid slope
-    // textures derived from the actual liquid textures instead of separate,
-    // ugly frames.
     private static void DrawPartialLiquid(
         On_TileDrawing.orig_DrawPartialLiquid orig,
         TileDrawing                           self,
@@ -61,53 +45,11 @@ internal sealed class RenderActualLiquidTiles : ModSystem
         ref VertexColors                      colors
     )
     {
-        /*var renderer = LiquidRenderer.Instance;
-        var frameY   = renderer._animationFrame * 80;
-
-        var drawBehindBlock = behindBlocks && !TileID.Sets.BlocksWaterDrawingBehindSelf[tile.TileType];
-
-        var (x, y) = TilemapHelper.GetTilePosition(tile, Main.tile);
-        var tileAbove = Framing.GetTileSafely(x, y - 1);
-
-        var slope     = drawBehindBlock ? SlopeType.Solid : tile.Slope;
-        var smthAbove = tileAbove.HasTile || tileAbove.LiquidAmount > 0;
-        var slopeRect = slope switch
         {
-            SlopeType.Solid          => new Rectangle(16, smthAbove ? 48 : 0, 16, 16),
-            SlopeType.SlopeDownLeft  => new Rectangle(16, 48,                 16, 16),
-            SlopeType.SlopeDownRight => new Rectangle(16, 48,                 16, 16),
-            SlopeType.SlopeUpLeft    => new Rectangle(16, 48,                 16, 16),
-            SlopeType.SlopeUpRight   => new Rectangle(16, 48,                 16, 16),
-            _                        => throw new ArgumentOutOfRangeException(nameof(slope), slope, null),
-        };
-        {
-            slopeRect.Y += frameY;
-        }
+            var slope           = tile.Slope;
+            var drawBehindBlock = behindBlocks && !TileID.Sets.BlocksWaterDrawingBehindSelf[tile.TileType];
 
-        var opacity = behindBlocks ? 1f : LiquidRenderer.DEFAULT_OPACITY[tile.LiquidType];
-        {
-            colors.BottomLeftColor  *= opacity;
-            colors.BottomRightColor *= opacity;
-            colors.TopLeftColor     *= opacity;
-            colors.TopRightColor    *= opacity;
-        }
-
-        Main.tileBatch.Draw(renderer._liquidTextures[liquidType].Value, position, slopeRect, colors, Vector2.Zero, 1f, SpriteEffects.None);
-
-        if (!behindBlocks)
-        {
-            Main.instance.TilesRenderer.DrawSingleTile(Main.instance.TilesRenderer._currentTileDrawInfo.Value, true, liquidType, Main.Camera.UnscaledPosition, Main.drawToScreen ? Vector2.Zero : new Vector2(Main.offScreenRange), x, y);
-        }*/
-
-        {
-            int  num  = tile.slope();
-            bool flag = !TileID.Sets.BlocksWaterDrawingBehindSelf[tile.type];
-            if (!behindBlocks)
-            {
-                flag = false;
-            }
-
-            var opacity = flag ? 1f : LiquidRenderer.DEFAULT_OPACITY[tile.LiquidType];
+            var opacity = drawBehindBlock ? 1f : LiquidRenderer.DEFAULT_OPACITY[tile.LiquidType];
             {
                 colors.BottomLeftColor  *= opacity;
                 colors.BottomRightColor *= opacity;
@@ -115,37 +57,43 @@ internal sealed class RenderActualLiquidTiles : ModSystem
                 colors.TopRightColor    *= opacity;
             }
 
-            if (flag || num == 0)
+            if (drawBehindBlock || slope == SlopeType.Solid)
             {
                 Main.tileBatch.Draw(TextureAssets.Liquid[liquidType].Value, position, liquidSize, colors, default(Vector2), 1f, SpriteEffects.None);
-                goto DrawTile;
             }
-            liquidSize.X += 18 * (num - 1);
-            switch (num)
+            else
             {
-                case 1:
-                    Main.tileBatch.Draw(TextureAssets.LiquidSlope[liquidType].Value, position, liquidSize, colors, Vector2.Zero, 1f, SpriteEffects.None);
-                    break;
+                liquidSize.X += 18 * ((int)slope - 1);
+                switch (slope)
+                {
+                    case SlopeType.SlopeDownLeft:
+                    case SlopeType.SlopeDownRight:
+                    case SlopeType.SlopeUpLeft:
+                    case SlopeType.SlopeUpRight:
+                        Main.tileBatch.Draw(TextureAssets.LiquidSlope[liquidType].Value, position, liquidSize, colors, Vector2.Zero, 1f, SpriteEffects.None);
+                        break;
 
-                case 2:
-                    Main.tileBatch.Draw(TextureAssets.LiquidSlope[liquidType].Value, position, liquidSize, colors, Vector2.Zero, 1f, SpriteEffects.None);
-                    break;
-
-                case 3:
-                    Main.tileBatch.Draw(TextureAssets.LiquidSlope[liquidType].Value, position, liquidSize, colors, Vector2.Zero, 1f, SpriteEffects.None);
-                    break;
-
-                case 4:
-                    Main.tileBatch.Draw(TextureAssets.LiquidSlope[liquidType].Value, position, liquidSize, colors, Vector2.Zero, 1f, SpriteEffects.None);
-                    break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
             }
 
-        DrawTile:
-            if (!behindBlocks)
+            if (behindBlocks)
             {
-                var (x, y) = TilemapHelper.GetTilePosition(tile, Main.tile);
-                Main.instance.TilesRenderer.DrawSingleTile(Main.instance.TilesRenderer._currentTileDrawInfo.Value, true, liquidType, Main.Camera.UnscaledPosition, Main.drawToScreen ? Vector2.Zero : new Vector2(Main.offScreenRange), x, y);
+                return;
             }
+
+            // Re-draw tile beneath the liquid as a temporary masking solution.
+            var (x, y) = TilemapHelper.GetTilePosition(tile, Main.tile);
+            Main.instance.TilesRenderer.DrawSingleTile(
+                Main.instance.TilesRenderer._currentTileDrawInfo.Value,
+                true,
+                liquidType,
+                Main.Camera.UnscaledPosition,
+                Main.drawToScreen ? Vector2.Zero : new Vector2(Main.offScreenRange),
+                x,
+                y
+            );
         }
     }
 
