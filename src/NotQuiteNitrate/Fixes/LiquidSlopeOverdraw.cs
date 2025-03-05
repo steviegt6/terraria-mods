@@ -23,7 +23,7 @@ namespace Tomat.TML.Mod.NotQuiteNitrate.Fixes;
 ///     instead of drawing stupid triangles.
 /// </summary>
 [UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
-internal sealed class RenderActualLiquidTiles : ModSystem
+internal sealed class LiquidSlopeOverdraw : ModSystem
 {
     public override void Load()
     {
