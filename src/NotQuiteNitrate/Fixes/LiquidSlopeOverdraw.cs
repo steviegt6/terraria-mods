@@ -45,56 +45,60 @@ internal sealed class LiquidSlopeOverdraw : ModSystem
         ref VertexColors                      colors
     )
     {
+        if (!Config.Instance.BetterLiquidSlopes)
         {
-            var slope           = tile.Slope;
-            var drawBehindBlock = behindBlocks && !TileID.Sets.BlocksWaterDrawingBehindSelf[tile.TileType];
-
-            var opacity = drawBehindBlock ? 1f : LiquidRenderer.DEFAULT_OPACITY[tile.LiquidType];
-            {
-                colors.BottomLeftColor  *= opacity;
-                colors.BottomRightColor *= opacity;
-                colors.TopLeftColor     *= opacity;
-                colors.TopRightColor    *= opacity;
-            }
-
-            if (drawBehindBlock || slope == SlopeType.Solid)
-            {
-                Main.tileBatch.Draw(TextureAssets.Liquid[liquidType].Value, position, liquidSize, colors, default(Vector2), 1f, SpriteEffects.None);
-            }
-            else
-            {
-                liquidSize.X += 18 * ((int)slope - 1);
-                switch (slope)
-                {
-                    case SlopeType.SlopeDownLeft:
-                    case SlopeType.SlopeDownRight:
-                    case SlopeType.SlopeUpLeft:
-                    case SlopeType.SlopeUpRight:
-                        Main.tileBatch.Draw(TextureAssets.LiquidSlope[liquidType].Value, position, liquidSize, colors, Vector2.Zero, 1f, SpriteEffects.None);
-                        break;
-
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-            }
-
-            if (behindBlocks)
-            {
-                return;
-            }
-
-            // Re-draw tile beneath the liquid as a temporary masking solution.
-            var (x, y) = TilemapHelper.GetTilePosition(tile, Main.tile);
-            Main.instance.TilesRenderer.DrawSingleTile(
-                Main.instance.TilesRenderer._currentTileDrawInfo.Value,
-                true,
-                liquidType,
-                Main.Camera.UnscaledPosition,
-                Main.drawToScreen ? Vector2.Zero : new Vector2(Main.offScreenRange),
-                x,
-                y
-            );
+            orig(self, behindBlocks, tile, ref position, ref liquidSize, liquidType, ref colors);
+            return;
         }
+
+        var slope           = tile.Slope;
+        var drawBehindBlock = behindBlocks && !TileID.Sets.BlocksWaterDrawingBehindSelf[tile.TileType];
+
+        var opacity = drawBehindBlock ? 1f : LiquidRenderer.DEFAULT_OPACITY[tile.LiquidType];
+        {
+            colors.BottomLeftColor  *= opacity;
+            colors.BottomRightColor *= opacity;
+            colors.TopLeftColor     *= opacity;
+            colors.TopRightColor    *= opacity;
+        }
+
+        if (drawBehindBlock || slope == SlopeType.Solid)
+        {
+            Main.tileBatch.Draw(TextureAssets.Liquid[liquidType].Value, position, liquidSize, colors, default(Vector2), 1f, SpriteEffects.None);
+        }
+        else
+        {
+            liquidSize.X += 18 * ((int)slope - 1);
+            switch (slope)
+            {
+                case SlopeType.SlopeDownLeft:
+                case SlopeType.SlopeDownRight:
+                case SlopeType.SlopeUpLeft:
+                case SlopeType.SlopeUpRight:
+                    Main.tileBatch.Draw(TextureAssets.LiquidSlope[liquidType].Value, position, liquidSize, colors, Vector2.Zero, 1f, SpriteEffects.None);
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        if (behindBlocks)
+        {
+            return;
+        }
+
+        // Re-draw tile beneath the liquid as a temporary masking solution.
+        var (x, y) = TilemapHelper.GetTilePosition(tile, Main.tile);
+        Main.instance.TilesRenderer.DrawSingleTile(
+            Main.instance.TilesRenderer._currentTileDrawInfo.Value,
+            true,
+            liquidType,
+            Main.Camera.UnscaledPosition,
+            Main.drawToScreen ? Vector2.Zero : new Vector2(Main.offScreenRange),
+            x,
+            y
+        );
     }
 
     // Modify liquid rendering to add an extra case for rendering liquids on top
@@ -108,6 +112,12 @@ internal sealed class LiquidSlopeOverdraw : ModSystem
         bool                    drawSinglePassLiquids
     )
     {
+        if (!Config.Instance.BetterLiquidSlopes)
+        {
+            orig(self, bg, waterStyle, alpha, drawSinglePassLiquids);
+            return;
+        }
+
         if (!Lighting.NotRetro)
         {
             self.oldDrawWater(bg, waterStyle, alpha);
