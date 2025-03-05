@@ -25,6 +25,8 @@ namespace Tomat.TML.Mod.NotQuiteNitrate.Fixes;
 [UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
 internal sealed class LiquidSlopeOverdraw : ModSystem
 {
+    private static bool Enabled => Config.Instance.BetterLiquidSlopes && !ModLoader.HasMod("Nitrate");
+
     public override void Load()
     {
         base.Load();
@@ -45,7 +47,7 @@ internal sealed class LiquidSlopeOverdraw : ModSystem
         ref VertexColors                      colors
     )
     {
-        if (!Config.Instance.BetterLiquidSlopes)
+        if (!Enabled)
         {
             orig(self, behindBlocks, tile, ref position, ref liquidSize, liquidType, ref colors);
             return;
@@ -112,7 +114,7 @@ internal sealed class LiquidSlopeOverdraw : ModSystem
         bool                    drawSinglePassLiquids
     )
     {
-        if (!Config.Instance.BetterLiquidSlopes)
+        if (!Enabled)
         {
             orig(self, bg, waterStyle, alpha, drawSinglePassLiquids);
             return;
@@ -180,6 +182,7 @@ internal sealed class LiquidSlopeOverdraw : ModSystem
             TimeLogger.DrawTime(4, stopwatch.Elapsed.TotalMilliseconds);
         }
 
-        stopwatch.Stop();
+        // Vanilla doesn't stop it for some reason.
+        // stopwatch.Stop();
     }
 }

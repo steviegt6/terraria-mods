@@ -1,5 +1,5 @@
-displayName = Not Quite Nitrate (Compatible Performance Tweaks)
+displayName = Not Quite Nitrate (Performance and Bug Fixes)
 author = Tomat
-version = 1.0.2
+version = 1.0.3
 homepage = https://discord.gg/vPTUZcvXjg
 side = NoSync
