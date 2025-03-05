@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using Terraria;
+using Terraria.GameContent;
 using Terraria.GameContent.Drawing;
 using Terraria.GameContent.Liquid;
 using Terraria.Graphics;
@@ -60,7 +61,7 @@ internal sealed class RenderActualLiquidTiles : ModSystem
         ref VertexColors                      colors
     )
     {
-        var renderer = LiquidRenderer.Instance;
+        /*var renderer = LiquidRenderer.Instance;
         var frameY   = renderer._animationFrame * 80;
 
         var drawBehindBlock = behindBlocks && !TileID.Sets.BlocksWaterDrawingBehindSelf[tile.TileType];
@@ -96,6 +97,55 @@ internal sealed class RenderActualLiquidTiles : ModSystem
         if (!behindBlocks)
         {
             Main.instance.TilesRenderer.DrawSingleTile(Main.instance.TilesRenderer._currentTileDrawInfo.Value, true, liquidType, Main.Camera.UnscaledPosition, Main.drawToScreen ? Vector2.Zero : new Vector2(Main.offScreenRange), x, y);
+        }*/
+
+        {
+            int  num  = tile.slope();
+            bool flag = !TileID.Sets.BlocksWaterDrawingBehindSelf[tile.type];
+            if (!behindBlocks)
+            {
+                flag = false;
+            }
+
+            var opacity = flag ? 1f : LiquidRenderer.DEFAULT_OPACITY[tile.LiquidType];
+            {
+                colors.BottomLeftColor  *= opacity;
+                colors.BottomRightColor *= opacity;
+                colors.TopLeftColor     *= opacity;
+                colors.TopRightColor    *= opacity;
+            }
+
+            if (flag || num == 0)
+            {
+                Main.tileBatch.Draw(TextureAssets.Liquid[liquidType].Value, position, liquidSize, colors, default(Vector2), 1f, SpriteEffects.None);
+                goto DrawTile;
+            }
+            liquidSize.X += 18 * (num - 1);
+            switch (num)
+            {
+                case 1:
+                    Main.tileBatch.Draw(TextureAssets.LiquidSlope[liquidType].Value, position, liquidSize, colors, Vector2.Zero, 1f, SpriteEffects.None);
+                    break;
+
+                case 2:
+                    Main.tileBatch.Draw(TextureAssets.LiquidSlope[liquidType].Value, position, liquidSize, colors, Vector2.Zero, 1f, SpriteEffects.None);
+                    break;
+
+                case 3:
+                    Main.tileBatch.Draw(TextureAssets.LiquidSlope[liquidType].Value, position, liquidSize, colors, Vector2.Zero, 1f, SpriteEffects.None);
+                    break;
+
+                case 4:
+                    Main.tileBatch.Draw(TextureAssets.LiquidSlope[liquidType].Value, position, liquidSize, colors, Vector2.Zero, 1f, SpriteEffects.None);
+                    break;
+            }
+
+        DrawTile:
+            if (!behindBlocks)
+            {
+                var (x, y) = TilemapHelper.GetTilePosition(tile, Main.tile);
+                Main.instance.TilesRenderer.DrawSingleTile(Main.instance.TilesRenderer._currentTileDrawInfo.Value, true, liquidType, Main.Camera.UnscaledPosition, Main.drawToScreen ? Vector2.Zero : new Vector2(Main.offScreenRange), x, y);
+            }
         }
     }
 
