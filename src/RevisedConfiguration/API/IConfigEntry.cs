@@ -66,6 +66,11 @@ public interface IConfigEntry
     /// </remarks>
     ReadOnlySpan<string> Categories { get; }
 #endregion
+
+    /// <summary>
+    ///     Called when this entry is registered.
+    /// </summary>
+    void OnRegister();
 }
 
 /// <summary>
