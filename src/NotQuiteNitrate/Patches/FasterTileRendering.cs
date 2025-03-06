@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
-using System.Threading;
+using System.Reflection;
 
 using JetBrains.Annotations;
 
@@ -13,6 +13,7 @@ using ReLogic.Threading;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.Drawing;
+using Terraria.Graphics;
 using Terraria.Graphics.Capture;
 using Terraria.ModLoader;
 
@@ -25,7 +26,41 @@ namespace Tomat.TML.Mod.NotQuiteNitrate.Patches;
 [UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
 public sealed class FasterTileRendering : ModSystem
 {
+    private readonly record struct TbCall(
+        Texture2D     Texture,
+        Vector4       Destination,
+        Rectangle?    SourceRectangle,
+        VertexColors  Color,
+        float         Rotation,
+        Vector2       Origin,
+        SpriteEffects Effects,
+        float         Depth
+    );
+
+    private readonly record struct SbCall(
+        Texture2D Texture,
+        float     SourceX,
+        float     SourceY,
+        float     SourceW,
+        float     SourceH,
+        float     DestinationX,
+        float     DestinationY,
+        float     DestinationW,
+        float     DestinationH,
+        Color     Color,
+        float     OriginX,
+        float     OriginY,
+        float     RotationSin,
+        float     RotationCos,
+        float     Depth,
+        byte      Effects
+    );
+
     private static bool Enabled => !ModLoader.HasMod("Nitrate");
+
+    private static          bool                  captureDrawCalls;
+    private static readonly ConcurrentBag<TbCall> tb_calls = [];
+    private static readonly ConcurrentBag<SbCall> sb_calls = [];
 
     public override void Load()
     {
@@ -34,6 +69,162 @@ public sealed class FasterTileRendering : ModSystem
         On_TileDrawing.Draw += Draw;
 
         On_TilePaintSystemV2.TryGetTileAndRequestIfNotReady += TryGetTileAndRequestIfNotReady;
+
+        MonoModHooks.Add(
+            typeof(TileBatch).GetMethod(nameof(TileBatch.InternalDraw), BindingFlags.NonPublic | BindingFlags.Instance)!,
+            InternalDraw
+        );
+
+        MonoModHooks.Add(
+            typeof(SpriteBatch).GetMethod(nameof(SpriteBatch.PushSprite), BindingFlags.NonPublic | BindingFlags.Instance)!,
+            PushSprite
+        );
+    }
+
+    private delegate void TbDelegate(
+        TileBatch     self,
+        Texture2D     texture,
+        Vector4       destination,
+        Rectangle?    sourceRectangle,
+        VertexColors  color,
+        float         rotation,
+        Vector2       origin,
+        SpriteEffects effects,
+        float         depth
+    );
+
+    private static void InternalDraw(
+        TbDelegate    orig,
+        TileBatch     self,
+        Texture2D     texture,
+        Vector4       destination,
+        Rectangle?    sourceRectangle,
+        VertexColors  color,
+        float         rotation,
+        Vector2       origin,
+        SpriteEffects effects,
+        float         depth
+    )
+    {
+        return;
+        if (captureDrawCalls)
+        {
+            tb_calls.Add(
+                new TbCall(
+                    texture,
+                    destination,
+                    sourceRectangle,
+                    color,
+                    rotation,
+                    origin,
+                    effects,
+                    depth
+                )
+            );
+        }
+        else
+        {
+            orig(
+                self,
+                texture,
+                destination,
+                sourceRectangle,
+                color,
+                rotation,
+                origin,
+                effects,
+                depth
+            );
+        }
+    }
+
+    private delegate void SbDelegate(
+        SpriteBatch self,
+        Texture2D   texture,
+        float       sourceX,
+        float       sourceY,
+        float       sourceW,
+        float       sourceH,
+        float       destinationX,
+        float       destinationY,
+        float       destinationW,
+        float       destinationH,
+        Color       color,
+        float       originX,
+        float       originY,
+        float       rotationSin,
+        float       rotationCos,
+        float       depth,
+        byte        effects
+    );
+
+    private static void PushSprite(
+        SbDelegate  orig,
+        SpriteBatch self,
+        Texture2D   texture,
+        float       sourceX,
+        float       sourceY,
+        float       sourceW,
+        float       sourceH,
+        float       destinationX,
+        float       destinationY,
+        float       destinationW,
+        float       destinationH,
+        Color       color,
+        float       originX,
+        float       originY,
+        float       rotationSin,
+        float       rotationCos,
+        float       depth,
+        byte        effects
+    )
+    {
+        return;
+        if (captureDrawCalls)
+        {
+            sb_calls.Add(
+                new SbCall(
+                    texture,
+                    sourceX,
+                    sourceY,
+                    sourceW,
+                    sourceH,
+                    destinationX,
+                    destinationY,
+                    destinationW,
+                    destinationH,
+                    color,
+                    originX,
+                    originY,
+                    rotationSin,
+                    rotationCos,
+                    depth,
+                    effects
+                )
+            );
+        }
+        else
+        {
+            orig(
+                self,
+                texture,
+                sourceX,
+                sourceY,
+                sourceW,
+                sourceH,
+                destinationX,
+                destinationY,
+                destinationW,
+                destinationH,
+                color,
+                originX,
+                originY,
+                rotationSin,
+                rotationCos,
+                depth,
+                effects
+            );
+        }
     }
 
     private static Texture2D TryGetTileAndRequestIfNotReady(
@@ -123,6 +314,7 @@ public sealed class FasterTileRendering : ModSystem
 
         var postponedActions = new ConcurrentBag<Action>();
 
+        captureDrawCalls = true;
         FastParallel.For(
             firstTileY,
             lastTileY,
@@ -185,24 +377,24 @@ public sealed class FasterTileRendering : ModSystem
                             case 528:
                             case 636:
                             case 638:
-                                CrawlToTopOfVineAndAddSpecialPoint(i, j, self);
+                                postponedActions.Add(() => self.CrawlToTopOfVineAndAddSpecialPoint(i, j));
                                 continue;
 
                             case 549:
-                                CrawlToBottomOfReverseVineAndAddSpecialPoint(i, j, self);
+                                postponedActions.Add(() => self.CrawlToBottomOfReverseVineAndAddSpecialPoint(i, j));
                                 continue;
 
                             case 34:
                                 if (frameX % 54 == 0 && frameY % 54 == 0)
                                 {
-                                    AddSpecialPoint(j, i, TileDrawing.TileCounterType.MultiTileVine, self);
+                                    postponedActions.Add(() => self.AddSpecialPoint(j, i, TileDrawing.TileCounterType.MultiTileVine));
                                 }
                                 continue;
 
                             case 454:
                                 if (frameX % 72 == 0 && frameY % 54 == 0)
                                 {
-                                    AddSpecialPoint(j, i, TileDrawing.TileCounterType.MultiTileVine, self);
+                                    postponedActions.Add(() => self.AddSpecialPoint(j, i, TileDrawing.TileCounterType.MultiTileVine));
                                 }
                                 continue;
 
@@ -214,14 +406,14 @@ public sealed class FasterTileRendering : ModSystem
                             case 660:
                                 if (frameX % 18 == 0 && frameY % 36 == 0)
                                 {
-                                    AddSpecialPoint(j, i, TileDrawing.TileCounterType.MultiTileVine, self);
+                                    postponedActions.Add(() => self.AddSpecialPoint(j, i, TileDrawing.TileCounterType.MultiTileVine));
                                 }
                                 continue;
 
                             case 91:
                                 if (frameX % 18 == 0 && frameY % 54 == 0)
                                 {
-                                    AddSpecialPoint(j, i, TileDrawing.TileCounterType.MultiTileVine, self);
+                                    postponedActions.Add(() => self.AddSpecialPoint(j, i, TileDrawing.TileCounterType.MultiTileVine));
                                 }
                                 continue;
 
@@ -230,7 +422,7 @@ public sealed class FasterTileRendering : ModSystem
                             case 444:
                                 if (frameX % 36 == 0 && frameY % 36 == 0)
                                 {
-                                    AddSpecialPoint(j, i, TileDrawing.TileCounterType.MultiTileVine, self);
+                                    postponedActions.Add(() => self.AddSpecialPoint(j, i, TileDrawing.TileCounterType.MultiTileVine));
                                 }
                                 continue;
 
@@ -239,14 +431,14 @@ public sealed class FasterTileRendering : ModSystem
                             case 592:
                                 if (frameX % 36 == 0 && frameY % 54 == 0)
                                 {
-                                    AddSpecialPoint(j, i, TileDrawing.TileCounterType.MultiTileVine, self);
+                                    postponedActions.Add(() => self.AddSpecialPoint(j, i, TileDrawing.TileCounterType.MultiTileVine));
                                 }
                                 continue;
 
                             case 27:
                                 if (frameX % 36 == 0 && frameY == 0)
                                 {
-                                    AddSpecialPoint(j, i, TileDrawing.TileCounterType.MultiTileGrass, self);
+                                    postponedActions.Add(() => self.AddSpecialPoint(j, i, TileDrawing.TileCounterType.MultiTileGrass));
                                 }
                                 continue;
 
@@ -254,39 +446,39 @@ public sealed class FasterTileRendering : ModSystem
                             case 238:
                                 if (frameX % 36 == 0 && frameY == 0)
                                 {
-                                    AddSpecialPoint(j, i, TileDrawing.TileCounterType.MultiTileGrass, self);
+                                    postponedActions.Add(() => self.AddSpecialPoint(j, i, TileDrawing.TileCounterType.MultiTileGrass));
                                 }
                                 continue;
 
                             case 233:
                                 if (frameY == 0 && frameX % 54 == 0)
                                 {
-                                    AddSpecialPoint(j, i, TileDrawing.TileCounterType.MultiTileGrass, self);
+                                    postponedActions.Add(() => self.AddSpecialPoint(j, i, TileDrawing.TileCounterType.MultiTileGrass));
                                 }
                                 if (frameY == 34 && frameX % 36 == 0)
                                 {
-                                    AddSpecialPoint(j, i, TileDrawing.TileCounterType.MultiTileGrass, self);
+                                    postponedActions.Add(() => self.AddSpecialPoint(j, i, TileDrawing.TileCounterType.MultiTileGrass));
                                 }
                                 continue;
 
                             case 652:
                                 if (frameX % 36 == 0)
                                 {
-                                    AddSpecialPoint(j, i, TileDrawing.TileCounterType.MultiTileGrass, self);
+                                    postponedActions.Add(() => self.AddSpecialPoint(j, i, TileDrawing.TileCounterType.MultiTileGrass));
                                 }
                                 continue;
 
                             case 651:
                                 if (frameX % 54 == 0)
                                 {
-                                    AddSpecialPoint(j, i, TileDrawing.TileCounterType.MultiTileGrass, self);
+                                    postponedActions.Add(() => self.AddSpecialPoint(j, i, TileDrawing.TileCounterType.MultiTileGrass));
                                 }
                                 continue;
 
                             case 530:
                                 if (frameX < 270 && frameX % 54 == 0 && frameY == 0)
                                 {
-                                    AddSpecialPoint(j, i, TileDrawing.TileCounterType.MultiTileGrass, self);
+                                    postponedActions.Add(() => self.AddSpecialPoint(j, i, TileDrawing.TileCounterType.MultiTileGrass));
                                 }
                                 break;
 
@@ -295,7 +487,7 @@ public sealed class FasterTileRendering : ModSystem
                             case 490:
                                 if (frameY == 0 && frameX % 36 == 0)
                                 {
-                                    AddSpecialPoint(j, i, TileDrawing.TileCounterType.MultiTileGrass, self);
+                                    postponedActions.Add(() => self.AddSpecialPoint(j, i, TileDrawing.TileCounterType.MultiTileGrass));
                                 }
                                 continue;
 
@@ -308,53 +500,53 @@ public sealed class FasterTileRendering : ModSystem
                             case 527:
                                 if (frameY == 0 && frameX % 36 == 0)
                                 {
-                                    AddSpecialPoint(j, i, TileDrawing.TileCounterType.MultiTileGrass, self);
+                                    postponedActions.Add(() => self.AddSpecialPoint(j, i, TileDrawing.TileCounterType.MultiTileGrass));
                                 }
                                 continue;
 
                             case 493:
                                 if (frameY == 0 && frameX % 18 == 0)
                                 {
-                                    AddSpecialPoint(j, i, TileDrawing.TileCounterType.MultiTileGrass, self);
+                                    postponedActions.Add(() => self.AddSpecialPoint(j, i, TileDrawing.TileCounterType.MultiTileGrass));
                                 }
                                 continue;
 
                             case 519:
                                 if (frameX / 18 <= 4)
                                 {
-                                    AddSpecialPoint(j, i, TileDrawing.TileCounterType.MultiTileGrass, self);
+                                    postponedActions.Add(() => self.AddSpecialPoint(j, i, TileDrawing.TileCounterType.MultiTileGrass));
                                 }
                                 continue;
 
                             case 491:
                                 if (frameX == 18 && frameY == 18)
                                 {
-                                    AddSpecialPoint(j, i, TileDrawing.TileCounterType.VoidLens, self);
+                                    postponedActions.Add(() => self.AddSpecialPoint(j, i, TileDrawing.TileCounterType.VoidLens));
                                 }
                                 break;
 
                             case 597:
                                 if (frameX % 54 == 0 && frameY == 0)
                                 {
-                                    AddSpecialPoint(j, i, TileDrawing.TileCounterType.TeleportationPylon, self);
+                                    postponedActions.Add(() => self.AddSpecialPoint(j, i, TileDrawing.TileCounterType.TeleportationPylon));
                                 }
                                 break;
 
                             case 617:
                                 if (frameX % 54 == 0 && frameY % 72 == 0)
                                 {
-                                    AddSpecialPoint(j, i, TileDrawing.TileCounterType.MasterTrophy, self);
+                                    postponedActions.Add(() => self.AddSpecialPoint(j, i, TileDrawing.TileCounterType.MasterTrophy));
                                 }
                                 break;
 
                             case 184:
-                                AddSpecialPoint(j, i, TileDrawing.TileCounterType.AnyDirectionalGrass, self);
+                                postponedActions.Add(() => self.AddSpecialPoint(j, i, TileDrawing.TileCounterType.AnyDirectionalGrass));
                                 continue;
 
                             default:
                                 if (self.ShouldSwayInWind(j, i, tile))
                                 {
-                                    AddSpecialPoint(j, i, TileDrawing.TileCounterType.WindyGrass, self);
+                                    postponedActions.Add(() => self.AddSpecialPoint(j, i, TileDrawing.TileCounterType.WindyGrass));
                                 }
                                 break;
                         }
@@ -368,6 +560,53 @@ public sealed class FasterTileRendering : ModSystem
         foreach (var action in postponedActions)
         {
             action();
+        }
+
+        captureDrawCalls = false;
+        {
+            {
+                foreach (var drawCall in tb_calls)
+                {
+                    Main.tileBatch.InternalDraw(
+                        drawCall.Texture,
+                        drawCall.Destination,
+                        drawCall.SourceRectangle,
+                        drawCall.Color,
+                        drawCall.Rotation,
+                        drawCall.Origin,
+                        drawCall.Effects,
+                        drawCall.Depth
+                    );
+                }
+
+                tb_calls.Clear();
+            }
+
+            {
+                foreach (var drawCall in sb_calls)
+                {
+                    Main.spriteBatch.PushSprite(
+                        drawCall.Texture,
+                        drawCall.SourceX,
+                        drawCall.SourceY,
+                        drawCall.SourceW,
+                        drawCall.SourceH,
+                        drawCall.DestinationX,
+                        drawCall.DestinationY,
+                        drawCall.DestinationW,
+                        drawCall.DestinationH,
+                        drawCall.Color,
+                        drawCall.OriginX,
+                        drawCall.OriginY,
+                        drawCall.RotationSin,
+                        drawCall.RotationCos,
+                        drawCall.Depth,
+                        drawCall.Effects
+                    );
+                }
+
+                sb_calls.Clear();
+            }
         }
 
         if (solidLayer)
@@ -385,62 +624,5 @@ public sealed class FasterTileRendering : ModSystem
         }
 
         TimeLogger.DrawTime(solidLayer ? 0 : 1, stopwatch.Elapsed.TotalMilliseconds);
-
-        return;
-
-        static void AddSpecialPoint(int x, int y, TileDrawing.TileCounterType type, TileDrawing instance)
-        {
-            instance._specialPositions[(int)type][Interlocked.Increment(ref instance._specialsCount[(int)type])] = new Point(x, y);
-        }
-
-        static void CrawlToTopOfVineAndAddSpecialPoint(int j, int i, TileDrawing instance)
-        {
-            var y = j;
-            for (var num = j - 1; num > 0; num--)
-            {
-                var tile = Main.tile[i, num];
-                if (!WorldGen.SolidTile(i, num) && tile.active())
-                {
-                    continue;
-                }
-
-                y = num + 1;
-                break;
-            }
-
-            var item = new Point(i, y);
-            if (instance._vineRootsPositions.Contains(item))
-            {
-                return;
-            }
-
-            instance._vineRootsPositions.Add(item);
-            AddSpecialPoint(i, y, TileDrawing.TileCounterType.Vine, instance);
-        }
-
-        static void CrawlToBottomOfReverseVineAndAddSpecialPoint(int j, int i, TileDrawing instance)
-        {
-            var y = j;
-            for (var k = j; k < Main.maxTilesY; k++)
-            {
-                var tile = Main.tile[i, k];
-                if (!WorldGen.SolidTile(i, k) && tile.active())
-                {
-                    continue;
-                }
-
-                y = k - 1;
-                break;
-            }
-
-            var item = new Point(i, y);
-            if (instance._reverseVineRootsPositions.Contains(item))
-            {
-                return;
-            }
-
-            instance._reverseVineRootsPositions.Add(item);
-            AddSpecialPoint(i, y, TileDrawing.TileCounterType.ReverseVine, instance);
-        }
     }
 }
