@@ -13,6 +13,8 @@ BetterGetColorSlice: Makes GetColor4Slice and GetColor9Slice ~8x faster from lim
 
 FasterBfsPlotTile: Makes PlotTileArea ~25x faster. Massive performance boost to Fairy Glowsticks and Dirt Bombs; allows 1000 Fairy Glowsticks to consume <4% of frame time (vs 89% in vanilla).
 
+FasterRenderBlack: Makes DrawBlack ~3x faster for me, depends on your logical processor count. Offloads work to multiple cores.
+
 Configurable bug fixes:
 
 "Better Liquid Slopes": (disabled by default) See the in-game config option for more information.
