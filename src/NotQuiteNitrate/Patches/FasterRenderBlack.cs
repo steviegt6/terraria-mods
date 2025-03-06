@@ -43,7 +43,7 @@ public sealed class FasterRenderBlack : ModSystem
 
         var stopwatch = Stopwatch.StartNew();
 
-        var screenOffset     = Main.drawToScreen ? Vector2.Zero : new Vector2(Main.offScreenRange);
+        var screenOffset     = Main.drawToScreen ? 0f : Main.offScreenRange;
         var averageTileColor = (Main.tileColor.R + Main.tileColor.G + Main.tileColor.B) / 3;
 
         var minBrightness = Lighting.Mode switch
@@ -59,10 +59,10 @@ public sealed class FasterRenderBlack : ModSystem
             -Main.offScreenRange / 16 + screenOverdrawOffset.Y
         );
 
-        var startX = Math.Max((int)((Main.screenPosition.X - screenOffset.X)                     / 16f - 1f) + tileOffset.X, tileOffset.X);
-        var endX   = Math.Min((int)((Main.screenPosition.X + Main.screenWidth + screenOffset.X)  / 16f) + 2  - tileOffset.X, Main.maxTilesX - tileOffset.X);
-        var startY = Math.Max((int)((Main.screenPosition.Y - screenOffset.Y)                     / 16f - 1f) + tileOffset.Y, tileOffset.Y);
-        var endY   = Math.Min((int)((Main.screenPosition.Y + Main.screenHeight + screenOffset.Y) / 16f) + 5  - tileOffset.Y, Main.maxTilesY - tileOffset.Y);
+        var startX = Math.Max((int)((Main.screenPosition.X - screenOffset)                     / 16f - 1f) + tileOffset.X, tileOffset.X);
+        var endX   = Math.Min((int)((Main.screenPosition.X + Main.screenWidth + screenOffset)  / 16f) + 2  - tileOffset.X, Main.maxTilesX - tileOffset.X);
+        var startY = Math.Max((int)((Main.screenPosition.Y - screenOffset)                     / 16f - 1f) + tileOffset.Y, tileOffset.Y);
+        var endY   = Math.Min((int)((Main.screenPosition.Y + Main.screenHeight + screenOffset) / 16f) + 5  - tileOffset.Y, Main.maxTilesY - tileOffset.Y);
 
         if (!force)
         {
@@ -86,174 +86,16 @@ public sealed class FasterRenderBlack : ModSystem
 
         var showInvisibleWalls = Main.ShouldShowInvisibleWalls();
 
-        /*if (startY >= Main.UnderworldLayer)
-        {
-            // Always underworld
-            FastParallel.For(
-                startY,
-                endY,
-                (relativeStartY, relativeEndY, _) =>
-                {
-                    for (var y = relativeStartY; y <= relativeEndY; y++)
-                    {
-                        for (var x = startX; x < endX; x++)
-                        {
-                            var segmentStart = x;
-
-                            while (x < endX)
-                            {
-                                var tile         = Main.tile[x, y];
-                                var brightness   = (float)Math.Floor(Lighting.Brightness(x, y) * 255f) / 255f;
-                                var liquidAmount = tile.liquid;
-
-                                var isDarkTile = brightness <= 0.2f &&
-                                                 (WorldGen.SolidTile(tile) || (liquidAmount >= 200 && brightness == 0f));
-
-                                var isBlockingLight = tile.active() && Main.tileBlockLight[tile.type] &&
-                                                      (!tile.invisibleBlock() || showInvisibleWalls);
-
-                                var hasWall = !WallID.Sets.Transparent[tile.wall] &&
-                                              (!tile.invisibleWall() || showInvisibleWalls);
-
-                                if (!isDarkTile || (!hasWall && !isBlockingLight) ||
-                                    (!Main.drawToScreen && LiquidRenderer.Instance.HasFullWater(x, y) && tile.wall == 0 &&
-                                     !tile.halfBrick()  && y                                                       <= Main.worldSurface))
-                                {
-                                    break;
-                                }
-                                x++;
-                            }
-
-                            if (x > segmentStart)
-                            {
-                                draw_calls.Add(
-                                    (
-                                        new Vector2(segmentStart << 4, y << 4) - Main.screenPosition + screenOffset,
-                                        new Rectangle(0, 0, (x - segmentStart) << 4, 16)
-                                    )
-                                );
-                            }
-                        }
-                    }
-                }
-            );
-        }
-        else if (endY < Main.UnderworldLayer)
-        {
-            // Never underworld
-            FastParallel.For(
-                startY,
-                endY,
-                (relativeStartY, relativeEndY, _) =>
-                {
-                    for (var y = relativeStartY; y <= relativeEndY; y++)
-                    {
-                        for (var x = startX; x < endX; x++)
-                        {
-                            var segmentStart = x;
-
-                            while (x < endX)
-                            {
-                                var tile         = Main.tile[x, y];
-                                var brightness   = (float)Math.Floor(Lighting.Brightness(x, y) * 255f) / 255f;
-                                var liquidAmount = tile.liquid;
-
-                                var isDarkTile = brightness <= minBrightness &&
-                                                 ((liquidAmount < 250) || WorldGen.SolidTile(tile) || (brightness == 0f));
-
-                                var isBlockingLight = tile.active() && Main.tileBlockLight[tile.type] &&
-                                                      (!tile.invisibleBlock() || showInvisibleWalls);
-
-                                var hasWall = !WallID.Sets.Transparent[tile.wall] &&
-                                              (!tile.invisibleWall() || showInvisibleWalls);
-
-                                if (!isDarkTile || (!hasWall && !isBlockingLight) ||
-                                    (!Main.drawToScreen && LiquidRenderer.Instance.HasFullWater(x, y) && tile.wall == 0 &&
-                                     !tile.halfBrick()  && y                                                       <= Main.worldSurface))
-                                {
-                                    break;
-                                }
-                                x++;
-                            }
-
-                            if (x > segmentStart)
-                            {
-                                draw_calls.Add(
-                                    (
-                                        new Vector2(segmentStart << 4, y << 4) - Main.screenPosition + screenOffset,
-                                        new Rectangle(0, 0, (x - segmentStart) << 4, 16)
-                                    )
-                                );
-                            }
-                        }
-                    }
-                }
-            );
-        }
-        else
-        {
-            // Possibly underworld
-            FastParallel.For(
-                startY,
-                endY,
-                (relativeStartY, relativeEndY, _) =>
-                {
-                    for (var y = relativeStartY; y <= relativeEndY; y++)
-                    {
-                        var isUnderworld        = y >= Main.UnderworldLayer;
-                        var brightnessThreshold = isUnderworld ? 0.2f : minBrightness;
-
-                        for (var x = startX; x < endX; x++)
-                        {
-                            var segmentStart = x;
-
-                            while (x < endX)
-                            {
-                                var tile         = Main.tile[x, y];
-                                var brightness   = (float)Math.Floor(Lighting.Brightness(x, y) * 255f) / 255f;
-                                var liquidAmount = tile.liquid;
-
-                                var isDarkTile = brightness <= brightnessThreshold &&
-                                                 ((!isUnderworld && liquidAmount < 250) || WorldGen.SolidTile(tile) || (liquidAmount >= 200 && brightness == 0f));
-
-                                var isBlockingLight = tile.active() && Main.tileBlockLight[tile.type] &&
-                                                      (!tile.invisibleBlock() || showInvisibleWalls);
-
-                                var hasWall = !WallID.Sets.Transparent[tile.wall] &&
-                                              (!tile.invisibleWall() || showInvisibleWalls);
-
-                                if (!isDarkTile || (!hasWall && !isBlockingLight) ||
-                                    (!Main.drawToScreen && LiquidRenderer.Instance.HasFullWater(x, y) && tile.wall == 0 &&
-                                     !tile.halfBrick()  && y                                                       <= Main.worldSurface))
-                                {
-                                    break;
-                                }
-                                x++;
-                            }
-
-                            if (x > segmentStart)
-                            {
-                                draw_calls.Add(
-                                    (
-                                        new Vector2(segmentStart << 4, y << 4) - Main.screenPosition + screenOffset,
-                                        new Rectangle(0, 0, (x - segmentStart) << 4, 16)
-                                    )
-                                );
-                            }
-                        }
-                    }
-                }
-            );
-        }*/
-
         FastParallel.For(
             startY,
             endY,
             (relativeStartY, relativeEndY, _) =>
             {
+                var underworldLayer = Main.UnderworldLayer;
+
                 for (var y = relativeStartY; y <= relativeEndY; y++)
                 {
-                    var isUnderworld        = y >= Main.UnderworldLayer;
+                    var isUnderworld        = y >= underworldLayer;
                     var brightnessThreshold = isUnderworld ? 0.2f : minBrightness;
 
                     for (var x = startX; x < endX; x++)
@@ -262,22 +104,32 @@ public sealed class FasterRenderBlack : ModSystem
 
                         while (x < endX)
                         {
-                            var tile         = Main.tile[x, y];
-                            var brightness   = (float)Math.Floor(Lighting.Brightness(x, y) * 255f) / 255f;
-                            var liquidAmount = tile.liquid;
+                            var tile = Main.tile[x, y];
 
-                            var isDarkTile = brightness <= brightnessThreshold &&
-                                             ((!isUnderworld && liquidAmount < 250) || WorldGen.SolidTile(tile) || (liquidAmount >= 200 && brightness == 0f));
+                            // var brightness = (float)Math.Floor(Lighting.Brightness(x, y) * 255f) / 255f;
+                            var brightness = Lighting.Brightness(x, y);
 
-                            var isBlockingLight = tile.active() && Main.tileBlockLight[tile.type] &&
-                                                  (!tile.invisibleBlock() || showInvisibleWalls);
+                            var liquidAmount = tile.LiquidAmount;
+
+                            var isDarkTile = brightness <= brightnessThreshold && (
+                                (!isUnderworld && liquidAmount < 250)
+                             || (liquidAmount                  >= 200 && brightness == 0f)
+                             || SolidTile(tile)
+                            );
+                            if (!isDarkTile)
+                            {
+                                break;
+                            }
+
+                            var isBlockingLight = Main.tileBlockLight[tile.type] &&
+                                                  tile.HasTile                   &&
+                                                  (showInvisibleWalls || !tile.IsTileInvisible);
 
                             var hasWall = !WallID.Sets.Transparent[tile.wall] &&
-                                          (!tile.invisibleWall() || showInvisibleWalls);
+                                          (showInvisibleWalls || !tile.IsWallInvisible);
 
-                            if (!isDarkTile || (!hasWall && !isBlockingLight) ||
-                                (!Main.drawToScreen && LiquidRenderer.Instance.HasFullWater(x, y) && tile.wall == 0 &&
-                                 !tile.halfBrick()  && y                                                       <= Main.worldSurface))
+                            if ((!hasWall           && !isBlockingLight)
+                             || (!Main.drawToScreen && LiquidRenderer.Instance.HasFullWater(x, y) && tile is { WallType: 0, IsHalfBlock: false } && y <= Main.worldSurface))
                             {
                                 break;
                             }
@@ -288,7 +140,7 @@ public sealed class FasterRenderBlack : ModSystem
                         {
                             draw_calls.Add(
                                 (
-                                    new Vector2(segmentStart << 4, y << 4) - Main.screenPosition + screenOffset,
+                                    new Vector2((segmentStart << 4) + screenOffset, (y << 4) + screenOffset),
                                     new Rectangle(0, 0, (x - segmentStart) << 4, 16)
                                 )
                             );
@@ -300,11 +152,18 @@ public sealed class FasterRenderBlack : ModSystem
 
         foreach (var (position, rectangle) in draw_calls)
         {
-            Main.spriteBatch.Draw(TextureAssets.BlackTile.Value, position, rectangle, Color.Black);
+            Main.spriteBatch.Draw(TextureAssets.BlackTile.Value, position - Main.screenPosition, rectangle, Color.Black);
         }
 
         draw_calls.Clear();
 
         TimeLogger.DrawTime(5, stopwatch.Elapsed.TotalMilliseconds);
+
+        return;
+
+        static bool SolidTile(Tile tile)
+        {
+            return tile.HasTile && Main.tileSolid[tile.type] && !Main.tileSolidTop[tile.type] && tile is { IsHalfBlock: false, Slope: SlopeType.Solid, IsActuated: false };
+        }
     }
 }
