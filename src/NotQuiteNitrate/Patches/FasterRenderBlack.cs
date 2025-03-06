@@ -19,7 +19,8 @@ using Terraria.ModLoader;
 namespace Tomat.TML.Mod.NotQuiteNitrate.Patches;
 
 /// <summary>
-///     Parallelizes RenderBlack.
+///     Reimplements DrawBlack (part of RenderBlack) to be ~3x faster through
+///     parallelization.
 /// </summary>
 [UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
 public sealed class FasterRenderBlack : ModSystem
