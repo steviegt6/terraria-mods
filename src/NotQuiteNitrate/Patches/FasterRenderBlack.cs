@@ -164,7 +164,10 @@ public sealed class FasterRenderBlack : ModSystem
 
         static bool SolidTile(Tile tile)
         {
-            return tile.HasTile && Main.tileSolid[tile.type] && !Main.tileSolidTop[tile.type] && tile is { IsHalfBlock: false, Slope: SlopeType.Solid, IsActuated: false };
+            return tile.HasTile
+                && Main.tileSolid[tile.type]
+                && !Main.tileSolidTop[tile.type]
+                && tile is { IsHalfBlock: false, Slope: SlopeType.Solid, IsActuated: false };
         }
     }
 }
