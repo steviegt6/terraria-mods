@@ -1,5 +1,5 @@
 displayName = Constructor
-author = Tomat
+author = Tomat & naka
 version = 1.0.0
 homepage = https://discord.gg/vPTUZcvXjg
 side = NoSync
