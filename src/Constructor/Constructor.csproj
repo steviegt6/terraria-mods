@@ -1,0 +1,10 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <Import Project="../Mod.targets"/>
+
+    <PropertyGroup>
+        <AssemblyName>Constructor</AssemblyName>
+        <RootNamespace>Tomat.TML.Lib.Constructor</RootNamespace>
+    </PropertyGroup>
+
+</Project>
