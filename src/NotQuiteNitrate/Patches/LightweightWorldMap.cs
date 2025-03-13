@@ -1,4 +1,4 @@
-using System;
+/*using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
@@ -330,4 +330,5 @@ internal sealed class LightweightWorldMap : ModSystem
 
         Main.Map = new WorldMap(Main.maxTilesX, Main.maxTilesY);
     }
-}
+}*/
+
