@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 using System.Threading;
 
 using JetBrains.Annotations;
 
 using Terraria;
 using Terraria.ModLoader;
+
+using Tomat.TML.Mod.NotQuiteNitrate.Utilities.Numerics;
 
 namespace Tomat.TML.Mod.NotQuiteNitrate.Patches;
 
@@ -23,36 +24,8 @@ namespace Tomat.TML.Mod.NotQuiteNitrate.Patches;
 [UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
 internal sealed class FasterBfsPlotTile : ModSystem
 {
-    [StructLayout(LayoutKind.Explicit)]
-    private readonly struct PackedPoint(short x, short y) : IEquatable<PackedPoint>
-    {
-        [FieldOffset(0)]
-        private readonly int data;
-
-        [FieldOffset(0)]
-        public readonly short X = x;
-
-        [FieldOffset(4)]
-        public readonly short Y = y;
-
-        public override int GetHashCode()
-        {
-            return data;
-        }
-
-        public bool Equals(PackedPoint other)
-        {
-            return data == other.data;
-        }
-
-        public override bool Equals(object? obj)
-        {
-            return obj is PackedPoint other && Equals(other);
-        }
-    }
-
-    private static readonly ThreadLocal<Queue<PackedPoint>>   tl_queue   = new(() => new Queue<PackedPoint>(100));
-    private static readonly ThreadLocal<HashSet<PackedPoint>> tl_visited = new(() => new HashSet<PackedPoint>(100));
+    private static readonly ThreadLocal<Queue<PackedPoint32>>   tl_queue   = new(() => new Queue<PackedPoint32>(100));
+    private static readonly ThreadLocal<HashSet<PackedPoint32>> tl_visited = new(() => new HashSet<PackedPoint32>(100));
 
     public override void Load()
     {
@@ -80,12 +53,12 @@ internal sealed class FasterBfsPlotTile : ModSystem
 
         var queue = tl_queue.Value!;
         {
-            queue.Enqueue(new PackedPoint(x, y));
+            queue.Enqueue(new PackedPoint32(x, y));
         }
 
         var visited = tl_visited.Value!;
         {
-            visited.Add(new PackedPoint(x, y));
+            visited.Add(new PackedPoint32(x, y));
         }
 
         while (queue.TryDequeue(out var current))
@@ -100,12 +73,12 @@ internal sealed class FasterBfsPlotTile : ModSystem
                 continue;
             }
 
-            var neighbors = (Span<PackedPoint>)
+            var neighbors = (Span<PackedPoint32>)
             [
-                new PackedPoint((short)(current.X - 1), current.Y),
-                new PackedPoint((short)(current.X + 1), current.Y),
-                new PackedPoint(current.X,              (short)(current.Y - 1)),
-                new PackedPoint(current.X,              (short)(current.Y + 1)),
+                new PackedPoint32((short)(current.X - 1), current.Y),
+                new PackedPoint32((short)(current.X + 1), current.Y),
+                new PackedPoint32(current.X,              (short)(current.Y - 1)),
+                new PackedPoint32(current.X,              (short)(current.Y + 1)),
             ];
 
             foreach (var neighbor in neighbors)
