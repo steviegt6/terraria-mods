@@ -23,7 +23,8 @@ namespace Tomat.TML.Mod.NotQuiteNitrate.Patches;
 ///     Takes preliminary action to disable thread checks in FNA3D methods.
 ///     <br />
 ///     Rewrites <c>.rawimg</c> asset loading to reduce generated garbage and
-///     generally operate more efficiently.
+///     generally operate more efficiently.  Co-authored by LolXD87 who provided
+///     the initial implementation and suggestion.
 /// </summary>
 internal sealed class FasterAssetLoading : ModSystem
 {
