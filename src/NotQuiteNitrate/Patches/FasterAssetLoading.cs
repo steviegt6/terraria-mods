@@ -19,6 +19,12 @@ using Terraria.ModLoader.Assets;
 
 namespace Tomat.TML.Mod.NotQuiteNitrate.Patches;
 
+/// <summary>
+///     Takes preliminary action to disable thread checks in FNA3D methods.
+///     <br />
+///     Rewrites <c>.rawimg</c> asset loading to reduce generated garbage and
+///     generally operate more efficiently.
+/// </summary>
 internal sealed class FasterAssetLoading : ModSystem
 {
     private sealed class FastRawimgReader(GraphicsDevice graphicsDevice) : IAssetReader
