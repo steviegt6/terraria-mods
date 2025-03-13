@@ -4,6 +4,7 @@ using System.Buffers.Binary;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 using Microsoft.Xna.Framework;
@@ -81,12 +82,12 @@ internal sealed class FasterAssetLoading : ModSystem
         }
     }
 
-    private IAssetReader? rawimgReader;
+    private static IAssetReader? rawimgReader;
 
-    public override void Load()
+#pragma warning disable CA2255
+    [ModuleInitializer]
+    public static void ModuleInit()
     {
-        base.Load();
-
         // Disable thread checks.
         MonoModHooks.Add(
             typeof(ThreadCheck).GetMethod(nameof(ThreadCheck.CheckThread), BindingFlags.Public | BindingFlags.Static),
@@ -99,6 +100,7 @@ internal sealed class FasterAssetLoading : ModSystem
             readers.RegisterReader(new FastRawimgReader(Main.instance.Services.Get<IGraphicsDeviceService>().GraphicsDevice), ".rawimg");
         }
     }
+#pragma warning restore CA2255
 
     public override void Unload()
     {
