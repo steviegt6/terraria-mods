@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 using JetBrains.Annotations;
 
@@ -26,11 +28,20 @@ public sealed class FasterRenderBlack : ModSystem
 {
     private static readonly ConcurrentBag<(Vector2 position, Rectangle rectangle)> draw_calls = [];
 
+    internal static readonly List<Func<float, float>> callbacks = [];
+
     public override void Load()
     {
         base.Load();
 
         On_Main.DrawBlack += DrawBlack;
+    }
+
+    public override void Unload()
+    {
+        base.Unload();
+
+        callbacks.Clear();
     }
 
     private static void DrawBlack(On_Main.orig_DrawBlack orig, Main self, bool force)
@@ -52,6 +63,8 @@ public sealed class FasterRenderBlack : ModSystem
             LightMode.Trippy => Math.Max((averageTileColor - 55) / 255f, 0f),
             _                => (float)(averageTileColor         * 0.4) / 255f,
         };
+
+        minBrightness = callbacks.Aggregate(minBrightness, (current, callback) => callback(current));
 
         var screenOverdrawOffset = Main.GetScreenOverdrawOffset();
         var tileOffset = new Point(
