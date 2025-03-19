@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection.PortableExecutable;
@@ -7,7 +6,6 @@ using System.Threading;
 using ICSharpCode.Decompiler;
 using ICSharpCode.Decompiler.CSharp;
 using ICSharpCode.Decompiler.CSharp.OutputVisitor;
-using ICSharpCode.Decompiler.CSharp.ProjectDecompiler;
 using ICSharpCode.Decompiler.Metadata;
 using ICSharpCode.ILSpyX.PdbProvider;
 
@@ -19,24 +17,20 @@ namespace Tomat.TML.Mod.FullProjectDecompiler.Common;
 [NoJIT]
 internal static class ProjectDecompiler
 {
-    private sealed class SimpleModProjectFileWriter : IProjectFileWriter
-    {
-        public void Write(TextWriter target, IProjectInfoProvider project, IEnumerable<ProjectItemInfo> files, MetadataFile module)
-        {
-            throw new System.NotImplementedException();
-        }
-    }
+    private const string csproj = "<Project Sdk=\"Microsoft.NET.Sdk\">\n"
+                                + "\n"
+                                + "    <Import Condition=\"Exists('..\\tModLoader.targets')\" Project=\"..\\tModLoader.targets\"/>\n"
+                                + "    <Import Condition=\"Exists('..\\..\\tModLoader.targets')\" Project=\"..\\..\\tModLoader.targets\"/>\n"
+                                + "    <Import Condition=\"Exists('..\\..\\..\\tModLoader.targets')\" Project=\"..\\..\\..\\tModLoader.targets\"/>\n"
+                                + "\n"
+                                + "    <ItemGroup>\n"
+                                + "        <Reference Include=\"lib\\**\"/>\n"
+                                + "    </ItemGroup>\n"
+                                + "\n"
+                                + "</Project>";
 
     private static readonly CSharpFormattingOptions formatting_options;
-
-    private static readonly DecompilerSettings decompiler_settings = new(LanguageVersion.Latest)
-    {
-        RemoveDeadCode          = true,
-        CSharpFormattingOptions = formatting_options,
-
-        // tML disabled SwitchExpressions, but we can keep them.
-        // SwitchExpressions = false,
-    };
+    private static readonly DecompilerSettings      decompiler_settings;
 
     static ProjectDecompiler()
     {
@@ -48,6 +42,15 @@ internal static class ProjectDecompiler
             formatting_options.ArrayInitializerWrapping   = Wrapping.WrapAlways;
             formatting_options.ArrayInitializerBraceStyle = BraceStyle.EndOfLine;
         }
+
+        decompiler_settings = new DecompilerSettings(LanguageVersion.Latest)
+        {
+            RemoveDeadCode          = true,
+            CSharpFormattingOptions = formatting_options,
+
+            // tML disabled SwitchExpressions, but we can keep them.
+            // SwitchExpressions = false,
+        };
     }
 
     public static void Decompile(LocalMod mod, string dir, CancellationToken cancellationToken)
@@ -65,13 +68,17 @@ internal static class ProjectDecompiler
 
         Reaganism.CDC.Decompilation.ProjectDecompiler.Decompile(
             modDllPath,
-            dir,
+            Path.Combine(dir, ".."), // temporary fix
             decompiler_settings,
             null,
             null,
             asmResolver,
             debug,
-            new SimpleModProjectFileWriter()
+            null,
+            false,
+            "."
         );
+
+        File.WriteAllText(Path.Combine(dir, mod.Name + ".csproj"), csproj);
     }
 }

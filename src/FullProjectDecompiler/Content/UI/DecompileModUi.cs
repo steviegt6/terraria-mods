@@ -140,9 +140,9 @@ internal sealed class DecompileModUi : UIProgress
                 );
 
                 // We are going to be relatively good-faith here and assume
-                // that, if hideCode is false, the mod does not need decompiling
-                // because its source files will remain intact.
-                if (mod.properties.hideCode)
+                // that, if includeSource is false, the mod does not need
+                // decompiling because its source files will remain intact.
+                if (!mod.properties.includeSource)
                 {
                     ProjectDecompiler.Decompile(mod, dir, cts.Token);
                 }

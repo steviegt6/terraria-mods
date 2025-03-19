@@ -17,17 +17,21 @@ internal sealed class AssemblyResolver : IAssemblyResolver
     public AssemblyResolver(string modDir)
     {
         // Add any `lib/` dllReferences the mod includes.
-        var dllReferences = Directory.GetFiles(Path.Combine(modDir, "lib"), "*.dll", SearchOption.AllDirectories);
-        foreach (var dllReference in dllReferences)
+        var libDir = Path.Combine(modDir, "lib");
+        if (Directory.Exists(libDir))
         {
-            // We don't need to load it into an ALC.
-            var asm = Assembly.LoadFile(dllReference);
-            if (!cache.TryGetValue(asm.GetName().Name!, out var assemblies))
+            var dllReferences = Directory.GetFiles(libDir, "*.dll", SearchOption.AllDirectories);
+            foreach (var dllReference in dllReferences)
             {
-                cache.Add(asm.GetName().Name!, assemblies = []);
-            }
+                // We don't need to load it into an ALC.
+                var asm = Assembly.LoadFile(dllReference);
+                if (!cache.TryGetValue(asm.GetName().Name!, out var assemblies))
+                {
+                    cache.Add(asm.GetName().Name!, assemblies = []);
+                }
 
-            assemblies.Add(asm);
+                assemblies.Add(asm);
+            }
         }
 
         // Add tModLoader and its references.
