@@ -1,0 +1,3 @@
+[submodule "src/cdc"]
+	path = src/cdc
+	url = https://github.com/reaganism/cdc.git
