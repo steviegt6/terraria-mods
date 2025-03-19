@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Reflection.Metadata;
 using System.Reflection.PortableExecutable;
 using System.Threading;
 
@@ -9,16 +8,15 @@ using ICSharpCode.Decompiler;
 using ICSharpCode.Decompiler.CSharp;
 using ICSharpCode.Decompiler.CSharp.OutputVisitor;
 using ICSharpCode.Decompiler.CSharp.ProjectDecompiler;
-using ICSharpCode.Decompiler.CSharp.Transforms;
-using ICSharpCode.Decompiler.DebugInfo;
 using ICSharpCode.Decompiler.Metadata;
-using ICSharpCode.Decompiler.TypeSystem;
 using ICSharpCode.ILSpyX.PdbProvider;
 
+using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
 
 namespace Tomat.TML.Mod.FullProjectDecompiler.Common;
 
+[NoJIT]
 internal static class ProjectDecompiler
 {
     private sealed class SimpleModProjectFileWriter : IProjectFileWriter
@@ -28,18 +26,6 @@ internal static class ProjectDecompiler
             throw new System.NotImplementedException();
         }
     }
-
-    private sealed class ExtendedProjectDecompiler(
-        DecompilerSettings  settings,
-        IAssemblyResolver   assemblyResolver,
-        IDebugInfoProvider? debugInfoProvider
-    ) : WholeProjectDecompiler(
-        settings,
-        assemblyResolver,
-        new SimpleModProjectFileWriter(),
-        assemblyReferenceClassifier: null,
-        debugInfoProvider: debugInfoProvider
-    );
 
     private static readonly CSharpFormattingOptions formatting_options;
 
@@ -77,24 +63,15 @@ internal static class ProjectDecompiler
         var module = new PEFile(modDllPath, fs, PEStreamOptions.PrefetchEntireImage);
         var debug  = DebugInfoUtils.FromFile(module, Path.Combine(dir, mod.Name + ".pdb"));
 
-        var decompiler = new ExtendedProjectDecompiler(decompiler_settings, asmResolver, debug);
-    }
-
-    private static CSharpDecompiler CreateDecompiler(ExtendedProjectDecompiler projectDecompiler, DecompilerTypeSystem ts, CancellationToken token)
-    {
-        var decompiler = new CSharpDecompiler(ts, projectDecompiler.Settings)
-        {
-            CancellationToken = token,
-        };
-        {
-            decompiler.AstTransforms.Add(new EscapeInvalidIdentifiers());
-            decompiler.AstTransforms.Add(new RemoveCLSCompliantAttribute());
-        }
-
-        return decompiler;
-    }
-
-    private static void ExtractResource(string name, Resource resource, string projectDir)
-    {
+        Reaganism.CDC.Decompilation.ProjectDecompiler.Decompile(
+            modDllPath,
+            dir,
+            decompiler_settings,
+            null,
+            null,
+            asmResolver,
+            debug,
+            new SimpleModProjectFileWriter()
+        );
     }
 }
