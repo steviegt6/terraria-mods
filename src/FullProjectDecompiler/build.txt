@@ -1,5 +1,5 @@
 displayName = Full Project Decompiler
 author = Tomat
-version = 1.0.6
+version = 1.0.0
 homepage = https://discord.gg/UTXC8fM3NK
-side = NoSync
+side = Client
