@@ -75,6 +75,12 @@ internal sealed class DecompileModUi : UIProgress
 
         var dir = Path.Combine(Main.SavePath, "ModSources", "decompiled", mod.Name);
         {
+            // Be sure to clean up previous decompilation attempts.
+            if (Directory.Exists(dir))
+            {
+                Directory.Delete(dir, true);
+            }
+
             Directory.CreateDirectory(dir);
         }
 
