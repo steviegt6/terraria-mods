@@ -86,7 +86,44 @@ internal sealed class DecompileModUi : UIProgress
 
         var modHandle = default(IDisposable?);
 
-        try { }
+        try
+        {
+            var alreadyHasCode = !mod.properties.hideCode;
+
+            modHandle = mod.modFile.Open();
+
+            var i = 0;
+            foreach (var entry in mod.modFile)
+            {
+                cts?.Token.ThrowIfCancellationRequested();
+
+                var entryName = entry.Name;
+                ContentConverters.Reverse(ref entryName, out var converter);
+
+                DisplayText = $"Extracting: {entryName}";
+                Progress    = i++ / (float)mod.modFile.Count;
+
+                var entryPath = Path.Combine(dir, entryName);
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(entryPath)!);
+                }
+
+                using (var dest = File.OpenWrite(entryPath))
+                using (var src = mod.modFile.GetStream(entry))
+                {
+                    if (converter is not null)
+                    {
+                        converter(src, dest);
+                    }
+                    else
+                    {
+                        src.CopyTo(dest);
+                    }
+                }
+
+                // TODO: Decompile DLL if possible.
+            }
+        }
         catch (OperationCanceledException)
         {
             return Task.FromResult(false);
