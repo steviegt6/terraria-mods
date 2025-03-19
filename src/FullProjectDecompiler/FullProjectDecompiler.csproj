@@ -1,0 +1,10 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <Import Project="../Mod.targets"/>
+
+    <PropertyGroup>
+        <AssemblyName>FullProjectDecompiler</AssemblyName>
+        <RootNamespace>Tomat.TML.Mod.FullProjectDecompiler</RootNamespace>
+    </PropertyGroup>
+
+</Project>
