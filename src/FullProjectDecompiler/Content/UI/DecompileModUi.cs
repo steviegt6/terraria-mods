@@ -4,6 +4,8 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
+using ReLogic.Threading;
+
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -92,34 +94,47 @@ internal sealed class DecompileModUi : UIProgress
 
             modHandle = mod.modFile.Open();
 
-            var i = 0;
-            foreach (var entry in mod.modFile)
+            DisplayText = "Extracting files...";
             {
-                cts?.Token.ThrowIfCancellationRequested();
+                var totalExtracted = 0;
 
-                var entryName = entry.Name;
-                ContentConverters.Reverse(ref entryName, out var converter);
-
-                DisplayText = $"Extracting: {entryName}";
-                Progress    = i++ / (float)mod.modFile.Count;
-
-                var entryPath = Path.Combine(dir, entryName);
-                {
-                    Directory.CreateDirectory(Path.GetDirectoryName(entryPath)!);
-                }
-
-                using (var dest = File.OpenWrite(entryPath))
-                using (var src = mod.modFile.GetStream(entry))
-                {
-                    if (converter is not null)
+                ForWithoutDeadlockCheck(
+                    0,
+                    mod.modFile.Count,
+                    (fromFile, toFile, _) =>
                     {
-                        converter(src, dest);
+                        for (var i = fromFile; i < toFile; i++)
+                        {
+                            cts?.Token.ThrowIfCancellationRequested();
+
+                            var entry = mod.modFile.fileTable[i];
+
+                            var entryName = entry.Name;
+                            ContentConverters.Reverse(ref entryName, out var converter);
+
+                            Progress = totalExtracted / (float)mod.modFile.Count;
+
+                            var entryPath = Path.Combine(dir, entryName);
+                            {
+                                Directory.CreateDirectory(Path.GetDirectoryName(entryPath)!);
+                            }
+
+                            using var dest = File.OpenWrite(entryPath);
+                            using var src  = mod.modFile.GetStream(entry, true);
+
+                            if (converter is not null)
+                            {
+                                converter(src, dest);
+                            }
+                            else
+                            {
+                                src.CopyTo(dest);
+                            }
+
+                            Interlocked.Increment(ref totalExtracted);
+                        }
                     }
-                    else
-                    {
-                        src.CopyTo(dest);
-                    }
-                }
+                );
 
                 // TODO: Decompile DLL if possible.
             }
@@ -145,5 +160,56 @@ internal sealed class DecompileModUi : UIProgress
 
         Main.menuMode = gotoMenu;
         return Task.FromResult(true);
+    }
+
+    private static void ForWithoutDeadlockCheck(
+        int               fromInclusive,
+        int               toExclusive,
+        ParallelForAction callback,
+        object?           context = null
+    )
+    {
+        var count = toExclusive - fromInclusive;
+        if (count == 0)
+        {
+            return;
+        }
+
+        var threadCount = Math.Min(Math.Max(1, Environment.ProcessorCount + 1 - 1 - 1), count);
+
+        if (FastParallel.ForceTasksOnCallingThread)
+        {
+            threadCount = 1;
+        }
+
+        var num3 = count / threadCount;
+        var num4 = count % threadCount;
+        var num5 = toExclusive;
+
+        var countdownEvent = new CountdownEvent(threadCount);
+        for (var num6 = threadCount - 1; num6 >= 0; num6--)
+        {
+            var num7 = num3;
+            if (num6 < num4)
+            {
+                num7++;
+            }
+
+            num5 -= num7;
+            var num8         = num5;
+            var toExclusive2 = num8 + num7;
+
+            var rangeTask = new FastParallel.RangeTask(callback, num8, toExclusive2, context, countdownEvent);
+            if (num6 < 1)
+            {
+                FastParallel.InvokeTask(rangeTask);
+            }
+            else
+            {
+                ThreadPool.QueueUserWorkItem(FastParallel.InvokeTask, rangeTask);
+            }
+        }
+
+        countdownEvent.Wait();
     }
 }

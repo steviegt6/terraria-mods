@@ -7,4 +7,8 @@
         <RootNamespace>Tomat.TML.Mod.FullProjectDecompiler</RootNamespace>
     </PropertyGroup>
 
+    <ItemGroup>
+        <Publicize Include="ReLogic"/>
+    </ItemGroup>
+
 </Project>
