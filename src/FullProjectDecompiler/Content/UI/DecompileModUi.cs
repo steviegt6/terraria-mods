@@ -1,4 +1,8 @@
+using System;
+using System.IO;
 using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
 
 using Terraria;
 using Terraria.Audio;
@@ -35,6 +39,24 @@ internal sealed class DecompileModUi : UIProgress
 
     private LocalMod? mod;
 
+    private CancellationTokenSource? cts;
+
+    public override void OnActivate()
+    {
+        base.OnActivate();
+
+        cts = new CancellationTokenSource();
+        {
+            OnCancel += () =>
+            {
+                // TODO: Should canceling clean up unfinished working directories?
+                cts.Cancel();
+            };
+        }
+
+        Task.Run(Decompile, cts.Token);
+    }
+
     private void Show(LocalMod modToShow, int menuToGoto)
     {
         mod      = modToShow;
@@ -42,5 +64,40 @@ internal sealed class DecompileModUi : UIProgress
 
         Main.MenuUI.SetState(this);
         Main.menuMode = 888;
+    }
+
+    private Task Decompile()
+    {
+        if (mod is null)
+        {
+            return Task.FromResult(false);
+        }
+
+        var dir = Path.Combine(Main.SavePath, "ModSources", "decompiled", mod.Name);
+        {
+            Directory.CreateDirectory(dir);
+        }
+
+        var modHandle = default(IDisposable?);
+
+        try { }
+        catch (OperationCanceledException)
+        {
+            return Task.FromResult(false);
+        }
+        catch (Exception e)
+        {
+            // TODO: Logging!
+
+            Main.menuMode = gotoMenu;
+            return Task.FromResult(false);
+        }
+        finally
+        {
+            modHandle?.Dispose();
+        }
+
+        Main.menuMode = gotoMenu;
+        return Task.FromResult(true);
     }
 }
