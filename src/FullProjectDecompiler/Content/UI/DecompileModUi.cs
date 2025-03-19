@@ -75,6 +75,11 @@ internal sealed class DecompileModUi : UIProgress
             return Task.FromResult(false);
         }
 
+        if (cts is null)
+        {
+            return Task.FromResult(false);
+        }
+
         var dir = Path.Combine(Main.SavePath, "ModSources", "decompiled", mod.Name);
         {
             // Be sure to clean up previous decompilation attempts.
@@ -90,8 +95,6 @@ internal sealed class DecompileModUi : UIProgress
 
         try
         {
-            var alreadyHasCode = !mod.properties.hideCode;
-
             modHandle = mod.modFile.Open();
 
             DisplayText = "Extracting files...";
@@ -105,7 +108,7 @@ internal sealed class DecompileModUi : UIProgress
                     {
                         for (var i = fromFile; i < toFile; i++)
                         {
-                            cts?.Token.ThrowIfCancellationRequested();
+                            cts.Token.ThrowIfCancellationRequested();
 
                             var entry = mod.modFile.fileTable[i];
 
@@ -136,7 +139,13 @@ internal sealed class DecompileModUi : UIProgress
                     }
                 );
 
-                // TODO: Decompile DLL if possible.
+                // We are going to be relatively good-faith here and assume
+                // that, if hideCode is false, the mod does not need decompiling
+                // because its source files will remain intact.
+                if (mod.properties.hideCode)
+                {
+                    ProjectDecompiler.Decompile(mod, dir, cts.Token);
+                }
             }
         }
         catch (OperationCanceledException)
