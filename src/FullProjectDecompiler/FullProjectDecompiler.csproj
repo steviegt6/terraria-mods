@@ -7,8 +7,4 @@
         <RootNamespace>Tomat.TML.Mod.FullProjectDecompiler</RootNamespace>
     </PropertyGroup>
 
-    <ItemGroup>
-      <Folder Include="Content\" />
-    </ItemGroup>
-
 </Project>
