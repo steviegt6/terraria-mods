@@ -103,6 +103,9 @@ internal sealed class DecompileModUi : UIProgress
             modHandle?.Dispose();
         }
 
+        // Assuming everything went well since we got here.  Open the directory.
+        Utils.OpenFolder(dir);
+
         Main.menuMode = gotoMenu;
         return Task.FromResult(true);
     }
