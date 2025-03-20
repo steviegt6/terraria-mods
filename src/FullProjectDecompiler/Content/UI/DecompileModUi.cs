@@ -6,11 +6,15 @@ using System.Threading.Tasks;
 
 using ReLogic.Threading;
 
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
+
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
+using Terraria.ModLoader.IO;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
 
@@ -34,6 +38,28 @@ internal sealed class DecompileModUi : UIProgress
         {
             SoundEngine.PlaySound(SoundID.MenuOpen);
             instance.Show(self._localMod, self._gotoMenu);
+        }
+    }
+
+    private sealed class FasterRawToPng : IInitializer
+    {
+        void ILoadable.Load(global::Terraria.ModLoader.Mod mod)
+        {
+            var rawToPng = typeof(ImageIO).GetMethod("RawToPng", BindingFlags.Public | BindingFlags.Static)!;
+            MonoModHooks.Add(rawToPng, RawToPngFast);
+        }
+
+        private static void RawToPngFast(Stream src, Stream dst)
+        {
+            using var br = new BinaryReader(src);
+
+            _ = br.ReadInt32();
+            var width  = br.ReadInt32();
+            var height = br.ReadInt32();
+            var bytes  = br.ReadBytes(width * height * 4);
+
+            using var img = Image.WrapMemory<Rgba32>(bytes, width, height);
+            img.SaveAsPng(dst);
         }
     }
 
