@@ -109,6 +109,13 @@ internal static class ProjectDecompiler
         }
 
         Directory.Delete(stagingDir, true);
+        
+        // Let's get rid of the normally-generated one.
+        var csprojName = Path.Combine(dir, mod.Name + ".csproj");
+        if (File.Exists(csprojName))
+        {
+            File.Delete(csprojName);
+        }
     }
 
     public static void WriteCsproj(LocalMod mod, string dir)
