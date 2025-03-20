@@ -115,7 +115,7 @@ internal static class ProjectDecompiler
             Path.Combine(dir, mod.Name + ".csproj"),
 
             // .csproj potentially generated in ModAssemblies directory.
-            Path.Combine(Path.GetDirectoryName(decompiledMod.DllPath)!, mod.Name + ".csproj"),
+            Path.Combine(Path.GetDirectoryName(decompiledMod.DllPath)!, Path.GetFileNameWithoutExtension(decompiledMod.DllPath) + ".csproj"),
         };
 
         foreach (var csprojName in csprojNames)
