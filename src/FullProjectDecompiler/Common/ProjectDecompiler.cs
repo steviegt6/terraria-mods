@@ -108,9 +108,17 @@ internal static class ProjectDecompiler
 
         Directory.Delete(stagingDir, true);
 
-        // Let's get rid of the normally-generated one.
-        var csprojName = Path.Combine(dir, mod.Name + ".csproj");
-        if (File.Exists(csprojName))
+        // Let's get rid any generated .csproj files from decompilation.
+        var csprojNames = new[]
+        {
+            // .csproj potentially generated in mod directory.
+            Path.Combine(dir, mod.Name + ".csproj"),
+
+            // .csproj potentially generated in ModAssemblies directory.
+            Path.Combine(Path.GetDirectoryName(decompiledMod.DllPath)!, mod.Name + ".csproj"),
+        };
+
+        foreach (var csprojName in csprojNames)
         {
             File.Delete(csprojName);
         }
