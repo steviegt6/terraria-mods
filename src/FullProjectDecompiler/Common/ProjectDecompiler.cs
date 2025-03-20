@@ -78,7 +78,15 @@ internal static class ProjectDecompiler
             false,
             "."
         );
+    }
 
-        File.WriteAllText(Path.Combine(dir, mod.Name + ".csproj"), csproj);
+    public static void WriteCsproj(LocalMod mod, string dir)
+    {
+        var csprojName = Path.Combine(dir, mod.Name + ".csproj");
+
+        if (!File.Exists(csprojName))
+        {
+            File.WriteAllText(csprojName, csproj);
+        }
     }
 }

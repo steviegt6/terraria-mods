@@ -146,6 +146,8 @@ internal sealed class DecompileModUi : UIProgress
                 {
                     ProjectDecompiler.Decompile(mod, dir, cts.Token);
                 }
+                
+                ProjectDecompiler.WriteCsproj(mod, dir);
             }
         }
         catch (OperationCanceledException)
