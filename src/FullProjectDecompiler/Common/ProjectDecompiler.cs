@@ -54,18 +54,16 @@ internal static class ProjectDecompiler
         };
     }
 
-    public static void Decompile(LocalMod mod, string dir, CancellationToken cancellationToken)
+    public static void Decompile(LocalMod mod, string dir, DecompiledMod decompiledMod, CancellationToken cancellationToken)
     {
         var asmResolver = new AssemblyResolver(dir);
-        var modDllPath  = Path.Combine(dir, mod.Name + ".dll");
-        {
-            Debug.Assert(File.Exists(modDllPath));
-        }
 
-        using var fs = File.OpenRead(modDllPath);
+        using var fs = File.OpenRead(decompiledMod.DllPath);
 
-        var module = new PEFile(modDllPath, fs, PEStreamOptions.PrefetchEntireImage);
-        var debug  = DebugInfoUtils.FromFile(module, Path.Combine(dir, mod.Name + ".pdb"));
+        var module = new PEFile(decompiledMod.DllPath, fs, PEStreamOptions.PrefetchEntireImage);
+        var debug = decompiledMod.PdbPath is not null
+            ? DebugInfoUtils.FromFile(module, decompiledMod.PdbPath)
+            : null;
 
         var stagingDir = Path.Combine(dir, "__decompiled");
         {
@@ -74,7 +72,7 @@ internal static class ProjectDecompiler
 
         // Decompile to staging directory.
         Reaganism.CDC.Decompilation.ProjectDecompiler.Decompile(
-            modDllPath,
+            decompiledMod.DllPath,
             stagingDir,
             decompiler_settings,
             null,
@@ -109,7 +107,7 @@ internal static class ProjectDecompiler
         }
 
         Directory.Delete(stagingDir, true);
-        
+
         // Let's get rid of the normally-generated one.
         var csprojName = Path.Combine(dir, mod.Name + ".csproj");
         if (File.Exists(csprojName))

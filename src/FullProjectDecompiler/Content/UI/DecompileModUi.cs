@@ -139,14 +139,64 @@ internal sealed class DecompileModUi : UIProgress
                     }
                 );
 
+                var modAssembliesDir = Path.Combine(ModCompile.ModSourcePath, "ModAssemblies");
+                {
+                    Directory.CreateDirectory(dir);
+                }
+
+                var dllName = $"{mod.Name}.dll";
+                var pdbName = $"{mod.Name}.pdb";
+                var xmlName = $"{mod.Name}.xml";
+
+                var dllPath = Path.Combine(dir, dllName);
+                var pdbPath = Path.Combine(dir, pdbName);
+                var xmlPath = Path.Combine(dir, xmlName);
+
+                var dllReferencesPath = Path.Combine(modAssembliesDir, $"{mod.Name}_v{mod.modFile.Version}.dll");
+                var pdbReferencesPath = Path.Combine(modAssembliesDir, $"{mod.Name}_v{mod.modFile.Version}.pdb");
+                var xmlReferencesPath = Path.Combine(modAssembliesDir, $"{mod.Name}_v{mod.modFile.Version}.xml");
+
+                if (File.Exists(dllPath))
+                {
+                    File.Move(dllPath, dllReferencesPath, true);
+                }
+                else
+                {
+                    throw new FileNotFoundException("Could not find the mod's DLL file.");
+                }
+
+                if (File.Exists(pdbPath))
+                {
+                    File.Move(pdbPath, pdbReferencesPath, true);
+                }
+                else
+                {
+                    pdbReferencesPath = null;
+                }
+
+                if (File.Exists(xmlPath))
+                {
+                    File.Move(xmlPath, xmlReferencesPath, true);
+                }
+                else
+                {
+                    xmlReferencesPath = null;
+                }
+
+                var decompiledMod = new DecompiledMod(
+                    dllReferencesPath,
+                    pdbReferencesPath,
+                    xmlReferencesPath
+                );
+
                 // We are going to be relatively good-faith here and assume
                 // that, if includeSource is false, the mod does not need
                 // decompiling because its source files will remain intact.
                 if (!mod.properties.includeSource)
                 {
-                    ProjectDecompiler.Decompile(mod, dir, cts.Token);
+                    ProjectDecompiler.Decompile(mod, dir, decompiledMod, cts.Token);
                 }
-                
+
                 ProjectDecompiler.WriteCsproj(mod, dir);
             }
         }
