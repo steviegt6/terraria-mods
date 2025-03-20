@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection.PortableExecutable;
 using System.Threading;
 
@@ -66,9 +67,15 @@ internal static class ProjectDecompiler
         var module = new PEFile(modDllPath, fs, PEStreamOptions.PrefetchEntireImage);
         var debug  = DebugInfoUtils.FromFile(module, Path.Combine(dir, mod.Name + ".pdb"));
 
+        var stagingDir = Path.Combine(dir, "__decompiled");
+        {
+            Directory.CreateDirectory(stagingDir);
+        }
+
+        // Decompile to staging directory.
         Reaganism.CDC.Decompilation.ProjectDecompiler.Decompile(
             modDllPath,
-            Path.Combine(dir, ".."), // temporary fix
+            stagingDir,
             decompiler_settings,
             null,
             null,
@@ -78,6 +85,37 @@ internal static class ProjectDecompiler
             false,
             "."
         );
+
+        // Copy root files of the staging directory to the final directory.
+        foreach (var file in Directory.EnumerateFiles(stagingDir))
+        {
+            var fileName = Path.GetFileName(file);
+            var destFile = Path.Combine(dir, fileName);
+
+            File.Copy(file, destFile, true);
+        }
+
+        // Move the contents of the decompiled directory to the final directory.
+        var modSourceDirectory = Directory.EnumerateDirectories(stagingDir).Single();
+        {
+            foreach (var file in Directory.EnumerateFiles(modSourceDirectory, "*", SearchOption.AllDirectories))
+            {
+                var relativePath = Path.GetRelativePath(modSourceDirectory, file);
+                var destFile     = Path.Combine(dir, relativePath);
+
+                Directory.CreateDirectory(Path.GetDirectoryName(destFile)!);
+                File.Copy(file, destFile, true);
+            }
+        }
+
+        Directory.Delete(stagingDir, true);
+        
+        // Let's get rid of the normally-generated one.
+        var csprojName = Path.Combine(dir, mod.Name + ".csproj");
+        if (File.Exists(csprojName))
+        {
+            File.Delete(csprojName);
+        }
     }
 
     public static void WriteCsproj(LocalMod mod, string dir)
