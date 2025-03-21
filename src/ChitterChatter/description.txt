@@ -1,1 +1,8 @@
-bunch of chat improvements and stuff
+Currently working on this mod to slowly improve the chat system.
+
+Currently implemented:
+- mod icon tags ([mi:ModName]),
+- "Chat Source" alternative that shows what mods sent what message (uses the new mod icons),
+- chat message timestamps.
+
+These are not configurable for now, but will be in the future.
