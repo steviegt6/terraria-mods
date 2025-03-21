@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <Import Project="../Mod.targets"/>
+
+    <PropertyGroup>
+        <AssemblyName>ChitterChatter</AssemblyName>
+        <RootNamespace>Tomat.TML.Mod.ChitterChatter</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Publicize Include="ReLogic"/>
+    </ItemGroup>
+
+</Project>
