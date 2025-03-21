@@ -32,6 +32,8 @@ internal sealed class VanillaChatRoom : IChatRoom
         private readonly Color               color;
         private readonly TextSnippet         modSourceSnippet;
 
+        private static readonly TextSnippet space_snippet = new(" ");
+
         public ChatMessageContainer(
             string  text,
             Color   color,
@@ -82,6 +84,7 @@ internal sealed class VanillaChatRoom : IChatRoom
             var font = FontAssets.MouseText.Value;
 
             width -= (int)modSourceSnippet.GetStringLength(font);
+            width -= (int)space_snippet.GetStringLength(font);
 
             var lines = Utils.WordwrapStringSmart(text, color, font, width, 10);
             {
@@ -91,6 +94,7 @@ internal sealed class VanillaChatRoom : IChatRoom
             foreach (var snippets in lines)
             {
                 snippets.Insert(0, modSourceSnippet);
+                snippets.Insert(1, space_snippet);
                 parsedText.Add(snippets.ToArray());
             }
         }
