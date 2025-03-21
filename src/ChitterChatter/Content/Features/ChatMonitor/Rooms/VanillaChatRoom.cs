@@ -183,7 +183,7 @@ internal sealed class VanillaChatRoom : IChatRoom
                         return cached;
                     }
 
-                    return mod_source_cache[declaringType] = ModLoader.Mods.FirstOrDefault(x => x.Code == declaringType.Assembly)?.Name ?? null;
+                    return mod_source_cache[declaringType] = ModLoader.Mods.FirstOrDefault(x => x.Name != "ModLoader" && x.Code == declaringType.Assembly)?.Name ?? null;
                 }
                 catch
                 {
