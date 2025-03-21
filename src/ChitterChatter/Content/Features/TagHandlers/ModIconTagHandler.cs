@@ -76,7 +76,7 @@ internal sealed class ModIconTagHandler : ILoadableTagHandler<ModIconTagHandler>
             if (!justCheckingString && color != Color.Black && modCache.Icon is { } icon)
             {
                 // spriteBatch.Draw(icon.Value, position, null, Color.White, 0f, Vector2.Zero, modCache.Scale * scale, SpriteEffects.None, 0f);
-                spriteBatch.Draw(icon.Value, new Rectangle((int)position.X, (int)position.Y, 30, 30), Color.White);
+                spriteBatch.Draw(icon.Value, new Rectangle((int)position.X, (int)position.Y - 2, (int)icon_size, (int)icon_size), Color.White);
             }
 
             size = new Vector2(icon_size);
