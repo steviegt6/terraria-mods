@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -7,6 +9,7 @@ using ReLogic.Content;
 using ReLogic.Graphics;
 
 using Terraria;
+using Terraria.GameContent.Bestiary;
 using Terraria.ModLoader;
 using Terraria.UI.Chat;
 
@@ -27,6 +30,11 @@ internal sealed class ModIconTagHandler : ILoadableTagHandler<ModIconTagHandler>
 
         public static ModCache GetModCache(string modName)
         {
+            if (modName == "Terraria")
+            {
+                return default(ModCache);
+            }
+
             if (cache.TryGetValue(modName, out var modCache))
             {
                 return modCache;
@@ -73,10 +81,20 @@ internal sealed class ModIconTagHandler : ILoadableTagHandler<ModIconTagHandler>
             float       scale    = 1
         )
         {
-            if (!justCheckingString && color != Color.Black && modCache.Icon is { } icon)
+            if (!justCheckingString && color != Color.Black)
             {
-                // spriteBatch.Draw(icon.Value, position, null, Color.White, 0f, Vector2.Zero, modCache.Scale * scale, SpriteEffects.None, 0f);
-                spriteBatch.Draw(icon.Value, new Rectangle((int)position.X, (int)position.Y - 2, (int)icon_size, (int)icon_size), Color.White);
+                if (modName == "Terraria")
+                {
+                    var icon      = Main.Assets.Request<Texture2D>("Images/UI/Bestiary/Icon_Tags_Shadow", AssetRequestMode.ImmediateLoad);
+                    var condition = BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface;
+
+                    var frame = condition._filterIconFrame;
+                    spriteBatch.Draw(icon.Value, new Rectangle((int)position.X, (int)position.Y - 2, (int)icon_size, (int)icon_size), new Rectangle(16, 5, frame.X, frame.Y), Color.White);
+                }
+                else if (modCache.Icon is { } icon)
+                {
+                    spriteBatch.Draw(icon.Value, new Rectangle((int)position.X, (int)position.Y - 2, (int)icon_size, (int)icon_size), Color.White);
+                }
             }
 
             size = new Vector2(icon_size);

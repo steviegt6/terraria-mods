@@ -7,8 +7,4 @@
         <RootNamespace>Tomat.TML.Mod.ChitterChatter</RootNamespace>
     </PropertyGroup>
 
-    <ItemGroup>
-        <Publicize Include="ReLogic"/>
-    </ItemGroup>
-
 </Project>
