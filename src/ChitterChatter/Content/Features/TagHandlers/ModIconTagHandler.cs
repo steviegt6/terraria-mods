@@ -89,7 +89,7 @@ internal sealed class ModIconTagHandler : ILoadableTagHandler<ModIconTagHandler>
                     var condition = BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface;
 
                     var frame = condition._filterIconFrame;
-                    spriteBatch.Draw(icon.Value, new Rectangle((int)position.X, (int)position.Y - 2, (int)icon_size, (int)icon_size), new Rectangle(16, 5, frame.X, frame.Y), Color.White);
+                    spriteBatch.Draw(icon.Value, new Rectangle((int)position.X, (int)position.Y - 2, (int)icon_size, (int)icon_size), icon.Frame(16, 5, frame.X, frame.Y), Color.White);
                 }
                 else if (modCache.Icon is { } icon)
                 {

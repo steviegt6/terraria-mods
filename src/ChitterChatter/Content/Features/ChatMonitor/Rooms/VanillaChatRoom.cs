@@ -178,6 +178,11 @@ internal sealed class VanillaChatRoom : IChatRoom
                         return null;
                     }
 
+                    if (declaringType.Namespace.StartsWith("Terraria"))
+                    {
+                        return "Terraria";
+                    }
+
                     if (mod_source_cache.TryGetValue(declaringType, out var cached))
                     {
                         return cached;
