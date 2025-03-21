@@ -24,6 +24,8 @@ internal sealed class VanillaChatRoom : IChatRoom
 
         public bool Prepared { get; private set; }
 
+        public DateTime UtcTime { get; }
+
         private int timeLeft;
 
         private readonly List<TextSnippet[]> parsedText;
@@ -35,10 +37,11 @@ internal sealed class VanillaChatRoom : IChatRoom
         private static readonly TextSnippet space_snippet = new(" ");
 
         public ChatMessageContainer(
-            string  text,
-            Color   color,
-            int     widthLimitInPixels,
-            string? modSource
+            string   text,
+            Color    color,
+            int      widthLimitInPixels,
+            string?  modSource,
+            DateTime utcTime
         )
         {
             this.text               = text;
@@ -47,6 +50,7 @@ internal sealed class VanillaChatRoom : IChatRoom
             parsedText              = [];
             timeLeft                = 600;
             modSourceSnippet        = ModIconTagHandler.CreateSnippet(modSource);
+            this.UtcTime            = utcTime;
 
             MarkToNeedRefresh();
             Refresh();
@@ -126,7 +130,16 @@ internal sealed class VanillaChatRoom : IChatRoom
             return;
         }
 
-        messages.Insert(0, new ChatMessageContainer(text, textColor, maxWidthInPixels, GetModSource()));
+        messages.Insert(
+            0,
+            new ChatMessageContainer(
+                text,
+                textColor,
+                maxWidthInPixels,
+                GetModSource(),
+                DateTime.UtcNow
+            )
+        );
 
         return;
 
@@ -237,16 +250,44 @@ internal sealed class VanillaChatRoom : IChatRoom
 
             var snippets = message.GetSnippetWithInversedIndex(lineOffset);
 
-            ChatManager.DrawColorCodedStringWithShadow(
-                Main.spriteBatch,
-                FontAssets.MouseText.Value,
-                snippets,
-                new Vector2(88f, Main.screenHeight - 30 - 28 - displayedLines * 21),
-                0f,
-                Vector2.Zero,
-                Vector2.One,
-                out var hoveredSnippet
-            );
+            int hoveredSnippet;
+            {
+                var yPos = Main.screenHeight - 30 - 28 - displayedLines * 21;
+                var font = FontAssets.MouseText.Value;
+
+                // Draw timestamp.
+                {
+                    // TODO: Format based on in-game language.
+                    var timestamp = message.UtcTime.ToLocalTime().ToShortTimeString();
+
+                    var tsWidth = font.MeasureString(timestamp).X;
+
+                    ChatManager.DrawColorCodedStringWithShadow(
+                        Main.spriteBatch,
+                        font,
+                        timestamp,
+                        new Vector2(88f - tsWidth - 4f, yPos),
+                        Color.DarkGray,
+                        0f,
+                        Vector2.Zero,
+                        Vector2.One
+                    );
+                }
+
+                // Draw main message.
+                {
+                    ChatManager.DrawColorCodedStringWithShadow(
+                        Main.spriteBatch,
+                        font,
+                        snippets,
+                        new Vector2(88f, yPos),
+                        0f,
+                        Vector2.Zero,
+                        Vector2.One,
+                        out hoveredSnippet
+                    );
+                }
+            }
 
             if (hoveredSnippet >= 0)
             {
