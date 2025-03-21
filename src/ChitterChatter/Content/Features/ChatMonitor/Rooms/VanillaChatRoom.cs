@@ -11,6 +11,78 @@ namespace Tomat.TML.Mod.ChitterChatter.Content.Features.ChatMonitor.Rooms;
 
 internal sealed class VanillaChatRoom : IChatRoom
 {
+    private sealed class ChatMessageContainer
+    {
+        public int LineCount => parsedText.Count;
+
+        public bool CanBeShownWhenChatIsClosed => timeLeft > 0;
+
+        public bool Prepared { get; private set; }
+
+        private List<TextSnippet[]> parsedText = [];
+        private string?             text;
+        private int                 widthLimitInPixels;
+        private int                 timeLeft;
+        private Color               color;
+
+        public ChatMessageContainer(string text, Color color, int widthLimitInPixels)
+        {
+            this.text               = text;
+            this.color              = color;
+            this.widthLimitInPixels = widthLimitInPixels;
+            parsedText              = [];
+            timeLeft                = 600;
+
+            MarkToNeedRefresh();
+            Refresh();
+        }
+
+        public void MarkToNeedRefresh()
+        {
+            Prepared = false;
+        }
+
+        public void Update()
+        {
+            if (timeLeft > 0)
+            {
+                timeLeft--;
+            }
+
+            Refresh();
+        }
+
+        public void Refresh()
+        {
+            if (Prepared)
+            {
+                return;
+            }
+
+            Prepared = true;
+            var width = widthLimitInPixels;
+            if (width == -1)
+            {
+                width = Main.screenWidth - 320;
+            }
+
+            var snippets = Utils.WordwrapStringSmart(text, color, FontAssets.MouseText.Value, width, 10);
+            {
+                parsedText.Clear();
+            }
+
+            foreach (var snippet in snippets)
+            {
+                parsedText.Add(snippet.ToArray());
+            }
+        }
+
+        public TextSnippet[] GetSnippetWithInversedIndex(int snippetIndex)
+        {
+            return parsedText[parsedText.Count - 1 - snippetIndex];
+        }
+    }
+
     private int messagesToShow = 10;
     private int startMessageIdx;
 
@@ -30,12 +102,7 @@ internal sealed class VanillaChatRoom : IChatRoom
             return;
         }
 
-        var message = new ChatMessageContainer();
-        {
-            message.SetContents(text, textColor, maxWidthInPixels);
-        }
-
-        messages.Insert(0, message);
+        messages.Insert(0, new ChatMessageContainer(text, textColor, maxWidthInPixels));
     }
 
     public void RenderChat(bool extendedChatWindow)
