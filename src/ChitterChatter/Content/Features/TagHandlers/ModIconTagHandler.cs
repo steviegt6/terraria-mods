@@ -127,4 +127,9 @@ internal sealed class ModIconTagHandler : ILoadableTagHandler<ModIconTagHandler>
     {
         return new ModIconTextSnippet(text);
     }
+
+    public static TextSnippet CreateSnippet(string? modName)
+    {
+        return new ModIconTextSnippet(modName ?? string.Empty);
+    }
 }

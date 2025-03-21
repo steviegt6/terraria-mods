@@ -1,11 +1,16 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 
 using Microsoft.Xna.Framework;
 
 using Terraria;
 using Terraria.GameContent;
+using Terraria.ModLoader;
 using Terraria.UI.Chat;
+
+using Tomat.TML.Mod.ChitterChatter.Content.Features.TagHandlers;
 
 namespace Tomat.TML.Mod.ChitterChatter.Content.Features.ChatMonitor.Rooms;
 
@@ -19,19 +24,27 @@ internal sealed class VanillaChatRoom : IChatRoom
 
         public bool Prepared { get; private set; }
 
-        private List<TextSnippet[]> parsedText = [];
-        private string?             text;
-        private int                 widthLimitInPixels;
-        private int                 timeLeft;
-        private Color               color;
+        private int timeLeft;
 
-        public ChatMessageContainer(string text, Color color, int widthLimitInPixels)
+        private readonly List<TextSnippet[]> parsedText;
+        private readonly string?             text;
+        private readonly int                 widthLimitInPixels;
+        private readonly Color               color;
+        private readonly TextSnippet         modSourceSnippet;
+
+        public ChatMessageContainer(
+            string  text,
+            Color   color,
+            int     widthLimitInPixels,
+            string? modSource
+        )
         {
             this.text               = text;
             this.color              = color;
             this.widthLimitInPixels = widthLimitInPixels;
             parsedText              = [];
             timeLeft                = 600;
+            modSourceSnippet        = ModIconTagHandler.CreateSnippet(modSource);
 
             MarkToNeedRefresh();
             Refresh();
@@ -66,14 +79,19 @@ internal sealed class VanillaChatRoom : IChatRoom
                 width = Main.screenWidth - 320;
             }
 
-            var snippets = Utils.WordwrapStringSmart(text, color, FontAssets.MouseText.Value, width, 10);
+            var font = FontAssets.MouseText.Value;
+
+            width -= (int)modSourceSnippet.GetStringLength(font);
+
+            var lines = Utils.WordwrapStringSmart(text, color, font, width, 10);
             {
                 parsedText.Clear();
             }
 
-            foreach (var snippet in snippets)
+            foreach (var snippets in lines)
             {
-                parsedText.Add(snippet.ToArray());
+                snippets.Add(modSourceSnippet);
+                parsedText.Add(snippets.ToArray());
             }
         }
 
@@ -82,6 +100,8 @@ internal sealed class VanillaChatRoom : IChatRoom
             return parsedText[parsedText.Count - 1 - snippetIndex];
         }
     }
+
+    private static readonly Dictionary<Type, string?> mod_source_cache = [];
 
     private int messagesToShow = 10;
     private int startMessageIdx;
@@ -102,7 +122,71 @@ internal sealed class VanillaChatRoom : IChatRoom
             return;
         }
 
-        messages.Insert(0, new ChatMessageContainer(text, textColor, maxWidthInPixels));
+        messages.Insert(0, new ChatMessageContainer(text, textColor, maxWidthInPixels, GetModSource()));
+
+        return;
+
+        static string? GetModSource()
+        {
+            using (new Logging.QuietExceptionHandle())
+            {
+                try
+                {
+                    var stackFrames = new StackTrace().GetFrames();
+
+                    var foundNewText    = false;
+                    var postNewIndexIdx = -1;
+                    foreach (var frame in stackFrames)
+                    {
+                        postNewIndexIdx++;
+
+                        var methodName = frame.GetMethod()?.Name;
+                        if (methodName is null)
+                        {
+                            continue;
+                        }
+
+                        // Main::NewText / IChatMonitor::NewText
+                        // Main::NewTextMultiline / IChatMonitor::NewTextMultiline
+                        if (methodName.Contains("NewText") || methodName.Contains("AddNewMessage"))
+                        {
+                            foundNewText = true;
+                        }
+                        else if (foundNewText)
+                        {
+                            if (postNewIndexIdx == stackFrames.Length)
+                            {
+                                return null;
+                            }
+
+                            break;
+                        }
+                    }
+
+                    var declaringType = stackFrames[postNewIndexIdx].GetMethod()?.DeclaringType;
+                    if (declaringType is null)
+                    {
+                        return "Terraria";
+                    }
+
+                    if (declaringType.Namespace is null)
+                    {
+                        return null;
+                    }
+
+                    if (mod_source_cache.TryGetValue(declaringType, out var cached))
+                    {
+                        return cached;
+                    }
+
+                    return mod_source_cache[declaringType] = ModLoader.Mods.FirstOrDefault(x => x.Code == declaringType.Assembly)?.Name ?? null;
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
     }
 
     public void RenderChat(bool extendedChatWindow)
