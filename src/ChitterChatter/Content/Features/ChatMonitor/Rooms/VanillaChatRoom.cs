@@ -90,7 +90,7 @@ internal sealed class VanillaChatRoom : IChatRoom
 
             foreach (var snippets in lines)
             {
-                snippets.Add(modSourceSnippet);
+                snippets.Insert(0, modSourceSnippet);
                 parsedText.Add(snippets.ToArray());
             }
         }
