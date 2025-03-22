@@ -10,7 +10,7 @@ namespace Tomat.TML.Mod.Nightshade.Common.Features.AssetReplacement;
 ///     restored.
 /// </summary>
 /// <typeparam name="T">The asset type.</typeparam>
-public sealed class AssetReplacementHandle<T> : IDisposable
+public readonly struct AssetReplacementHandle<T> : IDisposable
     where T : class
 {
     private readonly AssetProvider<T> assetProvider;
