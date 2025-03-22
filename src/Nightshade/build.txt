@@ -1,0 +1,5 @@
+displayName = NIGHTSHADE
+author = YOU ALREADY KNOW
+version = 1.0.0
+homepage = https://discord.gg/UTXC8fM3NK
+side = Both

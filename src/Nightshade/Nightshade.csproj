@@ -1,0 +1,10 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <Import Project="../Mod.targets"/>
+
+    <PropertyGroup>
+        <AssemblyName>Nightshade</AssemblyName>
+        <RootNamespace>Tomat.TML.Mod.Nightshade</RootNamespace>
+    </PropertyGroup>
+
+</Project>
