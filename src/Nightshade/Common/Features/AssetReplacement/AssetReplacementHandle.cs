@@ -13,26 +13,16 @@ namespace Tomat.TML.Mod.Nightshade.Common.Features.AssetReplacement;
 public sealed class AssetReplacementHandle<T> : IDisposable
     where T : class
 {
-    /// <summary>
-    ///     The original asset to be replaced.
-    /// </summary>
-    public Asset<T> OriginalAsset { get; }
-
-    /// <summary>
-    ///     The new asset to replace the original asset.
-    /// </summary>
-    public Asset<T> NewAsset { get; }
-
     private readonly AssetProvider<T> assetProvider;
+    private readonly Asset<T>         originalAsset;
 
     public AssetReplacementHandle(
         AssetProvider<T> assetProvider,
         Asset<T>         newAsset
     )
     {
-        OriginalAsset      = assetProvider();
-        NewAsset           = newAsset;
         this.assetProvider = assetProvider;
+        originalAsset      = assetProvider();
 
         // This is the important part.  Set the value.
         assetProvider() = newAsset;
@@ -43,6 +33,6 @@ public sealed class AssetReplacementHandle<T> : IDisposable
     /// </summary>
     public void Dispose()
     {
-        assetProvider() = OriginalAsset;
+        assetProvider() = originalAsset;
     }
 }
