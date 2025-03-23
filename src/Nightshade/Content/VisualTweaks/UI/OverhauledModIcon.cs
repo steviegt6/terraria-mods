@@ -10,14 +10,18 @@ using Microsoft.Xna.Framework.Graphics;
 
 using MonoMod.Cil;
 
+using ReLogic.Content;
+
 using Terraria;
 using Terraria.GameContent.UI.Elements;
+using Terraria.Graphics.Shaders;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.UI;
 using Terraria.UI.Chat;
 
 using Tomat.TML.Mod.Nightshade.Core.Attributes;
+using Tomat.TML.Mod.Nightshade.Core.Rendering;
 
 namespace Tomat.TML.Mod.Nightshade.Content.VisualTweaks.UI;
 
@@ -83,7 +87,13 @@ internal sealed class OverhauledModIcon : ILoadable
     [InitializedInLoad]
     private static Mod? theMod;
 
-    private static bool isCurrentlyHandlingOurMod;
+    [InitializedInLoad]
+    private static MiscShaderData? panelShaderData;
+
+    private static bool  isCurrentlyHandlingOurMod;
+    private static float hoverIntensity;
+
+    private const string panel_shader_path = "Assets/Shaders/UI/ModPanelShader";
 
     void ILoadable.Load(global::Terraria.ModLoader.Mod mod)
     {
@@ -93,6 +103,9 @@ internal sealed class OverhauledModIcon : ILoadable
         }
 
         theMod = nsMod;
+
+        var shader = nsMod.Assets.Request<Effect>(panel_shader_path);
+        panelShaderData = new MiscShaderData(shader, "PanelShader");
 
         MonoModHooks.Add(
             GetMethod(nameof(UIModItem.OnInitialize)),
@@ -117,6 +130,11 @@ internal sealed class OverhauledModIcon : ILoadable
         MonoModHooks.Modify(
             GetMethod("OnInitialize"),
             ModifyAppendedFields
+        );
+
+        MonoModHooks.Add(
+            typeof(UIPanel).GetMethod("DrawSelf", BindingFlags.NonPublic | BindingFlags.Instance),
+            OverrideRegularPanelDrawing
         );
 
         return;
@@ -206,6 +224,13 @@ internal sealed class OverhauledModIcon : ILoadable
             UICommon.InnerPanelTexture = innerPanelTextureNew;
         }
 
+        // self.OverflowHidden = false;
+        // // test
+        // var dims = self.GetDimensions();
+        // var rect = dims.ToRectangle();
+        // rect.Inflate(2, 2);
+        // spriteBatch.Draw(TextureAssets.MagicPixel.Value, rect, Color.Red);
+
         isCurrentlyHandlingOurMod = true;
         orig(self, spriteBatch);
         isCurrentlyHandlingOurMod = false;
@@ -253,5 +278,70 @@ internal sealed class OverhauledModIcon : ILoadable
                 };
             }
         );
+    }
+
+    private static void OverrideRegularPanelDrawing(
+        Action<UIPanel, SpriteBatch> orig,
+        UIPanel                      self,
+        SpriteBatch                  spriteBatch
+    )
+    {
+        if (!isCurrentlyHandlingOurMod || self is not UIModItem uiModItem)
+        {
+            orig(self, spriteBatch);
+            return;
+        }
+
+        if (uiModItem._needsTextureLoading)
+        {
+            uiModItem._needsTextureLoading = false;
+            uiModItem.LoadTextures();
+        }
+
+        // Render our cool custom panel with a shader.
+        {
+            var snapshot = new SpriteBatchSnapshot(spriteBatch);
+            spriteBatch.End();
+            spriteBatch.Begin(
+                SpriteSortMode.Immediate,
+                BlendState.NonPremultiplied,
+                SamplerState.PointClamp,
+                DepthStencilState.None,
+                RasterizerState.CullNone,
+                null,
+                Main.UIScaleMatrix
+            );
+
+            var dims = uiModItem.GetDimensions();
+
+            if (self.IsMouseHovering)
+            {
+                hoverIntensity += 1f / 25f;
+            }
+            else
+            {
+                hoverIntensity -= 1f / 25f;
+            }
+
+            hoverIntensity = Math.Clamp(hoverIntensity, 0f, 1f);
+            
+            var color = 0.1f + (0.8f * hoverIntensity);
+
+            Debug.Assert(panelShaderData is not null);
+            panelShaderData.Shader.Parameters["grayness"].SetValue(-1f + hoverIntensity * 2f);
+            panelShaderData.Shader.Parameters["inColor"].SetValue(new Vector3(color, 0f, color));
+            panelShaderData.Shader.Parameters["speed"].SetValue(0.2f);
+            panelShaderData.Shader.Parameters["uResolution"].SetValue(new Vector2(dims.Width, dims.Height));
+            panelShaderData.Apply();
+
+            Debug.Assert(uiModItem._backgroundTexture is not null);
+            uiModItem.DrawPanel(spriteBatch, uiModItem._backgroundTexture.Value, uiModItem.BackgroundColor);
+
+            spriteBatch.End();
+            snapshot.Apply(spriteBatch);
+        }
+
+        Debug.Assert(uiModItem._borderTexture is not null);
+        uiModItem.DrawPanel(spriteBatch, uiModItem._borderTexture.Value, uiModItem.BorderColor);
     }
 }
