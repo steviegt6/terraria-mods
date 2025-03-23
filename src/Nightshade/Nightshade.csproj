@@ -7,4 +7,8 @@
         <RootNamespace>Tomat.TML.Mod.Nightshade</RootNamespace>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Folder Include="Assets\Images\UI\ModLoader\" />
+    </ItemGroup>
+
 </Project>

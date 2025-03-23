@@ -5,10 +5,14 @@ using System.Reflection;
 using JetBrains.Annotations;
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+
+using ReLogic.Content;
 
 using Terraria.ModLoader;
 using Terraria.ModLoader.UI;
 
+using Tomat.TML.Mod.Nightshade.Common.Features.AssetReplacement;
 using Tomat.TML.Mod.Nightshade.Core.Attributes;
 
 namespace Tomat.TML.Mod.Nightshade.Content.VisualTweaks.UI;
@@ -63,7 +67,24 @@ internal sealed class OverhauledModIcon : ILoadable
 
         self.BorderColor = Color.Black;
 
+        // We can't use our ARH system because these are properties.
+
+        var modInfoTextureOrig = UICommon.ButtonModInfoTexture;
+        {
+            var modInfoTextureNew = theMod.Assets.Request<Texture2D>("Assets/Images/UI/ModLoader/ButtonModInfo");
+            UICommon.ButtonModInfoTexture = modInfoTextureNew;
+        }
+
+        var modConfigTextureOrig = UICommon.ButtonModConfigTexture;
+        {
+            var modConfigTextureNew = theMod.Assets.Request<Texture2D>("Assets/Images/UI/ModLoader/ButtonModConfig");
+            UICommon.ButtonModConfigTexture = modConfigTextureNew;
+        }
+
         orig(self);
+
+        UICommon.ButtonModInfoTexture   = modInfoTextureOrig;
+        UICommon.ButtonModConfigTexture = modConfigTextureOrig;
     }
 
     private static void SetHoverColors(
