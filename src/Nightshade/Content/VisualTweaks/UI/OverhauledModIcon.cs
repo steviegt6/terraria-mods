@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Reflection;
+using System.Text;
 
 using JetBrains.Annotations;
 
@@ -9,8 +10,12 @@ using Microsoft.Xna.Framework.Graphics;
 
 using MonoMod.Cil;
 
+using Terraria;
+using Terraria.GameContent.UI.Elements;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.UI;
+using Terraria.UI.Chat;
 
 using Tomat.TML.Mod.Nightshade.Core.Attributes;
 
@@ -22,10 +27,63 @@ namespace Tomat.TML.Mod.Nightshade.Content.VisualTweaks.UI;
 [UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
 internal sealed class OverhauledModIcon : ILoadable
 {
+    private sealed class PulsatingAndAwesomeText : UIText
+    {
+        private readonly string originalText;
+
+        public PulsatingAndAwesomeText(string text, float textScale = 1, bool large = false) : base(text, textScale, large)
+        {
+            if (ChatManager.Regexes.Format.Matches(text).Count != 0)
+            {
+                throw new InvalidOperationException("The text cannot contain formatting.");
+            }
+
+            originalText = text;
+        }
+
+        [Obsolete("Unsupported", error: true)]
+        public PulsatingAndAwesomeText(LocalizedText text, float textScale = 1, bool large = false) : base(text, textScale, large)
+        {
+            throw new NotSupportedException("Localized text is not supported.");
+        }
+
+        public override void DrawSelf(SpriteBatch spriteBatch)
+        {
+            var formattedText = GetPulsatingText(originalText, Main.GlobalTimeWrappedHourly);
+            SetText(formattedText);
+
+            base.DrawSelf(spriteBatch);
+        }
+
+        private static string GetPulsatingText(string text, float time)
+        {
+            var lightPurple = new Color(200, 100, 255);
+            var darkPurple  = new Color(100, 50,  150);
+
+            const float speed  = 3f;
+            const float offset = 0.3f;
+
+            // [c/______:x]
+            const int character_length = 12;
+
+            var sb = new StringBuilder(character_length * text.Length);
+            for (var i = 0; i < text.Length; i++)
+            {
+                var wave = MathF.Sin(time * speed + i * offset);
+
+                // Factor normalized 0-1.
+                var color = Color.Lerp(lightPurple, darkPurple, (wave + 1f) / 2f);
+
+                sb.Append($"[c/{color.Hex3()}:{text[i]}]");
+            }
+            return sb.ToString();
+        }
+    }
+
     [InitializedInLoad]
     private static Mod? theMod;
 
-    private static bool renderingOurMod;
+    private static bool isCurrentlyHandlingOurMod;
 
     void ILoadable.Load(global::Terraria.ModLoader.Mod mod)
     {
@@ -54,6 +112,11 @@ internal sealed class OverhauledModIcon : ILoadable
         MonoModHooks.Modify(
             typeof(UIModStateText).GetMethod("DrawEnabledText", BindingFlags.NonPublic | BindingFlags.Instance),
             DrawCustomColoredEnabledText
+        );
+
+        MonoModHooks.Modify(
+            GetMethod("OnInitialize"),
+            ModifyAppendedFields
         );
 
         return;
@@ -92,7 +155,9 @@ internal sealed class OverhauledModIcon : ILoadable
             UICommon.ButtonModConfigTexture = modConfigTextureNew;
         }
 
+        isCurrentlyHandlingOurMod = true;
         orig(self);
+        isCurrentlyHandlingOurMod = false;
 
         UICommon.ButtonModInfoTexture   = modInfoTextureOrig;
         UICommon.ButtonModConfigTexture = modConfigTextureOrig;
@@ -141,9 +206,9 @@ internal sealed class OverhauledModIcon : ILoadable
             UICommon.InnerPanelTexture = innerPanelTextureNew;
         }
 
-        renderingOurMod = true;
+        isCurrentlyHandlingOurMod = true;
         orig(self, spriteBatch);
-        renderingOurMod = false;
+        isCurrentlyHandlingOurMod = false;
 
         UICommon.InnerPanelTexture = innerPanelTextureOrig;
     }
@@ -158,12 +223,34 @@ internal sealed class OverhauledModIcon : ILoadable
         c.EmitDelegate(
             static (Color displayColor, UIModStateText self) =>
             {
-                if (!renderingOurMod)
+                if (!isCurrentlyHandlingOurMod)
                 {
                     return displayColor;
                 }
 
                 return self._enabled ? new Color(47, 199, 229) : new Color(124, 31, 221);
+            }
+        );
+    }
+
+    private static void ModifyAppendedFields(ILContext il)
+    {
+        var c = new ILCursor(il);
+
+        c.GotoNext(MoveType.Before, x => x.MatchStfld<UIModItem>(nameof(UIModItem._modName)));
+        c.EmitDelegate(
+            (UIText originalText) =>
+            {
+                if (!isCurrentlyHandlingOurMod)
+                {
+                    return originalText;
+                }
+
+                return new PulsatingAndAwesomeText(originalText.Text)
+                {
+                    Left = originalText.Left,
+                    Top  = originalText.Top,
+                };
             }
         );
     }
