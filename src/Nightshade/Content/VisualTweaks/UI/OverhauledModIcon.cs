@@ -258,7 +258,7 @@ internal sealed class OverhauledModIcon : ILoadable
                     return displayColor;
                 }
 
-                return self._enabled ? new Color(47, 199, 229) : new Color(124, 31, 221);
+                return self._enabled ? light_pink : dark_pink;
             }
         );
     }
@@ -329,7 +329,7 @@ internal sealed class OverhauledModIcon : ILoadable
             }
 
             hoverIntensity = Math.Clamp(hoverIntensity, 0f, 1f);
-            
+
             var color = 0.1f + (0.8f * hoverIntensity);
 
             Debug.Assert(panelShaderData is not null);
