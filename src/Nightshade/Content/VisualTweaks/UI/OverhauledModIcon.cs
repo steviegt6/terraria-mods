@@ -61,8 +61,8 @@ internal sealed class OverhauledModIcon : ILoadable
 
         private static string GetPulsatingText(string text, float time)
         {
-            var lightPurple = new Color(200, 100, 255);
-            var darkPurple  = new Color(100, 50,  150);
+            var lightPurple = light_pink;
+            var darkPurple  = dark_pink;
 
             const float speed  = 3f;
             const float offset = 0.3f;
@@ -94,6 +94,11 @@ internal sealed class OverhauledModIcon : ILoadable
     private static float hoverIntensity;
 
     private const string panel_shader_path = "Assets/Shaders/UI/ModPanelShader";
+
+    // C50084 CE008C dark
+    // E600E6        light
+    private static readonly Color dark_pink  = new(197, 0, 132);
+    private static readonly Color light_pink = new(230, 0, 230);
 
     void ILoadable.Load(global::Terraria.ModLoader.Mod mod)
     {
