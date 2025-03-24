@@ -229,13 +229,6 @@ internal sealed class OverhauledModIcon : ILoadable
             UICommon.InnerPanelTexture = innerPanelTextureNew;
         }
 
-        // self.OverflowHidden = false;
-        // // test
-        // var dims = self.GetDimensions();
-        // var rect = dims.ToRectangle();
-        // rect.Inflate(2, 2);
-        // spriteBatch.Draw(TextureAssets.MagicPixel.Value, rect, Color.Red);
-
         isCurrentlyHandlingOurMod = true;
         orig(self, spriteBatch);
         isCurrentlyHandlingOurMod = false;
