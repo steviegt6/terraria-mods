@@ -319,24 +319,18 @@ internal sealed class OverhauledModIcon : ILoadable
 
             var dims = uiModItem.GetDimensions();
 
-            if (self.IsMouseHovering)
-            {
-                hoverIntensity += 1f / 25f;
-            }
-            else
-            {
-                hoverIntensity -= 1f / 25f;
-            }
-
-            hoverIntensity = Math.Clamp(hoverIntensity, 0f, 1f);
+            hoverIntensity += (self.IsMouseHovering ? 1f : -1f) / 15f;
+            hoverIntensity =  Math.Clamp(hoverIntensity, 0f, 1f);
 
             var color = 0.1f + (0.8f * hoverIntensity);
 
             Debug.Assert(panelShaderData is not null);
-            panelShaderData.Shader.Parameters["grayness"].SetValue(-1f + hoverIntensity * 2f);
-            panelShaderData.Shader.Parameters["inColor"].SetValue(new Vector3(color, 0f, color));
+            // panelShaderData.Shader.Parameters["grayness"].SetValue(-1f + hoverIntensity * 2f);
+            panelShaderData.Shader.Parameters["grayness"].SetValue(1f);
+            panelShaderData.Shader.Parameters["inColor"].SetValue(new Vector3(1f, 0f, 1f));
             panelShaderData.Shader.Parameters["speed"].SetValue(0.2f);
-            panelShaderData.Shader.Parameters["uResolution"].SetValue(new Vector2(dims.Width, dims.Height));
+            panelShaderData.Shader.Parameters["uSource"].SetValue(new Vector4(dims.Width, dims.Height - 2f, dims.X, dims.Y));
+            panelShaderData.Shader.Parameters["uHoverIntensity"].SetValue(hoverIntensity);
             panelShaderData.Apply();
 
             Debug.Assert(uiModItem._backgroundTexture is not null);
