@@ -100,6 +100,15 @@ internal sealed class OverhauledModIcon : ILoadable
     private static readonly Color dark_pink  = new(197, 0, 132);
     private static readonly Color light_pink = new(230, 0, 230);
 
+    // In no particular order of importance.  We could order based on whether
+    // they have icons?
+    // These names are used as unique keys for both getting icons and for
+    // getting localized names.
+    private static readonly string[] authors =
+    [
+        "Tomat", "Triangle", "Math2", "OneThree",
+    ];
+
     void ILoadable.Load(global::Terraria.ModLoader.Mod mod)
     {
         if (mod is not Mod nsMod)
@@ -234,6 +243,40 @@ internal sealed class OverhauledModIcon : ILoadable
         isCurrentlyHandlingOurMod = false;
 
         UICommon.InnerPanelTexture = innerPanelTextureOrig;
+
+        // Override the author tooltip with our own awesome one.
+        if (self._tooltip != Language.GetTextValue("tModLoader.ModsByline", self._mod.properties.author))
+        {
+            return;
+        }
+
+        UICommon.TooltipMouseText(GetAuthorTooltip());
+        // Main.HoverItem.TurnToAir();
+        // Main.mouseText = false;
+        // Main.instance.MouseText(GetAuthorTooltip());
+
+        return;
+
+        static string GetAuthorTooltip()
+        {
+            var sb = new StringBuilder();
+
+            sb.AppendLine(GetText("UI.ModIcon.AuthorHeader"));
+
+            foreach (var authorName in authors)
+            {
+                sb.Append($"[nsa:{authorName}]");
+                sb.Append(' ');
+                sb.AppendLine(GetText($"UI.ModIcon.Authors.{authorName}"));
+            }
+            
+            return sb.ToString();
+        }
+
+        static string GetText(string key)
+        {
+            return Language.GetTextValue($"Mods.Nightshade.{key}");
+        }
     }
 
     private static void DrawCustomColoredEnabledText(ILContext il)
@@ -261,15 +304,17 @@ internal sealed class OverhauledModIcon : ILoadable
         var c = new ILCursor(il);
 
         c.GotoNext(MoveType.Before, x => x.MatchStfld<UIModItem>(nameof(UIModItem._modName)));
+        c.EmitLdarg0(); // this
         c.EmitDelegate(
-            (UIText originalText) =>
+            (UIText originalText, UIModItem self) =>
             {
                 if (!isCurrentlyHandlingOurMod)
                 {
                     return originalText;
                 }
 
-                return new PulsatingAndAwesomeText(originalText.Text)
+                var name = Language.GetTextValue("Mods.Nightshade.UI.ModIcon.ModName");
+                return new PulsatingAndAwesomeText(name + $" v{self._mod.Version}")
                 {
                     Left = originalText.Left,
                     Top  = originalText.Top,

@@ -1,1 +1,13 @@
+UI: {
+	ModIcon: {
+		ModName: NIGHTSHADE
+		AuthorHeader: Made with [c/CE008C:♥] by:
 
+		Authors: {
+			Tomat: Tomat
+			Triangle: Triangle
+			Math2: math2
+			OneThree: dreitone
+		}
+	}
+}
