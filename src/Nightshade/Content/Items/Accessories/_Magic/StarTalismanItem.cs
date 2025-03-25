@@ -13,8 +13,10 @@ internal sealed class StarTalismanItem : ModItem
 {
     public sealed class StarTalismanPlayer : ModPlayer, IModifyStatPickups
     {
+        private const float factor = 0.2f;
+
         public bool IsEquipped { get; set; }
-        
+
         public override void ResetEffects()
         {
             base.ResetEffects();
@@ -28,20 +30,17 @@ internal sealed class StarTalismanItem : ModItem
             {
                 return;
             }
-            
+
             switch (kind)
             {
                 case StatPickupKind.Star:
-                    amount += 20;
-                    break;
-
                 case StatPickupKind.ManaCloakStar:
-                    amount += 10;
+                    amount += (int)(amount * factor);
                     break;
             }
         }
     }
-    
+
     public override string Texture => $"{Mod.Name}/Assets/Images/Items/Accessories/StarTalisman";
 
     public override void SetDefaults()
