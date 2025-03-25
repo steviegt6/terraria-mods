@@ -13,6 +13,7 @@ using MonoMod.Cil;
 using ReLogic.Content;
 
 using Terraria;
+using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Graphics.Shaders;
 using Terraria.Localization;
@@ -84,16 +85,74 @@ internal sealed class OverhauledModIcon : ILoadable
         }
     }
 
+    private sealed class PetalImage : UIImage
+    {
+        private readonly Asset<Texture2D> icon;
+        private readonly Asset<Texture2D> iconDots;
+
+        public PetalImage(Mod mod) : base(TextureAssets.MagicPixel)
+        {
+            const string path = "Assets/Images/UI/ModIcon/";
+
+            icon     = mod.Assets.Request<Texture2D>(path + "Icon");
+            iconDots = mod.Assets.Request<Texture2D>(path + "Icon_Dots");
+
+            SetImage(icon);
+        }
+
+        public override void DrawSelf(SpriteBatch spriteBatch)
+        {
+            // const int offset = (80 - 46) / 2;
+            const int offset = 40;
+
+            var dims = GetDimensions();
+            dims.X += offset;
+            dims.Y += offset;
+
+            var rotation = Main.GlobalTimeWrappedHourly / 10f;
+
+            var origin = icon.Size() / 2f;
+
+            spriteBatch.Draw(
+                icon.Value,
+                dims.Position(),
+                null,
+                Color.White,
+                rotation,
+                origin,
+                1f,
+                SpriteEffects.None,
+                0f
+            );
+
+            spriteBatch.Draw(
+                iconDots.Value,
+                dims.Position(),
+                null,
+                Color.White,
+                rotation,
+                origin,
+                1f,
+                SpriteEffects.None,
+                0f
+            );
+        }
+    }
+
     [InitializedInLoad]
     private static Mod? theMod;
 
     [InitializedInLoad]
     private static MiscShaderData? panelShaderData;
 
+    [InitializedInLoad]
+    private static MiscShaderData? flowerShaderData;
+
     private static bool  isCurrentlyHandlingOurMod;
     private static float hoverIntensity;
 
-    private const string panel_shader_path = "Assets/Shaders/UI/ModPanelShader";
+    private const string panel_shader_path  = "Assets/Shaders/UI/ModPanelShader";
+    private const string flower_shader_path = "Assets/Shaders/UI/CoolFlowerShader";
 
     // C50084 CE008C dark
     // E600E6        light
@@ -118,8 +177,11 @@ internal sealed class OverhauledModIcon : ILoadable
 
         theMod = nsMod;
 
-        var shader = nsMod.Assets.Request<Effect>(panel_shader_path);
-        panelShaderData = new MiscShaderData(shader, "PanelShader");
+        var panelShader = nsMod.Assets.Request<Effect>(panel_shader_path);
+        panelShaderData = new MiscShaderData(panelShader, "PanelShader");
+
+        var flowerShader = nsMod.Assets.Request<Effect>(flower_shader_path);
+        flowerShaderData = new MiscShaderData(flowerShader, "FlowerShader");
 
         MonoModHooks.Add(
             GetMethod(nameof(UIModItem.OnInitialize)),
@@ -269,7 +331,7 @@ internal sealed class OverhauledModIcon : ILoadable
                 sb.Append(' ');
                 sb.AppendLine(GetText($"UI.ModIcon.Authors.{authorName}"));
             }
-            
+
             return sb.ToString();
         }
 
@@ -302,6 +364,25 @@ internal sealed class OverhauledModIcon : ILoadable
     private static void ModifyAppendedFields(ILContext il)
     {
         var c = new ILCursor(il);
+
+        c.GotoNext(MoveType.Before, x => x.MatchStfld<UIModItem>(nameof(UIModItem._modIcon)));
+        c.EmitDelegate(
+            (UIImage originalImage) =>
+            {
+                if (!isCurrentlyHandlingOurMod || theMod is null)
+                {
+                    return originalImage;
+                }
+
+                return new PetalImage(theMod)
+                {
+                    Left   = originalImage.Left,
+                    Top    = originalImage.Top,
+                    Width  = originalImage.Width,
+                    Height = originalImage.Height,
+                };
+            }
+        );
 
         c.GotoNext(MoveType.Before, x => x.MatchStfld<UIModItem>(nameof(UIModItem._modName)));
         c.EmitLdarg0(); // this
@@ -361,7 +442,6 @@ internal sealed class OverhauledModIcon : ILoadable
             hoverIntensity =  Math.Clamp(hoverIntensity, 0f, 1f);
 
             Debug.Assert(panelShaderData is not null);
-            // panelShaderData.Shader.Parameters["grayness"].SetValue(-1f + hoverIntensity * 2f);
             panelShaderData.Shader.Parameters["grayness"].SetValue(1f);
             panelShaderData.Shader.Parameters["inColor"].SetValue(new Vector3(1f, 0f, 1f));
             panelShaderData.Shader.Parameters["speed"].SetValue(0.2f);
@@ -371,6 +451,27 @@ internal sealed class OverhauledModIcon : ILoadable
 
             Debug.Assert(uiModItem._backgroundTexture is not null);
             uiModItem.DrawPanel(spriteBatch, uiModItem._backgroundTexture.Value, uiModItem.BackgroundColor);
+
+            spriteBatch.End();
+            spriteBatch.Begin(
+                SpriteSortMode.Immediate,
+                BlendState.AlphaBlend,
+                SamplerState.PointClamp,
+                DepthStencilState.None,
+                RasterizerState.CullNone,
+                null,
+                Main.UIScaleMatrix
+            );
+
+            dims.X -= dims.Width / 2f;
+            dims.X += 40f; // 80 / 2
+
+            Debug.Assert(flowerShaderData is not null);
+            flowerShaderData.Shader.Parameters["uSource"].SetValue(new Vector4(dims.Width, dims.Height - 2f, dims.X, dims.Y));
+            flowerShaderData.Apply();
+            uiModItem.DrawPanel(spriteBatch, uiModItem._backgroundTexture.Value, uiModItem.BackgroundColor);
+            // Main.spriteBatch.Draw(TextureAssets.MagicPixel.Value, flowerDimensions, Color.White);
+            // Main.spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Color.White);
 
             spriteBatch.End();
             snapshot.Apply(spriteBatch);
