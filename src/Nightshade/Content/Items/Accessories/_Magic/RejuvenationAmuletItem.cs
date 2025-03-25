@@ -4,8 +4,6 @@ using Terraria.ModLoader;
 
 namespace Tomat.TML.Mod.Nightshade.Content.Items.Accessories;
 
-// TODO: Player spritesheet.
-
 [AutoloadEquip(EquipType.Neck)]
 internal sealed class RejuvenationAmuletItem : ModItem
 {

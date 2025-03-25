@@ -6,8 +6,6 @@ using Tomat.TML.Mod.Nightshade.Common.Hooks.StatPickups;
 
 namespace Tomat.TML.Mod.Nightshade.Content.Items.Accessories;
 
-// TODO: Player spritesheet.
-
 [AutoloadEquip(EquipType.Neck)]
 internal sealed class StarTalismanItem : ModItem
 {

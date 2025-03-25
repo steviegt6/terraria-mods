@@ -32,4 +32,14 @@ Items: {
 			Temporarily increases mana regeneration rate after picking up a star
 			'''
 	}
+
+	MechanicalBeetleItem: {
+		DisplayName: Mechanical Beetle
+		Tooltip:
+			'''
+			Increases summon damage by 20%
+			Increases summon tag damage by 20%
+			Increases the knockback of your minions
+			'''
+	}
 }
