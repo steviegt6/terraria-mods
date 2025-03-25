@@ -1,3 +1,13 @@
+// This is an adapted version of the shader "Plants growing from nowhere"
+// written by `paperu`.
+// The original source can be found @ <https://www.shadertoy.com/view/cdVXDK>.
+// It has been translated to HLSL 3.0 through SPIR-V and hand-tweaked to match
+// our use case.
+// I am not sure what the license is and do not consider it to be licensed under
+// AGPL-3.0 despite the rest of the codebase being so for such purposes.  Tread
+// carefully.
+// You can find the original author here: <paperu.net>.
+
 #define PIXEL_SIZE 2.
 
 sampler uImage0 : register(s0);
