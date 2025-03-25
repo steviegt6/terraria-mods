@@ -18,8 +18,18 @@ UI: {
 }
 
 Items: {
-	StarTalismanAccessory: {
+	StarTalismanItem: {
 		DisplayName: Star Talisman
 		Tooltip: Increases mana gained from star pickups by 20%
+	}
+
+	RejuvenationAmuletItem: {
+		DisplayName: Amulet of Rejuvenation
+		Tooltip:
+			'''
+			Increases mana gained from star pickups by 20%
+			Increases maximum mana by 20
+			Temporarily increases mana regeneration rate after picking up a star
+			'''
 	}
 }

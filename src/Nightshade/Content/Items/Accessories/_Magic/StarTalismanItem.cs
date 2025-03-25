@@ -9,7 +9,7 @@ namespace Tomat.TML.Mod.Nightshade.Content.Items.Accessories;
 // TODO: Player spritesheet.
 
 [AutoloadEquip(EquipType.Neck)]
-internal sealed class StarTalismanAccessory : ModItem
+internal sealed class StarTalismanItem : ModItem
 {
     public sealed class StarTalismanPlayer : ModPlayer, IModifyStatPickups
     {
