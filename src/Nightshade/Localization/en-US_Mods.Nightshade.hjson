@@ -16,3 +16,10 @@ UI: {
 		}
 	}
 }
+
+Items: {
+	StarTalismanAccessory: {
+		DisplayName: Star Talisman
+		Tooltip: Increases mana gained from star pickups by 20%
+	}
+}

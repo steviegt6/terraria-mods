@@ -2,7 +2,7 @@ using JetBrains.Annotations;
 
 using Terraria.ModLoader;
 
-namespace Tomat.TML.Mod.Nightshade.Common;
+namespace Tomat.TML.Mod.Nightshade.Common.Loading;
 
 [UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature, ImplicitUseTargetFlags.WithInheritors)]
 public interface IInitializer : ILoadable
