@@ -42,4 +42,11 @@ Items: {
 			Increases the knockback of your minions
 			'''
 	}
+
+	ImpactBullet: {
+		DisplayName: Impact Bullet
+		Tooltip: ""
+	}
 }
+
+Projectiles.ImpactBulletProjectile.DisplayName: Impact Bullet Projectile
