@@ -34,6 +34,9 @@ internal sealed class SimpleModMenu : ModMenu
     [InitializedInLoad]
     private static Asset<Texture2D>? iconDots;
 
+    [InitializedInLoad]
+    private static ManagedRenderTarget? managedRt;
+
     public override void Load()
     {
         base.Load();
@@ -51,10 +54,16 @@ internal sealed class SimpleModMenu : ModMenu
 
         var flowerShader = Mod.Assets.Request<Effect>(flower_shader_path);
         flowerShaderData = new MiscShaderData(flowerShader, "FlowerShader");
+
+        managedRt = new ManagedRenderTarget((width, height) => new RenderTarget2D(Main.instance.GraphicsDevice, width / 2, height / 2), true);
+        managedRt.Initialize(Main.screenWidth, Main.screenHeight);
     }
 
     public override bool PreDrawLogo(SpriteBatch spriteBatch, ref Vector2 logoDrawCenter, ref float logoRotation, ref float logoScale, ref Color drawColor)
     {
+        Debug.Assert(managedRt is not null);
+
+        // Background rendering.
         {
             var snapshot = new SpriteBatchSnapshot(spriteBatch);
             spriteBatch.End();
@@ -62,11 +71,6 @@ internal sealed class SimpleModMenu : ModMenu
             var oldRts = Main.instance.GraphicsDevice.GetRenderTargets();
 
             var dims = new Rectangle(0, 0, Main.screenWidth / 2, Main.screenHeight / 2);
-
-            using var managedRt = new ManagedRenderTarget((width, height) => new RenderTarget2D(Main.instance.GraphicsDevice, width / 2, height / 2), true);
-            {
-                managedRt.Initialize(Main.screenWidth, Main.screenHeight);
-            }
 
             Main.instance.GraphicsDevice.SetRenderTarget(managedRt.Value);
 
