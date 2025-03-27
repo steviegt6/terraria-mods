@@ -33,7 +33,7 @@ public sealed class GenerateModType : IIncrementalGenerator
                 }
 
                 x.AddSource(
-                    "Mod.g.cs",
+                    "ModImpl.g.cs",
                     SourceText.From(MakeModType(rootNamespace), Encoding.UTF8)
                 );
             }
@@ -48,7 +48,7 @@ public sealed class GenerateModType : IIncrementalGenerator
             sb.AppendLine();
             sb.AppendLine("[global::JetBrains.Annotations.UsedImplicitly(global::JetBrains.Annotations.ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]");
             sb.AppendLine("[global::System.Runtime.CompilerServices.CompilerGenerated]");
-            sb.AppendLine("public sealed partial class Mod : global::Terraria.ModLoader.Mod;");
+            sb.AppendLine("public sealed partial class ModImpl : global::Terraria.ModLoader.Mod;");
         }
         return sb.ToString();
     }
