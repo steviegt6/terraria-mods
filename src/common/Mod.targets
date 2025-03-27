@@ -7,6 +7,12 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <!-- Hide package version mismatch warning due to tModLoader including
+             4.12.0 of CodeAnalysis while 4.13.0 may be resolved locally. -->
+        <NoWarn>$(NoWarn);MSB3277</NoWarn>
+    </PropertyGroup>
+
     <ItemGroup>
         <AdditionalFiles Include="**/*.hlsl"/>
     </ItemGroup>
