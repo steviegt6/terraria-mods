@@ -1,0 +1,9 @@
+﻿{
+  "solution": {
+    "path": "Tomat.TML.sln",
+    "projects": [
+      "common\\SourceGenerator\\SourceGenerator.csproj",
+      "nightshade\\Nightshade\\Nightshade.csproj"
+    ]
+  }
+}
