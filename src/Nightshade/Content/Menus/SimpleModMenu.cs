@@ -61,8 +61,9 @@ internal sealed class SimpleModMenu : ModMenu
 
             var oldRts = Main.instance.GraphicsDevice.GetRenderTargets();
 
-            var dims      = new Rectangle(0, 0, Main.screenWidth / 2, Main.screenHeight / 2);
-            var managedRt = new ManagedRenderTarget((width, height) => new RenderTarget2D(Main.instance.GraphicsDevice, width / 2, height / 2), true);
+            var dims = new Rectangle(0, 0, Main.screenWidth / 2, Main.screenHeight / 2);
+
+            using var managedRt = new ManagedRenderTarget((width, height) => new RenderTarget2D(Main.instance.GraphicsDevice, width / 2, height / 2), true);
             {
                 managedRt.Initialize(Main.screenWidth, Main.screenHeight);
             }
