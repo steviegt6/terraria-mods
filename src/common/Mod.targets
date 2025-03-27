@@ -8,6 +8,10 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <AdditionalFiles Include="**/*.hlsl"/>
+    </ItemGroup>
+
+    <ItemGroup>
         <!-- Helpful to automaticlly important any libraryes placed in `lib/`
              (still necessary to explicitly add them to `dllReferences`!). -->
         <Reference Include="lib\**"/>
