@@ -1,10 +1,12 @@
-#define PIXEL_SIZE 2.
+#define PIXEL_SIZE uPixel
 
 sampler uImage0 : register(s0);
 
 float uTime;
 float4 uSource;
 float uHoverIntensity;
+
+float uPixel = 2.;
 
 float grayness;
 float3 inColor;

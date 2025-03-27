@@ -3,15 +3,21 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Tomat.TML.Mod.Nightshade.Core.Rendering;
 
-public readonly struct SpriteBatchSnapshot(SpriteBatch spriteBatch)
+public struct SpriteBatchSnapshot(SpriteBatch spriteBatch)
 {
-    private readonly SpriteSortMode    sortMode          = spriteBatch.sortMode;
-    private readonly BlendState        blendState        = spriteBatch.blendState;
-    private readonly SamplerState      samplerState      = spriteBatch.samplerState;
-    private readonly DepthStencilState depthStencilState = spriteBatch.depthStencilState;
-    private readonly RasterizerState   rasterizerState   = spriteBatch.rasterizerState;
-    private readonly Effect?           customEffect      = spriteBatch.customEffect;
-    private readonly Matrix            transformMatrix   = spriteBatch.transformMatrix;
+    public SpriteSortMode SortMode { get; set; } = spriteBatch.sortMode;
+
+    public BlendState BlendState { get; set; } = spriteBatch.blendState;
+
+    public SamplerState SamplerState { get; set; } = spriteBatch.samplerState;
+
+    public DepthStencilState DepthStencilState { get; set; } = spriteBatch.depthStencilState;
+
+    public RasterizerState RasterizerState { get; set; } = spriteBatch.rasterizerState;
+
+    public Effect? CustomEffect { get; set; } = spriteBatch.customEffect;
+
+    public Matrix TransformMatrix { get; set; } = spriteBatch.transformMatrix;
 
     public void Apply(SpriteBatch spriteBatch)
     {
@@ -21,13 +27,13 @@ public readonly struct SpriteBatchSnapshot(SpriteBatch spriteBatch)
         }
 
         spriteBatch.Begin(
-            sortMode,
-            blendState,
-            samplerState,
-            depthStencilState,
-            rasterizerState,
-            customEffect,
-            transformMatrix
+            SortMode,
+            BlendState,
+            SamplerState,
+            DepthStencilState,
+            RasterizerState,
+            CustomEffect,
+            TransformMatrix
         );
     }
 }

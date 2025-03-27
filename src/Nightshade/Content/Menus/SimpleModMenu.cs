@@ -12,6 +12,7 @@ using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
 
+using Tomat.TML.Mod.Nightshade.Common.Rendering;
 using Tomat.TML.Mod.Nightshade.Core.Attributes;
 using Tomat.TML.Mod.Nightshade.Core.Rendering;
 
@@ -43,7 +44,7 @@ internal sealed class SimpleModMenu : ModMenu
         iconDots = Mod.Assets.Request<Texture2D>(path + "Icon_Dots");
 
         const string panel_shader_path  = "Assets/Shaders/UI/ModPanelShader";
-        const string flower_shader_path = "Assets/Shaders/UI/CoolFlowerShaderBackground";
+        const string flower_shader_path = "Assets/Shaders/UI/CoolFlowerShader";
 
         var panelShader = Mod.Assets.Request<Effect>(panel_shader_path);
         panelShaderData = new MiscShaderData(panelShader, "PanelShader");
@@ -57,6 +58,17 @@ internal sealed class SimpleModMenu : ModMenu
         {
             var snapshot = new SpriteBatchSnapshot(spriteBatch);
             spriteBatch.End();
+
+            var oldRts = Main.instance.GraphicsDevice.GetRenderTargets();
+
+            var dims      = new Rectangle(0, 0, Main.screenWidth / 2, Main.screenHeight / 2);
+            var managedRt = new ManagedRenderTarget((width, height) => new RenderTarget2D(Main.instance.GraphicsDevice, width / 2, height / 2), true);
+            {
+                managedRt.Initialize(Main.screenWidth, Main.screenHeight);
+            }
+
+            Main.instance.GraphicsDevice.SetRenderTarget(managedRt.Value);
+
             spriteBatch.Begin(
                 SpriteSortMode.Immediate,
                 BlendState.NonPremultiplied,
@@ -67,14 +79,13 @@ internal sealed class SimpleModMenu : ModMenu
                 Main.UIScaleMatrix
             );
 
-            var dims = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
-            
             Debug.Assert(panelShaderData is not null);
             panelShaderData.Shader.Parameters["grayness"].SetValue(1f);
             panelShaderData.Shader.Parameters["inColor"].SetValue(new Vector3(1f, 0f, 1f));
             panelShaderData.Shader.Parameters["speed"].SetValue(0.2f);
             panelShaderData.Shader.Parameters["uSource"].SetValue(new Vector4(dims.Width, dims.Height, dims.X, dims.Y));
             panelShaderData.Shader.Parameters["uHoverIntensity"].SetValue(1f);
+            panelShaderData.Shader.Parameters["uPixel"].SetValue(1f);
             panelShaderData.Apply();
             Main.spriteBatch.Draw(TextureAssets.MagicPixel.Value, dims, Color.White);
 
@@ -89,18 +100,23 @@ internal sealed class SimpleModMenu : ModMenu
                 Main.UIScaleMatrix
             );
 
-            // dims = dims;
-            // dims.Y = (int)logoDrawCenter.Y - (Main.screenHeight / 2); // + (Main.screenHeight / 2);
-            
-            // half res for testing... someone do it better!!
-            // dims = new Rectangle(dims.X, dims.Y, dims.Width / 2, dims.Height / 2);
-
             Debug.Assert(flowerShaderData is not null);
             flowerShaderData.Shader.Parameters["uSource"].SetValue(new Vector4(dims.Width, dims.Height, dims.X, dims.Y));
+            flowerShaderData.Shader.Parameters["uPixel"].SetValue(1f);
             flowerShaderData.Apply();
             Main.spriteBatch.Draw(TextureAssets.MagicPixel.Value, dims, Color.White);
 
             spriteBatch.End();
+
+            Main.instance.GraphicsDevice.SetRenderTargets(oldRts);
+
+            var tempSnapshot = snapshot with { SamplerState = SamplerState.PointClamp };
+            tempSnapshot.Apply(spriteBatch);
+
+            spriteBatch.Draw(managedRt.Value, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 2f, SpriteEffects.None, 0f);
+
+            spriteBatch.End();
+
             snapshot.Apply(spriteBatch);
         }
 

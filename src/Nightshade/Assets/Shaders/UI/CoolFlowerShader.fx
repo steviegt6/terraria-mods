@@ -8,7 +8,7 @@
 // carefully.
 // You can find the original author here: <paperu.net>.
 
-#define PIXEL_SIZE 2.
+#define PIXEL_SIZE uPixel
 
 sampler uImage0 : register(s0);
 
@@ -25,6 +25,8 @@ struct rmRes
 // float3 uResolution;
 float4 uSource;
 float uTime;
+
+float uPixel = 2.;
 
 #define iResolution float3(uSource.xy, 0.)
 #define iTime uTime
