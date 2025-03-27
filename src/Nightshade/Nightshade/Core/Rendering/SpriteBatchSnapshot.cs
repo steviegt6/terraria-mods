@@ -1,7 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Tomat.TML.Mod.Nightshade.Core.Rendering;
+namespace Nightshade.Core.Rendering;
 
 public struct SpriteBatchSnapshot(SpriteBatch spriteBatch)
 {

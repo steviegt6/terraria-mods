@@ -5,6 +5,10 @@ using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
+using Nightshade.Common.Rendering;
+using Nightshade.Core.Attributes;
+using Nightshade.Core.Rendering;
+
 using ReLogic.Content;
 
 using Terraria;
@@ -12,11 +16,7 @@ using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
 
-using Tomat.TML.Mod.Nightshade.Common.Rendering;
-using Tomat.TML.Mod.Nightshade.Core.Attributes;
-using Tomat.TML.Mod.Nightshade.Core.Rendering;
-
-namespace Tomat.TML.Mod.Nightshade.Content.Menus;
+namespace Nightshade.Content.Menus;
 
 // very simple btw
 [UsedImplicitly(ImplicitUseKindFlags.InstantiatedNoFixedConstructorSignature)]

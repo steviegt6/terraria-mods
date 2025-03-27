@@ -4,7 +4,7 @@ using ReLogic.Content;
 
 using Terraria.GameContent;
 
-namespace Tomat.TML.Mod.Nightshade.Common.Features.AssetReplacement;
+namespace Nightshade.Common.Features.AssetReplacement;
 
 /// <summary>
 ///     Provides utility methods for replacing assets.

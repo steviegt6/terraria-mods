@@ -4,7 +4,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Tomat.TML.Mod.Nightshade.Content.Items.Accessories;
+namespace Nightshade.Content.Items.Accessories;
 
 internal sealed class MechanicalBeetleItem : ModItem
 {

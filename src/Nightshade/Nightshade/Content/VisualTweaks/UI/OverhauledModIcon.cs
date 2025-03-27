@@ -10,6 +10,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 using MonoMod.Cil;
 
+using Nightshade.Core.Attributes;
+using Nightshade.Core.Rendering;
+
 using ReLogic.Content;
 
 using Terraria;
@@ -21,10 +24,7 @@ using Terraria.ModLoader;
 using Terraria.ModLoader.UI;
 using Terraria.UI.Chat;
 
-using Tomat.TML.Mod.Nightshade.Core.Attributes;
-using Tomat.TML.Mod.Nightshade.Core.Rendering;
-
-namespace Tomat.TML.Mod.Nightshade.Content.VisualTweaks.UI;
+namespace Nightshade.Content.VisualTweaks.UI;
 
 /// <summary>
 ///     Reworks the rendering of the mod's <see cref="UIModItem"/> instance.

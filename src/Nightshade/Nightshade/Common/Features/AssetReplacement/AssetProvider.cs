@@ -1,6 +1,6 @@
 using ReLogic.Content;
 
-namespace Tomat.TML.Mod.Nightshade.Common.Features.AssetReplacement;
+namespace Nightshade.Common.Features.AssetReplacement;
 
 /// <summary>
 ///     Provides a mutable reference to an asset.

@@ -1,13 +1,13 @@
 ﻿using MonoMod.Cil;
 
+using Nightshade.Common.Loading;
+using Nightshade.Common.Utilities;
+
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
 
-using Tomat.TML.Mod.Nightshade.Common.Loading;
-using Tomat.TML.Mod.Nightshade.Common.Utilities;
-
-namespace Tomat.TML.Mod.Nightshade.Common.Hooks.ProjectileReflecting;
+namespace Nightshade.Common.Hooks.ProjectileReflecting;
 
 public interface INpcReflectable
 {

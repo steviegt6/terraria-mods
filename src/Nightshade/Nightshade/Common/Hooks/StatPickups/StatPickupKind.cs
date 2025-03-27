@@ -1,4 +1,4 @@
-namespace Tomat.TML.Mod.Nightshade.Common.Hooks.StatPickups;
+namespace Nightshade.Common.Hooks.StatPickups;
 
 public enum StatPickupKind
 {

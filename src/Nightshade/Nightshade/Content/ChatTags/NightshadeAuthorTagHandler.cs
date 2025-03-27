@@ -1,14 +1,14 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
+using Nightshade.Common.Features.ChatTags;
+
 using ReLogic.Graphics;
 
 using Terraria.ModLoader;
 using Terraria.UI.Chat;
 
-using Tomat.TML.Mod.Nightshade.Common.Features.ChatTags;
-
-namespace Tomat.TML.Mod.Nightshade.Content.ChatTags;
+namespace Nightshade.Content.ChatTags;
 
 internal sealed class NightshadeAuthorTagHandler : ILoadableTagHandler<NightshadeAuthorTagHandler>
 {

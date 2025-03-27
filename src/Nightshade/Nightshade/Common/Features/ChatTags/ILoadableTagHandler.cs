@@ -1,8 +1,8 @@
+using Nightshade.Common.Loading;
+
 using Terraria.UI.Chat;
 
-using Tomat.TML.Mod.Nightshade.Common.Loading;
-
-namespace Tomat.TML.Mod.Nightshade.Common.Features.ChatTags;
+namespace Nightshade.Common.Features.ChatTags;
 
 public interface ILoadableTagHandler<TSelf> : ITagHandler, IInitializer
     where TSelf : ILoadableTagHandler<TSelf>, new()

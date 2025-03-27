@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 using Terraria;
 
-namespace Tomat.TML.Mod.Nightshade.Common.Rendering;
+namespace Nightshade.Common.Rendering;
 
 /// <summary>
 ///     A managed, intelligent wrapper around a <see cref="RenderTarget2D"/>.

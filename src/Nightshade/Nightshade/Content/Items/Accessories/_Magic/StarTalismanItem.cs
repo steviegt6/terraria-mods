@@ -1,10 +1,10 @@
+using Nightshade.Common.Hooks.StatPickups;
+
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-using Tomat.TML.Mod.Nightshade.Common.Hooks.StatPickups;
-
-namespace Tomat.TML.Mod.Nightshade.Content.Items.Accessories;
+namespace Nightshade.Content.Items.Accessories;
 
 [AutoloadEquip(EquipType.Neck)]
 internal sealed class StarTalismanItem : ModItem

@@ -5,15 +5,15 @@ using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
+using Nightshade.Common.Features.AssetReplacement;
+using Nightshade.Core.Attributes;
+
 using Terraria;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-using Tomat.TML.Mod.Nightshade.Common.Features.AssetReplacement;
-using Tomat.TML.Mod.Nightshade.Core.Attributes;
-
-namespace Tomat.TML.Mod.Nightshade.Content.VisualTweaks;
+namespace Nightshade.Content.VisualTweaks;
 
 /// <summary>
 ///     Modifies the rendering of Rainbow Slimes to have a cooler rainbow effect

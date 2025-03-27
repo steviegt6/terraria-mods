@@ -4,7 +4,7 @@
 
     <PropertyGroup>
         <AssemblyName>Nightshade</AssemblyName>
-        <RootNamespace>Tomat.TML.Mod.Nightshade</RootNamespace>
+        <RootNamespace>Nightshade</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

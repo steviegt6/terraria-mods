@@ -1,10 +1,10 @@
-﻿using Terraria;
+﻿using Nightshade.Common.Hooks.ProjectileReflecting;
+
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-using Tomat.TML.Mod.Nightshade.Common.Hooks.ProjectileReflecting;
-
-namespace Tomat.TML.Mod.Nightshade.Content.Items.Ammo;
+namespace Nightshade.Content.Items.Ammo;
 
 internal sealed class RiptideArrow : ModItem
 {

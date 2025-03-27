@@ -1,15 +1,15 @@
 using MonoMod.Cil;
 
+using Nightshade.Common.Loading;
+using Nightshade.Common.Utilities;
+
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
 
-using Tomat.TML.Mod.Nightshade.Common.Loading;
-using Tomat.TML.Mod.Nightshade.Common.Utilities;
+using Hook = Nightshade.Common.Hooks.StatPickups.IModifyStatPickups;
 
-using Hook = Tomat.TML.Mod.Nightshade.Common.Hooks.StatPickups.IModifyStatPickups;
-
-namespace Tomat.TML.Mod.Nightshade.Common.Hooks.StatPickups;
+namespace Nightshade.Common.Hooks.StatPickups;
 
 public interface IModifyStatPickups
 {

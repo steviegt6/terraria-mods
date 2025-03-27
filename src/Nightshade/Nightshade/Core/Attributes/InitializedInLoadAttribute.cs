@@ -2,7 +2,7 @@ using System;
 
 using Terraria.ModLoader;
 
-namespace Tomat.TML.Mod.Nightshade.Core.Attributes;
+namespace Nightshade.Core.Attributes;
 
 // TODO: Use for smart checking with an analyzer.
 

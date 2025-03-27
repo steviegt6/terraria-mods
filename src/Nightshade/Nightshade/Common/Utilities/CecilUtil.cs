@@ -3,7 +3,7 @@ using Mono.Cecil.Cil;
 
 using MonoMod.Cil;
 
-namespace Tomat.TML.Mod.Nightshade.Common.Utilities;
+namespace Nightshade.Common.Utilities;
 
 internal static class CecilUtil
 {

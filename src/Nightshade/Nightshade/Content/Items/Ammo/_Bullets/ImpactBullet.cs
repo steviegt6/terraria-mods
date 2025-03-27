@@ -4,7 +4,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Tomat.TML.Mod.Nightshade.Content.Items.Ammo;
+namespace Nightshade.Content.Items.Ammo;
 
 internal sealed class ImpactBullet : ModItem
 {
