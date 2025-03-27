@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <Import Project="../../common/Mod.targets"/>
+
+    <PropertyGroup>
+        <AssemblyName>Nightshade</AssemblyName>
+        <RootNamespace>Tomat.TML.Mod.Nightshade</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Publicize Include="FNA"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ClCompile Include="Assets\Shaders\colors.hlsl"/>
+        <ClCompile Include="Assets\Shaders\common.hlsl"/>
+        <ClCompile Include="Assets\Shaders\fading.hlsl"/>
+        <ClCompile Include="Assets\Shaders\glsl.hlsl"/>
+        <ClCompile Include="Assets\Shaders\pixelation.hlsl"/>
+        <ClCompile Include="Assets\Shaders\raymarching.hlsl"/>
+        <None Include="Assets\Shaders\math.hlsl"/>
+    </ItemGroup>
+
+</Project>
