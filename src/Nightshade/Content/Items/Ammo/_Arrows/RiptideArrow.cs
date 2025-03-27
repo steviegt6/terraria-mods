@@ -10,7 +10,7 @@ internal sealed class RiptideArrow : ModItem
 {
     private sealed class RiptideArrowProjectile : ModProjectile, INpcReflectable
     {
-        public override string Texture => $"{Mod.Name}/Assets/Images/Items/Ammo/ImpactBulletProjectile";
+        public override string Texture => $"{Mod.Name}/Assets/Images/Items/Ammo/RiptideArrowProjectile";
 
         public override void SetDefaults()
         {
