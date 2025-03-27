@@ -25,7 +25,7 @@ internal sealed class NightshadeAuthorTagHandler : ILoadableTagHandler<Nightshad
         {
             if (!justCheckingString && color is { R: > 0, G: > 0, B: > 0 })
             {
-                var mod      = ModContent.GetInstance<Mod>();
+                var mod      = ModContent.GetInstance<ModImpl>();
                 var iconName = $"Assets/Images/UI/ModIcon/{authorName}";
                 if (mod.RequestAssetIfExists<Texture2D>(iconName, out var icon))
                 {
