@@ -1,13 +1,14 @@
 ﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+
 using Tomat.TML.Mod.Nightshade.Common.Hooks.ProjectileReflecting;
 
 namespace Tomat.TML.Mod.Nightshade.Content.Items.Ammo;
 
 internal sealed class RiptideArrow : ModItem
 {
-    internal sealed class ImpactBulletProjectile : ModProjectile, INPCReflectable
+    private sealed class RiptideArrowProjectile : ModProjectile, INpcReflectable
     {
         public override string Texture => $"{Mod.Name}/Assets/Images/Items/Ammo/ImpactBulletProjectile";
 
@@ -17,23 +18,19 @@ internal sealed class RiptideArrow : ModItem
 
             (Projectile.width, Projectile.height) = (10, 10);
 
-            Projectile.arrow = true;
-            Projectile.friendly = true;
+            Projectile.arrow      = true;
+            Projectile.friendly   = true;
             Projectile.DamageType = DamageClass.Ranged;
-            Projectile.timeLeft = 1200;
+            Projectile.timeLeft   = 1200;
 
             Projectile.aiStyle = 1;
-            AIType = ProjectileID.WoodenArrowFriendly;
+            AIType             = ProjectileID.WoodenArrowFriendly;
         }
 
-        public override void AI()
+        bool? INpcReflectable.CanBeReflected()
         {
-            base.AI();
-
-
+            return true;
         }
-
-        public bool? CanBeReflected() => true;
     }
 
     public override string Texture => $"{Mod.Name}/Assets/Images/Items/Ammo/RiptideArrow";
@@ -44,17 +41,17 @@ internal sealed class RiptideArrow : ModItem
 
         (Item.width, Item.height) = (10, 28);
 
-        Item.maxStack = Item.CommonMaxStack;
-        Item.damage = 6;
+        Item.maxStack   = Item.CommonMaxStack;
+        Item.damage     = 6;
         Item.DamageType = DamageClass.Ranged;
-        Item.knockBack = 1f;
+        Item.knockBack  = 1f;
 
         Item.consumable = true;
-        Item.ammo = AmmoID.Arrow;
-        Item.shoot = ModContent.ProjectileType<ImpactBulletProjectile>();
+        Item.ammo       = AmmoID.Arrow;
+        Item.shoot      = ModContent.ProjectileType<RiptideArrowProjectile>();
         Item.shootSpeed = 2f;
 
-        Item.rare = ItemRarityID.Lime;
+        Item.rare  = ItemRarityID.Lime;
         Item.value = Item.sellPrice(gold: 15);
     }
 }

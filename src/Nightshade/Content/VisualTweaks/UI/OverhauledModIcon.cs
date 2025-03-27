@@ -166,7 +166,7 @@ internal sealed class OverhauledModIcon : ILoadable
     private static readonly string[] authors =
     [
         "Tomat", "Triangle", "Sixtydegrees", "Math2", "OneThree", "Tyeski",
-        "Wymsical", "Taco", "DylanDoe21",
+        "Wymsical", "Taco", "DylanDoe21", "Ebonfly", "Citrus", "BabyBlueSheep",
     ];
 
     void ILoadable.Load(global::Terraria.ModLoader.Mod mod)

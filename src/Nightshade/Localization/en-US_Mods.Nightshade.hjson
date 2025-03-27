@@ -13,6 +13,9 @@ UI: {
 			Taco: Taco
 			Sixtydegrees: sixtydegrees
 			DylanDoe21: DylanDoe21
+			Ebonfly: Ebonfly
+			Citrus: Citrus
+			BabyBlueSheep: babybluesheep
 		}
 	}
 }
@@ -47,6 +50,14 @@ Items: {
 		DisplayName: Impact Bullet
 		Tooltip: ""
 	}
+
+	RiptideArrow: {
+		DisplayName: Riptide Arrow
+		Tooltip: ""
+	}
 }
 
-Projectiles.ImpactBulletProjectile.DisplayName: Impact Bullet Projectile
+Projectiles: {
+	ImpactBulletProjectile.DisplayName: Impact Bullet Projectile
+	RiptideArrowProjectile.DisplayName: Riptide Arrow Projectile
+}
