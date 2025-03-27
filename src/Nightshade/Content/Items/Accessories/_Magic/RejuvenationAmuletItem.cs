@@ -75,7 +75,7 @@ internal sealed class RejuvenationAmuletItem : ModItem
         player.GetModPlayer<StarTalismanItem.StarTalismanPlayer>().IsEquipped = true;
         player.GetModPlayer<RejuvenationBandPlayer>().IsEquipped              = true;
 
-        player.statManaMax2        += 20;
+        player.statManaMax2 += 20;
     }
 
     public override void AddRecipes()
@@ -83,8 +83,8 @@ internal sealed class RejuvenationAmuletItem : ModItem
         base.AddRecipes();
 
         CreateRecipe()
-           .AddIngredient(ItemID.ManaRegenerationBand, 3)
-           .AddIngredient<StarTalismanItem>(20)
+           .AddIngredient(ItemID.ManaRegenerationBand)
+           .AddIngredient<StarTalismanItem>()
            .AddTile(TileID.TinkerersWorkbench)
            .Register();
     }
