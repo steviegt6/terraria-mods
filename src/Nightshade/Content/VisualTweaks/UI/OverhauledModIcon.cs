@@ -178,11 +178,16 @@ internal sealed class OverhauledModIcon : ILoadable
 
         theMod = nsMod;
 
-        var panelShader = nsMod.Assets.Request<Effect>(panel_shader_path);
-        panelShaderData = new MiscShaderData(panelShader, "PanelShader");
+        Main.QueueMainThreadAction(
+            () =>
+            {
+                var panelShader  = nsMod.Assets.Request<Effect>(panel_shader_path);
+                var flowerShader = nsMod.Assets.Request<Effect>(flower_shader_path);
 
-        var flowerShader = nsMod.Assets.Request<Effect>(flower_shader_path);
-        flowerShaderData = new MiscShaderData(flowerShader, "FlowerShader");
+                panelShaderData  = new MiscShaderData(panelShader,  "PanelShader");
+                flowerShaderData = new MiscShaderData(flowerShader, "FlowerShader");
+            }
+        );
 
         MonoModHooks.Add(
             GetMethod(nameof(UIModItem.OnInitialize)),
@@ -443,9 +448,9 @@ internal sealed class OverhauledModIcon : ILoadable
             hoverIntensity =  Math.Clamp(hoverIntensity, 0f, 1f);
 
             Debug.Assert(panelShaderData is not null);
-            panelShaderData.Shader.Parameters["grayness"].SetValue(1f);
-            panelShaderData.Shader.Parameters["inColor"].SetValue(new Vector3(1f, 0f, 1f));
-            panelShaderData.Shader.Parameters["speed"].SetValue(0.2f);
+            panelShaderData.Shader.Parameters["uGrayness"].SetValue(1f);
+            panelShaderData.Shader.Parameters["uInColor"].SetValue(new Vector3(1f, 0f, 1f));
+            panelShaderData.Shader.Parameters["uSpeed"].SetValue(0.2f);
             panelShaderData.Shader.Parameters["uSource"].SetValue(new Vector4(dims.Width, dims.Height - 2f, dims.X, dims.Y));
             panelShaderData.Shader.Parameters["uHoverIntensity"].SetValue(hoverIntensity);
             panelShaderData.Shader.Parameters["uPixel"].SetValue(2f);

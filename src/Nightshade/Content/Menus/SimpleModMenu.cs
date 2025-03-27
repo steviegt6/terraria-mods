@@ -49,14 +49,25 @@ internal sealed class SimpleModMenu : ModMenu
         const string panel_shader_path  = "Assets/Shaders/UI/ModPanelShader";
         const string flower_shader_path = "Assets/Shaders/UI/CoolFlowerShader";
 
-        var panelShader = Mod.Assets.Request<Effect>(panel_shader_path);
-        panelShaderData = new MiscShaderData(panelShader, "PanelShader");
+        Main.QueueMainThreadAction(
+            () =>
+            {
+                var panelShader  = Mod.Assets.Request<Effect>(panel_shader_path);
+                var flowerShader = Mod.Assets.Request<Effect>(flower_shader_path);
 
-        var flowerShader = Mod.Assets.Request<Effect>(flower_shader_path);
-        flowerShaderData = new MiscShaderData(flowerShader, "FlowerShader");
+                panelShaderData  = new MiscShaderData(panelShader,  "PanelShader");
+                flowerShaderData = new MiscShaderData(flowerShader, "FlowerShader");
+            }
+        );
 
         managedRt = new ManagedRenderTarget((width, height) => new RenderTarget2D(Main.instance.GraphicsDevice, width / 2, height / 2), true);
-        managedRt.Initialize(Main.screenWidth, Main.screenHeight);
+
+        Main.QueueMainThreadAction(
+            () =>
+            {
+                managedRt.Initialize(Main.screenWidth, Main.screenHeight);
+            }
+        );
     }
 
     public override bool PreDrawLogo(SpriteBatch spriteBatch, ref Vector2 logoDrawCenter, ref float logoRotation, ref float logoScale, ref Color drawColor)
@@ -85,9 +96,9 @@ internal sealed class SimpleModMenu : ModMenu
             );
 
             Debug.Assert(panelShaderData is not null);
-            panelShaderData.Shader.Parameters["grayness"].SetValue(1f);
-            panelShaderData.Shader.Parameters["inColor"].SetValue(new Vector3(1f, 0f, 1f));
-            panelShaderData.Shader.Parameters["speed"].SetValue(0.2f);
+            panelShaderData.Shader.Parameters["uGrayness"].SetValue(1f);
+            panelShaderData.Shader.Parameters["uInColor"].SetValue(new Vector3(1f, 0f, 1f));
+            panelShaderData.Shader.Parameters["uSpeed"].SetValue(0.2f);
             panelShaderData.Shader.Parameters["uSource"].SetValue(new Vector4(dims.Width, dims.Height, dims.X, dims.Y));
             panelShaderData.Shader.Parameters["uHoverIntensity"].SetValue(1f);
             panelShaderData.Shader.Parameters["uPixel"].SetValue(1f);
