@@ -449,6 +449,7 @@ internal sealed class OverhauledModIcon : ILoadable
             panelShaderData.Shader.Parameters["uSource"].SetValue(new Vector4(dims.Width, dims.Height - 2f, dims.X, dims.Y));
             panelShaderData.Shader.Parameters["uHoverIntensity"].SetValue(hoverIntensity);
             panelShaderData.Shader.Parameters["uPixel"].SetValue(2f);
+            panelShaderData.Shader.Parameters["uColorResolution"].SetValue(new Vector3(10f));
             panelShaderData.Apply();
 
             Debug.Assert(uiModItem._backgroundTexture is not null);

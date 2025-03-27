@@ -91,6 +91,7 @@ internal sealed class SimpleModMenu : ModMenu
             panelShaderData.Shader.Parameters["uSource"].SetValue(new Vector4(dims.Width, dims.Height, dims.X, dims.Y));
             panelShaderData.Shader.Parameters["uHoverIntensity"].SetValue(1f);
             panelShaderData.Shader.Parameters["uPixel"].SetValue(1f);
+            panelShaderData.Shader.Parameters["uColorResolution"].SetValue(new Vector3(16f));
             panelShaderData.Apply();
             Main.spriteBatch.Draw(TextureAssets.MagicPixel.Value, dims, Color.White);
 

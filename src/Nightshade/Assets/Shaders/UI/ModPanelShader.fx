@@ -1,12 +1,13 @@
 #define PIXEL_SIZE uPixel
+#define colorResolution uColorResolution
 
 sampler uImage0 : register(s0);
 
 float uTime;
 float4 uSource;
 float uHoverIntensity;
-
-float uPixel = 2.;
+float uPixel;
+float uColorResolution;
 
 float grayness;
 float3 inColor;
@@ -55,7 +56,7 @@ float4 main(float4 sampleColor : COLOR0, float2 coords : SV_POSITION, float2 tex
     inColor.b * cos(sin(uv.x+uv.y)+cos(uv.x+uv.y)));
     newCol = lerp(float3(0,0,0), newCol, alp);
     
-    float3 colorResolution = float3(32., 32., 32.);
+    // float3 colorResolution = float3(32., 32., 32.);
     float3 janding = floor((newCol) * colorResolution) / (colorResolution - 1.);
     
     float grey = janding.r + janding.g + janding.b;
