@@ -90,7 +90,7 @@ internal sealed class OverhauledModIcon : ILoadable
         private readonly Asset<Texture2D> icon;
         private readonly Asset<Texture2D> iconDots;
 
-        public PetalImage(Mod mod) : base(TextureAssets.MagicPixel)
+        public PetalImage(ModImpl mod) : base(TextureAssets.MagicPixel)
         {
             const string path = "Assets/Images/UI/ModIcon/";
 
@@ -140,7 +140,7 @@ internal sealed class OverhauledModIcon : ILoadable
     }
 
     [InitializedInLoad]
-    private static Mod? theMod;
+    private static ModImpl? theMod;
 
     [InitializedInLoad]
     private static MiscShaderData? panelShaderData;
@@ -169,9 +169,9 @@ internal sealed class OverhauledModIcon : ILoadable
         "Wymsical", "Taco", "DylanDoe21", "Ebonfly", "Citrus", "BabyBlueSheep",
     ];
 
-    void ILoadable.Load(global::Terraria.ModLoader.Mod mod)
+    void ILoadable.Load(Mod mod)
     {
-        if (mod is not Mod nsMod)
+        if (mod is not ModImpl nsMod)
         {
             throw new InvalidOperationException("The mod instance is not of the correct type.");
         }

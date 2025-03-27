@@ -7,7 +7,7 @@ namespace Nightshade.Common.Loading;
 [UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature, ImplicitUseTargetFlags.WithInheritors)]
 public interface IInitializer : ILoadable
 {
-    void ILoadable.Load(global::Terraria.ModLoader.Mod mod)
+    void ILoadable.Load(Mod mod)
     {
         Load();
     }
