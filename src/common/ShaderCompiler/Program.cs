@@ -164,6 +164,7 @@ internal static class Program
     private static void CompileShader(ShaderMetadata metadata, string basePath, string filePathWithoutExtension)
     {
         var fxcExe = Path.Combine(baseDirectory, "native", "fxc.exe");
+        
         if (!File.Exists(fxcExe))
         {
             Console.Error.WriteLine("Couldn't find fxc.exe");
@@ -176,11 +177,55 @@ internal static class Program
 
         var hlslFile  = Path.Combine(basePath, realFileName + ".hlsl");
         var fxcOutput = Path.Combine(basePath, realFileName + ".fxc");
+        var isLinux   = Environment.OSVersion.Platform == PlatformID.Unix;
+        string fxcExePath = "";
+        if (isLinux) {
+            try
+            {
+                var otherProcess = new Process();
+                var processStartInfo = new ProcessStartInfo()
+                {
+                    WindowStyle = ProcessWindowStyle.Hidden,
+                    FileName = $"/bin/bash",
+                    Arguments = $"-c \"command -v wine\"",
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    UseShellExecute = false
+                };
+                otherProcess.StartInfo = processStartInfo;
+                otherProcess.Start();
 
+                String error = otherProcess.StandardError.ReadToEnd();
+                String output = otherProcess.StandardOutput.ReadToEnd();
+
+                if (!string.IsNullOrEmpty(error))
+                {
+                    Console.Error.WriteLine("Error: " + error);
+                    Environment.ExitCode = 1;
+                    return;
+                }
+                if (!string.IsNullOrEmpty(output))
+                {
+                    fxcExePath = fxcExe;
+                    fxcExe = output.Trim();
+                }
+                else
+                {
+                    Console.Error.WriteLine("Error: wine not found. maybe try installing it from your package manager?");
+                    Environment.ExitCode = 1;
+                    return;
+                }
+                
+            }
+            catch(Exception ex)
+            {
+                throw;
+            }
+        }
         var pInfo = new ProcessStartInfo
         {
             FileName               = fxcExe,
-            Arguments              = $"/T {metadata.Profile} \"{hlslFile}\" /Fo \"{fxcOutput}\" /D FX=1 /O3 /Op",
+            Arguments              = $"{fxcExePath} /T {metadata.Profile} \"{hlslFile}\" /Fo \"{fxcOutput}\" /D FX=1 /O3 /Op",
             RedirectStandardOutput = true,
             RedirectStandardError  = true,
             UseShellExecute        = false,
