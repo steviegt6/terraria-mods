@@ -1,0 +1,14 @@
+<Project>
+
+    <ItemGroup>
+        <!-- Already defined. -->
+        <!-- <AdditionalFiles Include="**/*.hjson"/> -->
+
+        <LocalizationCompile Include="**/*.hjson"/>
+    </ItemGroup>
+
+    <Target Name="CheckShaders" BeforeTargets="BeforeBuild">
+        <Exec Command="dotnet run --project &quot;$(MSBuildThisFileDirectory)LocalizationChecker/LocalizationChecker.csproj&quot; -c Release -- @(LocalizationCompile->'&quot;%(Identity)&quot;', ' ')"/>
+    </Target>
+
+</Project>

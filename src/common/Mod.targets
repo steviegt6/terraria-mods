@@ -2,6 +2,7 @@
 
     <Import Project="..\..\..\tModLoader.targets"/>
 
+    <Import Project="LocalizationChecker.targets"/>
     <Import Project="ShaderCompiler.targets"/>
 
     <PropertyGroup>
