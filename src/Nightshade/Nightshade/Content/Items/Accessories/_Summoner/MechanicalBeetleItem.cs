@@ -46,7 +46,7 @@ internal sealed class MechanicalBeetleItem : ModItem
         }
     }
 
-    public override string Texture => $"{Mod.Name}/Assets/Images/Items/Accessories/MechanicalBeetle";
+    public override string Texture => Assets.Images.Items.Accessories.MechanicalBeetle.NAME;
 
     public override void SetDefaults()
     {

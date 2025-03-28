@@ -39,7 +39,7 @@ internal sealed class StarTalismanItem : ModItem
         }
     }
 
-    public override string Texture => $"{Mod.Name}/Assets/Images/Items/Accessories/StarTalisman";
+    public override string Texture => Assets.Images.Items.Accessories.StarTalisman.NAME;
 
     public override void SetDefaults()
     {
