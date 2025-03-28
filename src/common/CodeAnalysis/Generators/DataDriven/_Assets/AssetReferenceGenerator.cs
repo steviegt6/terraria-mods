@@ -92,8 +92,12 @@ public sealed class AssetReferenceGenerator : IIncrementalGenerator
 
         foreach (var file in pathNode.Files)
         {
-            sb.AppendLine($"{indent}    private static readonly Lazy<Asset<{file.Reference.QualifiedType}>> lazy_{file.Name} = new(() => ModContent.Request<{file.Reference.QualifiedType}>(\"{file.Path.Replace('\\', '/')}\"));");
-            sb.AppendLine($"{indent}    public static Asset<{file.Reference.QualifiedType}> {file.Name} => lazy_{file.Name}.Value;");
+            sb.AppendLine($"{indent}    public static class {file.Name}");
+            sb.AppendLine($"{indent}    {{");
+            sb.AppendLine($"{indent}        public const string NAME = \"{file.Path.Replace('\\', '/')}\";");
+            sb.AppendLine($"{indent}        private static readonly Lazy<Asset<{file.Reference.QualifiedType}>> lazy = new(() => ModContent.Request<{file.Reference.QualifiedType}>(NAME));");
+            sb.AppendLine($"{indent}        public static Asset<{file.Reference.QualifiedType}> Asset => lazy.Value;");
+            sb.AppendLine($"{indent}    }}");
         }
 
         foreach (var node in pathNode.Nodes.Values)
