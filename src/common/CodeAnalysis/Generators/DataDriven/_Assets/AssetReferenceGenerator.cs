@@ -34,7 +34,12 @@ public sealed class AssetReferenceGenerator : IIncrementalGenerator
         );
     }
 
-    private static string Generate(SourceProductionContext ctx, Compilation compilation, ImmutableArray<string> fileNames, AnalyzerConfigOptionsProvider options)
+    private static string Generate(
+        SourceProductionContext       ctx,
+        Compilation                   compilation,
+        ImmutableArray<string>        fileNames,
+        AnalyzerConfigOptionsProvider options
+    )
     {
         if (GeneratorUtil.GetRootNamespaceOrRaiseDiagnostic(ctx, options.GlobalOptions) is not { } rootNamespace)
         {
