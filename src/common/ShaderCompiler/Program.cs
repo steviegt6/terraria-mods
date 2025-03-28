@@ -96,7 +96,7 @@ internal static class Program
                 continue;
             }
 
-            CompileShader(shaderMetadata, basePath, filePath);
+            CompileShader(shaderMetadata, Path.GetDirectoryName(file) ?? "", filePath);
         }
     }
 
