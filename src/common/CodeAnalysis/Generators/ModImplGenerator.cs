@@ -3,10 +3,10 @@ using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Tomat.Terraria.TML.SourceGenerator;
+namespace Tomat.Terraria.TML.SourceGenerator.Generators;
 
 [Generator]
-public sealed class GenerateModType : IIncrementalGenerator
+public sealed class ModImplGenerator : IIncrementalGenerator
 {
     void IIncrementalGenerator.Initialize(IncrementalGeneratorInitializationContext context)
     {
