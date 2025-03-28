@@ -323,13 +323,13 @@ internal sealed class OverhauledModIcon : ILoadable
         {
             var sb = new StringBuilder();
 
-            sb.AppendLine(Mods.Nightshade.UI.ModIcon.AuthorHeader.ToString());
+            sb.AppendLine(Mods.Nightshade.UI.ModIcon.AuthorHeader.GetTextValue());
 
             foreach (var authorName in authors)
             {
                 sb.Append($"[nsa:{authorName}]");
                 sb.Append(' ');
-                sb.AppendLine(Language.GetTextValue($"Mods.NightShade.UI.ModIcon.Authors.{authorName}"));
+                sb.AppendLine(Mods.Nightshade.UI.ModIcon.Authors.GetChildTextValue(authorName));
             }
 
             return sb.ToString();
@@ -389,7 +389,7 @@ internal sealed class OverhauledModIcon : ILoadable
                     return originalText;
                 }
 
-                var name = Language.GetTextValue("Mods.Nightshade.UI.ModIcon.ModName");
+                var name = Mods.Nightshade.UI.ModIcon.ModName.GetTextValue();
                 return new PulsatingAndAwesomeText(name + $" v{self._mod.Version}")
                 {
                     Left = originalText.Left,
