@@ -180,7 +180,7 @@ internal static class Program
         var pInfo = new ProcessStartInfo
         {
             FileName               = fxcExe,
-            Arguments              = $"/T {metadata.Profile} \"{hlslFile}\" /Fo \"{fxcOutput}\" /D FX=1",
+            Arguments              = $"/T {metadata.Profile} \"{hlslFile}\" /Fo \"{fxcOutput}\" /D FX=1 /O3 /Op",
             RedirectStandardOutput = true,
             RedirectStandardError  = true,
             UseShellExecute        = false,
