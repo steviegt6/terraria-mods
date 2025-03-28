@@ -15,9 +15,7 @@
     <!-- We can generate uniforms when preparing a build or refreshing. -->
     <Target Name="GenerateShaders" BeforeTargets="PrepareForBuild"
             Inputs="@(ShaderCompile)" Outputs="@(ShaderCompile->'%(Filename).uniforms.hlsl', ' ')">
-        <Exec Command="dotnet run --project &quot;$(MSBuildThisFileDirectory)ShaderCompiler/ShaderCompiler.csproj&quot; -c Release -- --generate-uniforms @(ShaderCompile->'&quot;%(Identity)&quot;', ' ')"
-              ConsoleToMsBuild="True"
-              IgnoreStandardErrorWarningFormat="true"/>
+        <Exec Command="dotnet run --project &quot;$(MSBuildThisFileDirectory)ShaderCompiler/ShaderCompiler.csproj&quot; -c Release -- --generate-uniforms @(ShaderCompile->'&quot;%(Identity)&quot;', ' ')"/>
     </Target>
 
 </Project>
