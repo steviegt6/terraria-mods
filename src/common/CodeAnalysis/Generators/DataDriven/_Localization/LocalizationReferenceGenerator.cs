@@ -91,7 +91,7 @@ public sealed class LocalizationReferenceGenerator : IIncrementalGenerator
         sb.AppendLine();
         sb.AppendLine($"namespace {rootNamespace}.Core;");
         sb.AppendLine();
-        sb.AppendLine($"internal static class {rootNamespace}Localization");
+        sb.AppendLine($"internal static class LocalizationReferences");
         sb.AppendLine("{");
 
         foreach (var node in root.Nodes.Values)

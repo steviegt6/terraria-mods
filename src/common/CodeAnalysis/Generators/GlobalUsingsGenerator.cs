@@ -32,6 +32,7 @@ public sealed class GlobalUsingsGenerator : IIncrementalGenerator
         var sb = new StringBuilder();
 
         sb.AppendLine($"global using static {rootNamespace}.Core.AssetReferences;");
+        sb.AppendLine($"global using static {rootNamespace}.Core.LocalizationReferences;");
 
         return sb.ToString();
     }
