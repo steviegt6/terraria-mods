@@ -6,6 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common", "common", "{CA73BA1F-E7EA-4EE4-B2A3-3B6238A6297C}"
 	ProjectSection(SolutionItems) = preProject
 		common\Mod.targets = common\Mod.targets
+		common\ShaderCompiler.targets = common\ShaderCompiler.targets
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SourceGenerator", "common\SourceGenerator\SourceGenerator.csproj", "{9E9C4C7E-1BA8-473D-872E-19352FE298A7}"
@@ -33,6 +34,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nightshade", "nightshade", "{8B21818B-87AE-4F25-A3B3-24185630F255}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nightshade", "nightshade\Nightshade\Nightshade.csproj", "{1BF6133E-AF45-4A83-B9A2-3CB99BE3D621}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShaderCompiler", "common\ShaderCompiler\ShaderCompiler.csproj", "{0B98F84E-F30E-40B6-9391-BF636F179BBF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -83,6 +86,10 @@ Global
 		{1BF6133E-AF45-4A83-B9A2-3CB99BE3D621}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1BF6133E-AF45-4A83-B9A2-3CB99BE3D621}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1BF6133E-AF45-4A83-B9A2-3CB99BE3D621}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B98F84E-F30E-40B6-9391-BF636F179BBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B98F84E-F30E-40B6-9391-BF636F179BBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B98F84E-F30E-40B6-9391-BF636F179BBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B98F84E-F30E-40B6-9391-BF636F179BBF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{9E9C4C7E-1BA8-473D-872E-19352FE298A7} = {CA73BA1F-E7EA-4EE4-B2A3-3B6238A6297C}
@@ -95,5 +102,6 @@ Global
 		{B73F2DE8-126A-400A-851A-DD257CF85CF5} = {BFFB2F46-759A-46CC-ACB1-5178D20E7B19}
 		{73967DFB-9498-4F33-860C-F116FFACFDAF} = {BFFB2F46-759A-46CC-ACB1-5178D20E7B19}
 		{1BF6133E-AF45-4A83-B9A2-3CB99BE3D621} = {8B21818B-87AE-4F25-A3B3-24185630F255}
+		{0B98F84E-F30E-40B6-9391-BF636F179BBF} = {CA73BA1F-E7EA-4EE4-B2A3-3B6238A6297C}
 	EndGlobalSection
 EndGlobal

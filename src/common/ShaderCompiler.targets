@@ -1,0 +1,20 @@
+<Project>
+
+    <ItemGroup>
+        <AdditionalFiles Include="**/*.hlsl"/>
+
+        <ShaderCompile Include="**/*.effect.json"/>
+    </ItemGroup>
+
+    <!-- Actually build our shaders when building the project. -->
+    <Target Name="CompileShaders" BeforeTargets="BeforeBuild">
+        <Exec Command="dotnet run --project &quot;$(MSBuildThisFileDirectory)ShaderCompiler/ShaderCompiler.csproj&quot; -c Release -- %(ShaderCompile.Identity)"/>
+    </Target>
+
+    <!-- We can generate uniforms when preparing a build or refreshing. -->
+    <!-- TODO: Inputs="@(ShaderCompile)" Outputs="%(ShaderCompile.FileName).uniforms.hlsl" -->
+    <Target Name="GenerateShaders" BeforeTargets="PrepareForBuild">
+        <Exec Command="dotnet run --project &quot;$(MSBuildThisFileDirectory)ShaderCompiler/ShaderCompiler.csproj&quot; -c Release -- --generate-uniforms %(ShaderCompile.Identity)"/>
+    </Target>
+
+</Project>

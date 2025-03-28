@@ -1,0 +1,14 @@
+{
+  "samplers": {
+    "uImage0": "s0"
+  },
+  "uniforms": {
+    "uSource": "float4",
+    "uTime": "float",
+    "uPixel": "float"
+  },
+  "profile": "fx_2_0",
+  "input": "CoolFlowerShader.hlsl",
+  "output": "CoolFlowerShader.fxc",
+  "uniformOutput": "CoolFlowerShader.uniforms.hlsl"
+}

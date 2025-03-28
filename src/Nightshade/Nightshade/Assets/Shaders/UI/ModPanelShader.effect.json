@@ -1,0 +1,19 @@
+{
+  "samplers": {
+    "uImage0": "s0"
+  },
+  "uniforms": {
+    "uTime": "float",
+    "uSource": "float4",
+    "uHoverIntensity": "float",
+    "uPixel": "float",
+    "uColorResolution": "float",
+    "uGrayness": "float",
+    "uInColor": "float3",
+    "uSpeed": "float"
+  },
+  "profile": "fx_2_0",
+  "input": "ModPanelShader.hlsl",
+  "output": "ModPanelShader.fxc",
+  "uniformOutput": "ModPanelShader.uniforms.hlsl"
+}
