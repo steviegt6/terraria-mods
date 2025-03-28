@@ -27,14 +27,14 @@ public sealed class LocalizationReferenceGenerator : IIncrementalGenerator
                    .Combine(context.AnalyzerConfigOptionsProvider),
             static (x, ctx) =>
             {
-                x.AddSource("LocalizationReferences.g.cs", Generate(x, ctx.Left.Left, ctx.Left.Right, ctx.Right));
+                x.AddSource("LocalizationReferences.g.cs", Generate(x, ctx.Left.Right, ctx.Right));
+                x.AddSource("LocalizationCommon.g.cs",     GenerateCommonLocalization(x, ctx.Right));
             }
         );
     }
 
     private static string Generate(
         SourceProductionContext        ctx,
-        Compilation                    compilation,
         ImmutableArray<AdditionalText> files,
         AnalyzerConfigOptionsProvider  options
     )
@@ -183,5 +183,120 @@ public sealed class LocalizationReferenceGenerator : IIncrementalGenerator
             2 => splitByUnderscore[1],
             _ => throw new ArgumentException("Invalid path format", nameof(path))
         };
+    }
+
+    private static string GenerateCommonLocalization(
+        SourceProductionContext       ctx,
+        AnalyzerConfigOptionsProvider options
+    )
+    {
+        if (GeneratorUtil.GetRootNamespaceOrRaiseDiagnostic(ctx, options.GlobalOptions) is not { } rootNamespace)
+        {
+            return "#error Failed to find root namespace";
+        }
+
+        return $@"
+#nullable enable
+
+using Terraria.Localization;
+
+namespace {rootNamespace}.Common.Localization;
+
+internal interface ILocalizableTextProvider
+{{
+    string GetText(object?[] arguments);
+
+    bool IsLoaded();
+}}
+
+internal sealed class KeyLocalizableTextProvider(string key) : ILocalizableTextProvider
+{{
+    public string GetText(object?[] arguments)
+    {{
+        return Language.GetTextValue(key, arguments);
+    }}
+
+    public bool IsLoaded()
+    {{
+        return Language.Exists(key);
+    }}
+}}
+
+internal sealed class LiteralLocalizableTextProvider(string text) : ILocalizableTextProvider
+{{
+    public string GetText(object?[] arguments)
+    {{
+        return string.Format(text, arguments);
+    }}
+
+    public bool IsLoaded()
+    {{
+        return true;
+    }}
+}}
+
+
+internal sealed class LocalizedTextLocalizableTextProvider(LocalizedText text) : ILocalizableTextProvider
+{{
+    // Honestly, there should never be a case where the instance isn't already
+    // formatted... but better safe than sorry.
+    public string GetText(object?[] arguments)
+    {{
+        return Language.GetTextValue(text.Key, arguments);
+    }}
+
+    // Nothing stopping you from getting an instance that doesn't exist... so
+    // take this.
+    public bool IsLoaded()
+    {{
+        return Language.Exists(text.Key);
+    }}
+}}
+
+
+internal readonly struct LocalizableText
+{{
+    private readonly ILocalizableTextProvider provider;
+
+    public object[] Arguments {{ get; }}
+
+    private LocalizableText(ILocalizableTextProvider provider, params object[] arguments)
+    {{
+        this.provider = provider;
+        Arguments = arguments;
+    }}
+
+    public LocalizableText WithArguments(params object[] arguments)
+    {{
+        return new LocalizableText(provider, arguments);
+    }}
+
+    public override string ToString()
+    {{
+        return MaskWhenNotYetLoaded(provider, Arguments);
+    }}
+
+    private static string MaskWhenNotYetLoaded(ILocalizableTextProvider provider, object?[] arguments)
+    {{
+        const string not_yet_loaded_msg = ""Localization not yet loaded..."";
+        return !provider.IsLoaded() ? not_yet_loaded_msg : provider.GetText(arguments);
+    }}
+
+    public static LocalizableText FromLiteral(string text, params object[] args)
+    {{
+        return new LocalizableText(new LiteralLocalizableTextProvider(text), args);
+    }}
+
+    public static LocalizableText FromKey(string key, params object[] args)
+    {{
+        return new LocalizableText(new KeyLocalizableTextProvider(key), args);
+    }}
+
+    public static LocalizableText FromLocalizedText(LocalizedText text, params object[] args)
+    {{
+        return new LocalizableText(new LocalizedTextLocalizableTextProvider(text), args);
+    }}
+}}
+".Trim();
     }
 }
