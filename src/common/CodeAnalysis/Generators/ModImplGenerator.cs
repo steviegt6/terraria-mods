@@ -5,6 +5,14 @@ using Microsoft.CodeAnalysis.Text;
 
 namespace Tomat.Terraria.TML.SourceGenerator.Generators;
 
+/// <summary>
+///     Generates a default implementation of <c>Terraria.ModLoader.Mod</c>
+///     named <c>ModImpl</c> which is defined as partial for additional
+///     extensions.  This exists for consistencies with extending the mod
+///     implementation by other source generators and because using APIs
+///     directly exposed by the <c>Mod</c> type should be discouraged in favor
+///     of alternatives such as <c>ModSystem</c>.
+/// </summary>
 [Generator]
 public sealed class ModImplGenerator : IIncrementalGenerator
 {
@@ -14,21 +22,8 @@ public sealed class ModImplGenerator : IIncrementalGenerator
             context.AnalyzerConfigOptionsProvider,
             static (x, options) =>
             {
-                if (!options.GlobalOptions.TryGetValue("build_property.rootnamespace", out var rootNamespace))
+                if (GeneratorUtil.GetRootNamespaceOrRaiseDiagnostic(x, options.GlobalOptions) is not { } rootNamespace)
                 {
-                    x.ReportDiagnostic(
-                        Diagnostic.Create(
-                            new DiagnosticDescriptor(
-                                "SG0001",
-                                "Failed to get root namespace",
-                                "Property 'build_property.rootnamspace' wasn't found",
-                                "CodeAnalysis",
-                                DiagnosticSeverity.Error,
-                                true
-                            ),
-                            null
-                        )
-                    );
                     return;
                 }
 
