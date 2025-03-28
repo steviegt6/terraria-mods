@@ -54,7 +54,7 @@ internal sealed class RejuvenationAmuletItem : ModItem
         }
     }
 
-    public override string Texture => Assets.Images.Items.Accessories.RejuvenationAmulet.NAME;
+    public override string Texture => Assets.Images.Items.Accessories.RejuvenationAmulet.KEY;
 
     public override void SetDefaults()
     {

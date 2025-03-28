@@ -10,7 +10,7 @@ internal sealed class ImpactBullet : ModItem
 {
     private sealed class ImpactBulletProjectile : ModProjectile
     {
-        public override string Texture => Assets.Images.Items.Ammo.ImpactBulletProjectile.NAME;
+        public override string Texture => Assets.Images.Items.Ammo.ImpactBulletProjectile.KEY;
 
         public override void SetDefaults()
         {
@@ -60,7 +60,7 @@ internal sealed class ImpactBullet : ModItem
         }
     }
 
-    public override string Texture => Assets.Images.Items.Ammo.ImpactBullet.NAME;
+    public override string Texture => Assets.Images.Items.Ammo.ImpactBullet.KEY;
 
     public override void SetDefaults()
     {
