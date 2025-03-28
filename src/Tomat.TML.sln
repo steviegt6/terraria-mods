@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common", "common", "{CA73BA
 		common\ShaderCompiler.targets = common\ShaderCompiler.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SourceGenerator", "common\SourceGenerator\SourceGenerator.csproj", "{9E9C4C7E-1BA8-473D-872E-19352FE298A7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeAnalysis", "common\CodeAnalysis\CodeAnalysis.csproj", "{9E9C4C7E-1BA8-473D-872E-19352FE298A7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libs", "libs", "{D21CDFA8-EF3E-4F74-927C-1D6E76668573}"
 EndProject

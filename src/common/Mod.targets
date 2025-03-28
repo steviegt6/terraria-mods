@@ -54,7 +54,7 @@
     <ItemGroup>
         <!-- Import our source generator as an analyzer for it to actually work.
              Takes care of some common tasks. -->
-        <ProjectReference Include="$(MSBuildThisFileDirectory)SourceGenerator\SourceGenerator.csproj" OutputItemType="Analyzer"/>
+        <ProjectReference Include="$(MSBuildThisFileDirectory)CodeAnalysis\CodeAnalysis.csproj" OutputItemType="Analyzer"/>
     </ItemGroup>
 
 </Project>

@@ -22,7 +22,7 @@ public sealed class GenerateModType : IIncrementalGenerator
                                 "SG0001",
                                 "Failed to get root namespace",
                                 "Property 'build_property.rootnamspace' wasn't found",
-                                "SourceGenerator",
+                                "CodeAnalysis",
                                 DiagnosticSeverity.Error,
                                 true
                             ),
