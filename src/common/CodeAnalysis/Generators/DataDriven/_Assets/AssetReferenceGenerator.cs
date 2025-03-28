@@ -58,6 +58,8 @@ public sealed class AssetReferenceGenerator : IIncrementalGenerator
 
         var root = CreateAssetTree(filePaths, referencesByExtension, assemblyName);
 
+        sb.AppendLine("#pragma warning disable CS8981");
+        sb.AppendLine();
         sb.AppendLine("using System;");
         sb.AppendLine("using ReLogic.Content;");
         sb.AppendLine("using Terraria.ModLoader;");
