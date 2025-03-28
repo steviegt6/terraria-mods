@@ -155,6 +155,17 @@ public sealed class LocalizationReferenceGenerator : IIncrementalGenerator
                 sb.AppendLine($"{indent}        }}");
             }
 
+            sb.AppendLine();
+            sb.AppendLine($"{indent}        public static LocalizedText GetChildText(string childKey)");
+            sb.AppendLine($"{indent}        {{");
+            sb.AppendLine($"{indent}            return Language.GetText(KEY + '.' + childKey);");
+            sb.AppendLine($"{indent}        }}");
+            sb.AppendLine();
+            sb.AppendLine($"{indent}        public static string GetChildTextValue(string childKey, params object?[] values)");
+            sb.AppendLine($"{indent}        {{");
+            sb.AppendLine($"{indent}            return Language.GetTextValue(KEY + '.' + childKey, values);");
+            sb.AppendLine($"{indent}        }}");
+
             sb.AppendLine($"{indent}    }}");
         }
 
