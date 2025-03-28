@@ -103,7 +103,7 @@ public sealed class LocalizationReferenceGenerator : IIncrementalGenerator
 
         foreach (var node in root.Nodes.Values)
         {
-            sb.AppendLine(GenerateTextFromLocalizationNode(node, 1));
+            sb.AppendLine(GenerateTextFromLocalizationNode(node, "", 1));
         }
 
         sb.AppendLine("}");
@@ -111,13 +111,28 @@ public sealed class LocalizationReferenceGenerator : IIncrementalGenerator
         return sb.ToString();
     }
 
-    private static string GenerateTextFromLocalizationNode(LocalizationNode node, int depth = 0)
+    private static string GenerateTextFromLocalizationNode(LocalizationNode node, string parentKey, int depth = 0)
     {
+        var ourKey = (parentKey + '.' + node.Name).TrimStart('.');
+
         var sb     = new StringBuilder();
         var indent = new string(' ', depth * 4);
 
         sb.AppendLine($"{indent}public static class {node.Name}");
         sb.AppendLine($"{indent}{{");
+
+        sb.AppendLine($"{indent}    public const string KEY = \"{ourKey}\";");
+        sb.AppendLine();
+        sb.AppendLine($"{indent}    public static LocalizedText GetChildText(string childKey)");
+        sb.AppendLine($"{indent}    {{");
+        sb.AppendLine($"{indent}        return Language.GetText(KEY + '.' + childKey);");
+        sb.AppendLine($"{indent}    }}");
+        sb.AppendLine();
+        sb.AppendLine($"{indent}    public static string GetChildTextValue(string childKey, params object?[] values)");
+        sb.AppendLine($"{indent}    {{");
+        sb.AppendLine($"{indent}        return Language.GetTextValue(KEY + '.' + childKey, values);");
+        sb.AppendLine($"{indent}    }}");
+
         foreach (var (key, value) in node.Keys)
         {
             var name = key.Split('.').Last();
@@ -171,7 +186,7 @@ public sealed class LocalizationReferenceGenerator : IIncrementalGenerator
 
         foreach (var child in node.Nodes.Values)
         {
-            sb.Append(GenerateTextFromLocalizationNode(child, depth + 1));
+            sb.Append(GenerateTextFromLocalizationNode(child, ourKey, depth + 1));
         }
 
         sb.AppendLine($"{indent}}}");
