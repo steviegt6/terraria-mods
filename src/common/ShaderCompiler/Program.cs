@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 using Newtonsoft.Json;
@@ -21,6 +23,8 @@ internal static class Program
         public string Profile { get; set; } = "";
     }
 
+    private static string baseDirectory = null!;
+
     public static void Main(string[] args)
     {
         if (args.Length == 0 || args is ["--generate-uniforms"])
@@ -30,7 +34,23 @@ internal static class Program
             return;
         }
 
-        CompileShaders(args[1..], args[0] == "--generate-uniforms");
+        baseDirectory = Path.GetDirectoryName(Path.GetFullPath(Environment.ProcessPath!))!;
+
+        try
+        {
+            if (args[0] == "--generate-uniforms")
+            {
+                CompileShaders(args[1..], true);
+            }
+            else
+            {
+                CompileShaders(args, false);
+            }
+        }
+        catch (Exception e)
+        {
+            Console.Error.WriteLine("FAILED TO COMPILE SHADERS: " + e);
+        }
     }
 
     private static void CompileShaders(string[] files, bool justGenerateUniforms)
@@ -40,6 +60,7 @@ internal static class Program
             if (!File.Exists(file))
             {
                 Console.Error.WriteLine($"File {file} not found");
+                Environment.ExitCode = 1;
                 continue;
             }
 
@@ -54,23 +75,25 @@ internal static class Program
                 if (shaderMetadata is null)
                 {
                     Console.Error.WriteLine("Failed to parse shader metadata file: " + file);
-                    return;
+                    Environment.ExitCode = 1;
+                    continue;
                 }
             }
             catch (Exception e)
             {
                 Console.Error.WriteLine("Error reading shader metadata: " + e);
-                return;
+                Environment.ExitCode = 1;
+                continue;
             }
 
             GenerateUniforms(shaderMetadata, basePath, filePath);
 
             if (justGenerateUniforms)
             {
-                return;
+                continue;
             }
 
-            // CompileShader(shaderMetadata, basePath);
+            CompileShader(shaderMetadata, basePath, filePath);
         }
     }
 
@@ -111,5 +134,50 @@ internal static class Program
             sb.AppendLine("// end UNIFORMS");
         }
         File.WriteAllText(uniformOutputPath, sb.ToString());
+    }
+
+    private static void CompileShader(ShaderMetadata metadata, string basePath, string filePathWithoutExtension)
+    {
+        var fxcExe = Path.Combine(baseDirectory, "native", "fxc.exe");
+        if (!File.Exists(fxcExe))
+        {
+            Console.Error.WriteLine("Couldn't find fxc.exe");
+            Environment.ExitCode = 1;
+            return;
+        }
+
+        // Leave out special cases like ".effect.json".
+        var realFileName = Path.GetFileName(filePathWithoutExtension).Split('.').First();
+
+        var hlslFile  = Path.Combine(basePath, realFileName + ".hlsl");
+        var fxcOutput = Path.Combine(basePath, realFileName + ".fxc");
+
+        var pInfo = new ProcessStartInfo
+        {
+            FileName               = fxcExe,
+            Arguments              = $"/T {metadata.Profile} \"{hlslFile}\" /Fo \"{fxcOutput}\" /D FX=1",
+            RedirectStandardOutput = true,
+            RedirectStandardError  = true,
+            UseShellExecute        = false,
+            CreateNoWindow         = true,
+        };
+
+        using var process = new Process();
+        process.StartInfo          =  pInfo;
+        process.OutputDataReceived += (_, e) => Console.WriteLine(e.Data);
+        process.ErrorDataReceived  += (_, e) => Console.Error.WriteLine(e.Data);
+
+        process.Start();
+        process.BeginOutputReadLine();
+        process.BeginErrorReadLine();
+        process.WaitForExit();
+
+        if (process.ExitCode == 0)
+        {
+            return;
+        }
+
+        Console.Error.WriteLine($"fxc.exe exited with code {process.ExitCode}");
+        Environment.ExitCode = process.ExitCode;
     }
 }

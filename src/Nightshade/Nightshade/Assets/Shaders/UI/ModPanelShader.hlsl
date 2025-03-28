@@ -1,4 +1,4 @@
-#include "ModPanelShader.effect.uniforms.hlsl";
+#include "ModPanelShader.effect.uniforms.hlsl"
 #include "../common.hlsl"
 #include "../pixelation.hlsl"
 

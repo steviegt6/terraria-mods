@@ -8,12 +8,10 @@
 // carefully.
 // You can find the original author here: <paperu.net>.
 
-#include "CoolFlowerShader.effect.uniforms.hlsl";
+#include "CoolFlowerShader.effect.uniforms.hlsl"
 #include "../common.hlsl"
 #include "../raymarching.hlsl"
 #include "../glsl.hlsl"
-
-sampler uImage0 : register(s0);
 
 struct rmRes
 {
