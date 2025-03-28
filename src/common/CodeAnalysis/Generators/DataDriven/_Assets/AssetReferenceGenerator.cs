@@ -101,7 +101,7 @@ public sealed class AssetReferenceGenerator : IIncrementalGenerator
         {
             sb.AppendLine($"{indent}    public static class {file.Name}");
             sb.AppendLine($"{indent}    {{");
-            sb.AppendLine($"{indent}        public const string KEY = \"{Path.GetFileNameWithoutExtension(file.Path.Replace('\\', '/'))}\";");
+            sb.AppendLine($"{indent}        public const string KEY = \"{Path.ChangeExtension(file.Path.Replace('\\', '/'), null)}\";");
             sb.AppendLine($"{indent}        private static readonly Lazy<Asset<{file.Reference.QualifiedType}>> lazy = new(() => ModContent.Request<{file.Reference.QualifiedType}>(KEY));");
             sb.AppendLine($"{indent}        public static Asset<{file.Reference.QualifiedType}> Asset => lazy.Value;");
             sb.AppendLine($"{indent}    }}");
