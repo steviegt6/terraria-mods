@@ -37,13 +37,13 @@ internal sealed class RainbowSlimeShaderTweak : GlobalNPC
 
         rainbowSlimeTextureHandle = AssetReplacer.Npc(
             rainbow_slime,
-            Mod.Assets.Request<Texture2D>(Assets.Images.NPCs.RainbowSlime.KEY)
+            Assets.Images.NPCs.RainbowSlime.Asset
         );
 
 #pragma warning disable CS0618 // Type or member is obsolete
         rainbowSlimeShaderData = new MiscShaderData(Main.PixelShaderRef, "QueenSlime");
         {
-            rainbowSlimeShaderData.UseImage1(Mod.Assets.Request<Texture2D>(Assets.Images.QueenSlimePalettes.RainbowSlime.KEY));
+            rainbowSlimeShaderData.UseImage1(Assets.Images.QueenSlimePalettes.RainbowSlime.Asset);
             rainbowSlimeShaderData.UseImage2("Images/Extra_179");
         }
 #pragma warning restore CS0618 // Type or member is obsolete
