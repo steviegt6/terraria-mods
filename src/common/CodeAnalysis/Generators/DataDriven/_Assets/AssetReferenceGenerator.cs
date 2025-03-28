@@ -98,6 +98,8 @@ public sealed class AssetReferenceGenerator : IIncrementalGenerator
             sb.AppendLine($"{indent}        private static readonly Lazy<Asset<{file.Reference.QualifiedType}>> lazy = new(() => ModContent.Request<{file.Reference.QualifiedType}>(NAME));");
             sb.AppendLine($"{indent}        public static Asset<{file.Reference.QualifiedType}> Asset => lazy.Value;");
             sb.AppendLine($"{indent}    }}");
+
+            sb.AppendLine();
         }
 
         foreach (var node in pathNode.Nodes.Values)
@@ -110,7 +112,7 @@ public sealed class AssetReferenceGenerator : IIncrementalGenerator
             sb.AppendLine($"{indent}}}");
         }
 
-        return sb.ToString();
+        return sb.ToString().TrimEnd();
     }
 
     private static PathNode CreateAssetTree(IEnumerable<string> filePaths, Dictionary<string, IAssetReference> referencesByExtension, string assemblyName)
