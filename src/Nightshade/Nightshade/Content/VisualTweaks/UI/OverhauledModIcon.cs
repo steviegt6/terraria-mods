@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 using MonoMod.Cil;
 
+using Nightshade.Core;
 using Nightshade.Core.Attributes;
 using Nightshade.Core.Rendering;
 
@@ -44,12 +45,6 @@ internal sealed class OverhauledModIcon : ILoadable
             }
 
             originalText = text;
-        }
-
-        [Obsolete("Unsupported", error: true)]
-        public PulsatingAndAwesomeText(LocalizedText text, float textScale = 1, bool large = false) : base(text, textScale, large)
-        {
-            throw new NotSupportedException("Localized text is not supported.");
         }
 
         public override void DrawSelf(SpriteBatch spriteBatch)
@@ -90,12 +85,10 @@ internal sealed class OverhauledModIcon : ILoadable
         private readonly Asset<Texture2D> icon;
         private readonly Asset<Texture2D> iconDots;
 
-        public PetalImage(ModImpl mod) : base(TextureAssets.MagicPixel)
+        public PetalImage() : base(TextureAssets.MagicPixel)
         {
-            const string path = "Assets/Images/UI/ModIcon/";
-
-            icon     = mod.Assets.Request<Texture2D>(path + "Icon");
-            iconDots = mod.Assets.Request<Texture2D>(path + "Icon_Dots");
+            icon     = Assets.Images.UI.ModIcon.Icon.Asset;
+            iconDots = Assets.Images.UI.ModIcon.Icon_Dots.Asset;
 
             SetImage(icon);
         }
@@ -151,6 +144,7 @@ internal sealed class OverhauledModIcon : ILoadable
     private static bool  isCurrentlyHandlingOurMod;
     private static float hoverIntensity;
 
+    // TODO: Generate shaders!
     private const string panel_shader_path  = "Assets/Shaders/UI/ModPanelShader";
     private const string flower_shader_path = "Assets/Shaders/UI/CoolFlowerShader";
 
@@ -245,13 +239,13 @@ internal sealed class OverhauledModIcon : ILoadable
 
         var modInfoTextureOrig = UICommon.ButtonModInfoTexture;
         {
-            var modInfoTextureNew = theMod.Assets.Request<Texture2D>("Assets/Images/UI/ModLoader/ButtonModInfo");
+            var modInfoTextureNew = Assets.Images.UI.ModLoader.ButtonModInfo.Asset;
             UICommon.ButtonModInfoTexture = modInfoTextureNew;
         }
 
         var modConfigTextureOrig = UICommon.ButtonModConfigTexture;
         {
-            var modConfigTextureNew = theMod.Assets.Request<Texture2D>("Assets/Images/UI/ModLoader/ButtonModConfig");
+            var modConfigTextureNew = Assets.Images.UI.ModLoader.ButtonModConfig.Asset;
             UICommon.ButtonModConfigTexture = modConfigTextureNew;
         }
 
@@ -302,7 +296,7 @@ internal sealed class OverhauledModIcon : ILoadable
 
         var innerPanelTextureOrig = UICommon.InnerPanelTexture;
         {
-            var innerPanelTextureNew = theMod.Assets.Request<Texture2D>("Assets/Images/UI/ModLoader/InnerPanelBackground");
+            var innerPanelTextureNew = Assets.Images.UI.ModLoader.InnerPanelBackground.Asset;
             UICommon.InnerPanelTexture = innerPanelTextureNew;
         }
 
@@ -329,21 +323,16 @@ internal sealed class OverhauledModIcon : ILoadable
         {
             var sb = new StringBuilder();
 
-            sb.AppendLine(GetText("UI.ModIcon.AuthorHeader"));
+            sb.AppendLine(Mods.Nightshade.UI.ModIcon.AuthorHeader.ToString());
 
             foreach (var authorName in authors)
             {
                 sb.Append($"[nsa:{authorName}]");
                 sb.Append(' ');
-                sb.AppendLine(GetText($"UI.ModIcon.Authors.{authorName}"));
+                sb.AppendLine(Language.GetTextValue($"Mods.NightShade.UI.ModIcon.Authors.{authorName}"));
             }
 
             return sb.ToString();
-        }
-
-        static string GetText(string key)
-        {
-            return Language.GetTextValue($"Mods.Nightshade.{key}");
         }
     }
 
@@ -380,7 +369,7 @@ internal sealed class OverhauledModIcon : ILoadable
                     return originalImage;
                 }
 
-                return new PetalImage(theMod)
+                return new PetalImage
                 {
                     Left   = originalImage.Left,
                     Top    = originalImage.Top,
