@@ -7,5 +7,10 @@
     "uTime": "float",
     "uPixel": "float"
   },
+  "passes": {
+    "FlowerShader": {
+      "PixelShader": "ps_3_0 main"
+    }
+  },
   "profile": "fx_2_0"
 }

@@ -12,5 +12,10 @@
     "uInColor": "float3",
     "uSpeed": "float"
   },
+  "passes": {
+    "PanelShader": {
+      "PixelShader": "ps_3_0 main"
+    }
+  },
   "profile": "fx_2_0"
 }

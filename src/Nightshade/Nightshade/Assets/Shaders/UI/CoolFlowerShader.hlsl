@@ -8,7 +8,9 @@
 // carefully.
 // You can find the original author here: <paperu.net>.
 
+#undef TECHNIQUES
 #include "CoolFlowerShader.effect.uniforms.hlsl"
+
 #include "../common.hlsl"
 #include "../raymarching.hlsl"
 #include "../glsl.hlsl"
@@ -257,12 +259,5 @@ float4 main(float2 coords : SV_POSITION, float2 tex_coords : TEXCOORD0) : COLOR0
     return float4(color, 0.0f);
 }
 
-#ifdef FX
-technique Technique1
-{
-    pass FlowerShader
-    {
-        PixelShader = compile ps_3_0 main();
-    }
-}
-#endif // FX
+#define TECHNIQUES
+#include "CoolFlowerShader.effect.uniforms.hlsl"

@@ -1,4 +1,6 @@
+#undef TECHNIQUES
 #include "ModPanelShader.effect.uniforms.hlsl"
+
 #include "../common.hlsl"
 #include "../pixelation.hlsl"
 
@@ -81,12 +83,5 @@ float4 main(float2 coords : SV_POSITION, float2 tex_coords : TEXCOORD0) : COLOR0
     return float4(final_color, alpha);
 }
 
-#ifdef FX
-technique Technique1
-{
-    pass PanelShader
-    {
-        PixelShader = compile ps_3_0 main();
-    }
-}
-#endif // FX
+#define TECHNIQUES
+#include "ModPanelShader.effect.uniforms.hlsl"

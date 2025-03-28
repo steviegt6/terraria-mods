@@ -19,6 +19,9 @@ internal static class Program
         [JsonProperty("uniforms")]
         public Dictionary<string, string> Uniforms { get; set; } = [];
 
+        [JsonProperty("passes")]
+        public Dictionary<string, Dictionary<string, string>> Passes { get; set; } = [];
+
         [JsonProperty("profile")]
         public string Profile { get; set; } = "";
     }
@@ -119,6 +122,7 @@ internal static class Program
             sb.AppendLine("// -----------------------------------------------------------------------------");
             sb.AppendLine();
 
+            sb.AppendLine("#ifndef TECHNIQUES");
             sb.AppendLine("// begin SAMPLERS");
             foreach (var (name, register) in metadata.Samplers)
             {
@@ -132,6 +136,27 @@ internal static class Program
                 sb.AppendLine($"{type} {name};");
             }
             sb.AppendLine("// end UNIFORMS");
+            sb.AppendLine("#endif // TECHNIQUES");
+            sb.AppendLine();
+            sb.AppendLine("// begin PASSES");
+            sb.AppendLine("#ifdef FX");
+            sb.AppendLine("#ifdef TECHNIQUES");
+            sb.AppendLine("technique Technique1");
+            sb.AppendLine("{");
+            foreach (var (passName, shaders) in metadata.Passes)
+            {
+                sb.AppendLine($"    pass {passName}");
+                sb.AppendLine("    {");
+                foreach (var (stage, expression) in shaders)
+                {
+                    sb.AppendLine($"        {stage} = compile {expression}();");
+                }
+                sb.AppendLine("    }");
+            }
+            sb.AppendLine("}");
+            sb.AppendLine("#endif // TECHNIQUES");
+            sb.AppendLine("#endif // FX");
+            sb.AppendLine("// end PASSES");
         }
         File.WriteAllText(uniformOutputPath, sb.ToString());
     }

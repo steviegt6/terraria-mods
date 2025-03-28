@@ -7,6 +7,7 @@
 // </auto-generated>
 // -----------------------------------------------------------------------------
 
+#ifndef TECHNIQUES
 // begin SAMPLERS
 sampler uImage0 : register(s0);
 // end SAMPLERS
@@ -16,3 +17,18 @@ float4 uSource;
 float uTime;
 float uPixel;
 // end UNIFORMS
+#endif // TECHNIQUES
+
+// begin PASSES
+#ifdef FX
+#ifdef TECHNIQUES
+technique Technique1
+{
+    pass FlowerShader
+    {
+        PixelShader = compile ps_3_0 main();
+    }
+}
+#endif // TECHNIQUES
+#endif // FX
+// end PASSES

@@ -7,6 +7,7 @@
 // </auto-generated>
 // -----------------------------------------------------------------------------
 
+#ifndef TECHNIQUES
 // begin SAMPLERS
 sampler uImage0 : register(s0);
 // end SAMPLERS
@@ -21,3 +22,18 @@ float uGrayness;
 float3 uInColor;
 float uSpeed;
 // end UNIFORMS
+#endif // TECHNIQUES
+
+// begin PASSES
+#ifdef FX
+#ifdef TECHNIQUES
+technique Technique1
+{
+    pass PanelShader
+    {
+        PixelShader = compile ps_3_0 main();
+    }
+}
+#endif // TECHNIQUES
+#endif // FX
+// end PASSES
