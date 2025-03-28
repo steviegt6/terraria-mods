@@ -81,38 +81,28 @@ public sealed class AssetReferenceGenerator : IIncrementalGenerator
     {
         var sb = new StringBuilder();
 
-        // Special logic if this is the root.
-        if (depth == 0)
-        {
-            foreach (var file in pathNode.Files)
-            {
-                sb.AppendLine($"    private static readonly Lazy<Asset<{file.Reference.QualifiedType}>> lazy_{file.Name} = new(() => ModContent.Request<{file.Reference.QualifiedType}>(\"{file.Path.Replace('\\', '/')}\"));");
-                sb.AppendLine($"    public static Asset<{file.Reference.QualifiedType}> {file.Name} => lazy_{file.Name}.Value;");
-            }
-
-            foreach (var node in pathNode.Nodes.Values)
-            {
-                sb.AppendLine(GenerateTextFromPathNode(node, depth + 1));
-            }
-
-            return sb.ToString();
-        }
-
         var indent = new string(' ', depth * 4);
-        sb.AppendLine($"{indent}public static class {pathNode.Name} {{");
-        {
-            foreach (var file in pathNode.Files)
-            {
-                sb.AppendLine($"{indent}    private static readonly Lazy<Asset<{file.Reference.QualifiedType}>> lazy_{file.Name} = new(() => ModContent.Request<{file.Reference.QualifiedType}>(\"{file.Path.Replace('\\', '/')}\"));");
-                sb.AppendLine($"{indent}    public static Asset<{file.Reference.QualifiedType}> {file.Name} => lazy_{file.Name}.Value;");
-            }
 
-            foreach (var node in pathNode.Nodes.Values)
-            {
-                sb.AppendLine(GenerateTextFromPathNode(node, depth + 1));
-            }
+        if (depth != 0)
+        {
+            sb.AppendLine($"{indent}public static class {pathNode.Name} {{");
         }
-        sb.AppendLine($"{indent}}}");
+
+        foreach (var file in pathNode.Files)
+        {
+            sb.AppendLine($"{indent}    private static readonly Lazy<Asset<{file.Reference.QualifiedType}>> lazy_{file.Name} = new(() => ModContent.Request<{file.Reference.QualifiedType}>(\"{file.Path.Replace('\\', '/')}\"));");
+            sb.AppendLine($"{indent}    public static Asset<{file.Reference.QualifiedType}> {file.Name} => lazy_{file.Name}.Value;");
+        }
+
+        foreach (var node in pathNode.Nodes.Values)
+        {
+            sb.AppendLine(GenerateTextFromPathNode(node, depth + 1));
+        }
+
+        if (depth != 0)
+        {
+            sb.AppendLine($"{indent}}}");
+        }
 
         return sb.ToString();
     }
