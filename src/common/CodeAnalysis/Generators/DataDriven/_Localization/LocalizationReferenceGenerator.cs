@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 using Hjson;
 
@@ -17,6 +19,10 @@ namespace Tomat.Terraria.TML.SourceGenerator.Generators.DataDriven;
 [Generator]
 public sealed class LocalizationReferenceGenerator : IIncrementalGenerator
 {
+    // TODO: Support reference regex too?  Sucks!
+    // https://github.com/tModLoader/tModLoader/blob/eaf63ce340c09e3361a40c0e8fe8073a6cdd1b3d/patches/tModLoader/Terraria/Localization/LanguageManager.tML.cs#L43
+    private static readonly Regex arg_remapping_regex = new(@"(?<={\^?)(\d+)(?=(?::[^\r\n]+?)?})", RegexOptions.Compiled);
+
     void IIncrementalGenerator.Initialize(IncrementalGeneratorInitializationContext context)
     {
         var files = context.AdditionalTextsProvider.Where(x => x.Path.EndsWith(".hjson"));
@@ -49,7 +55,7 @@ public sealed class LocalizationReferenceGenerator : IIncrementalGenerator
 
     private static string GenerateLocalization(List<AdditionalText> hjsonFiles, string rootNamespace)
     {
-        var keys = new HashSet<string>();
+        var keys = new HashSet<(string key, string value)>();
 
         foreach (var file in hjsonFiles)
         foreach (var key in GetKeysFromFile(file))
@@ -61,7 +67,7 @@ public sealed class LocalizationReferenceGenerator : IIncrementalGenerator
 
         foreach (var key in keys)
         {
-            var parts   = key.Split('.');
+            var parts   = key.key.Split('.');
             var current = root;
 
             for (var i = 0; i < parts.Length; i++)
@@ -87,11 +93,13 @@ public sealed class LocalizationReferenceGenerator : IIncrementalGenerator
 
         var sb = new StringBuilder();
 
-        sb.AppendLine($"using {rootNamespace}.Common.Localization;");
+        sb.AppendLine("#nullable enable");
+        sb.AppendLine();
+        sb.AppendLine("using Terraria.Localization;");
         sb.AppendLine();
         sb.AppendLine($"namespace {rootNamespace}.Core;");
         sb.AppendLine();
-        sb.AppendLine($"internal static class LocalizationReferences");
+        sb.AppendLine("internal static class LocalizationReferences");
         sb.AppendLine("{");
 
         foreach (var node in root.Nodes.Values)
@@ -109,10 +117,46 @@ public sealed class LocalizationReferenceGenerator : IIncrementalGenerator
         var sb     = new StringBuilder();
         var indent = new string(' ', depth * 4);
 
-        sb.AppendLine($"{indent}public static class {node.Name} {{");
-        foreach (var key in node.Keys)
+        sb.AppendLine($"{indent}public static class {node.Name}");
+        sb.AppendLine($"{indent}{{");
+        foreach (var (key, value) in node.Keys)
         {
-            sb.AppendLine($"{indent}    public static readonly LocalizableText {key.Split('.').Last()} = LocalizableText.FromKey(\"{key}\");");
+            var name = key.Split('.').Last();
+            var args = GetArgumentCount(value);
+
+            sb.AppendLine($"{indent}    public static class {name}");
+            sb.AppendLine($"{indent}    {{");
+            sb.AppendLine($"{indent}        public const string KEY = \"{key}\";");
+            sb.AppendLine($"{indent}        public const int ARG_COUNT = {args};");
+            sb.AppendLine();
+            sb.AppendLine($"{indent}        public static LocalizedText GetText()");
+            sb.AppendLine($"{indent}        {{");
+            sb.AppendLine($"{indent}            return Language.GetText(KEY);");
+            sb.AppendLine($"{indent}        }}");
+            sb.AppendLine();
+
+            if (args == 0)
+            {
+                sb.AppendLine($"{indent}        public static string GetTextValue()");
+                sb.AppendLine($"{indent}        {{");
+                sb.AppendLine($"{indent}            return Language.GetTextValue(KEY);");
+                sb.AppendLine($"{indent}        }}");
+            }
+            else
+            {
+                var argNames = new List<string>();
+                for (var i = 0; i < args; i++)
+                {
+                    argNames.Add($"arg{i}");
+                }
+
+                sb.AppendLine($"{indent}        public static string GetTextValue({string.Join(", ", argNames.Select(x => $"object? {x}"))})");
+                sb.AppendLine($"{indent}        {{");
+                sb.AppendLine($"{indent}            return Language.GetTextValue(KEY, {string.Join(", ", argNames)});");
+                sb.AppendLine($"{indent}        }}");
+            }
+
+            sb.AppendLine($"{indent}    }}");
         }
 
         foreach (var child in node.Nodes.Values)
@@ -125,9 +169,9 @@ public sealed class LocalizationReferenceGenerator : IIncrementalGenerator
         return sb.ToString();
     }
 
-    private static List<string> GetKeysFromFile(AdditionalText file)
+    private static List<(string key, string value)> GetKeysFromFile(AdditionalText file)
     {
-        var keys       = new List<string>();
+        var keys       = new List<(string key, string value)>();
         var prefix     = GetPrefixFromPath(file.Path);
         var text       = file.GetText()!.ToString();
         var json       = HjsonValue.Parse(text).ToString();
@@ -165,7 +209,16 @@ public sealed class LocalizationReferenceGenerator : IIncrementalGenerator
                 path = prefix + '.' + path;
             }
 
-            keys.Add(path);
+            var value = t.Type switch
+            {
+                JTokenType.String  => t.Value<string>() ?? "",
+                JTokenType.Integer => t.Value<int>().ToString(),
+                JTokenType.Boolean => t.Value<bool>().ToString(),
+                JTokenType.Float   => t.Value<float>().ToString(CultureInfo.InvariantCulture),
+                _                  => t.ToString(),
+            };
+
+            keys.Add((path, value));
         }
 
         return keys;
@@ -183,6 +236,11 @@ public sealed class LocalizationReferenceGenerator : IIncrementalGenerator
             2 => splitByUnderscore[1],
             _ => throw new ArgumentException("Invalid path format", nameof(path))
         };
+    }
+
+    private static int GetArgumentCount(string value)
+    {
+        return arg_remapping_regex.Matches(value).Count;
     }
 
     private static string GenerateCommonLocalization(
