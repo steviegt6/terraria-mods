@@ -64,7 +64,8 @@ public sealed class AssetReferenceGenerator : IIncrementalGenerator
         sb.AppendLine();
         sb.AppendLine($"namespace {rootNamespace}.Core;");
         sb.AppendLine();
-        sb.AppendLine("internal static class AssetReferences {");
+        sb.AppendLine("internal static class AssetReferences");
+        sb.AppendLine("{");
         {
             // TODO: My code is terrible, should only ever be one node in the root.
             foreach (var node in root.Nodes.Values)
@@ -85,7 +86,8 @@ public sealed class AssetReferenceGenerator : IIncrementalGenerator
 
         if (depth != 0)
         {
-            sb.AppendLine($"{indent}public static class {pathNode.Name} {{");
+            sb.AppendLine($"{indent}public static class {pathNode.Name}");
+            sb.AppendLine($"{indent}{{");
         }
 
         foreach (var file in pathNode.Files)
