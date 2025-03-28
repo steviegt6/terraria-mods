@@ -8,7 +8,7 @@
 // carefully.
 // You can find the original author here: <paperu.net>.
 
-#include "CoolFlowerShader.uniforms.hlsl";
+#include "CoolFlowerShader.effect.uniforms.hlsl";
 #include "../common.hlsl"
 #include "../raymarching.hlsl"
 #include "../glsl.hlsl"

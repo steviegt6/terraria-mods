@@ -12,8 +12,5 @@
     "uInColor": "float3",
     "uSpeed": "float"
   },
-  "profile": "fx_2_0",
-  "input": "ModPanelShader.hlsl",
-  "output": "ModPanelShader.fxc",
-  "uniformOutput": "ModPanelShader.uniforms.hlsl"
+  "profile": "fx_2_0"
 }

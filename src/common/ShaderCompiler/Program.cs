@@ -19,15 +19,6 @@ internal static class Program
 
         [JsonProperty("profile")]
         public string Profile { get; set; } = "";
-
-        [JsonProperty("input")]
-        public string Input { get; set; } = "";
-
-        [JsonProperty("output")]
-        public string Output { get; set; } = "";
-
-        [JsonProperty("uniformOutput")]
-        public string UniformOutput { get; set; } = "";
     }
 
     public static void Main(string[] args)
@@ -52,6 +43,7 @@ internal static class Program
                 continue;
             }
 
+            var filePath = Path.GetFileNameWithoutExtension(Path.GetFullPath(file));
             var basePath = Path.GetFullPath(Path.GetDirectoryName(file) ?? "");
 
             ShaderMetadata? shaderMetadata;
@@ -71,7 +63,7 @@ internal static class Program
                 return;
             }
 
-            GenerateUniforms(shaderMetadata, basePath);
+            GenerateUniforms(shaderMetadata, basePath, filePath);
 
             if (justGenerateUniforms)
             {
@@ -82,9 +74,9 @@ internal static class Program
         }
     }
 
-    private static void GenerateUniforms(ShaderMetadata metadata, string basePath)
+    private static void GenerateUniforms(ShaderMetadata metadata, string basePath, string filePathWithoutExtension)
     {
-        var uniformOutputPath = Path.GetFullPath(metadata.UniformOutput, basePath);
+        var uniformOutputPath = Path.GetFullPath(filePathWithoutExtension + ".uniforms.hlsl", basePath);
 
         if (File.Exists(uniformOutputPath))
         {

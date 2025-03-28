@@ -1,16 +1,6 @@
+#include "ModPanelShader.effect.uniforms.hlsl";
 #include "../common.hlsl"
 #include "../pixelation.hlsl"
-
-sampler uImage0 : register(s0);
-
-float uTime;
-float4 uSource;
-float uHoverIntensity;
-float uPixel;
-float uColorResolution;
-float uGrayness;
-float3 uInColor;
-float uSpeed;
 
 /**
  * Calculates a smooth fade effect near the edges of a given region.

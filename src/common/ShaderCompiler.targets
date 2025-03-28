@@ -8,13 +8,13 @@
 
     <!-- Actually build our shaders when building the project. -->
     <Target Name="CompileShaders" BeforeTargets="BeforeBuild">
-        <Exec Command="dotnet run --project &quot;$(MSBuildThisFileDirectory)ShaderCompiler/ShaderCompiler.csproj&quot; -c Release -- %(ShaderCompile.Identity)"/>
+        <Exec Command="dotnet run --project &quot;$(MSBuildThisFileDirectory)ShaderCompiler/ShaderCompiler.csproj&quot; -c Release -- @(ShaderCompile->'&quot;%(Identity)&quot;', ' ')"/>
     </Target>
 
     <!-- We can generate uniforms when preparing a build or refreshing. -->
-    <!-- TODO: Inputs="@(ShaderCompile)" Outputs="%(ShaderCompile.FileName).uniforms.hlsl" -->
-    <Target Name="GenerateShaders" BeforeTargets="PrepareForBuild">
-        <Exec Command="dotnet run --project &quot;$(MSBuildThisFileDirectory)ShaderCompiler/ShaderCompiler.csproj&quot; -c Release -- --generate-uniforms %(ShaderCompile.Identity)"/>
+    <Target Name="GenerateShaders" BeforeTargets="PrepareForBuild"
+            Inputs="@(ShaderCompile)" Outputs="@(ShaderCompile->'%(Filename).uniforms.hlsl', ' ')">
+        <Exec Command="dotnet run --project &quot;$(MSBuildThisFileDirectory)ShaderCompiler/ShaderCompiler.csproj&quot; -c Release -- --generate-uniforms @(ShaderCompile->'&quot;%(Identity)&quot;', ' ')"/>
     </Target>
 
 </Project>
