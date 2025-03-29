@@ -118,7 +118,7 @@ public sealed class LocalizationReferenceGenerator : IIncrementalGenerator
         var sb     = new StringBuilder();
         var indent = new string(' ', depth * 4);
 
-        sb.AppendLine($"{indent}public static class {node.Name}");
+        sb.AppendLine($"{indent}public static partial class {node.Name}");
         sb.AppendLine($"{indent}{{");
 
         sb.AppendLine($"{indent}    public const string KEY = \"{ourKey}\";");
@@ -138,7 +138,7 @@ public sealed class LocalizationReferenceGenerator : IIncrementalGenerator
             var name = key.Split('.').Last();
             var args = GetArgumentCount(value);
 
-            sb.AppendLine($"{indent}    public static class {name}");
+            sb.AppendLine($"{indent}    public static partial class {name}");
             sb.AppendLine($"{indent}    {{");
             sb.AppendLine($"{indent}        public const string KEY = \"{key}\";");
             sb.AppendLine($"{indent}        public const int ARG_COUNT = {args};");

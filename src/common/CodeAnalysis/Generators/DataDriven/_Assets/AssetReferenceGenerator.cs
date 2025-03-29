@@ -71,7 +71,7 @@ public sealed class AssetReferenceGenerator : IIncrementalGenerator
         sb.AppendLine();
         sb.AppendLine($"namespace {rootNamespace}.Core;");
         sb.AppendLine();
-        sb.AppendLine("internal static class AssetReferences");
+        sb.AppendLine("internal static partial class AssetReferences");
         sb.AppendLine("{");
         {
             // TODO: My code is terrible, should only ever be one node in the root.
@@ -93,13 +93,13 @@ public sealed class AssetReferenceGenerator : IIncrementalGenerator
 
         if (depth != 0)
         {
-            sb.AppendLine($"{indent}public static class {pathNode.Name}");
+            sb.AppendLine($"{indent}public static partial class {pathNode.Name}");
             sb.AppendLine($"{indent}{{");
         }
 
         foreach (var file in pathNode.Files)
         {
-            sb.AppendLine($"{indent}    public static class {file.Name}");
+            sb.AppendLine($"{indent}    public static partial class {file.Name}");
             sb.AppendLine($"{indent}    {{");
             sb.AppendLine($"{indent}        public const string KEY = \"{Path.ChangeExtension(file.Path.Replace('\\', '/'), null)}\";");
             sb.AppendLine($"{indent}        private static readonly Lazy<Asset<{file.Reference.QualifiedType}>> lazy = new(() => ModContent.Request<{file.Reference.QualifiedType}>(KEY));");
