@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Text;
 
 using Newtonsoft.Json;
@@ -28,21 +27,6 @@ internal static class Program
     }
 
     private static string baseDirectory = null!;
-
-private static byte[] GetFileHash(string fileName)
-{
-    HashAlgorithm sha1 = SHA1.Create();
-    if (sha1 is null)
-    {
-        throw new InvalidOperationException("SHA1 not supported");
-    }
-    if (!File.Exists(fileName))
-    {
-        throw new FileNotFoundException("File not found", fileName);
-    }
-    using(FileStream stream = new FileStream(fileName,FileMode.Open,FileAccess.Read))
-      return sha1.ComputeHash(stream);
-}
 
     public static void Main(string[] args)
     {
@@ -193,41 +177,6 @@ private static byte[] GetFileHash(string fileName)
 
         var hlslFile  = Path.Combine(basePath, realFileName + ".hlsl");
         var fxcOutput = Path.Combine(basePath, realFileName + ".fxc");
-        var hash = GetFileHash(hlslFile);
-        var hashString = BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
-        
-        if (File.Exists(Directory.GetCurrentDirectory() + "/" + "changedFiles.txt"))
-        {
-            var changedFiles = File.ReadAllLines(Directory.GetCurrentDirectory() + "/" + "changedFiles.txt");
-            if (!changedFiles.Contains(hashString))
-            {
-                Console.WriteLine("File " + hlslFile + " has been changed, recompiling... " + $"({hashString})");
-                FileStream fs = new FileStream(Directory.GetCurrentDirectory() + "/" + "changedFiles.txt", FileMode.Append, FileAccess.Write);
-                using (StreamWriter sw = new StreamWriter(fs))
-                {
-                    sw.WriteLine(hashString);
-                }
-                fs.Close();
-            }
-            else
-            {
-                if (File.Exists(fxcOutput))
-                {
-                Console.WriteLine("File " + hlslFile + " has not been changed, skipping...");
-                return;
-                }
-            }
-        } else {
-            FileStream fs = new FileStream(Directory.GetCurrentDirectory() + "/" + "changedFiles.txt", FileMode.Create, FileAccess.Write);
-            using (StreamWriter sw = new StreamWriter(fs))
-            {
-
-                sw.WriteLine(hashString);
-            
-            }
-            fs.Close();
-        }
-
         var isLinux   = Environment.OSVersion.Platform == PlatformID.Unix;
         string fxcExePath = "";
         if (isLinux) {
