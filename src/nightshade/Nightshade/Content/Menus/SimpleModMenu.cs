@@ -8,7 +8,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Nightshade.Common.Rendering;
 using Nightshade.Core;
 using Nightshade.Core.Attributes;
-using Nightshade.Core.Rendering;
 
 using ReLogic.Content;
 

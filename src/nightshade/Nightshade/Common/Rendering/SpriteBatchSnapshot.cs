@@ -1,7 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Nightshade.Core.Rendering;
+namespace Nightshade.Common.Rendering;
 
 public struct SpriteBatchSnapshot(SpriteBatch spriteBatch)
 {
