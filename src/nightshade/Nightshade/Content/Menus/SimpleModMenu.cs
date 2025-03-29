@@ -42,10 +42,8 @@ internal sealed class SimpleModMenu : ModMenu
     {
         base.Load();
 
-        const string path = "Assets/Images/UI/ModIcon/";
-
-        icon     = Mod.Assets.Request<Texture2D>(path + "Icon");
-        iconDots = Mod.Assets.Request<Texture2D>(path + "Icon_Dots");
+        icon     = Assets.Images.UI.ModIcon.Icon.Asset;
+        iconDots = Assets.Images.UI.ModIcon.Icon_Dots.Asset;
 
         Main.QueueMainThreadAction(
             () =>
