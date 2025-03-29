@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using Nightshade.Common.Rendering;
+using Nightshade.Core;
 using Nightshade.Core.Attributes;
 using Nightshade.Core.Rendering;
 
@@ -23,10 +24,10 @@ namespace Nightshade.Content.Menus;
 internal sealed class SimpleModMenu : ModMenu
 {
     [InitializedInLoad]
-    private static MiscShaderData? panelShaderData;
+    private static WrapperShaderData<Assets.Shaders.UI.ModPanelShader.Parameters>? panelShaderData;
 
     [InitializedInLoad]
-    private static MiscShaderData? flowerShaderData;
+    private static WrapperShaderData<Assets.Shaders.UI.CoolFlowerShader.Parameters>? flowerShaderData;
 
     [InitializedInLoad]
     private static Asset<Texture2D>? icon;
@@ -52,11 +53,8 @@ internal sealed class SimpleModMenu : ModMenu
         Main.QueueMainThreadAction(
             () =>
             {
-                var panelShader  = Mod.Assets.Request<Effect>(panel_shader_path);
-                var flowerShader = Mod.Assets.Request<Effect>(flower_shader_path);
-
-                panelShaderData  = new MiscShaderData(panelShader,  "PanelShader");
-                flowerShaderData = new MiscShaderData(flowerShader, "FlowerShader");
+                panelShaderData  = Assets.Shaders.UI.ModPanelShader.CreatePanelShader();
+                flowerShaderData = Assets.Shaders.UI.CoolFlowerShader.CreateFlowerShader();
             }
         );
 
@@ -96,13 +94,14 @@ internal sealed class SimpleModMenu : ModMenu
             );
 
             Debug.Assert(panelShaderData is not null);
-            panelShaderData.Shader.Parameters["uGrayness"].SetValue(1f);
-            panelShaderData.Shader.Parameters["uInColor"].SetValue(new Vector3(1f, 0f, 1f));
-            panelShaderData.Shader.Parameters["uSpeed"].SetValue(0.2f);
-            panelShaderData.Shader.Parameters["uSource"].SetValue(new Vector4(dims.Width, dims.Height, dims.X, dims.Y));
-            panelShaderData.Shader.Parameters["uHoverIntensity"].SetValue(1f);
-            panelShaderData.Shader.Parameters["uPixel"].SetValue(1f);
-            panelShaderData.Shader.Parameters["uColorResolution"].SetValue(new Vector3(16f));
+            panelShaderData.Parameters.uGrayness        = 1f;
+            panelShaderData.Parameters.uGrayness        = 1f;
+            panelShaderData.Parameters.uInColor         = new Vector3(1f, 0f, 1f);
+            panelShaderData.Parameters.uSpeed           = 0.2f;
+            panelShaderData.Parameters.uSource          = new Vector4(dims.Width, dims.Height, dims.X, dims.Y);
+            panelShaderData.Parameters.uHoverIntensity  = 1f;
+            panelShaderData.Parameters.uPixel           = 1f;
+            panelShaderData.Parameters.uColorResolution = 16f;
             panelShaderData.Apply();
             Main.spriteBatch.Draw(TextureAssets.MagicPixel.Value, dims, Color.White);
 
@@ -118,8 +117,8 @@ internal sealed class SimpleModMenu : ModMenu
             );
 
             Debug.Assert(flowerShaderData is not null);
-            flowerShaderData.Shader.Parameters["uSource"].SetValue(new Vector4(dims.Width, dims.Height, dims.X, dims.Y));
-            flowerShaderData.Shader.Parameters["uPixel"].SetValue(1f);
+            flowerShaderData.Parameters.uSource = new Vector4(dims.Width, dims.Height, dims.X, dims.Y);
+            flowerShaderData.Parameters.uPixel  = 1f;
             flowerShaderData.Apply();
             Main.spriteBatch.Draw(TextureAssets.MagicPixel.Value, dims, Color.White);
 

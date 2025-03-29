@@ -136,10 +136,10 @@ internal sealed class OverhauledModIcon : ILoadable
     private static ModImpl? theMod;
 
     [InitializedInLoad]
-    private static MiscShaderData? panelShaderData;
+    private static WrapperShaderData<Assets.Shaders.UI.ModPanelShader.Parameters>? panelShaderData;
 
     [InitializedInLoad]
-    private static MiscShaderData? flowerShaderData;
+    private static WrapperShaderData<Assets.Shaders.UI.CoolFlowerShader.Parameters>? flowerShaderData;
 
     private static bool  isCurrentlyHandlingOurMod;
     private static float hoverIntensity;
@@ -175,11 +175,8 @@ internal sealed class OverhauledModIcon : ILoadable
         Main.QueueMainThreadAction(
             () =>
             {
-                var panelShader  = nsMod.Assets.Request<Effect>(panel_shader_path);
-                var flowerShader = nsMod.Assets.Request<Effect>(flower_shader_path);
-
-                panelShaderData  = new MiscShaderData(panelShader,  "PanelShader");
-                flowerShaderData = new MiscShaderData(flowerShader, "FlowerShader");
+                panelShaderData  = Assets.Shaders.UI.ModPanelShader.CreatePanelShader();
+                flowerShaderData = Assets.Shaders.UI.CoolFlowerShader.CreateFlowerShader();
             }
         );
 
@@ -437,13 +434,13 @@ internal sealed class OverhauledModIcon : ILoadable
             hoverIntensity =  Math.Clamp(hoverIntensity, 0f, 1f);
 
             Debug.Assert(panelShaderData is not null);
-            panelShaderData.Shader.Parameters["uGrayness"].SetValue(1f);
-            panelShaderData.Shader.Parameters["uInColor"].SetValue(new Vector3(1f, 0f, 1f));
-            panelShaderData.Shader.Parameters["uSpeed"].SetValue(0.2f);
-            panelShaderData.Shader.Parameters["uSource"].SetValue(new Vector4(dims.Width, dims.Height - 2f, dims.X, dims.Y));
-            panelShaderData.Shader.Parameters["uHoverIntensity"].SetValue(hoverIntensity);
-            panelShaderData.Shader.Parameters["uPixel"].SetValue(2f);
-            panelShaderData.Shader.Parameters["uColorResolution"].SetValue(new Vector3(10f));
+            panelShaderData.Parameters.uGrayness        = 1f;
+            panelShaderData.Parameters.uInColor         = new Vector3(1f, 0f, 1f);
+            panelShaderData.Parameters.uSpeed           = 0.2f;
+            panelShaderData.Parameters.uSource          = new Vector4(dims.Width, dims.Height - 2f, dims.X, dims.Y);
+            panelShaderData.Parameters.uHoverIntensity  = hoverIntensity;
+            panelShaderData.Parameters.uPixel           = 2f;
+            panelShaderData.Parameters.uColorResolution = 10f;
             panelShaderData.Apply();
 
             Debug.Assert(uiModItem._backgroundTexture is not null);
@@ -464,8 +461,8 @@ internal sealed class OverhauledModIcon : ILoadable
             dims.X += 40f; // 80 / 2
 
             Debug.Assert(flowerShaderData is not null);
-            flowerShaderData.Shader.Parameters["uSource"].SetValue(new Vector4(dims.Width, dims.Height - 2f, dims.X, dims.Y));
-            flowerShaderData.Shader.Parameters["uPixel"].SetValue(2f);
+            flowerShaderData.Parameters.uSource = new Vector4(dims.Width, dims.Height - 2f, dims.X, dims.Y);
+            flowerShaderData.Parameters.uPixel  = 2f;
             flowerShaderData.Apply();
             uiModItem.DrawPanel(spriteBatch, uiModItem._backgroundTexture.Value, uiModItem.BackgroundColor);
             // Main.spriteBatch.Draw(TextureAssets.MagicPixel.Value, flowerDimensions, Color.White);
