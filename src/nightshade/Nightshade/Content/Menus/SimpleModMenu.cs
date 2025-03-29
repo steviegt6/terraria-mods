@@ -47,9 +47,6 @@ internal sealed class SimpleModMenu : ModMenu
         icon     = Mod.Assets.Request<Texture2D>(path + "Icon");
         iconDots = Mod.Assets.Request<Texture2D>(path + "Icon_Dots");
 
-        const string panel_shader_path  = "Assets/Shaders/UI/ModPanelShader";
-        const string flower_shader_path = "Assets/Shaders/UI/CoolFlowerShader";
-
         Main.QueueMainThreadAction(
             () =>
             {

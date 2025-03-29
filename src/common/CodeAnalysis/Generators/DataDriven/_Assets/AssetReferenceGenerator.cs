@@ -219,6 +219,9 @@ internal sealed class WrapperShaderData<TParameters> : ShaderData
                         {
                             sb.AppendLine($"{indent}                parameters[\"{name}\"]?.SetValue({name});");
                         }
+                        
+                        // special case for uTime
+                        sb.AppendLine($"{indent}                parameters[\"uTime\"]?.SetValue(global::Terraria.Main.GlobalTimeWrappedHourly);");
                         sb.AppendLine($"{indent}            }}");
 
                         sb.AppendLine($"{indent}        }}");
