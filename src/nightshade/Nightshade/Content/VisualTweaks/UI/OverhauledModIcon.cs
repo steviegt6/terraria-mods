@@ -144,10 +144,6 @@ internal sealed class OverhauledModIcon : ILoadable
     private static bool  isCurrentlyHandlingOurMod;
     private static float hoverIntensity;
 
-    // TODO: Generate shaders!
-    private const string panel_shader_path  = "Assets/Shaders/UI/ModPanelShader";
-    private const string flower_shader_path = "Assets/Shaders/UI/CoolFlowerShader";
-
     // C50084 CE008C dark
     // E600E6        light
     private static readonly Color dark_pink  = new(197, 0, 132);
