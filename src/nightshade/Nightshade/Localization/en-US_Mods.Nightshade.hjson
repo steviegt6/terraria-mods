@@ -55,9 +55,15 @@ Items: {
 		DisplayName: Riptide Arrow
 		Tooltip: ""
 	}
+
+	MoldFlailItem: {
+		DisplayName: Mold Flail Item
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
 	ImpactBulletProjectile.DisplayName: Impact Bullet Projectile
 	RiptideArrowProjectile.DisplayName: Riptide Arrow Projectile
+	MoldFlailProjectile.DisplayName: Mold Flail Projectile
 }
