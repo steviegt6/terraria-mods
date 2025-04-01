@@ -9,6 +9,8 @@ using JetBrains.Annotations;
 
 using Microsoft.Xna.Framework;
 
+using ReLogic.Threading;
+
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.Liquid;
@@ -28,7 +30,8 @@ public sealed class FasterRenderBlack : ModSystem
     // TODO(perf): We could figure out a good minimum capacity for cold runs.
     private static readonly List<(Vector2 position, Rectangle rectangle)> draw_calls = [];
 
-    private static readonly ConcurrentBag<List<(Vector2, Rectangle)>> drawCallPool = [];
+    [ThreadStatic]
+    private static List<(Vector2, Rectangle)>? tlDrawCalls;
 
     internal static readonly List<Func<float, float>> CALLBACKS = [];
 
@@ -44,7 +47,6 @@ public sealed class FasterRenderBlack : ModSystem
         base.Unload();
 
         draw_calls.Clear();
-        drawCallPool.Clear();
         CALLBACKS.Clear();
     }
 
@@ -103,75 +105,74 @@ public sealed class FasterRenderBlack : ModSystem
 
         var showInvisibleWalls = Main.ShouldShowInvisibleWalls();
 
-        Parallel.For(
+        FastParallel.For(
             startY,
             endY,
-            localInit: () => drawCallPool.TryTake(out var drawCalls) ? drawCalls : [],
-            (y, _, drawCalls) =>
+            (relativeStartY, relativeEndY, _) =>
             {
-                var isUnderworld        = y >= Main.UnderworldLayer;
-                var brightnessThreshold = isUnderworld ? 0.2f : minBrightness;
+                tlDrawCalls ??= [];
 
-                for (var x = startX; x < endX; x++)
+                for (var y = relativeStartY; y < relativeEndY; y++)
                 {
-                    var segmentStart = x;
+                    var isUnderworld        = y >= Main.UnderworldLayer;
+                    var brightnessThreshold = isUnderworld ? 0.2f : minBrightness;
 
-                    while (x < endX)
+                    for (var x = startX; x < endX; x++)
                     {
-                        var tile = Main.tile[x, y];
+                        var segmentStart = x;
 
-                        // var brightness = (float)Math.Floor(Lighting.Brightness(x, y) * 255f) / 255f;
-                        var brightness = Lighting.Brightness(x, y);
-
-                        var liquidAmount = tile.LiquidAmount;
-
-                        var isDarkTile = brightness <= brightnessThreshold && (
-                            (!isUnderworld && liquidAmount < 250)
-                         || (liquidAmount                  >= 200 && brightness == 0f)
-                         || SolidTile(tile)
-                        );
-                        if (!isDarkTile)
+                        while (x < endX)
                         {
-                            break;
+                            var tile = Main.tile[x, y];
+
+                            // var brightness = (float)Math.Floor(Lighting.Brightness(x, y) * 255f) / 255f;
+                            var brightness = Lighting.Brightness(x, y);
+
+                            var liquidAmount = tile.LiquidAmount;
+
+                            var isDarkTile = brightness <= brightnessThreshold && (
+                                (!isUnderworld && liquidAmount < 250)
+                             || (liquidAmount                  >= 200 && brightness == 0f)
+                             || SolidTile(tile)
+                            );
+                            if (!isDarkTile)
+                            {
+                                break;
+                            }
+
+                            var isBlockingLight = Main.tileBlockLight[tile.type] &&
+                                                  tile.HasTile                   &&
+                                                  (showInvisibleWalls || !tile.IsTileInvisible);
+
+                            var hasWall = !WallID.Sets.Transparent[tile.wall] &&
+                                          (showInvisibleWalls || !tile.IsWallInvisible);
+
+                            if ((!hasWall           && !isBlockingLight)
+                             || (!Main.drawToScreen && LiquidRenderer.Instance.HasFullWater(x, y) && tile is { WallType: 0, IsHalfBlock: false } && y <= Main.worldSurface))
+                            {
+                                break;
+                            }
+                            x++;
                         }
 
-                        var isBlockingLight = Main.tileBlockLight[tile.type] &&
-                                              tile.HasTile                   &&
-                                              (showInvisibleWalls || !tile.IsTileInvisible);
-
-                        var hasWall = !WallID.Sets.Transparent[tile.wall] &&
-                                      (showInvisibleWalls || !tile.IsWallInvisible);
-
-                        if ((!hasWall           && !isBlockingLight)
-                         || (!Main.drawToScreen && LiquidRenderer.Instance.HasFullWater(x, y) && tile is { WallType: 0, IsHalfBlock: false } && y <= Main.worldSurface))
+                        if (x > segmentStart)
                         {
-                            break;
+                            tlDrawCalls.Add(
+                                (
+                                    new Vector2((segmentStart << 4) + screenOffset, (y << 4) + screenOffset),
+                                    new Rectangle(0, 0, (x - segmentStart) << 4, 16)
+                                )
+                            );
                         }
-                        x++;
                     }
 
-                    if (x > segmentStart)
+                    lock (draw_calls)
                     {
-                        drawCalls.Add(
-                            (
-                                new Vector2((segmentStart << 4) + screenOffset, (y << 4) + screenOffset),
-                                new Rectangle(0, 0, (x - segmentStart) << 4, 16)
-                            )
-                        );
+                        draw_calls.AddRange(tlDrawCalls);
                     }
-                }
 
-                return drawCalls;
-            },
-            localFinally: drawCalls =>
-            {
-                lock (draw_calls)
-                {
-                    draw_calls.AddRange(drawCalls);
+                    tlDrawCalls.Clear();
                 }
-
-                drawCalls.Clear();
-                drawCallPool.Add(drawCalls);
             }
         );
 
