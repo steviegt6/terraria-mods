@@ -14,7 +14,9 @@ internal sealed class MoldFlailItem : ModItem
     public sealed class MoldFlailProjectile : ModProjectile
     {
         public const int max_active_frame_count = 60 * 5;
-        public const int min_active_frame_count_to_deal_damage = 60 * 3;
+        public const int min_active_frame_count_to_deal_damage = 90; //60 * 1.5
+        public const int min_active_Frame_count_to_deal_minimum_damage = 0; //lol
+        public const int max_active_frame_count_to_deal_damage = 60 * 4;
         public const int frame_count_difference_when_swinging = 1;
         public const int frame_count_difference_when_not_swinging = -5;
         public const float max_projectile_responsiveness = 0.5f;
@@ -121,11 +123,13 @@ internal sealed class MoldFlailItem : ModItem
             #endregion
         }
 
+        public override bool? CanDamage() => ActiveFrameCount >= min_active_frame_count_to_deal_damage;
+
         public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
         {
             base.ModifyHitNPC(target, ref modifiers);
 
-            float damageMult = Utils.Remap(ActiveFrameCount, min_active_frame_count_to_deal_damage, max_active_frame_count, 0f, 1f);
+            float damageMult = Utils.Remap(ActiveFrameCount, min_active_Frame_count_to_deal_minimum_damage, max_active_frame_count_to_deal_damage, 0f, 1f);
             modifiers.SourceDamage *= damageMult;
         }
     }
