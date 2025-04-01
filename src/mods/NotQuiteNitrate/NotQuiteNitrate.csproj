@@ -11,4 +11,8 @@
         <UseFeature_DynamicModCalls>enable</UseFeature_DynamicModCalls>
     </PropertyGroup>
 
+    <ItemGroup>
+        <Publicize Include="FNA"/>
+    </ItemGroup>
+
 </Project>
