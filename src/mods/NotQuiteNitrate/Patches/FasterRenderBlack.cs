@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 
 using JetBrains.Annotations;
 
@@ -26,7 +27,8 @@ namespace Tomat.TML.Mod.NotQuiteNitrate.Patches;
 [UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
 public sealed class FasterRenderBlack : ModSystem
 {
-    private static readonly ConcurrentBag<(Vector2 position, Rectangle rectangle)> draw_calls = [];
+    // TODO(perf): We could figure out a good minimum capacity for cold runs.
+    private static readonly List<(Vector2 position, Rectangle rectangle)> draw_calls = [];
 
     internal static readonly List<Func<float, float>> callbacks = [];
 
@@ -99,66 +101,71 @@ public sealed class FasterRenderBlack : ModSystem
 
         var showInvisibleWalls = Main.ShouldShowInvisibleWalls();
 
-        FastParallel.For(
+        Parallel.For(
             startY,
             endY,
-            (relativeStartY, relativeEndY, _) =>
+            localInit: () => new List<(Vector2, Rectangle)>(),
+            (y, _, drawCalls) =>
             {
-                var underworldLayer = Main.UnderworldLayer;
+                var isUnderworld        = y >= Main.UnderworldLayer;
+                var brightnessThreshold = isUnderworld ? 0.2f : minBrightness;
 
-                for (var y = relativeStartY; y <= relativeEndY; y++)
+                for (var x = startX; x < endX; x++)
                 {
-                    var isUnderworld        = y >= underworldLayer;
-                    var brightnessThreshold = isUnderworld ? 0.2f : minBrightness;
+                    var segmentStart = x;
 
-                    for (var x = startX; x < endX; x++)
+                    while (x < endX)
                     {
-                        var segmentStart = x;
+                        var tile = Main.tile[x, y];
 
-                        while (x < endX)
+                        // var brightness = (float)Math.Floor(Lighting.Brightness(x, y) * 255f) / 255f;
+                        var brightness = Lighting.Brightness(x, y);
+
+                        var liquidAmount = tile.LiquidAmount;
+
+                        var isDarkTile = brightness <= brightnessThreshold && (
+                            (!isUnderworld && liquidAmount < 250)
+                         || (liquidAmount                  >= 200 && brightness == 0f)
+                         || SolidTile(tile)
+                        );
+                        if (!isDarkTile)
                         {
-                            var tile = Main.tile[x, y];
-
-                            // var brightness = (float)Math.Floor(Lighting.Brightness(x, y) * 255f) / 255f;
-                            var brightness = Lighting.Brightness(x, y);
-
-                            var liquidAmount = tile.LiquidAmount;
-
-                            var isDarkTile = brightness <= brightnessThreshold && (
-                                (!isUnderworld && liquidAmount < 250)
-                             || (liquidAmount                  >= 200 && brightness == 0f)
-                             || SolidTile(tile)
-                            );
-                            if (!isDarkTile)
-                            {
-                                break;
-                            }
-
-                            var isBlockingLight = Main.tileBlockLight[tile.type] &&
-                                                  tile.HasTile                   &&
-                                                  (showInvisibleWalls || !tile.IsTileInvisible);
-
-                            var hasWall = !WallID.Sets.Transparent[tile.wall] &&
-                                          (showInvisibleWalls || !tile.IsWallInvisible);
-
-                            if ((!hasWall           && !isBlockingLight)
-                             || (!Main.drawToScreen && LiquidRenderer.Instance.HasFullWater(x, y) && tile is { WallType: 0, IsHalfBlock: false } && y <= Main.worldSurface))
-                            {
-                                break;
-                            }
-                            x++;
+                            break;
                         }
 
-                        if (x > segmentStart)
+                        var isBlockingLight = Main.tileBlockLight[tile.type] &&
+                                              tile.HasTile                   &&
+                                              (showInvisibleWalls || !tile.IsTileInvisible);
+
+                        var hasWall = !WallID.Sets.Transparent[tile.wall] &&
+                                      (showInvisibleWalls || !tile.IsWallInvisible);
+
+                        if ((!hasWall           && !isBlockingLight)
+                         || (!Main.drawToScreen && LiquidRenderer.Instance.HasFullWater(x, y) && tile is { WallType: 0, IsHalfBlock: false } && y <= Main.worldSurface))
                         {
-                            draw_calls.Add(
-                                (
-                                    new Vector2((segmentStart << 4) + screenOffset, (y << 4) + screenOffset),
-                                    new Rectangle(0, 0, (x - segmentStart) << 4, 16)
-                                )
-                            );
+                            break;
                         }
+                        x++;
                     }
+
+                    if (x > segmentStart)
+                    {
+                        drawCalls.Add(
+                            (
+                                new Vector2((segmentStart << 4) + screenOffset, (y << 4) + screenOffset),
+                                new Rectangle(0, 0, (x - segmentStart) << 4, 16)
+                            )
+                        );
+                    }
+                }
+
+                return drawCalls;
+            },
+            localFinally: drawCalls =>
+            {
+                lock (draw_calls)
+                {
+                    draw_calls.AddRange(drawCalls);
                 }
             }
         );
