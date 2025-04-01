@@ -3,7 +3,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 
 using JetBrains.Annotations;
 
@@ -28,10 +27,7 @@ namespace Tomat.TML.Mod.NotQuiteNitrate.Patches;
 public sealed class FasterRenderBlack : ModSystem
 {
     // TODO(perf): We could figure out a good minimum capacity for cold runs.
-    private static readonly List<(Vector2 position, Rectangle rectangle)> draw_calls = [];
-
-    [ThreadStatic]
-    private static List<(Vector2, Rectangle)>? tlDrawCalls;
+    private static readonly ConcurrentQueue<(Vector2 position, Rectangle rectangle)> draw_calls = [];
 
     internal static readonly List<Func<float, float>> CALLBACKS = [];
 
@@ -110,8 +106,6 @@ public sealed class FasterRenderBlack : ModSystem
             endY,
             (relativeStartY, relativeEndY, _) =>
             {
-                tlDrawCalls ??= [];
-
                 for (var y = relativeStartY; y < relativeEndY; y++)
                 {
                     var isUnderworld        = y >= Main.UnderworldLayer;
@@ -157,7 +151,7 @@ public sealed class FasterRenderBlack : ModSystem
 
                         if (x > segmentStart)
                         {
-                            tlDrawCalls.Add(
+                            draw_calls.Enqueue(
                                 (
                                     new Vector2((segmentStart << 4) + screenOffset, (y << 4) + screenOffset),
                                     new Rectangle(0, 0, (x - segmentStart) << 4, 16)
@@ -165,23 +159,14 @@ public sealed class FasterRenderBlack : ModSystem
                             );
                         }
                     }
-
-                    lock (draw_calls)
-                    {
-                        draw_calls.AddRange(tlDrawCalls);
-                    }
-
-                    tlDrawCalls.Clear();
                 }
             }
         );
 
-        foreach (var (position, rectangle) in draw_calls)
+        while (draw_calls.TryDequeue(out var drawCall))
         {
-            Main.spriteBatch.Draw(TextureAssets.BlackTile.Value, position - Main.screenPosition, rectangle, Color.Black);
+            Main.spriteBatch.Draw(TextureAssets.BlackTile.Value, drawCall.position - Main.screenPosition, drawCall.rectangle, Color.Black);
         }
-
-        draw_calls.Clear();
 
         TimeLogger.DrawTime(5, stopwatch.Elapsed.TotalMilliseconds);
 
