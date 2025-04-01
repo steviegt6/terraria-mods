@@ -3,14 +3,16 @@ using System.Reflection;
 
 using JetBrains.Annotations;
 
+using Mono.Cecil.Cil;
+
 using MonoMod.Cil;
 
 using ReLogic.Utilities;
 
 using Terraria;
-using Terraria.GameContent.Generation;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.Utilities;
 using Terraria.WorldBuilding;
 
 namespace Tomat.TML.Mod.NotQuiteNitrate.Patches.Generation;
@@ -385,6 +387,25 @@ internal sealed class SmallerWorldGenOptimizations : ModSystem
                     vector2D2.Y = -1.0;
                 }
             }
+        }
+    }
+
+    private static void CacheGenRand(ILContext il)
+    {
+        var c = new ILCursor(il);
+
+        il.Body.Variables.Add(new VariableDefinition(il.Import(typeof(UnifiedRandom))));
+        var newVar = il.Body.Variables[^1];
+
+        var getGenRand = typeof(WorldGen).GetMethod("get_genRand", BindingFlags.Public | BindingFlags.Static)!;
+
+        c.EmitCall(getGenRand);
+        c.EmitStloc(newVar);
+
+        while (c.TryGotoNext(MoveType.Before, x => x.MatchCall(getGenRand)))
+        {
+            c.Remove();
+            c.EmitLdloc(newVar);
         }
     }
 }
