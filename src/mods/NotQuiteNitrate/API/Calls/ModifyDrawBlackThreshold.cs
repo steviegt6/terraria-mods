@@ -17,6 +17,6 @@ internal sealed class ModifyDrawBlackThreshold : ModCall
 
     private static void Impl(Func<float, float> func)
     {
-        FasterRenderBlack.callbacks.Add(func);
+        FasterRenderBlack.CALLBACKS.Add(func);
     }
 }

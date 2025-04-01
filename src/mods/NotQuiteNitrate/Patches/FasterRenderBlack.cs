@@ -30,7 +30,7 @@ public sealed class FasterRenderBlack : ModSystem
 
     private static readonly ConcurrentBag<List<(Vector2, Rectangle)>> drawCallPool = [];
 
-    internal static readonly List<Func<float, float>> callbacks = [];
+    internal static readonly List<Func<float, float>> CALLBACKS = [];
 
     public override void Load()
     {
@@ -45,7 +45,7 @@ public sealed class FasterRenderBlack : ModSystem
 
         draw_calls.Clear();
         drawCallPool.Clear();
-        callbacks.Clear();
+        CALLBACKS.Clear();
     }
 
     private static void DrawBlack(On_Main.orig_DrawBlack orig, Main self, bool force)
@@ -68,7 +68,7 @@ public sealed class FasterRenderBlack : ModSystem
             _                => (float)(averageTileColor         * 0.4) / 255f,
         };
 
-        minBrightness = callbacks.Aggregate(minBrightness, (current, callback) => callback(current));
+        minBrightness = CALLBACKS.Aggregate(minBrightness, (current, callback) => callback(current));
 
         var screenOverdrawOffset = Main.GetScreenOverdrawOffset();
         var tileOffset = new Point(
