@@ -27,6 +27,7 @@ namespace Tomat.TML.Mod.NotQuiteNitrate.Patches;
 ///     generally operate more efficiently.  Co-authored by LolXD87 who provided
 ///     the initial implementation and suggestion.
 /// </summary>
+[Autoload(Side = ModSide.Client)]
 internal sealed class FasterAssetLoading : ModSystem
 {
     private sealed class FastRawimgReader(GraphicsDevice graphicsDevice) : IAssetReader
@@ -88,6 +89,11 @@ internal sealed class FasterAssetLoading : ModSystem
     [ModuleInitializer]
     public static void ModuleInit()
     {
+        if (Main.dedServ)
+        {
+            return;
+        }
+
         // Disable thread checks.
         MonoModHooks.Add(
             typeof(ThreadCheck).GetMethod(nameof(ThreadCheck.CheckThread), BindingFlags.Public | BindingFlags.Static),
