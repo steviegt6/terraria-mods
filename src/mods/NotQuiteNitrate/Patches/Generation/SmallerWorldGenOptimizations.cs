@@ -1,21 +1,46 @@
 using System;
+using System.Reflection;
+
+using JetBrains.Annotations;
+
+using MonoMod.Cil;
 
 using ReLogic.Utilities;
 
 using Terraria;
+using Terraria.GameContent.Generation;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.WorldBuilding;
 
 namespace Tomat.TML.Mod.NotQuiteNitrate.Patches.Generation;
 
-internal sealed class MultithreadedTileRunner : ModSystem
+[UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
+internal sealed class SmallerWorldGenOptimizations : ModSystem
 {
     public override void Load()
     {
         base.Load();
 
         On_WorldGen.TileRunner += BetterTileRunner;
+
+        MonoModHooks.Modify(
+            typeof(TrackGenerator).GetMethod(nameof(TrackGenerator.TryRewriteHistoryToAvoidTiles), BindingFlags.NonPublic | BindingFlags.Instance)!,
+            il =>
+            {
+                //var c = new ILCursor(il);
+//
+                //c.EmitLdarg0();
+                //c.EmitCall(typeof(SmallerWorldGenOptimizations).GetMethod(nameof(TryRewriteHistoryToAvoidTiles), BindingFlags.NonPublic | BindingFlags.Static)!);
+                //c.EmitRet();
+            }
+        );
+
+        // MonoModHooks.Add(
+        //     typeof(TrackGenerator).GetMethod(nameof(TrackGenerator.TryRewriteHistoryToAvoidTiles), BindingFlags.NonPublic | BindingFlags.Instance)!,
+        //     TryRewriteHistoryToAvoidTiles
+        // );
+        // On_TrackGenerator.TryRewriteHistoryToAvoidTiles += TryRewriteHistoryToAvoidTiles;
     }
 
     private static void BetterTileRunner(
@@ -379,5 +404,81 @@ internal sealed class MultithreadedTileRunner : ModSystem
                 }
             }
         }
+    }
+
+    private static int TryRewriteHistoryToAvoidTiles(TrackGenerator self)
+    {
+        var lastIndex    = self._length - 1;
+        var historyCount = Math.Min(self._length, self._rewriteHistory.Length);
+
+        /*for (int i = 0; i < historyCount; i++)
+        {
+            self._rewriteHistory[i] = self._history[lastIndex - i];
+        }*/
+
+        Array.Copy(self._history, self._length - historyCount, self._rewriteHistory, 0, historyCount);
+
+        /*while (lastIndex >= self._length - historyCount)
+        {
+            if (self._history[lastIndex].Slope == TrackGenerator.TrackSlope.Down)
+            {
+                var historySegmentPlacementState = self.GetHistorySegmentPlacementState(lastIndex, self._length - lastIndex);
+                if (historySegmentPlacementState == TrackGenerator.TrackPlacementState.Available)
+                {
+                    return (int)historySegmentPlacementState;
+                }
+
+                self.RewriteSlopeDirection(lastIndex, TrackGenerator.TrackSlope.Straight);
+            }
+
+            lastIndex--;
+        }*/
+
+        for (var i = lastIndex; i >= self._length - historyCount; i--)
+        {
+            if (self._history[i].Slope != TrackGenerator.TrackSlope.Down)
+            {
+                continue;
+            }
+
+            if (self.GetHistorySegmentPlacementState(i, self._length - i) == TrackGenerator.TrackPlacementState.Available)
+            {
+                return (int)TrackGenerator.TrackPlacementState.Available;
+            }
+
+            self.RewriteSlopeDirection(lastIndex, TrackGenerator.TrackSlope.Straight);
+        }
+
+        if (self.GetHistorySegmentPlacementState(lastIndex + 1, self._length - (lastIndex + 1)) == TrackGenerator.TrackPlacementState.Available)
+        {
+            return (int)TrackGenerator.TrackPlacementState.Available;
+        }
+
+        for (lastIndex = self._length - 1; lastIndex >= self._length - historyCount + 1; lastIndex--)
+        {
+            if (self._history[lastIndex].Slope != TrackGenerator.TrackSlope.Straight)
+            {
+                continue;
+            }
+
+            var historySegmentPlacementState2 = self.GetHistorySegmentPlacementState(self._length - historyCount, historyCount);
+            if (historySegmentPlacementState2 == TrackGenerator.TrackPlacementState.Available)
+            {
+                return (int)historySegmentPlacementState2;
+            }
+
+            self.RewriteSlopeDirection(lastIndex, TrackGenerator.TrackSlope.Up);
+        }
+
+        /*for (var j = 0; j < historyCount; j++)
+        {
+            self._history[self._length - 1 - j] = self._rewriteHistory[j];
+        }*/
+
+        Array.Copy(self._rewriteHistory, 0, self._history, self._length - historyCount, historyCount);
+
+        self.RewriteSlopeDirection(self._length - 1, TrackGenerator.TrackSlope.Straight);
+
+        return (int)self.GetHistorySegmentPlacementState(lastIndex + 1, self._length - (lastIndex + 1));
     }
 }
