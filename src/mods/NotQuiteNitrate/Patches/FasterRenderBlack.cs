@@ -9,8 +9,6 @@ using JetBrains.Annotations;
 
 using Microsoft.Xna.Framework;
 
-using ReLogic.Threading;
-
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.Liquid;
@@ -30,6 +28,8 @@ public sealed class FasterRenderBlack : ModSystem
     // TODO(perf): We could figure out a good minimum capacity for cold runs.
     private static readonly List<(Vector2 position, Rectangle rectangle)> draw_calls = [];
 
+    private static readonly ConcurrentBag<List<(Vector2, Rectangle)>> drawCallPool = [];
+
     internal static readonly List<Func<float, float>> callbacks = [];
 
     public override void Load()
@@ -43,6 +43,8 @@ public sealed class FasterRenderBlack : ModSystem
     {
         base.Unload();
 
+        draw_calls.Clear();
+        drawCallPool.Clear();
         callbacks.Clear();
     }
 
@@ -104,7 +106,7 @@ public sealed class FasterRenderBlack : ModSystem
         Parallel.For(
             startY,
             endY,
-            localInit: () => new List<(Vector2, Rectangle)>(),
+            localInit: () => drawCallPool.TryTake(out var drawCalls) ? drawCalls : [],
             (y, _, drawCalls) =>
             {
                 var isUnderworld        = y >= Main.UnderworldLayer;
@@ -167,6 +169,9 @@ public sealed class FasterRenderBlack : ModSystem
                 {
                     draw_calls.AddRange(drawCalls);
                 }
+
+                drawCalls.Clear();
+                drawCallPool.Add(drawCalls);
             }
         );
 
