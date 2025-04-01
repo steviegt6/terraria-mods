@@ -13,12 +13,29 @@ internal sealed class MoldFlailItem : ModItem
 {
     public sealed class MoldFlailProjectile : ModProjectile
     {
+        public const int max_active_frame_count = 60 * 5;
+        public const int min_active_frame_count_to_deal_damage = 60 * 3;
+        public const int frame_count_difference_when_swinging = 1;
+        public const int frame_count_difference_when_not_swinging = -5;
+        public const float max_projectile_responsiveness = 0.5f;
+        public const float distance_from_player = 35f;
+
         public Player Owner => Main.player[Projectile.owner];
 
-        private float FrameCount
+        private int ActiveFrameCount
         {
-            get => Projectile.ai[0];
+            get => (int)Projectile.ai[0];
             set => Projectile.ai[0] = value;
+        }
+
+        public Vector2 PreviousAim
+        {
+            get => new Vector2(Projectile.localAI[0], Projectile.localAI[1]);
+            set
+            {
+                Projectile.localAI[0] = value.X;
+                Projectile.localAI[1] = value.Y;
+            }
         }
 
         public override string Texture => Assets.Images.Items.Weapons.MoldFlailProjectile.KEY;
@@ -34,63 +51,82 @@ internal sealed class MoldFlailItem : ModItem
         {
             base.SetDefaults();
 
-            (Projectile.width, Projectile.height) = (20, 20);
+            (Projectile.width, Projectile.height) = (60, 60);
 
             Projectile.netImportant = true;
 
             Projectile.friendly = true;
             Projectile.DamageType = DamageClass.MeleeNoSpeed;
             Projectile.penetrate = -1;
+            Projectile.tileCollide = false;
+            Projectile.ignoreWater = true;
+            Projectile.ownerHitCheck = true;
             Projectile.usesLocalNPCImmunity = true;
-            Projectile.localNPCHitCooldown = 10;
+            Projectile.localNPCHitCooldown = 20;
         }
 
         public override void AI()
         {
             base.AI();
 
-            FrameCount++;
-
-#region Update position in world
-            Projectile.Center = Owner.MountedCenter;
-            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
-            Projectile.spriteDirection = Projectile.direction;
-
-            Owner.ChangeDir(Projectile.direction);
-            Owner.heldProj = Projectile.whoAmI;
-            Owner.itemTime = 2;
-            Owner.itemAnimation = 2;
-
-            Owner.itemRotation = (Projectile.velocity * Projectile.direction).ToRotation();
-#endregion
+            if (!Owner.channel || !Owner.active || Owner.dead || Owner.noItems || Owner.CCed)
+            {
+                Projectile.Kill();
+            }
 
             if (Projectile.owner == Main.myPlayer)
             {
-                if (!Owner.channel || !Owner.active || Owner.dead || Owner.noItems || Owner.CCed)
+                #region Handle projectile aim
+                Vector2 normalizedAim = Vector2.Normalize(Main.MouseWorld - Owner.MountedCenter);
+                if (normalizedAim.HasNaNs())
                 {
-                    Projectile.Kill();
-                    return;
+                    normalizedAim = -Vector2.UnitY;
                 }
-                else
+
+                ActiveFrameCount += (normalizedAim != PreviousAim) ? frame_count_difference_when_swinging : frame_count_difference_when_not_swinging;
+                ActiveFrameCount = MathHelper.Clamp(ActiveFrameCount, 0, max_active_frame_count);
+                float aimLerpValue = Utils.Remap(ActiveFrameCount, 0, max_active_frame_count, 0f, max_projectile_responsiveness);
+                PreviousAim = normalizedAim;
+                //Main.NewText(ActiveFrameCount);
+
+                Vector2 aim = Vector2.Normalize(Vector2.Lerp(Vector2.Normalize(Projectile.velocity), normalizedAim, aimLerpValue));
+                aim *= distance_from_player;
+
+                if (aim != Projectile.velocity)
                 {
-#region Handle projectile aim
-                    Vector2 aim = Vector2.Normalize(Main.MouseWorld - Owner.MountedCenter);
-                    if (aim.HasNaNs())
-                    {
-                        aim = -Vector2.UnitY;
-                    }
-
-                    aim = Vector2.Normalize(Vector2.Lerp(Vector2.Normalize(Projectile.velocity), aim, 0.1f));
-                    aim *= 5f;
-
-                    if (aim != Projectile.velocity)
-                    {
-                        Projectile.netUpdate = true;
-                    }
-                    Projectile.velocity = aim;
-#endregion
+                    Projectile.netUpdate = true;
                 }
+                Projectile.velocity = aim;
+                #endregion
             }
+
+            #region Update position in world
+            Projectile.Center = Owner.MountedCenter;
+            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
+            Projectile.spriteDirection = Projectile.direction;
+            if (Projectile.spriteDirection == -1)
+            {
+                Projectile.rotation += MathHelper.PiOver4;
+            }
+            else
+            {
+                Projectile.rotation -= MathHelper.PiOver4;
+            }
+
+            Owner.ChangeDir(Projectile.direction);
+            Owner.heldProj = Projectile.whoAmI;
+            Owner.SetDummyItemTime(2);
+
+            Owner.itemRotation = (Projectile.velocity * Projectile.direction).ToRotation();
+            #endregion
+        }
+
+        public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
+        {
+            base.ModifyHitNPC(target, ref modifiers);
+
+            float damageMult = Utils.Remap(ActiveFrameCount, min_active_frame_count_to_deal_damage, max_active_frame_count, 0f, 1f);
+            modifiers.SourceDamage *= damageMult;
         }
     }
 
@@ -109,7 +145,7 @@ internal sealed class MoldFlailItem : ModItem
         Item.channel = true;
         Item.UseSound = SoundID.Item1;
 
-        Item.damage = 15;
+        Item.damage = 40;
         Item.DamageType = DamageClass.MeleeNoSpeed;
         Item.knockBack = 4.6f;
 
