@@ -7,4 +7,8 @@
         <RootNamespace>Tomat.TML.Mod.NotQuiteNitrate</RootNamespace>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <UseFeature_DynamicModCalls>enable</UseFeature_DynamicModCalls>
+    </PropertyGroup>
+
 </Project>

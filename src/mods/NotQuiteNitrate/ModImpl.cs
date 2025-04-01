@@ -1,8 +1,8 @@
-using Tomat.TML.Mod.NotQuiteNitrate.Common.CallSystem;
+using Tomat.TML.Library.DynamicModCalls;
 
 namespace Tomat.TML.Mod.NotQuiteNitrate;
 
-partial class Mod
+partial class ModImpl
 {
     public override object? Call(params object?[]? args)
     {

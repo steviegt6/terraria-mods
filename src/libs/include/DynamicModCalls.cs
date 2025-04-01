@@ -1,28 +1,146 @@
+/* DynamicModCalls.cs - performant, safe, ioc-based Mod::Call api
+ *
+ * Project URL: https://github.com/steviegt6/terraria-mods
+ *
+ * Usage:
+ *   in your `Mod` implementation:
+ *     - override Mod::Call:
+ *       public override object? Call(params object?[]? args)
+ *           => return CallHandler.HandleCall(this, args);
+ *
+ * DynamicModCalls implements a `ModCall` type extending `ModType` and handles
+ * its registration, accepting any loaded types as input.  `ModCall` provides
+ * an enumeration of strings `CallCommands` serving as a list of aliases to a
+ * command, and a delegate `Delegate` which is the method to invoke upon a call.
+ * When calling `Mod::Call(x, ...)` with this API installed, the `CallHandler`
+ * will identify the `ModCall` "x" based on provided `CallCommands` and invoke
+ * the delegate `Delegate` with the additional parameters `...` (optional).
+ * `CallHandler` creates a method at runtime to validate and cast incoming
+ * parameters `...` at runtime with native IL performance (no reflection).
+ *
+ * Example `ModCall` implementation:
+ *   internal sealed class MyCall : ModCall
+ *   {
+ *       public override IEnumerable<string> CallCommands { get; }
+ *           = new[] { "myCommand" };
+ *
+ *       public override Delegate Delegate { get; } = Implementation;
+ *
+ *       private static int Implementation(object a, Item b, string[] c)
+ *       {
+ *           // ...implementation
+ *           return 1; // some value
+ *       }
+ *   }
+ *
+ * This `ModCall` "MyCall" will be registered to the `CallHandler` and may be
+ * invoked with the given alias "myCommand" like so:
+ *   (int)mod.Call("myCommand", someObject, Main.item[0], new string[0]);
+ *
+ * The `CallHandler` will confirm the given arguments are of the correct types
+ * before invoking the method `Implementation` assigned to the delegate
+ * `Delegate` and will generate a method to quickly box and unbox any necessary
+ * values.
+ */
+
+#if JETBRAINS_ANNOTATIONS
+#define INCLUDE_ANNOTATIONS
+#endif
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
 
+#if INCLUDE_ANNOTATIONS
 using JetBrains.Annotations;
+#endif
 
 using Terraria.ModLoader;
 
-namespace Tomat.TML.Mod.NotQuiteNitrate.Common.CallSystem;
+#if INCLUDE_METADATA
+using Tomat.Runtime.CompilerServices;
+#endif
 
+using TmlMod = Terraria.ModLoader.Mod;
+
+namespace Tomat.TML.Library.DynamicModCalls;
+
+#if INCLUDE_METADATA
+file static class Meta
+{
+    public const string NAME    = "DynamicModCalls";
+    public const string VERSION = "1.0.0";
+}
+#endif
+
+#if INCLUDE_ANNOTATIONS
+[UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature, ImplicitUseTargetFlags.WithInheritors)]
+#endif
+#if INCLUDE_METADATA
+[IncludedFrom(Meta.NAME, Meta.VERSION)]
+#endif
+internal abstract class ModCall : ModType
+{
+    /// <summary>
+    ///     A collection of (interpreted-as-case-insensitive) call "commands".
+    /// </summary>
+#if INCLUDE_METADATA
+    [IncludedFrom(Meta.NAME, Meta.VERSION)]
+#endif
+    public abstract IEnumerable<string> CallCommands { get; }
+
+    /// <summary>
+    ///     The delegate to invoke.
+    /// </summary>
+#if INCLUDE_METADATA
+    [IncludedFrom(Meta.NAME, Meta.VERSION)]
+#endif
+    public abstract Delegate Delegate { get; }
+
+#if INCLUDE_METADATA
+    [IncludedFrom(Meta.NAME, Meta.VERSION)]
+#endif
+    public sealed override void Register()
+    {
+        CallHandler.Register(Mod, this);
+    }
+}
+
+#if INCLUDE_ANNOTATIONS
 [UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
+#endif
+#if INCLUDE_METADATA
+[IncludedFrom(Meta.NAME, Meta.VERSION)]
+#endif
 internal sealed class CallHandler : ModSystem
 {
+#if INCLUDE_METADATA
+    [IncludedFrom(Meta.NAME, Meta.VERSION)]
+#endif
     private sealed class CallInfoCache
     {
+#if INCLUDE_METADATA
+        [IncludedFrom(Meta.NAME, Meta.VERSION)]
+#endif
         private readonly List<ModCall> callCache = [];
 
+#if INCLUDE_METADATA
+        [IncludedFrom(Meta.NAME, Meta.VERSION)]
+#endif
         private readonly Dictionary<ModCall, Func<object?[], object?>> invokeCache = [];
 
+#if INCLUDE_METADATA
+        [IncludedFrom(Meta.NAME, Meta.VERSION)]
+#endif
         public void AddCall(ModCall call)
         {
             callCache.Add(call);
         }
 
+#if INCLUDE_METADATA
+        [IncludedFrom(Meta.NAME, Meta.VERSION)]
+#endif
         public ModCall? GetCallByCommand(string command)
         {
             return callCache.FirstOrDefault(
@@ -33,11 +151,17 @@ internal sealed class CallHandler : ModSystem
             );
         }
 
+#if INCLUDE_METADATA
+        [IncludedFrom(Meta.NAME, Meta.VERSION)]
+#endif
         public object? InvokeCall(ModCall call, object?[]? args)
         {
             return GetOrCreateInvoke(call, args)(args!);
         }
 
+#if INCLUDE_METADATA
+        [IncludedFrom(Meta.NAME, Meta.VERSION)]
+#endif
         private Func<object?[], object?> GetOrCreateInvoke(ModCall call, object?[]? args)
         {
             var method     = call.Delegate.Method;
@@ -113,9 +237,15 @@ internal sealed class CallHandler : ModSystem
         }
     }
 
-    private static readonly Dictionary<global::Terraria.ModLoader.Mod, CallInfoCache> calls = [];
+#if INCLUDE_METADATA
+    [IncludedFrom(Meta.NAME, Meta.VERSION)]
+#endif
+    private static readonly Dictionary<TmlMod, CallInfoCache> calls = [];
 
-    public static void Register(global::Terraria.ModLoader.Mod mod, ModCall call)
+#if INCLUDE_METADATA
+    [IncludedFrom(Meta.NAME, Meta.VERSION)]
+#endif
+    public static void Register(TmlMod mod, ModCall call)
     {
         if (!calls.TryGetValue(mod, out var cache))
         {
@@ -125,7 +255,10 @@ internal sealed class CallHandler : ModSystem
         cache.AddCall(call);
     }
 
-    public static object? HandleCall(Mod mod, object?[]? args)
+#if INCLUDE_METADATA
+    [IncludedFrom(Meta.NAME, Meta.VERSION)]
+#endif
+    public static object? HandleCall(TmlMod mod, object?[]? args)
     {
         if (!calls.TryGetValue(mod, out var cache))
         {
