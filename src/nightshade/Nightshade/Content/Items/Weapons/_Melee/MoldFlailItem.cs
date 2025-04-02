@@ -25,6 +25,16 @@ internal sealed class MoldFlailItem : ModItem
             set => Projectile.ai[0] = value;
         }
 
+        public Vector2 SavedEnemyVelocity
+        {
+            get => new Vector2(Projectile.localAI[0], Projectile.localAI[1]);
+            set
+            {
+                Projectile.localAI[0] = value.X;
+                Projectile.localAI[1] = value.Y;
+            }
+        }
+
         private float TotalSwingTime => 30f / Owner.GetTotalAttackSpeed(Projectile.DamageType);
 
         public override string Texture => Assets.Images.Items.Weapons.MoldFlailItem.KEY;
@@ -134,96 +144,63 @@ internal sealed class MoldFlailItem : ModItem
             base.ModifyHitNPC(target, ref modifiers);
 
             modifiers.HitDirectionOverride = (Main.player[Projectile.owner].Center.X < target.Center.X).ToDirectionInt();
-            modifiers.DisableKnockback();
+            SavedEnemyVelocity = target.velocity;
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(target, hit, damageDone);
 
-            float knockback = Owner.HeldItem.knockBack;
-            if (knockback > 0 && target.knockBackResist > 0)
+            target.velocity = SavedEnemyVelocity;
+            float finalKnockback = hit.Knockback;
+            int damageDoneBig = damageDone * (Main.expertMode ? 15 : 10);
+            if (damageDoneBig > target.lifeMax)
             {
-                float finalKnockback = knockback * target.knockBackResist;
-                if (target.onFire2) //Increased knockback with Cursed Inferno
+                #region Horizontal knockback done when damage is big
+                if (hit.HitDirection < 0 && target.velocity.X > -finalKnockback)
                 {
-                    finalKnockback *= 1.1f;
+                    if (target.velocity.X > 0f)
+                    {
+                        target.velocity.X -= finalKnockback;
+                    }
+                    target.velocity.X -= finalKnockback;
+                    if (target.velocity.X < -finalKnockback)
+                    {
+                        target.velocity.X = -finalKnockback;
+                    }
                 }
-                #region Knockback scaling
-                if (finalKnockback > 8f)
+                else if (hit.HitDirection > 0 && target.velocity.X < finalKnockback)
                 {
-                    finalKnockback = 8f + (finalKnockback - 8f) * 0.9f;
-                }
-                if (finalKnockback > 10f)
-                {
-                    finalKnockback = 10f + (finalKnockback - 10f) * 0.8f;
-                }
-                if (finalKnockback > 12f)
-                {
-                    finalKnockback = 12f + (finalKnockback - 12f) * 0.7f;
-                }
-                if (finalKnockback > 14f)
-                {
-                    finalKnockback = 14f + (finalKnockback - 14f) * 0.6f;
-                }
-                if (finalKnockback > 16f)
-                {
-                    finalKnockback = 16f;
+                    if (target.velocity.X < 0f)
+                    {
+                        target.velocity.X += finalKnockback;
+                    }
+                    target.velocity.X += finalKnockback;
+                    if (target.velocity.X > finalKnockback)
+                    {
+                        target.velocity.X = finalKnockback;
+                    }
                 }
                 #endregion
-                if (hit.Crit)
-                {
-                    finalKnockback *= 1.4f;
-                }
 
-                int damageDoneBig = damageDone * (Main.expertMode ? 15 : 10);
-                if (damageDoneBig > target.lifeMax)
+                #region Vertical knockback done when damage is big
+                finalKnockback *= -vertical_knockback_multiplier;
+                if (target.velocity.Y > finalKnockback)
                 {
-                    #region Horizontal knockback done when damage is big
-                    if (hit.HitDirection < 0 && target.velocity.X > -finalKnockback)
+                    target.velocity.Y = target.velocity.Y + finalKnockback;
+                    if (target.velocity.Y < finalKnockback)
                     {
-                        if (target.velocity.X > 0f)
-                        {
-                            target.velocity.X -= finalKnockback;
-                        }
-                        target.velocity.X -= finalKnockback;
-                        if (target.velocity.X < -finalKnockback)
-                        {
-                            target.velocity.X = -finalKnockback;
-                        }
+                        target.velocity.Y = finalKnockback;
                     }
-                    else if (hit.HitDirection > 0 && target.velocity.X < finalKnockback)
-                    {
-                        if (target.velocity.X < 0f)
-                        {
-                            target.velocity.X += finalKnockback;
-                        }
-                        target.velocity.X += finalKnockback;
-                        if (target.velocity.X > finalKnockback)
-                        {
-                            target.velocity.X = finalKnockback;
-                        }
-                    }
-                    #endregion
-
-                    #region Vertical knockback done when damage is big
-                    finalKnockback *= -vertical_knockback_multiplier;
-                    if (target.velocity.Y > finalKnockback)
-                    {
-                        target.velocity.Y = target.velocity.Y + finalKnockback;
-                        if (target.velocity.Y < finalKnockback)
-                        {
-                            target.velocity.Y = finalKnockback;
-                        }
-                    }
-#endregion
                 }
-                else
-                {
-                    target.velocity.Y = finalKnockback * -vertical_knockback_multiplier * target.knockBackResist;
-                    target.velocity.X = finalKnockback * hit.HitDirection * target.knockBackResist;
-                }
+                #endregion
             }
+            else
+            {
+                target.velocity.Y = finalKnockback * -vertical_knockback_multiplier * target.knockBackResist;
+                target.velocity.X = finalKnockback * hit.HitDirection * target.knockBackResist;
+            }
+            target.netUpdate = true;
         }
 
         public override bool PreDraw(ref Color lightColor)
@@ -274,7 +251,7 @@ internal sealed class MoldFlailItem : ModItem
 
         Item.damage = 5;
         Item.DamageType = DamageClass.Melee;
-        Item.knockBack = 8f;
+        Item.knockBack = 6f;
 
         Item.noUseGraphic = true;
         Item.noMelee = true;
