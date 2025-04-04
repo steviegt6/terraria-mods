@@ -20,6 +20,7 @@ public interface IModifyItemDrawBasics
             On_Main.DrawItem_GetBasics += (On_Main.orig_DrawItem_GetBasics orig, Main self, Item item, int slot, out Texture2D texture, out Rectangle frame, out Rectangle glowmaskFrame) =>
             {
                 orig(self, item, slot, out texture, out frame, out glowmaskFrame);
+                Invoke(item, slot, ref texture, ref frame, ref glowmaskFrame);
             };
         }
     }
