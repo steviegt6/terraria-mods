@@ -5,6 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
+using JetBrains.Annotations;
+
 using log4net;
 
 using Nightshade.Common.Features.ItemVariants;
@@ -17,6 +19,8 @@ using Terraria.ModLoader;
 
 namespace Nightshade.Common.Features.ItemVariants;
 
+[Autoload(Side = ModSide.Client)]
+[UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
 internal sealed class ItemVariantLoader : ModSystem
 {
     private readonly record struct ItemVariant(int? ItemType, int? NpcType);
