@@ -120,7 +120,9 @@ internal sealed class ItemVariantLoader : ModSystem
             return Main.rand.Next(npcVariants.Length);
         }
 
-        return variants.Variants.Length == 0 ? 0 : Main.rand.Next(variants.Variants.Length);
+        // Extend possible values by 1 and then subtract 1 to make it possible
+        // to get -1 as a value, which will use the vanilla texture.
+        return variants.Variants.Length == 0 ? 0 : Main.rand.Next(variants.Variants.Length + 1) - 1;
     }
 
     public static bool TryGetTextureForVariant(
@@ -130,6 +132,14 @@ internal sealed class ItemVariantLoader : ModSystem
         [NotNullWhen(returnValue: true)] out string? texturePath
     )
     {
+        // Special case.  If it was explicitly determined to use the vanilla
+        // item...
+        if (variantId == -1)
+        {
+            texturePath = null;
+            return false;
+        }
+
         // Generally shouldn't be possible, but...
         if (item_variants is null)
         {
