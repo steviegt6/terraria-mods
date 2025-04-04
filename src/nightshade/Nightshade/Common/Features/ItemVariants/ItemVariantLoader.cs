@@ -92,7 +92,7 @@ internal sealed class ItemVariantLoader : ModSystem
 
         static string GetQualifiedVariant(string path, Mod mod)
         {
-            return mod.Name + '/' + path;
+            return mod.Name + '/' + Path.ChangeExtension(path, null);
         }
     }
 
