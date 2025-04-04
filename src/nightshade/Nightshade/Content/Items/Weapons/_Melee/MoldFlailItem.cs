@@ -17,7 +17,9 @@ internal sealed class MoldFlailItem : ModItem
 {
     public sealed class MoldFlailProjectile : ModProjectile
     {
-        private const float vertical_knockback_multiplier = 3f;
+        private const float vertical_npc_knockback_multiplier = 3f;
+        private const float vertical_player_knockback_multiplier = 2f;
+
         private Player Owner => Main.player[Projectile.owner];
 
         private float FrameCount
@@ -36,7 +38,14 @@ internal sealed class MoldFlailItem : ModItem
             }
         }
 
-        private float TotalSwingTime => 30f / Owner.GetTotalAttackSpeed(Projectile.DamageType);
+        private float TotalSwingTime => 60f / Owner.GetTotalAttackSpeed(Projectile.DamageType);
+
+        private static float InQuint(float t) => t * t * t * t * t;
+        private static float CustomInOutQuint(float t)
+        {
+            if (t < 0.5) return InQuint(t * 2) / 2;
+            return 1 - InQuint((1 - t) * 2) / 2;
+        }
 
         public override string Texture => Assets.Images.Items.Weapons.MoldFlailItem.KEY;
 
@@ -102,10 +111,10 @@ internal sealed class MoldFlailItem : ModItem
                 return;
             }
 
-            float initialAngle = -MathHelper.PiOver2 - (MathHelper.Pi * 0.85f) * Projectile.spriteDirection;
+            float initialAngle = -MathHelper.PiOver2 - (MathHelper.Pi * 0.8f) * Projectile.spriteDirection;
             float angleLerpValue = Utils.GetLerpValue(0, TotalSwingTime, FrameCount, true);
-            angleLerpValue = MathF.Sin((angleLerpValue * MathF.PI) / 2f);
-            float angleChange = MathHelper.Lerp(0, MathHelper.Pi * 1.2f, angleLerpValue) * Projectile.spriteDirection;
+            angleLerpValue = CustomInOutQuint(angleLerpValue);
+            float angleChange = MathHelper.Lerp(0, MathHelper.Pi * 1.3f, angleLerpValue) * Projectile.spriteDirection;
             Projectile.rotation = initialAngle - angleChange;
 
             Owner.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, Projectile.rotation - MathHelper.PiOver2);
@@ -147,9 +156,22 @@ internal sealed class MoldFlailItem : ModItem
             modifiers.HitDirectionOverride = (Main.player[Projectile.owner].Center.X < target.Center.X).ToDirectionInt();
             SavedEnemyVelocity = target.velocity;
 
-            if (!WorldUtils.Find(Projectile.Center.ToTileCoordinates(), Searches.Chain(new Searches.Down(12), Projectile._cachedConditions_notNull, Projectile._cachedConditions_solid), out var _))
+            if (!target.noGravity && !WorldUtils.Find(Projectile.Center.ToTileCoordinates(), Searches.Chain(new Searches.Down(3), Projectile._cachedConditions_notNull, Projectile._cachedConditions_solid), out var _))
             {
-                modifiers.FinalDamage *= 1.5f;
+                modifiers.FinalDamage *= 2f;
+            }
+        }
+
+        public override void ModifyHitPlayer(Player target, ref Player.HurtModifiers modifiers)
+        {
+            base.ModifyHitPlayer(target, ref modifiers);
+
+            modifiers.HitDirectionOverride = (Main.player[Projectile.owner].Center.X < target.Center.X).ToDirectionInt();
+            SavedEnemyVelocity = target.velocity;
+
+            if (!WorldUtils.Find(Projectile.Center.ToTileCoordinates(), Searches.Chain(new Searches.Down(3), Projectile._cachedConditions_notNull, Projectile._cachedConditions_solid), out var _))
+            {
+                modifiers.FinalDamage *= 2f;
             }
         }
 
@@ -232,7 +254,7 @@ internal sealed class MoldFlailItem : ModItem
                 {
                     finalKnockback *= 1.5f;
                 }
-                finalKnockback *= vertical_knockback_multiplier;
+                finalKnockback *= vertical_npc_knockback_multiplier;
                 finalKnockback = (target.noGravity ? (finalKnockback * -0.5f) : (finalKnockback * -0.75f));
                 if (target.velocity.Y > finalKnockback)
                 {
@@ -246,10 +268,22 @@ internal sealed class MoldFlailItem : ModItem
             }
             else
             {
-                target.velocity.Y = finalKnockback * vertical_knockback_multiplier * (target.noGravity ? -0.5f : -0.75f) * target.knockBackResist;
+                target.velocity.Y = finalKnockback * vertical_npc_knockback_multiplier * (target.noGravity ? -0.5f : -0.75f) * target.knockBackResist;
                 target.velocity.X = finalKnockback * hit.HitDirection * target.knockBackResist;
             }
             target.netUpdate = true;
+        }
+
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
+        {
+            base.OnHitPlayer(target, info);
+
+            if (info.Knockback != 0f && info.HitDirection != 0 && (!target.mount.Active || !target.mount.Cart))
+            {
+                target.velocity.X = info.Knockback * info.HitDirection;
+                target.velocity.Y = info.Knockback * -vertical_player_knockback_multiplier;
+                target.fallStart = (int)(target.position.Y / 16f);
+            }
         }
 
         public override bool PreDraw(ref Color lightColor)
