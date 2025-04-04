@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.ModLoader;
 
 namespace Nightshade.Common.Features.ItemVariants;
@@ -42,7 +43,23 @@ internal sealed class ItemVariantRenderer : GlobalItem
         }
 
         var texture = ModContent.Request<Texture2D>(texturePath).Value;
-        spriteBatch.Draw(texture, item.position - Main.screenPosition, null, lightColor, rotation, Vector2.Zero, scale, SpriteEffects.None, 0f);
+
+        // Since our assets are purely visual, they are still restricted by the
+        // existing item hitbox parameters.  To fix this, we calculate the
+        // necessary offset and adjust rendering that way.  These textures don't
+        // exist on the server and we don't provide syncing guarantees, so we
+        // should not and will not modify the actual hitbox values.
+        // Origin is in the top left corner, so only handle cases where the
+        // sprite is shorter than vanilla's for now.
+        // TODO: Will we need to support cases where it's larger?
+        // TODO: Handle cases for framed animations when the time comes.
+
+        Main.instance.LoadItem(item.type);
+        var vanillaTexture = TextureAssets.Item[item.type];
+        var difference     = vanillaTexture.Height() - texture.Height;
+
+        var offset = new Vector2(0, difference > 0 ? difference : 0);
+        spriteBatch.Draw(texture, item.position - Main.screenPosition + offset, null, lightColor, rotation, Vector2.Zero, scale, SpriteEffects.None, 0f);
 
         return false;
     }
