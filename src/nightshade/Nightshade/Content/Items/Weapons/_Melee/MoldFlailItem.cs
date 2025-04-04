@@ -9,6 +9,7 @@ using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.WorldBuilding;
 
 namespace Nightshade.Content.Items.Weapons;
 
@@ -16,7 +17,7 @@ internal sealed class MoldFlailItem : ModItem
 {
     public sealed class MoldFlailProjectile : ModProjectile
     {
-        private const float vertical_knockback_multiplier = 1.5f;
+        private const float vertical_knockback_multiplier = 3f;
         private Player Owner => Main.player[Projectile.owner];
 
         private float FrameCount
@@ -145,6 +146,11 @@ internal sealed class MoldFlailItem : ModItem
 
             modifiers.HitDirectionOverride = (Main.player[Projectile.owner].Center.X < target.Center.X).ToDirectionInt();
             SavedEnemyVelocity = target.velocity;
+
+            if (!WorldUtils.Find(Projectile.Center.ToTileCoordinates(), Searches.Chain(new Searches.Down(12), Projectile._cachedConditions_notNull, Projectile._cachedConditions_solid), out var _))
+            {
+                modifiers.FinalDamage *= 1.5f;
+            }
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
@@ -153,6 +159,44 @@ internal sealed class MoldFlailItem : ModItem
 
             target.velocity = SavedEnemyVelocity;
             float finalKnockback = hit.Knockback;
+
+            if (finalKnockback <= 0) return;
+
+#region Apply knockback scaling & critical hit increase
+            if (finalKnockback > 8f)
+            {
+                float num4 = finalKnockback - 8f;
+                num4 *= 0.9f;
+                finalKnockback = 8f + num4;
+            }
+            if (finalKnockback > 10f)
+            {
+                float num5 = finalKnockback - 10f;
+                num5 *= 0.8f;
+                finalKnockback = 10f + num5;
+            }
+            if (finalKnockback > 12f)
+            {
+                float num6 = finalKnockback - 12f;
+                num6 *= 0.7f;
+                finalKnockback = 12f + num6;
+            }
+            if (finalKnockback > 14f)
+            {
+                float num7 = finalKnockback - 14f;
+                num7 *= 0.6f;
+                finalKnockback = 14f + num7;
+            }
+            if (finalKnockback > 16f)
+            {
+                finalKnockback = 16f;
+            }
+            if (hit.Crit)
+            {
+                finalKnockback *= 1.4f;
+            }
+#endregion
+
             int damageDoneBig = damageDone * (Main.expertMode ? 15 : 10);
             if (damageDoneBig > target.lifeMax)
             {
@@ -184,10 +228,15 @@ internal sealed class MoldFlailItem : ModItem
                 #endregion
 
                 #region Vertical knockback done when damage is big
-                finalKnockback *= -vertical_knockback_multiplier;
+                if (target.type == NPCID.SnowFlinx)
+                {
+                    finalKnockback *= 1.5f;
+                }
+                finalKnockback *= vertical_knockback_multiplier;
+                finalKnockback = (target.noGravity ? (finalKnockback * -0.5f) : (finalKnockback * -0.75f));
                 if (target.velocity.Y > finalKnockback)
                 {
-                    target.velocity.Y = target.velocity.Y + finalKnockback;
+                    target.velocity.Y += finalKnockback;
                     if (target.velocity.Y < finalKnockback)
                     {
                         target.velocity.Y = finalKnockback;
@@ -197,7 +246,7 @@ internal sealed class MoldFlailItem : ModItem
             }
             else
             {
-                target.velocity.Y = finalKnockback * -vertical_knockback_multiplier * target.knockBackResist;
+                target.velocity.Y = finalKnockback * vertical_knockback_multiplier * (target.noGravity ? -0.5f : -0.75f) * target.knockBackResist;
                 target.velocity.X = finalKnockback * hit.HitDirection * target.knockBackResist;
             }
             target.netUpdate = true;
