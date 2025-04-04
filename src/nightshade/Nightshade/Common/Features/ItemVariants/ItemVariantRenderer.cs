@@ -82,6 +82,8 @@ internal sealed class ItemVariantRenderer : GlobalItem
 
     public override bool CanStackInWorld(Item destination, Item source)
     {
+        // If trying to merge with a dropped item of the same type, allow it to
+        // merge when the other item has no variant.
         var otherRenderer = destination.GetGlobalItem<ItemVariantRenderer>();
         if (otherRenderer.npcId == 0 && otherRenderer.variantId == 0)
         {
@@ -90,5 +92,18 @@ internal sealed class ItemVariantRenderer : GlobalItem
         }
 
         return base.CanStackInWorld(destination, source);
+    }
+
+    public override bool OnPickup(Item item, Player player)
+    {
+        // Clear the variant data on pickup since once in the inventory the data
+        // is no longer relevant.  It'd be cool to support preserving this data,
+        // but it has weird interactions when stacking such that it overrides
+        // incoming variant data and would look weird in-game (unexpected
+        // results), so let's not bother.
+        npcId     = 0;
+        variantId = 0;
+
+        return base.OnPickup(item, player);
     }
 }
