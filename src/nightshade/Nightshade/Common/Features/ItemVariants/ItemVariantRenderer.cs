@@ -16,7 +16,7 @@ namespace Nightshade.Common.Features.ItemVariants;
 /// </summary>
 [Autoload(Side = ModSide.Client)]
 [UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
-internal sealed class ItemVariantRenderer : GlobalItem, IModifyInWorldRender
+internal sealed class ItemVariantRenderer : GlobalItem, IModifyItemDrawBasics
 {
     public override bool InstancePerEntity => true;
 
@@ -31,7 +31,13 @@ internal sealed class ItemVariantRenderer : GlobalItem, IModifyInWorldRender
         variantId = 0;
     }
 
-    void IModifyInWorldRender.ModifyInWorldRender(Item item, ref Texture2D texture, ref Vector2 position)
+    void IModifyItemDrawBasics.ModifyItemDrawBasics(
+        Item          item,
+        int           slot,
+        ref Texture2D texture,
+        ref Rectangle frame,
+        ref Rectangle glowmaskFrame
+    )
     {
         if (npcId == 0 && variantId == 0)
         {
@@ -43,23 +49,16 @@ internal sealed class ItemVariantRenderer : GlobalItem, IModifyInWorldRender
             return;
         }
 
-        var oldTexture = texture;
         texture = ModContent.Request<Texture2D>(texturePath).Value;
 
-        // Since our assets are purely visual, they are still restricted by the
-        // existing item hitbox parameters.  To fix this, we calculate the
-        // necessary offset and adjust rendering that way.  These textures don't
-        // exist on the server and we don't provide syncing guarantees, so we
-        // should not and will not modify the actual hitbox values.
-        // Origin is in the top left corner, so only handle cases where the
-        // sprite is shorter than vanilla's for now.
-        // TODO: Will we need to support cases where it's larger?
-        // TODO: Handle cases for framed animations when the time comes.
-
-        var difference = oldTexture.Height - texture.Height;
-
-        var offset = new Vector2(0, difference > 0 ? difference : 0);
-        position += offset;
+        if (Main.itemAnimations[item.type] is not null)
+        {
+            frame = glowmaskFrame = Main.itemAnimations[item.type].GetFrame(texture, Main.itemFrameCounter[slot]);
+        }
+        else
+        {
+            frame = glowmaskFrame = texture.Frame();
+        }
     }
 
     public override void OnSpawn(Item item, IEntitySource source)

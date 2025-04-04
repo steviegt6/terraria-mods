@@ -13,6 +13,13 @@ using Hook = Nightshade.Common.Hooks.ItemRendering.IModifyInWorldRender;
 
 namespace Nightshade.Common.Hooks.ItemRendering;
 
+/// <summary>
+///     Provides a way to reliably modify the way an item is drawn according to
+///     vanilla logic by allowing one to override the texture and position.
+///     <br />
+///     This hook should generally be avoided in favor of
+///     <see cref="IModifyItemDrawBasics"/>.
+/// </summary>
 public interface IModifyInWorldRender
 {
     private sealed class ModifyInWorldRenderImplementation : IInitializer
