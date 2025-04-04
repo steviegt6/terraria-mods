@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -11,6 +12,7 @@ using log4net;
 
 using Nightshade.Common.Features.ItemVariants;
 
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -98,6 +100,74 @@ internal sealed class ItemVariantLoader : ModSystem
         {
             return mod.Name + '/' + Path.ChangeExtension(path, null);
         }
+    }
+
+    public static int GetVariant(int itemId, int npcId)
+    {
+        // Generally shouldn't be possible, but...
+        if (item_variants is null)
+        {
+            return 0;
+        }
+
+        if (!item_variants.TryGetValue(itemId, out var variants))
+        {
+            return 0;
+        }
+
+        if (variants.NpcVariants.TryGetValue(npcId, out var npcVariants))
+        {
+            return Main.rand.Next(npcVariants.Length);
+        }
+
+        return variants.Variants.Length == 0 ? 0 : Main.rand.Next(variants.Variants.Length);
+    }
+
+    public static bool TryGetTextureForVariant(
+        int                                          itemId,
+        int                                          npcId,
+        int                                          variantId,
+        [NotNullWhen(returnValue: true)] out string? texturePath
+    )
+    {
+        // Generally shouldn't be possible, but...
+        if (item_variants is null)
+        {
+            texturePath = null;
+            return false;
+        }
+
+        if (!item_variants.TryGetValue(itemId, out var variants))
+        {
+            texturePath = null;
+            return false;
+        }
+
+        try
+        {
+            if (variants.NpcVariants.TryGetValue(npcId, out var npcVariants))
+            {
+                if (variantId >= 0 && variantId < npcVariants.Length)
+                {
+                    texturePath = npcVariants[variantId];
+                    return true;
+                }
+            }
+            else if (variantId >= 0 && variantId < variants.Variants.Length)
+            {
+                texturePath = variants.Variants[variantId];
+                return true;
+            }
+        }
+        catch (IndexOutOfRangeException)
+        {
+            // I'm lazy, so let's not bother with bounds checking and just
+            // ignore these for now.  I don't think it's possible to have this
+            // happen anyway.
+        }
+
+        texturePath = null;
+        return false;
     }
 
     private static Dictionary<int, ItemVariants> LoadVariantsFromMod(Mod mod, ILog logger)
