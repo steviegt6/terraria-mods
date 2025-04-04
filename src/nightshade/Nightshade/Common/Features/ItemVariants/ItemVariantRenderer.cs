@@ -3,9 +3,10 @@ using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
+using Nightshade.Common.Hooks.ItemRendering;
+
 using Terraria;
 using Terraria.DataStructures;
-using Terraria.GameContent;
 using Terraria.ModLoader;
 
 namespace Nightshade.Common.Features.ItemVariants;
@@ -15,7 +16,7 @@ namespace Nightshade.Common.Features.ItemVariants;
 /// </summary>
 [Autoload(Side = ModSide.Client)]
 [UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
-internal sealed class ItemVariantRenderer : GlobalItem
+internal sealed class ItemVariantRenderer : GlobalItem, IModifyInWorldRender
 {
     public override bool InstancePerEntity => true;
 
@@ -30,19 +31,20 @@ internal sealed class ItemVariantRenderer : GlobalItem
         variantId = 0;
     }
 
-    public override bool PreDrawInWorld(Item item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
+    void IModifyInWorldRender.ModifyInWorldRender(Item item, ref Texture2D texture, ref Vector2 position)
     {
         if (npcId == 0 && variantId == 0)
         {
-            return true;
+            return;
         }
 
         if (!ItemVariantLoader.TryGetTextureForVariant(item.type, npcId, variantId, out var texturePath))
         {
-            return true;
+            return;
         }
 
-        var texture = ModContent.Request<Texture2D>(texturePath).Value;
+        var oldTexture = texture;
+        texture = ModContent.Request<Texture2D>(texturePath).Value;
 
         // Since our assets are purely visual, they are still restricted by the
         // existing item hitbox parameters.  To fix this, we calculate the
@@ -54,14 +56,10 @@ internal sealed class ItemVariantRenderer : GlobalItem
         // TODO: Will we need to support cases where it's larger?
         // TODO: Handle cases for framed animations when the time comes.
 
-        Main.instance.LoadItem(item.type);
-        var vanillaTexture = TextureAssets.Item[item.type];
-        var difference     = vanillaTexture.Height() - texture.Height;
+        var difference = oldTexture.Height - texture.Height;
 
         var offset = new Vector2(0, difference > 0 ? difference : 0);
-        spriteBatch.Draw(texture, item.position - Main.screenPosition + offset, null, lightColor, rotation, Vector2.Zero, scale, SpriteEffects.None, 0f);
-
-        return false;
+        position += offset;
     }
 
     public override void OnSpawn(Item item, IEntitySource source)
