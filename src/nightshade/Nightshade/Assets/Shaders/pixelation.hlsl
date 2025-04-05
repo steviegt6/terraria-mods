@@ -15,6 +15,11 @@ float2 normalize_with_pixelation(float2 coords, float pixel_size, float2 resolut
     return floor(coords / pixel_size) / (resolution / pixel_size);
 }
 
+float2 pixelate(float2 coords, float pixel_size)
+{
+    return floor(coords / pixel_size) * pixel_size;
+}
+
 /**
  * Quantizes the input color to a given resolution.
  *

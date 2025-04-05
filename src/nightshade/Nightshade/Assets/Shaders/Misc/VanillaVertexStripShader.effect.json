@@ -1,0 +1,15 @@
+{
+  "samplers": {
+    "uImage0": "s0"
+  },
+  "uniforms": {
+    "uPixel": "float",
+    "uColorResolution": "float"
+  },
+  "passes": {
+    "StripShader": {
+      "PixelShader": "ps_3_0 main"
+    }
+  },
+  "profile": "fx_2_0"
+}
