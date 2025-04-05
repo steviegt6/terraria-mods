@@ -38,14 +38,28 @@ internal sealed class MoldFlailItem : ModItem
             }
         }
 
-        private float TotalSwingTime => 60f / Owner.GetTotalAttackSpeed(Projectile.DamageType);
+        private float TotalSwingTime => 120f / Owner.GetTotalAttackSpeed(Projectile.DamageType);
+        private const float beginning_progress_swing_upwards = 0f;
+        private const float ending_progress_swing_upwards = 0.6f;
+        private const float beginning_progress_swing_downwards = ending_progress_swing_upwards;
+        private const float ending_progress_swing_downwards = 1f;
 
-        private static float InQuint(float t) => t * t * t * t * t;
-        private static float CustomInOutQuint(float t)
+
+
+        private static float InQuad(float t) => t * t;
+        private static float OutQuad(float t) => 1 - InQuad(1 - t);
+
+        private static float InBack(float t)
         {
-            if (t < 0.5) return InQuint(t * 2) / 2;
-            return 1 - InQuint((1 - t) * 2) / 2;
+            float s = 1.70158f;
+            return t * t * ((s + 1) * t - s);
         }
+        private static float InOutBack(float t)
+        {
+            if (t < 0.5) return InBack(t * 2) / 2;
+            return 1 - InBack((1 - t) * 2) / 2;
+        }
+
 
         public override string Texture => Assets.Images.Items.Weapons.MoldFlailItem.KEY;
 
@@ -111,13 +125,27 @@ internal sealed class MoldFlailItem : ModItem
                 return;
             }
 
-            float initialAngle = -MathHelper.PiOver2 - (MathHelper.Pi * 0.8f) * Projectile.spriteDirection;
+            float initialAngle = -MathHelper.PiOver2 - MathHelper.Pi * Projectile.spriteDirection;
             float angleLerpValue = Utils.GetLerpValue(0, TotalSwingTime, FrameCount, true);
-            angleLerpValue = CustomInOutQuint(angleLerpValue);
-            float angleChange = MathHelper.Lerp(0, MathHelper.Pi * 1.3f, angleLerpValue) * Projectile.spriteDirection;
+
+            float angleChange;
+            if (angleLerpValue < ending_progress_swing_upwards)
+            {
+                float upwardsLerpValue = Utils.GetLerpValue(beginning_progress_swing_upwards, ending_progress_swing_upwards, angleLerpValue);
+                upwardsLerpValue = OutQuad(upwardsLerpValue);
+                angleChange = MathHelper.Lerp(MathHelper.Pi * 0.4f, MathHelper.Pi * 1.3f, upwardsLerpValue);
+            }
+            else
+            {
+                float downwardsLerpValue = Utils.GetLerpValue(beginning_progress_swing_downwards, ending_progress_swing_downwards, angleLerpValue);
+                downwardsLerpValue = InOutBack(downwardsLerpValue);
+                angleChange = MathHelper.Lerp(MathHelper.Pi * 1.3f, MathHelper.Pi * -0.1f, downwardsLerpValue);
+            }
+            angleChange *= Projectile.spriteDirection;
             Projectile.rotation = initialAngle - angleChange;
 
             Owner.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, Projectile.rotation - MathHelper.PiOver2);
+            //Owner.SetCompositeArmBack(true, Player.CompositeArmStretchAmount.Full, (Projectile.rotation - MathHelper.PiOver2) * 1.1f);
             Vector2 playerCenter = Owner.GetFrontHandPosition(Player.CompositeArmStretchAmount.Full, Projectile.rotation - MathHelper.PiOver2);
             playerCenter.Y += Owner.gfxOffY;
             Projectile.Center = playerCenter;
