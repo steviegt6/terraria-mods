@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Mono.Cecil;
 using Nightshade.Common.Loading;
+using Steamworks;
 using System;
 using System.IO;
 using Terraria;
@@ -17,14 +18,13 @@ internal sealed class MoldFlailItem : ModItem
 {
     public sealed class MoldFlailProjectile : ModProjectile
     {
-        private const float vertical_npc_knockback_multiplier = 3f;
-        private const float vertical_player_knockback_multiplier = 2f;
+        private const float vertical_knockback_multiplier = 8f;
 
         private Player Owner => Main.player[Projectile.owner];
 
-        private float FrameCount
+        private int FrameCount
         {
-            get => Projectile.ai[0];
+            get => (int)Projectile.ai[0];
             set => Projectile.ai[0] = value;
         }
 
@@ -38,12 +38,18 @@ internal sealed class MoldFlailItem : ModItem
             }
         }
 
-        private float TotalSwingTime => 120f / Owner.GetTotalAttackSpeed(Projectile.DamageType);
-        private const float beginning_progress_swing_upwards = 0f;
-        private const float ending_progress_swing_upwards = 0.6f;
-        private const float beginning_progress_swing_downwards = ending_progress_swing_upwards;
-        private const float ending_progress_swing_downwards = 1f;
+        private int TotalSwingTime => (int)(70f / Owner.GetTotalAttackSpeed(Projectile.DamageType));
 
+        private int BeginningTimeOfSwingUpwards => 0;
+        private int EndingTimeOfSwingUpwards => (int)(0.4f * TotalSwingTime);
+        private int BeginningTimeOfSwingDownwards => EndingTimeOfSwingUpwards;
+        private int EndingTimeOfSwingDownwards => TotalSwingTime;
+
+        private bool IsSwingingDownwards => FrameCount > EndingTimeOfSwingUpwards;
+
+        private int TimeUntilSwingUpwardsCanNotDealDamage => (int)(0.3f * TotalSwingTime);
+        private int TimeUntilSwingDownwardsCanDealDamage => (int)(0.6f * TotalSwingTime);
+        private int TimeUntilSwingDownwardsCanNotDealDamage => (int)(0.85f * TotalSwingTime);
 
 
         private static float InQuad(float t) => t * t;
@@ -51,7 +57,7 @@ internal sealed class MoldFlailItem : ModItem
 
         private static float InBack(float t)
         {
-            float s = 1.70158f;
+            float s = 2.5923889015163f; //20%
             return t * t * ((s + 1) * t - s);
         }
         private static float InOutBack(float t)
@@ -126,20 +132,19 @@ internal sealed class MoldFlailItem : ModItem
             }
 
             float initialAngle = -MathHelper.PiOver2 - MathHelper.Pi * Projectile.spriteDirection;
-            float angleLerpValue = Utils.GetLerpValue(0, TotalSwingTime, FrameCount, true);
 
             float angleChange;
-            if (angleLerpValue < ending_progress_swing_upwards)
+            if (!IsSwingingDownwards)
             {
-                float upwardsLerpValue = Utils.GetLerpValue(beginning_progress_swing_upwards, ending_progress_swing_upwards, angleLerpValue);
+                float upwardsLerpValue = Utils.GetLerpValue(BeginningTimeOfSwingUpwards, EndingTimeOfSwingUpwards, FrameCount);
                 upwardsLerpValue = OutQuad(upwardsLerpValue);
-                angleChange = MathHelper.Lerp(MathHelper.Pi * 0.4f, MathHelper.Pi * 1.3f, upwardsLerpValue);
+                angleChange = MathHelper.Lerp(MathHelper.Pi * -0.2f, MathHelper.Pi * 1.3f, upwardsLerpValue);
             }
             else
             {
-                float downwardsLerpValue = Utils.GetLerpValue(beginning_progress_swing_downwards, ending_progress_swing_downwards, angleLerpValue);
+                float downwardsLerpValue = Utils.GetLerpValue(BeginningTimeOfSwingDownwards, EndingTimeOfSwingDownwards, FrameCount);
                 downwardsLerpValue = InOutBack(downwardsLerpValue);
-                angleChange = MathHelper.Lerp(MathHelper.Pi * 1.3f, MathHelper.Pi * -0.1f, downwardsLerpValue);
+                angleChange = MathHelper.Lerp(MathHelper.Pi * 1.3f, MathHelper.Pi * -0.2f, downwardsLerpValue);
             }
             angleChange *= Projectile.spriteDirection;
             Projectile.rotation = initialAngle - angleChange;
@@ -154,8 +159,10 @@ internal sealed class MoldFlailItem : ModItem
             Owner.heldProj = Projectile.whoAmI;
             Owner.SetDummyItemTime(2);
 
-            int spriteWidth = Assets.Images.Items.Weapons.MoldFlailItem.Asset.Width();
-            int spriteHeight = Assets.Images.Items.Weapons.MoldFlailItem.Asset.Height();
+            if (FrameCount == EndingTimeOfSwingUpwards)
+            {
+                Projectile.ResetLocalNPCHitImmunity();
+            }
 
             FrameCount++;
         }
@@ -177,16 +184,17 @@ internal sealed class MoldFlailItem : ModItem
             Utils.PlotTileLine(start, end, 15 * Projectile.scale, DelegateMethods.CutTiles);
         }
 
+        public override bool? CanDamage() => (FrameCount < TimeUntilSwingUpwardsCanNotDealDamage) || (FrameCount > TimeUntilSwingDownwardsCanDealDamage && FrameCount < TimeUntilSwingDownwardsCanNotDealDamage);
+
         public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
         {
             base.ModifyHitNPC(target, ref modifiers);
 
-            modifiers.HitDirectionOverride = (Main.player[Projectile.owner].Center.X < target.Center.X).ToDirectionInt();
+            modifiers.HitDirectionOverride = Projectile.spriteDirection;
             SavedEnemyVelocity = target.velocity;
-
-            if (!target.noGravity && !WorldUtils.Find(Projectile.Center.ToTileCoordinates(), Searches.Chain(new Searches.Down(3), Projectile._cachedConditions_notNull, Projectile._cachedConditions_solid), out var _))
+            if (IsSwingingDownwards)
             {
-                modifiers.FinalDamage *= 2f;
+                modifiers.Knockback += 0.6f;
             }
         }
 
@@ -194,12 +202,11 @@ internal sealed class MoldFlailItem : ModItem
         {
             base.ModifyHitPlayer(target, ref modifiers);
 
-            modifiers.HitDirectionOverride = (Main.player[Projectile.owner].Center.X < target.Center.X).ToDirectionInt();
+            modifiers.HitDirectionOverride = Projectile.spriteDirection;
             SavedEnemyVelocity = target.velocity;
-
-            if (!WorldUtils.Find(Projectile.Center.ToTileCoordinates(), Searches.Chain(new Searches.Down(3), Projectile._cachedConditions_notNull, Projectile._cachedConditions_solid), out var _))
+            if (IsSwingingDownwards)
             {
-                modifiers.FinalDamage *= 2f;
+                modifiers.Knockback += 0.6f;
             }
         }
 
@@ -207,98 +214,21 @@ internal sealed class MoldFlailItem : ModItem
         {
             base.OnHitNPC(target, hit, damageDone);
 
-            target.velocity = SavedEnemyVelocity;
-            float finalKnockback = hit.Knockback;
+            if (hit.Knockback <= 0)
+            {
+                return;
+            }
 
-            if (finalKnockback <= 0) return;
+            if (!IsSwingingDownwards)
+            {
+                target.velocity.X = 1f * hit.HitDirection;
+                target.velocity.Y = -8f;
+                if (target.noGravity)
+                {
+                    target.velocity.Y *= 0.75f;
+                }
+            }
 
-#region Apply knockback scaling & critical hit increase
-            if (finalKnockback > 8f)
-            {
-                float num4 = finalKnockback - 8f;
-                num4 *= 0.9f;
-                finalKnockback = 8f + num4;
-            }
-            if (finalKnockback > 10f)
-            {
-                float num5 = finalKnockback - 10f;
-                num5 *= 0.8f;
-                finalKnockback = 10f + num5;
-            }
-            if (finalKnockback > 12f)
-            {
-                float num6 = finalKnockback - 12f;
-                num6 *= 0.7f;
-                finalKnockback = 12f + num6;
-            }
-            if (finalKnockback > 14f)
-            {
-                float num7 = finalKnockback - 14f;
-                num7 *= 0.6f;
-                finalKnockback = 14f + num7;
-            }
-            if (finalKnockback > 16f)
-            {
-                finalKnockback = 16f;
-            }
-            if (hit.Crit)
-            {
-                finalKnockback *= 1.4f;
-            }
-#endregion
-
-            int damageDoneBig = damageDone * (Main.expertMode ? 15 : 10);
-            if (damageDoneBig > target.lifeMax)
-            {
-                #region Horizontal knockback done when damage is big
-                if (hit.HitDirection < 0 && target.velocity.X > -finalKnockback)
-                {
-                    if (target.velocity.X > 0f)
-                    {
-                        target.velocity.X -= finalKnockback;
-                    }
-                    target.velocity.X -= finalKnockback;
-                    if (target.velocity.X < -finalKnockback)
-                    {
-                        target.velocity.X = -finalKnockback;
-                    }
-                }
-                else if (hit.HitDirection > 0 && target.velocity.X < finalKnockback)
-                {
-                    if (target.velocity.X < 0f)
-                    {
-                        target.velocity.X += finalKnockback;
-                    }
-                    target.velocity.X += finalKnockback;
-                    if (target.velocity.X > finalKnockback)
-                    {
-                        target.velocity.X = finalKnockback;
-                    }
-                }
-                #endregion
-
-                #region Vertical knockback done when damage is big
-                if (target.type == NPCID.SnowFlinx)
-                {
-                    finalKnockback *= 1.5f;
-                }
-                finalKnockback *= vertical_npc_knockback_multiplier;
-                finalKnockback = (target.noGravity ? (finalKnockback * -0.5f) : (finalKnockback * -0.75f));
-                if (target.velocity.Y > finalKnockback)
-                {
-                    target.velocity.Y += finalKnockback;
-                    if (target.velocity.Y < finalKnockback)
-                    {
-                        target.velocity.Y = finalKnockback;
-                    }
-                }
-                #endregion
-            }
-            else
-            {
-                target.velocity.Y = finalKnockback * vertical_npc_knockback_multiplier * (target.noGravity ? -0.5f : -0.75f) * target.knockBackResist;
-                target.velocity.X = finalKnockback * hit.HitDirection * target.knockBackResist;
-            }
             target.netUpdate = true;
         }
 
@@ -306,10 +236,15 @@ internal sealed class MoldFlailItem : ModItem
         {
             base.OnHitPlayer(target, info);
 
+            if (target.noKnockback)
+            {
+                return;
+            }
+
             if (info.Knockback != 0f && info.HitDirection != 0 && (!target.mount.Active || !target.mount.Cart))
             {
                 target.velocity.X = info.Knockback * info.HitDirection;
-                target.velocity.Y = info.Knockback * -vertical_player_knockback_multiplier;
+                target.velocity.Y = info.Knockback * vertical_knockback_multiplier;
                 target.fallStart = (int)(target.position.Y / 16f);
             }
         }
@@ -333,7 +268,6 @@ internal sealed class MoldFlailItem : ModItem
                 effects = SpriteEffects.FlipHorizontally;
             }
 
-            Owner.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, Projectile.rotation - MathHelper.PiOver2);
             Vector2 playerCenter = Owner.GetFrontHandPosition(Player.CompositeArmStretchAmount.Full, Projectile.rotation - MathHelper.PiOver2);
 
             Texture2D texture = TextureAssets.Projectile[Type].Value;
@@ -360,9 +294,9 @@ internal sealed class MoldFlailItem : ModItem
         Item.useStyle = ItemUseStyleID.Swing;
         Item.UseSound = SoundID.Item1;
 
-        Item.damage = 5;
+        Item.damage = 15;
         Item.DamageType = DamageClass.Melee;
-        Item.knockBack = 6f;
+        Item.knockBack = 12f;
 
         Item.noUseGraphic = true;
         Item.noMelee = true;
