@@ -1,0 +1,1 @@
+test makes vanity trees drop custom wood

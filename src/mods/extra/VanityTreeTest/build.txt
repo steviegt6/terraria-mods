@@ -1,0 +1,3 @@
+displayName = Vanity Tree Test
+author = Tomat
+version = 1.0.0
