@@ -14,33 +14,6 @@ internal sealed class VanityTreeWoodSystem : ILoadable
 
     void ILoadable.Load(global::Terraria.ModLoader.Mod mod)
     {
-        /*IL_WorldGen.KillTile_GetTreeDrops += il =>
-        {
-            var c = new ILCursor(il);
-
-            c.GotoNext(x => x.MatchCall(typeof(TileLoader).FullName!, nameof(TileLoader.DropTreeWood)));
-            c.GotoPrev(MoveType.Before, x => x.MatchLdsflda<Main>(nameof(Main.tile)));
-
-            // var beforeDropTreeWood = c.Index;
-
-            var xLoc = 0;
-            var yLoc = 0;
-            c.GotoNext(x => x.MatchLdloc(out xLoc));
-            c.GotoNext(x => x.MatchLdloc(out yLoc));
-
-            var dropItemArg = 0;
-            c.GotoNext(x => x.MatchLdarg(out dropItemArg));
-
-            // c.Index = beforeDropTreeWood;
-
-            c.GotoNext(MoveType.After, x => x.MatchCall<Player>(nameof(Player.FindClosest)));
-
-            c.EmitLdloc(xLoc);
-            c.EmitLdloc(yLoc);
-            c.EmitLdarg(dropItemArg);
-            c.EmitDelegate(OverrideVanityWood);
-        };*/
-
         IL_WorldGen.KillTile_GetItemDrops += il =>
         {
             var c = new ILCursor(il);
@@ -74,22 +47,4 @@ internal sealed class VanityTreeWoodSystem : ILoadable
     }
 
     void ILoadable.Unload() { }
-
-    /*private static void OverrideVanityWood(int x, int y, ref int dropItem)
-    {
-        if (!WorldGen.InWorld(x, y - 1))
-        {
-            return;
-        }
-
-        var tile = Main.tile[x, y - 1];
-        Main.NewText(tile.TileType);
-
-        dropItem = tile.TileType switch
-        {
-            TileID.VanityTreeYellowWillow => ItemID.StoneBlock,
-            TileID.VanityTreeSakura       => ItemID.DirtBlock,
-            _                             => dropItem,
-        };
-    }*/
 }
