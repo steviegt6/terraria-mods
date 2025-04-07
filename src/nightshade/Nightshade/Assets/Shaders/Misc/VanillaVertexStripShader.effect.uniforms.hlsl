@@ -9,12 +9,9 @@
 
 #ifndef TECHNIQUES
 // begin SAMPLERS
-sampler uImage0 : register(s0);
 // end SAMPLERS
 
 // begin UNIFORMS
-float uPixel;
-float uColorResolution;
 // end UNIFORMS
 #endif // TECHNIQUES
 
@@ -23,9 +20,13 @@ float uColorResolution;
 #ifdef TECHNIQUES
 technique Technique1
 {
-    pass StripShader
+    pass MagicMissile
     {
-        PixelShader = compile ps_3_0 main();
+        PixelShader = compile ps_3_0 magic_missile();
+    }
+    pass FinalFractalVertex
+    {
+        PixelShader = compile ps_3_0 final_fractal_vertex();
     }
 }
 #endif // TECHNIQUES

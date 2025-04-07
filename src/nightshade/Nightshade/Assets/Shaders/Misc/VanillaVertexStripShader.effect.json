@@ -1,14 +1,12 @@
 {
-  "samplers": {
-    "uImage0": "s0"
-  },
-  "uniforms": {
-    "uPixel": "float",
-    "uColorResolution": "float"
-  },
+  "samplers": {},
+  "uniforms": {},
   "passes": {
-    "StripShader": {
-      "PixelShader": "ps_3_0 main"
+    "MagicMissile": {
+      "PixelShader": "ps_3_0 magic_missile"
+    },
+    "FinalFractalVertex": {
+      "PixelShader": "ps_3_0 final_fractal_vertex"
     }
   },
   "profile": "fx_2_0"
