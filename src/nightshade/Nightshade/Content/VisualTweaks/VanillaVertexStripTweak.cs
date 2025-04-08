@@ -81,6 +81,7 @@ internal sealed class VanillaVertexStripTweak : ModSystem
                 Main.spriteBatch.End();
 
                 var rts = Main.instance.GraphicsDevice.GetRenderTargets();
+                RtContentPreserver.ApplyToBindings(rts);
 
                 Main.instance.GraphicsDevice.SetRenderTarget(managedRt.Value);
                 Main.instance.GraphicsDevice.Clear(Color.Transparent);
