@@ -1,4 +1,3 @@
-using System;
 using System.Diagnostics;
 
 using Microsoft.Xna.Framework;
@@ -12,12 +11,12 @@ using Nightshade.Core;
 using Nightshade.Core.Attributes;
 
 using Terraria;
-using Terraria.GameContent;
 using Terraria.Graphics;
 using Terraria.ModLoader;
 
 namespace Nightshade.Content.VisualTweaks;
 
+[Autoload(Side = ModSide.Client)]
 internal sealed class VanillaVertexStripTweak : ModSystem
 {
     [InitializedInLoad]
@@ -36,7 +35,7 @@ internal sealed class VanillaVertexStripTweak : ModSystem
                 shader = Assets.Shaders.Misc.VanillaVertexStripShader.CreateStripShader();
                 {
                     shader.Parameters.uPixel           = 2f;
-                    shader.Parameters.uColorResolution = 8f;
+                    shader.Parameters.uColorResolution = 16f;
                 }
             }
         );
@@ -47,6 +46,9 @@ internal sealed class VanillaVertexStripTweak : ModSystem
             () =>
             {
                 managedRt.Initialize(Main.screenWidth, Main.screenHeight);
+
+                Main.graphics.GraphicsDevice.PresentationParameters.RenderTargetUsage = RenderTargetUsage.PreserveContents;
+                Main.graphics.ApplyChanges();
             }
         );
 
@@ -70,15 +72,20 @@ internal sealed class VanillaVertexStripTweak : ModSystem
         );
         c.EmitStloc(snpIndex);
 
+        c.EmitLdloc(snpIndex);
         c.EmitDelegate(
-            static () =>
+            static (SpriteBatchSnapshot snapshot) =>
             {
                 Debug.Assert(managedRt is not null);
+
+                Main.spriteBatch.End();
 
                 var rts = Main.instance.GraphicsDevice.GetRenderTargets();
 
                 Main.instance.GraphicsDevice.SetRenderTarget(managedRt.Value);
                 Main.instance.GraphicsDevice.Clear(Color.Transparent);
+
+                snapshot.Apply(Main.spriteBatch);
 
                 return rts;
             }
