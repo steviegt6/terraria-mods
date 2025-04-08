@@ -58,18 +58,17 @@ Items: {
 
 	BarbaricCuffsItem: {
 		DisplayName: Barbaric Cuffs
-		Tooltip: '''
-		         Increases armor penetration by 8
-		         Enemies are more likely to target you
-		         Prevents health regeneration
-		         '''
+		Tooltip:
+			'''
+			Increases armor penetration by 8
+			Enemies are more likely to target you
+			Prevents health regeneration
+			'''
 	}
 
 	SpikedCuffsItem: {
 		DisplayName: Spiked Cuffs
-		Tooltip: '''
-		         Decreases defense by 8 and increases armor penetration by 8 when attacking enemies
-		         '''
+		Tooltip: Decreases defense by 8 and increases armor penetration by 8 when attacking enemies
 	}
 }
 
