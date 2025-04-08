@@ -116,12 +116,11 @@ internal sealed class VanillaVertexStripTweak : ModSystem
                     DepthStencilState.Default,
                     RasterizerState.CullNone,
                     null,
-                    Main.Transform
+                    Main.GameViewMatrix.EffectMatrix
                 );
 
-                // Main.graphics.GraphicsDevice.Textures[0]      = managedRt.Value;
-                // Main.graphics.GraphicsDevice.SamplerStates[0] = SamplerState.LinearWrap;
-                shader.Parameters.uSize = new Vector2(managedRt.Value.Width, managedRt.Value.Height);
+                shader.Parameters.uPixel = 2f * Main.GameViewMatrix.Zoom.X;
+                shader.Parameters.uSize  = new Vector2(managedRt.Value.Width, managedRt.Value.Height);
                 shader.Apply();
 
                 Main.spriteBatch.Draw(managedRt.Value, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Color.White);
