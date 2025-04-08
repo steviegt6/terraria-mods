@@ -37,6 +37,8 @@ internal sealed class SimpleModMenu : ModMenu
     [InitializedInLoad]
     private static ManagedRenderTarget? managedRt;
 
+    public override int Music => MusicLoader.GetMusicSlot("Nightshade/Assets/Music/NIGHTSHADE_-_track_0");
+
     public override void Load()
     {
         base.Load();
