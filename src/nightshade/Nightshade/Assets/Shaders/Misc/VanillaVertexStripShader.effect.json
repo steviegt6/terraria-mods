@@ -1,10 +1,8 @@
 {
-  "samplers": {
-    "uImage0": "s0"
-  },
   "uniforms": {
     "uPixel": "float",
-    "uColorResolution": "float"
+    "uColorResolution": "float",
+    "uSize": "float2"
   },
   "passes": {
     "StripShader": {

@@ -9,12 +9,12 @@
 
 #ifndef TECHNIQUES
 // begin SAMPLERS
-sampler uImage0 : register(s0);
 // end SAMPLERS
 
 // begin UNIFORMS
 float uPixel;
 float uColorResolution;
+float2 uSize;
 // end UNIFORMS
 #endif // TECHNIQUES
 

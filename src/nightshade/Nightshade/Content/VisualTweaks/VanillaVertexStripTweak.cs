@@ -36,7 +36,7 @@ internal sealed class VanillaVertexStripTweak : ModSystem
                 shader = Assets.Shaders.Misc.VanillaVertexStripShader.CreateStripShader();
                 {
                     shader.Parameters.uPixel           = 2f;
-                    shader.Parameters.uColorResolution = 4f;
+                    shader.Parameters.uColorResolution = 8f;
                 }
             }
         );
@@ -78,7 +78,7 @@ internal sealed class VanillaVertexStripTweak : ModSystem
                 var rts = Main.instance.GraphicsDevice.GetRenderTargets();
 
                 Main.instance.GraphicsDevice.SetRenderTarget(managedRt.Value);
-                // Main.instance.GraphicsDevice.Clear(Color.Transparent);
+                Main.instance.GraphicsDevice.Clear(Color.Transparent);
 
                 return rts;
             }
@@ -94,12 +94,10 @@ internal sealed class VanillaVertexStripTweak : ModSystem
             {
                 Debug.Assert(shader is not null);
                 Debug.Assert(managedRt is not null);
+                Debug.Assert(managedRt.Value is not null);
 
-                Main.instance.GraphicsDevice.SetRenderTargets(rts);
                 Main.spriteBatch.End();
-                
-                shader.Parameters.uImage0 = managedRt.Value;
-                shader.Apply();
+                Main.instance.GraphicsDevice.SetRenderTargets(rts);
 
                 Main.spriteBatch.Begin(
                     SpriteSortMode.Immediate,
@@ -110,8 +108,13 @@ internal sealed class VanillaVertexStripTweak : ModSystem
                     null,
                     Main.Transform
                 );
-                
-                Main.spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Color.White);
+
+                // Main.graphics.GraphicsDevice.Textures[0]      = managedRt.Value;
+                // Main.graphics.GraphicsDevice.SamplerStates[0] = SamplerState.LinearWrap;
+                shader.Parameters.uSize = new Vector2(managedRt.Value.Width, managedRt.Value.Height);
+                shader.Apply();
+
+                Main.spriteBatch.Draw(managedRt.Value, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Color.White);
 
                 Main.spriteBatch.End();
                 snapshot.Apply(Main.spriteBatch);
