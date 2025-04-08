@@ -1,16 +1,28 @@
+using System;
+using System.Diagnostics;
+
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
+using MonoMod.Cil;
+
 using Nightshade.Common.Rendering;
+using Nightshade.Common.Utilities;
+using Nightshade.Core;
 using Nightshade.Core.Attributes;
 
 using Terraria;
-using Terraria.Graphics.Shaders;
+using Terraria.GameContent;
+using Terraria.Graphics;
 using Terraria.ModLoader;
 
 namespace Nightshade.Content.VisualTweaks;
 
 internal sealed class VanillaVertexStripTweak : ModSystem
 {
+    [InitializedInLoad]
+    private static WrapperShaderData<Assets.Shaders.Misc.VanillaVertexStripShader.Parameters>? shader;
+
     [InitializedInLoad]
     private static ManagedRenderTarget? managedRt;
 
@@ -21,29 +33,11 @@ internal sealed class VanillaVertexStripTweak : ModSystem
         Main.QueueMainThreadAction(
             () =>
             {
-                var effect = ModContent.Request<Effect>(Assets.Shaders.Misc.VanillaVertexStripShader.KEY);
-                GameShaders.Misc["MagicMissile"] = new MiscShaderData(effect, "MagicMissile").UseProjectionMatrix(doUse: true);
-                GameShaders.Misc["MagicMissile"].UseImage0("Images/Extra_" + (short)192);
-                GameShaders.Misc["MagicMissile"].UseImage1("Images/Extra_" + (short)194);
-                GameShaders.Misc["MagicMissile"].UseImage2("Images/Extra_" + (short)193);
-                GameShaders.Misc["FlameLash"] = new MiscShaderData(effect, "MagicMissile").UseProjectionMatrix(doUse: true);
-                GameShaders.Misc["FlameLash"].UseImage0("Images/Extra_" + (short)191);
-                GameShaders.Misc["FlameLash"].UseImage1("Images/Extra_" + (short)189);
-                GameShaders.Misc["FlameLash"].UseImage2("Images/Extra_" + (short)190);
-                GameShaders.Misc["RainbowRod"] = new MiscShaderData(effect, "MagicMissile").UseProjectionMatrix(doUse: true);
-                GameShaders.Misc["RainbowRod"].UseImage0("Images/Extra_" + (short)195);
-                GameShaders.Misc["RainbowRod"].UseImage1("Images/Extra_" + (short)197);
-                GameShaders.Misc["RainbowRod"].UseImage2("Images/Extra_" + (short)196);
-                GameShaders.Misc["FinalFractal"] = new MiscShaderData(effect, "FinalFractalVertex").UseProjectionMatrix(doUse: true);
-                GameShaders.Misc["FinalFractal"].UseImage0("Images/Extra_" + (short)195);
-                GameShaders.Misc["FinalFractal"].UseImage1("Images/Extra_" + (short)197);
-                GameShaders.Misc["EmpressBlade"] = new MiscShaderData(effect, "FinalFractalVertex").UseProjectionMatrix(doUse: true);
-                GameShaders.Misc["EmpressBlade"].UseImage0("Images/Extra_" + (short)209);
-                GameShaders.Misc["EmpressBlade"].UseImage1("Images/Extra_" + (short)210);
-                GameShaders.Misc["LightDisc"] = new MiscShaderData(effect, "MagicMissile").UseProjectionMatrix(doUse: true);
-                GameShaders.Misc["LightDisc"].UseImage0("Images/Extra_" + (short)195);
-                GameShaders.Misc["LightDisc"].UseImage1("Images/Extra_" + (short)195);
-                GameShaders.Misc["LightDisc"].UseImage2("Images/Extra_" + (short)252);
+                shader = Assets.Shaders.Misc.VanillaVertexStripShader.CreateStripShader();
+                {
+                    shader.Parameters.uPixel           = 2f;
+                    shader.Parameters.uColorResolution = 4f;
+                }
             }
         );
 
@@ -53,6 +47,66 @@ internal sealed class VanillaVertexStripTweak : ModSystem
             () =>
             {
                 managedRt.Initialize(Main.screenWidth, Main.screenHeight);
+            }
+        );
+
+        IL_EmpressBladeDrawer.Draw += WrapDraw;
+        IL_FinalFractalHelper.Draw += WrapDraw;
+        IL_FlameLashDrawer.Draw    += WrapDraw;
+        IL_LightDiscDrawer.Draw    += WrapDraw;
+        IL_MagicMissileDrawer.Draw += WrapDraw;
+        IL_RainbowRodDrawer.Draw   += WrapDraw;
+    }
+
+    //private static void WrapDraw(Action<object, Projectile> orig, object self, Projectile proj)
+    private static void WrapDraw(ILContext il)
+    {
+        var rtsIndex = il.AddVariable<RenderTargetBinding[]>();
+
+        var c = new ILCursor(il);
+
+        c.EmitDelegate(
+            static () =>
+            {
+                Debug.Assert(managedRt is not null);
+
+                var rts = Main.instance.GraphicsDevice.GetRenderTargets();
+
+                Main.instance.GraphicsDevice.SetRenderTarget(managedRt.Value);
+                Main.instance.GraphicsDevice.Clear(Color.Transparent);
+
+                return rts;
+            }
+        );
+        c.EmitStloc(rtsIndex);
+
+        c.GotoNext(MoveType.After, x => x.MatchCallvirt<VertexStrip>(nameof(VertexStrip.DrawTrail)));
+
+        c.EmitLdloc(rtsIndex);
+        c.EmitDelegate(
+            static (RenderTargetBinding[] rts) =>
+            {
+                Debug.Assert(shader is not null);
+                Debug.Assert(managedRt is not null);
+
+                Main.instance.GraphicsDevice.SetRenderTargets(rts);
+
+                shader.Parameters.uImage0 = managedRt.Value;
+                shader.Apply();
+
+                var snapshot = new SpriteBatchSnapshot(Main.spriteBatch);
+                Main.spriteBatch.End();
+                Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+                Main.spriteBatch.Draw(managedRt.Value, Vector2.Zero, Color.White);
+
+                Main.spriteBatch.End();
+                snapshot.Apply(Main.spriteBatch);
+
+                // Main.spriteBatch.Draw(
+                //     TextureAssets.MagicPixel.Value,
+                //     new Rectangle(0, 0, Main.screenWidth, Main.screenWidth),
+                //     Color.White
+                // );
             }
         );
     }
