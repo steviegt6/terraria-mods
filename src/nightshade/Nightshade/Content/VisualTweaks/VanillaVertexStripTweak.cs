@@ -58,12 +58,17 @@ internal sealed class VanillaVertexStripTweak : ModSystem
         IL_RainbowRodDrawer.Draw   += WrapDraw;
     }
 
-    //private static void WrapDraw(Action<object, Projectile> orig, object self, Projectile proj)
     private static void WrapDraw(ILContext il)
     {
         var rtsIndex = il.AddVariable<RenderTargetBinding[]>();
+        var snpIndex = il.AddVariable<SpriteBatchSnapshot>();
 
         var c = new ILCursor(il);
+
+        c.EmitDelegate(
+            static () => new SpriteBatchSnapshot(Main.spriteBatch)
+        );
+        c.EmitStloc(snpIndex);
 
         c.EmitDelegate(
             static () =>
@@ -73,7 +78,7 @@ internal sealed class VanillaVertexStripTweak : ModSystem
                 var rts = Main.instance.GraphicsDevice.GetRenderTargets();
 
                 Main.instance.GraphicsDevice.SetRenderTarget(managedRt.Value);
-                Main.instance.GraphicsDevice.Clear(Color.Transparent);
+                // Main.instance.GraphicsDevice.Clear(Color.Transparent);
 
                 return rts;
             }
@@ -83,30 +88,33 @@ internal sealed class VanillaVertexStripTweak : ModSystem
         c.GotoNext(MoveType.After, x => x.MatchCallvirt<VertexStrip>(nameof(VertexStrip.DrawTrail)));
 
         c.EmitLdloc(rtsIndex);
+        c.EmitLdloc(snpIndex);
         c.EmitDelegate(
-            static (RenderTargetBinding[] rts) =>
+            static (RenderTargetBinding[] rts, SpriteBatchSnapshot snapshot) =>
             {
                 Debug.Assert(shader is not null);
                 Debug.Assert(managedRt is not null);
 
                 Main.instance.GraphicsDevice.SetRenderTargets(rts);
-
+                Main.spriteBatch.End();
+                
                 shader.Parameters.uImage0 = managedRt.Value;
                 shader.Apply();
 
-                var snapshot = new SpriteBatchSnapshot(Main.spriteBatch);
-                Main.spriteBatch.End();
-                Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
-                Main.spriteBatch.Draw(managedRt.Value, Vector2.Zero, Color.White);
+                Main.spriteBatch.Begin(
+                    SpriteSortMode.Immediate,
+                    BlendState.AlphaBlend,
+                    SamplerState.PointClamp,
+                    DepthStencilState.Default,
+                    RasterizerState.CullNone,
+                    null,
+                    Main.Transform
+                );
+                
+                Main.spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Color.White);
 
                 Main.spriteBatch.End();
                 snapshot.Apply(Main.spriteBatch);
-
-                // Main.spriteBatch.Draw(
-                //     TextureAssets.MagicPixel.Value,
-                //     new Rectangle(0, 0, Main.screenWidth, Main.screenWidth),
-                //     Color.White
-                // );
             }
         );
     }
