@@ -55,9 +55,11 @@ internal sealed class VanillaVertexStripTweak : ModSystem
         IL_EmpressBladeDrawer.Draw += WrapDraw;
         IL_FinalFractalHelper.Draw += WrapDraw;
         IL_FlameLashDrawer.Draw    += WrapDraw;
-        IL_LightDiscDrawer.Draw    += WrapDraw;
         IL_MagicMissileDrawer.Draw += WrapDraw;
         IL_RainbowRodDrawer.Draw   += WrapDraw;
+
+        // Ugly...
+        // IL_LightDiscDrawer.Draw    += WrapDraw; 
     }
 
     private static void WrapDraw(ILContext il)
