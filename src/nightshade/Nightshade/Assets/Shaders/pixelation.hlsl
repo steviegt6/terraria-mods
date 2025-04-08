@@ -32,4 +32,9 @@ float3 quantize_color(float3 color, float3 color_resolution)
     return floor(color * color_resolution) / (color_resolution - 1.0f);
 }
 
+float4 quantize_color_with_alpha(float4 color, float4 color_resolution)
+{
+    return floor(color * color_resolution) / (color_resolution - 1.0f);
+}
+
 #endif // PIXELATION_HLSL

@@ -10,8 +10,7 @@ float4 main(float4 sampleColor : COLOR0, float2 coords : TEXCOORD0) : COLOR0
     coords = normalize_with_pixelation(coords * uSize, uPixel, uSize);
 
     float4 color = tex2D(uImage0, coords);
-    float3 quantized_color = quantize_color(color, uColorResolution);
-    return float4(quantized_color, color.a);
+    return quantize_color_with_alpha(color, uColorResolution);
 }
 
 #define TECHNIQUES
