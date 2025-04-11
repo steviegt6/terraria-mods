@@ -10,6 +10,7 @@ using Nightshade.Common.Loading;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameInput;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.UI;
@@ -67,6 +68,80 @@ internal sealed class MiscVanitySlots : IInitializer
     {
         Misc = 2,
     }
+
+#region Implementations
+    private sealed class Pet : IInitializer
+    {
+        void IInitializer.Load() { }
+    }
+
+    private sealed class LightPet : IInitializer
+    {
+        void IInitializer.Load() { }
+    }
+
+    private sealed class Minecart : IInitializer
+    {
+        void IInitializer.Load() { }
+    }
+
+    private sealed class Mount : IInitializer
+    {
+        void IInitializer.Load() { }
+    }
+
+    private sealed class Hook : IInitializer
+    {
+        void IInitializer.Load()
+        {
+            On_Main.DrawProjDirect += (orig, self, proj) =>
+            {
+                // TODO: Does this account for Fables' hooks?
+                if (proj.aiStyle != ProjAIStyleID.Hook)
+                {
+                    orig(self, proj);
+                    return;
+                }
+
+                var player   = Main.player[proj.owner];
+                var vanity   = player.GetModPlayer<MiscVanitySlotPlayer>();
+                var hookItem = vanity.MiscVanity[(int)VanitySlotId.Hook];
+
+                if (hookItem?.IsAir ?? true)
+                {
+                    orig(self, proj);
+                    return;
+                }
+
+                var vanityType = hookItem.shoot;
+                if (proj.type == vanityType)
+                {
+                    orig(self, proj);
+                    return;
+                }
+
+                var oldType = proj.type;
+
+                // Doesn't work with custom rendering among other things.
+                try
+                {
+                    proj.type = vanityType;
+                    orig(self, proj);
+                }
+                catch
+                {
+                    // Ignore any errors and just try to draw the original hook.
+                    proj.type = oldType;
+                    orig(self, proj);
+                }
+                finally
+                {
+                    proj.type = oldType;
+                }
+            };
+        }
+    }
+#endregion
 
     void IInitializer.Load()
     {
