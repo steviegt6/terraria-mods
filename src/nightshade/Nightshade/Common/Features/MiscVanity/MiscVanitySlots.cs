@@ -82,7 +82,82 @@ internal sealed class MiscVanitySlots : IInitializer
 
     private sealed class Minecart : IInitializer
     {
-        void IInitializer.Load() { }
+        private static bool canSpawnDust;
+
+        void IInitializer.Load()
+        {
+            On_Mount.Draw += (orig, self, data, type, player, position, color, effect, shadow) =>
+            {
+                if (!player.mount.Cart)
+                {
+                    orig(self, data, type, player, position, color, effect, shadow);
+                    return;
+                }
+
+                var vanity = player.GetModPlayer<MiscVanitySlotPlayer>();
+                var mount  = vanity.MiscVanity[(int)VanitySlotId.Minecart];
+                if (mount?.IsAir ?? true)
+                {
+                    orig(self, data, type, player, position, color, effect, shadow);
+                    return;
+                }
+
+                if (player.mount._data is null)
+                {
+                    orig(self, data, type, player, position, color, effect, shadow);
+                    return;
+                }
+
+                canSpawnDust = false;
+                player.mount.SetMount(mount.mountType, player, player.minecartLeft);
+                orig(self, data, type, player, position, color, effect, shadow);
+                player.mount.SetMount(player.miscEquips[(int)VanitySlotId.Minecart].mountType, player, player.minecartLeft);
+                canSpawnDust = true;
+            };
+
+            On_Mount.DoSpawnDust += (orig, self, player, dismounting) =>
+            {
+                if (canSpawnDust)
+                {
+                    orig(self, player, dismounting);
+                }
+            };
+
+            On_Mount.UpdateEffects += (orig, self, player) =>
+            {
+                // TODO: Figure out how to safely update for visuals only?
+                orig(self, player);
+            };
+
+            On_Player.Update += (orig, self, i) =>
+            {
+                if (!self.mount.Cart || self.mount._data is null)
+                {
+                    orig(self, i);
+                    return;
+                }
+
+                var vanity = self.GetModPlayer<MiscVanitySlotPlayer>();
+                var mount  = vanity.MiscVanity[(int)VanitySlotId.Minecart];
+                if (mount?.IsAir ?? true)
+                {
+                    orig(self, i);
+                    return;
+                }
+
+                if (self.mount.Type == mount.mountType)
+                {
+                    orig(self, i);
+                    return;
+                }
+
+                var oldDelegations = self.mount.Delegations;
+                var newDelegations = Terraria.Mount.mounts[mount.mountType].delegations;
+                self.mount._data.delegations = newDelegations;
+                orig(self, i);
+                self.mount._data.delegations = oldDelegations;
+            };
+        }
     }
 
     private sealed class Mount : IInitializer
