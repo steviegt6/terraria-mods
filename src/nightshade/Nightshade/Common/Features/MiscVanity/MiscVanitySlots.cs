@@ -80,7 +80,7 @@ internal sealed class MiscVanitySlots : IInitializer
         void IInitializer.Load() { }
     }
 
-    private sealed class Minecart : IInitializer
+    private sealed class MountAndMinecart : IInitializer
     {
         private static bool canSpawnDust;
 
@@ -88,14 +88,10 @@ internal sealed class MiscVanitySlots : IInitializer
         {
             On_Mount.Draw += (orig, self, data, type, player, position, color, effect, shadow) =>
             {
-                if (!player.mount.Cart)
-                {
-                    orig(self, data, type, player, position, color, effect, shadow);
-                    return;
-                }
+                var vanitySlot = player.mount.Cart ? VanitySlotId.Minecart : VanitySlotId.Mount;
 
                 var vanity = player.GetModPlayer<MiscVanitySlotPlayer>();
-                var mount  = vanity.MiscVanity[(int)VanitySlotId.Minecart];
+                var mount  = vanity.MiscVanity[(int)vanitySlot];
                 if (mount?.IsAir ?? true)
                 {
                     orig(self, data, type, player, position, color, effect, shadow);
@@ -109,9 +105,9 @@ internal sealed class MiscVanitySlots : IInitializer
                 }
 
                 canSpawnDust = false;
-                player.mount.SetMount(mount.mountType, player, player.minecartLeft);
+                player.mount.SetMount(mount.mountType, player, player.mount.Cart && player.minecartLeft);
                 orig(self, data, type, player, position, color, effect, shadow);
-                player.mount.SetMount(player.miscEquips[(int)VanitySlotId.Minecart].mountType, player, player.minecartLeft);
+                player.mount.SetMount(player.miscEquips[(int)vanitySlot].mountType, player, player.mount.Cart && player.minecartLeft);
                 canSpawnDust = true;
             };
 
@@ -131,14 +127,16 @@ internal sealed class MiscVanitySlots : IInitializer
 
             On_Player.Update += (orig, self, i) =>
             {
-                if (!self.mount.Cart || self.mount._data is null)
+                if (self.mount._data is null)
                 {
                     orig(self, i);
                     return;
                 }
 
+                var vanitySlot = self.mount.Cart ? VanitySlotId.Minecart : VanitySlotId.Mount;
+
                 var vanity = self.GetModPlayer<MiscVanitySlotPlayer>();
-                var mount  = vanity.MiscVanity[(int)VanitySlotId.Minecart];
+                var mount  = vanity.MiscVanity[(int)vanitySlot];
                 if (mount?.IsAir ?? true)
                 {
                     orig(self, i);
@@ -152,17 +150,12 @@ internal sealed class MiscVanitySlots : IInitializer
                 }
 
                 var oldDelegations = self.mount.Delegations;
-                var newDelegations = Terraria.Mount.mounts[mount.mountType].delegations;
+                var newDelegations = Mount.mounts[mount.mountType].delegations;
                 self.mount._data.delegations = newDelegations;
                 orig(self, i);
                 self.mount._data.delegations = oldDelegations;
             };
         }
-    }
-
-    private sealed class Mount : IInitializer
-    {
-        void IInitializer.Load() { }
     }
 
     private sealed class Hook : IInitializer
@@ -301,7 +294,7 @@ internal sealed class MiscVanitySlots : IInitializer
             VanitySlotId.Pet      => false,
             VanitySlotId.LightPet => false,
             VanitySlotId.Minecart => true,
-            VanitySlotId.Mount    => false,
+            VanitySlotId.Mount    => true,
             VanitySlotId.Hook     => true,
             _                     => false,
         };
