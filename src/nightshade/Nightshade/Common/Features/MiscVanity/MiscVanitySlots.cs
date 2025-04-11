@@ -1,4 +1,4 @@
-using System.Diagnostics;
+/*using System.Diagnostics;
 using System.Linq;
 
 using Microsoft.Xna.Framework;
@@ -121,8 +121,27 @@ internal sealed class MiscVanitySlots : IInitializer
 
             On_Mount.UpdateEffects += (orig, self, player) =>
             {
-                // TODO: Figure out how to safely update for visuals only?
+                var vanitySlot = player.mount.Cart ? VanitySlotId.Minecart : VanitySlotId.Mount;
+
+                var vanity = player.GetModPlayer<MiscVanitySlotPlayer>();
+                var mount  = vanity.MiscVanity[(int)vanitySlot];
+                if (mount?.IsAir ?? true)
+                {
+                    orig(self, player);
+                    return;
+                }
+
+                if (player.mount._data is null)
+                {
+                    orig(self, player);
+                    return;
+                }
+                
+                var oldDelegations = player.mount.Delegations;
+                var newDelegations = Mount.mounts[mount.mountType].delegations;
+                player.mount._data.delegations = newDelegations;
                 orig(self, player);
+                player.mount._data.delegations = oldDelegations;
             };
 
             On_Player.Update += (orig, self, i) =>
@@ -312,4 +331,4 @@ internal sealed class MiscVanitySlots : IInitializer
             _                     => 19,
         };
     }
-}
+}*/
