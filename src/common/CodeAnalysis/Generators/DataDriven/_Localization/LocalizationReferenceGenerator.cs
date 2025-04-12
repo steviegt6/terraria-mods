@@ -254,13 +254,7 @@ public sealed class LocalizationReferenceGenerator : IIncrementalGenerator
         path = Path.GetFileNameWithoutExtension(path);
         var splitByUnderscore = path.Split('_');
 
-        return splitByUnderscore.Length switch
-        {
-            0 => null,
-            1 => splitByUnderscore[0],
-            2 => splitByUnderscore[1],
-            _ => throw new ArgumentException("Invalid path format", nameof(path))
-        };
+        return splitByUnderscore.Length == 2 ? splitByUnderscore[1] : null;
     }
 
     private static int GetArgumentCount(string value)
