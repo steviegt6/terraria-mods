@@ -2,6 +2,8 @@ using System;
 
 using Microsoft.Xna.Framework;
 
+using Nightshade.Content.Items;
+
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -27,7 +29,7 @@ internal abstract class StarFragmentProj : ModProjectile
             {
                 var num7 = Main.maxTilesX / 4200.0;
                 num7 *= Star.starfallBoost;
-                num7 *= 10000;
+                num7 *= 5;
 
                 if (!(Main.rand.Next(8000) < 10.0 * num7))
                 {
@@ -83,29 +85,41 @@ internal abstract class StarFragmentProj : ModProjectile
     private sealed class StarFragmentProj1 : StarFragmentProj
     {
         public override string Texture => Assets.Images.Items.Misc.StarFragment_1.KEY;
+
+        public override int Index => 1;
     }
 
     private sealed class StarFragmentProj2 : StarFragmentProj
     {
         public override string Texture => Assets.Images.Items.Misc.StarFragment_2.KEY;
+
+        public override int Index => 2;
     }
 
     private sealed class StarFragmentProj3 : StarFragmentProj
     {
         public override string Texture => Assets.Images.Items.Misc.StarFragment_3.KEY;
+
+        public override int Index => 3;
     }
 
     private sealed class StarFragmentProj4 : StarFragmentProj
     {
         public override string Texture => Assets.Images.Items.Misc.StarFragment_4.KEY;
+
+        public override int Index => 4;
     }
 
     private sealed class StarFragmentProj5 : StarFragmentProj
     {
         public override string Texture => Assets.Images.Items.Misc.StarFragment_5.KEY;
+
+        public override int Index => 5;
     }
 
     public abstract override string Texture { get; }
+
+    public abstract int Index { get; }
 
     public override void SetDefaults()
     {
@@ -258,7 +272,7 @@ internal abstract class StarFragmentProj : ModProjectile
                 (int)Projectile.position.Y,
                 Projectile.width,
                 Projectile.height,
-                ItemID.DirtBlock
+                ModContent.ItemType<StarFragmentItem>()
             );
         }
     }

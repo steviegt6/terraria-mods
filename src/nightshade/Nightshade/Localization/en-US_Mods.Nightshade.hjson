@@ -70,6 +70,15 @@ Items: {
 		DisplayName: Spiked Cuffs
 		Tooltip: Decreases defense by 8 and increases armor penetration by 8 when attacking enemies
 	}
+
+	StarFragmentItem: {
+		DisplayName: Star Fragment
+		Tooltip:
+			'''
+			Disappears after the sunrise
+			'Shards from the heavens'
+			'''
+	}
 }
 
 Projectiles: {
