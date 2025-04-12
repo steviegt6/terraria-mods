@@ -75,10 +75,10 @@ Items: {
 Projectiles: {
 	ImpactBulletProjectile.DisplayName: Impact Bullet Projectile
 	RiptideArrowProjectile.DisplayName: Riptide Arrow Projectile
-	StarFragmentProj1.DisplayName: Star Fragment Proj1
-	StarFragmentProj2.DisplayName: Star Fragment Proj2
-	StarFragmentProj3.DisplayName: Star Fragment Proj3
-	StarFragmentProj4.DisplayName: Star Fragment Proj4
-	StarFragmentProj5.DisplayName: Star Fragment Proj5
+	StarFragmentProj1.DisplayName: Star Fragment
+	StarFragmentProj2.DisplayName: Star Fragment
+	StarFragmentProj3.DisplayName: Star Fragment
+	StarFragmentProj4.DisplayName: Star Fragment
+	StarFragmentProj5.DisplayName: Star Fragment
 	StarFragmentProjSpawner.DisplayName: Star Fragment Proj Spawner
 }
