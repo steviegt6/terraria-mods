@@ -79,6 +79,21 @@ Items: {
 			'Shards from the heavens'
 			'''
 	}
+
+	LivingCactusBlock: {
+		DisplayName: Living Cactus Block
+		Tooltip: ""
+	}
+
+	LivingCactusWand: {
+		DisplayName: Living Cactus Wand
+		Tooltip: ""
+	}
+
+	LivingCactusWoodBlock: {
+		DisplayName: Living Cactus Wood Block
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
