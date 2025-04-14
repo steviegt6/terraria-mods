@@ -30,7 +30,7 @@ public class LivingCactus : ModTile
         Main.tileMerge[Type][TileID.Grass] = true;
         Main.tileMerge[TileID.Grass][Type] = true;
 		Main.tileBlockLight[Type] = true;
-
+    
         DustType = DustID.t_Cactus;
         HitSound = SoundID.Grass;
         
