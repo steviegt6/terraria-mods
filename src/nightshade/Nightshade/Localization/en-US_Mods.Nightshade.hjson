@@ -94,6 +94,16 @@ Items: {
 		DisplayName: Living Cactus Wood Block
 		Tooltip: ""
 	}
+
+	LivingPalmLeafBlock: {
+		DisplayName: Living Palm Leaf Block
+		Tooltip: ""
+	}
+
+	LivingPalmWoodBlock: {
+		DisplayName: Living Palm Wood Block
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
