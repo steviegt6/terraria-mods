@@ -104,6 +104,11 @@ Items: {
 		DisplayName: Living Palm Wood Block
 		Tooltip: ""
 	}
+
+	LivingCactusPotPlacer: {
+		DisplayName: Living Cactus Pot Placer
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
