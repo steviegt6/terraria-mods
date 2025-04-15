@@ -5,11 +5,16 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
+using Nightshade.Content.Gores;
+using System.Collections.Generic;
+
+using Nightshade.Content.Tiles;
+
 public class LivingCactusPot : ModTile
 {
-public override string Texture => Assets.Images.Tiles.Misc.LivingCactusPot.KEY;
+    public override string Texture => Assets.Images.Tiles.Misc.LivingCactusPot.KEY;
 
-public override void SetStaticDefaults()
+    public override void SetStaticDefaults()
     {
         Main.tileFrameImportant[Type] = true;
         Main.tileLavaDeath[Type] = true;
@@ -26,7 +31,26 @@ public override void SetStaticDefaults()
         DustType = 29;
         HitSound = SoundID.Shatter;
     }
+
+    public override IEnumerable<Item> GetItemDrops(int i, int j)
+    {
+        if (Main.netMode != NetmodeID.Server)
+        {
+            int goreAmt = Main.rand.Next(1, 2 + 1);
+            for (int k = 0; k < goreAmt; k++)
+            {
+                for (int l = 1; l < 3; l++)
+                {
+                    Gore.NewGore(new EntitySource_TileBreak(i, j), new Vector2(i, j) * 16, Main.rand.NextVector2CircularEdge(3f, 3f), Mod.Find<ModGore>($"LivingCactusPotGore{l}").Type);
+                }
+            }
+        }
+
+        return base.GetItemDrops(i, j);
+    }
 }
+
+
 
 public class LivingCactusPotPlacer : ModItem
 {
@@ -35,10 +59,25 @@ public class LivingCactusPotPlacer : ModItem
     public override void SetDefaults()
     {
         base.SetDefaults();
-        
+
         Item.DefaultToPlaceableTile(ModContent.TileType<LivingCactusPot>());
 
-        Item.value   = 100;
-        Item.rare    = ItemRarityID.Green;
+        Item.value = 100;
+        Item.rare = ItemRarityID.Green;
+    }
+}
+
+public class PotGoreLoader : ILoadable
+{
+    public void Load(Mod mod)
+    {
+        // Load the gore here
+        mod.AddContent(new GenericGore("LivingCactusPotGore1", Assets.Images.Gores.Misc.CactusPotGore1.KEY));
+        mod.AddContent(new GenericGore("LivingCactusPotGore2", Assets.Images.Gores.Misc.CactusPotGore2.KEY));
+    }
+
+    public void Unload()
+    {
+
     }
 }
