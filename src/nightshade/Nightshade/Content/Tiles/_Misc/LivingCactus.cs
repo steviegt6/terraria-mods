@@ -2,6 +2,8 @@ using Terraria.ModLoader;
 using Terraria.ID;
 using Terraria;
 using Nightshade.Content.Items;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 
 namespace Nightshade.Content.Tiles;
 
@@ -32,9 +34,12 @@ public class LivingCactus : ModTile
 		Main.tileBlockLight[Type] = true;
     
         DustType = DustID.t_Cactus;
-        HitSound = SoundID.Grass;
-        
+        HitSound = SoundID.Dig;
+
+        AddMapEntry(new Color(121, 158, 29));
     }
+
+    public override IEnumerable<Item> GetItemDrops(int i, int j) => [new Item(ItemID.Cactus)];
 
     public override void ModifyFrameMerge(int i, int j, ref int up, ref int down, ref int left, ref int right, ref int upLeft, ref int upRight, ref int downLeft, ref int downRight)
     {
@@ -44,7 +49,8 @@ public class LivingCactus : ModTile
     }
 }
 
-public class LivingCactusWood : ModTile {
+public class LivingCactusWood : ModTile 
+{
     public override string Texture => Assets.Images.Tiles.Misc.LivingCactusWood.KEY;
 
     public override void SetStaticDefaults()
@@ -69,6 +75,8 @@ public class LivingCactusWood : ModTile {
 		Main.tileBlockLight[Type] = true;
 
         DustType = DustID.PalmWood;
-        HitSound = SoundID.Grass;
+        HitSound = SoundID.Dig;
+
+        AddMapEntry(new Color(207, 167, 82));
     }
 }
