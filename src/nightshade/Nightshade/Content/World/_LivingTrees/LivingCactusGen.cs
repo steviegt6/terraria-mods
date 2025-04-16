@@ -1,13 +1,10 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using Nightshade.Content.Tiles;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria;
-using Nightshade.Content.Tiles;
-using System.Drawing;
 
 namespace Nightshade.Content.World;
 
@@ -16,7 +13,8 @@ public static class LivingCactusGen
     private static ushort CactusType => (ushort)ModContent.TileType<LivingCactus>();
     private static ushort WoodType => (ushort)ModContent.TileType<LivingCactusWood>();
     private static ushort PlatformType => (ushort)TileID.Platforms;
-    private static ushort WoodWallType => (ushort)WallID.AmberGemsparkOff;
+    private static ushort WoodWallType => (ushort)WallID.LivingWood;
+    private static ushort PotType => (ushort)ModContent.TileType<LivingCactusPot>();
 
     private static bool CanPlaceCactusOutline(int x, int y, int thickness, bool checkCorners)
     {
@@ -52,8 +50,8 @@ public static class LivingCactusGen
     public static void GenerateLivingCactus(int x, int y)
     {
         const int stalkHalfWidth = 3;
-        int stalkHeight = WorldGen.genRand.Next(50, 65);
-        int mainStalkCurvature = WorldGen.genRand.Next(7, 15); // Higher is less curved
+        int stalkHeight = WorldGen.genRand.Next(40, 55);
+        int mainStalkCurvature = WorldGen.genRand.Next(5, 8); // Higher is less curved
         int mainStalkCurveDir = WorldGen.genRand.NextBool().ToDirectionInt();
 
         int offsetX = 0;
@@ -78,7 +76,7 @@ public static class LivingCactusGen
                 lastArmDirection *= -1;
 
                 if (WorldGen.genRand.NextBool(3))
-                    timeUntilArm = WorldGen.genRand.Next(stalkHeight / 3);
+                    timeUntilArm = WorldGen.genRand.Next(3, stalkHeight / 3);
             }
 
             for (int i = -stalkHalfWidth; i < stalkHalfWidth; i++)
@@ -94,9 +92,9 @@ public static class LivingCactusGen
                 {
                     int normJ = j - stalkHeight + stalkHalfWidth;
                     double distance = MathF.Sqrt((i + 1) * i + normJ * normJ);
-                    bool withinCap = distance < stalkHalfWidth - 0.1;
+                    bool withinCap = distance < stalkHalfWidth - 0.75;
                     if (withinCap)
-                        place = distance > stalkHalfWidth - 1.1;
+                        place = distance > stalkHalfWidth - 1.5;
                     else
                         continue;
                 }
@@ -104,11 +102,14 @@ public static class LivingCactusGen
                 if (place)
                     Main.tile[x + i + offsetX, y - j].ResetToType(WoodType);
                 else
+                {
                     Main.tile[x + i + offsetX, y - j].ClearTile();
-
-                Main.tile[x + i + offsetX, y - j].WallType = WoodWallType;
+                    Main.tile[x + i + offsetX, y - j].WallType = WoodWallType;
+                }
             }
         }
+
+        PlaceLootChest(x + offsetX, y - stalkHeight + stalkHalfWidth * 2, 4);
 
         const int stalkOuterThick = 1;
         for (int j = 0; j < stalkHeight + stalkOuterThick; j++)
@@ -125,13 +126,19 @@ public static class LivingCactusGen
         }
 
         foreach (Point point in arms)
-            GenerateArm(point.X, point.Y, Math.Sign(point.X - x), Math.Abs(point.X - x) + Math.Abs(stalkXOffsets[Math.Clamp(point.Y - y, 0, stalkHeight - 1)]), WorldGen.genRand.Next(25, 30));
+        {
+            int passageLength = Math.Abs(point.X - x) + Math.Abs(stalkXOffsets[Math.Clamp(point.Y - y, 0, stalkHeight - 1)]);
+            GenerateArm(point.X, point.Y, Math.Sign(point.X - x), passageLength, WorldGen.genRand.Next(15, 20));
+        }
+
+        PlacePotsEverywhere(x, y - stalkHeight / 2, 30);
+        PlacePotsEverywhere(x, y, 40);
     }
 
     private static void GenerateArm(int x, int y, int direction, int passageLength, int armHeight)
     {
         int armCurvatureDirection = WorldGen.genRand.NextBool().ToDirectionInt();
-        int armCurvature = WorldGen.genRand.Next(10, 15);
+        int armCurvature = WorldGen.genRand.Next(8, 12);
         int offsetX = 0;
         int[] armXOffsets = new int[armHeight];
 
@@ -156,7 +163,9 @@ public static class LivingCactusGen
                         Main.tile[x - i * direction, y - j].ResetToType(WoodType);
                     else
                     {
-                        Main.tile[x - i * direction, y - j].ClearTile();
+                        if (!place)
+                            Main.tile[x - i * direction, y - j].ClearTile();
+
                         Main.tile[x - i * direction, y - j].WallType = WoodWallType;
                     }
                 }
@@ -203,6 +212,13 @@ public static class LivingCactusGen
             }
         }
 
+        TryPlacePlatform(x - passageLength / 2 * direction, y, -direction, 4);
+        if (!WorldGen.genRand.NextBool(10))
+        {
+            TryPlacePlatform(x + offsetX + direction, y - armHeight + armHalfWidth * 2, -direction, 4);
+            WorldGen.PlaceTile(x + offsetX - 1, y - armHeight + armHalfWidth * 2 - 1, PotType, true);
+        }
+
         const int armOuterThick = 1;
         for (int j = -armOuterThick; j < armHeight + armOuterThick; j++)
         {
@@ -228,5 +244,61 @@ public static class LivingCactusGen
                     Main.tile[x + i + offX, y - j].ResetToType(CactusType);
             }
         }
+    }
+
+    private static void TryPlacePlatform(int x, int y, int direction, int max = 8)
+    {
+        bool valid = true;
+        int solidCount = 0;
+        int validCount = 0;
+        int r = 0;
+        while (true)
+        {
+            if (!Main.tile[x + r * direction, y].HasTile && Main.tile[x + r * direction, y].WallType == WoodWallType)
+                validCount++;
+            else if (Main.tile[x + r * direction, y].HasTile && validCount < 1)
+                solidCount++;
+            else
+                break;
+
+            r++;
+            if (validCount > max)
+            {
+                valid = false;
+                break;
+            }
+        }
+
+        if (!valid)
+            return;
+
+        for (int i = 0; i < validCount; i++)
+        {
+            if (!WorldGen.SolidTile(x + (i + solidCount) * direction, y))
+                Main.tile[x + (i + solidCount) * direction, y].ResetToType(PlatformType);
+        }
+    }
+
+    private static void PlaceLootChest(int x, int y, int width = 4)
+    {
+        TryPlacePlatform(x - width / 2, y, 1, 5);
+        WorldGen.PlaceChest(x - 1, y - 1, style: 10);
+    }
+
+    private static void PlacePotsEverywhere(int x, int y, int radius)
+    {
+        for (int i = x - radius; i < x + radius; i++)
+        {
+            for (int j = y - radius; j < y + radius; j++)
+            {
+                if (WorldGen.genRand.NextBool(7))
+                    WorldGen.PlacePot(i, j, PotType);
+            }
+        }
+    }
+
+    private static void GenerateRoot(int x, int y, double size)
+    {
+
     }
 }
