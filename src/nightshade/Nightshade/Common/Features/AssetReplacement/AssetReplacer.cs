@@ -15,4 +15,9 @@ internal static class AssetReplacer
     {
         return new AssetReplacementHandle<Texture2D>(() => ref TextureAssets.Npc[npcId], newAsset);
     }
+    
+    public static AssetReplacementHandle<Texture2D> Extra(int extraId, Asset<Texture2D> newAsset)
+    {
+        return new AssetReplacementHandle<Texture2D>(() => ref TextureAssets.Extra[extraId], newAsset);
+    }
 }
