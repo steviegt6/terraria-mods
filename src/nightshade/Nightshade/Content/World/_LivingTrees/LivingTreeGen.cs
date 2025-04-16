@@ -44,8 +44,12 @@ public class LivingTreeGen : ModSystem
             }, true);
     }
 
+    public static int LivingCactusCount { get; private set; }
+
     public static void GenLivingTrees(WorldGen.orig_GenPassDetour orig, object self, GenerationProgress progress, GameConfiguration configuration)
     {
+        LivingCactusCount = WorldGen.genRand.Next(3, 8);
+
         orig(self, progress, configuration);
     }
 }
