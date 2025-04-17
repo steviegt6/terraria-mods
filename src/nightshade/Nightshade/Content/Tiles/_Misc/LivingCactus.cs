@@ -15,6 +15,8 @@ public class LivingCactus : ModTile
     {
         base.SetStaticDefaults();
 
+        TileID.Sets.CanBeClearedDuringGeneration[Type] = false;
+        TileID.Sets.CanBeClearedDuringOreRunner[Type] = false;
         Main.tileSolid[Type] = true;
 
         RegisterItemDrop(ItemID.Cactus);
@@ -57,6 +59,8 @@ public class LivingCactusWood : ModTile
     {
         base.SetStaticDefaults();
 
+        TileID.Sets.CanBeClearedDuringGeneration[Type] = false;
+        TileID.Sets.CanBeClearedDuringOreRunner[Type] = false;
         Main.tileSolid[Type] = true;
 
         RegisterItemDrop(ModContent.ItemType<LivingCactusWoodBlock>());
