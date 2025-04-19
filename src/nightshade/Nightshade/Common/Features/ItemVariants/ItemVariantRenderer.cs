@@ -66,15 +66,18 @@ internal sealed class ItemVariantRenderer : GlobalItem, IModifyItemDrawBasics
         base.OnSpawn(item, source);
 
         // We can also just check for EntitySource_Parent if it's a concern.
-        if (source is not EntitySource_Loot lootSource)
+        if (source is EntitySource_Loot lootSource)
         {
-            return;
+            // TODO: If we want to support not always using the NPC variant, we need
+            //       to make GetVariant provide both of these values.
+            npcId     = lootSource.Entity is NPC npc ? npc.type : 0;
+            variantId = ItemVariantLoader.GetVariant(item.type, npcId);
         }
-
-        // TODO: If we want to support not always using the NPC variant, we need
-        //       to make GetVariant provide both of these values.
-        npcId     = lootSource.Entity is NPC npc ? npc.type : 0;
-        variantId = ItemVariantLoader.GetVariant(item.type, npcId);
+        else if (source is EntitySource_TileBreak)
+        {
+            npcId     = 0;
+            variantId = ItemVariantLoader.GetVariant(item.type, npcId);
+        }
     }
 
     public override bool CanStackInWorld(Item destination, Item source)
