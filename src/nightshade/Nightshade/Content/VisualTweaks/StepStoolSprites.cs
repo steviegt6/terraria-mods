@@ -50,7 +50,7 @@ internal sealed class StepStoolSprites : ILoad
                 return;
             }
 
-            using var _ = AssetReplacer.Extra(ExtrasID.PortableStool, Assets.Images.Items.Accessories.HandOfCreationStool.Asset);
+            using var _ = AssetReplacer.Extra(ExtrasID.PortableStool, Assets.Images.Items.Accessories.HandOfCreationStool.Asset.Value);
             orig(self, camera, player, position, rotation, origin, shadow, scale);
         };
     }
