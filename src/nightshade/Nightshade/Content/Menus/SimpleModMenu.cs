@@ -67,15 +67,16 @@ internal sealed class SimpleModMenu : ModMenu
     public override bool PreDrawLogo(SpriteBatch spriteBatch, ref Vector2 logoDrawCenter, ref float logoRotation, ref float logoScale, ref Color drawColor)
     {
         Debug.Assert(managedRt is not null);
+        Debug.Assert(panelShaderData is not null);
+        Debug.Assert(flowerShaderData is not null);
 
         // Background rendering.
         {
-            var snapshot = new SpriteBatchSnapshot(spriteBatch);
-            spriteBatch.End();
+            var dims = new Rectangle(0, 0, Main.screenWidth / 2, Main.screenHeight / 2);
+            
+            spriteBatch.End(out var ss);
 
             var oldRts = Main.instance.GraphicsDevice.GetRenderTargets();
-
-            var dims = new Rectangle(0, 0, Main.screenWidth / 2, Main.screenHeight / 2);
 
             Main.instance.GraphicsDevice.SetRenderTarget(managedRt.Value);
 
@@ -88,48 +89,43 @@ internal sealed class SimpleModMenu : ModMenu
                 null,
                 Main.UIScaleMatrix
             );
+            {
+                panelShaderData.Parameters.uGrayness        = 1f;
+                panelShaderData.Parameters.uGrayness        = 1f;
+                panelShaderData.Parameters.uInColor         = new Vector3(1f, 0f, 1f);
+                panelShaderData.Parameters.uSpeed           = 0.2f;
+                panelShaderData.Parameters.uSource          = new Vector4(dims.Width, dims.Height, dims.X, dims.Y);
+                panelShaderData.Parameters.uHoverIntensity  = 1f;
+                panelShaderData.Parameters.uPixel           = 1f;
+                panelShaderData.Parameters.uColorResolution = 16f;
+                panelShaderData.Apply();
+                Main.spriteBatch.Draw(TextureAssets.MagicPixel.Value, dims, Color.White);
 
-            Debug.Assert(panelShaderData is not null);
-            panelShaderData.Parameters.uGrayness        = 1f;
-            panelShaderData.Parameters.uGrayness        = 1f;
-            panelShaderData.Parameters.uInColor         = new Vector3(1f, 0f, 1f);
-            panelShaderData.Parameters.uSpeed           = 0.2f;
-            panelShaderData.Parameters.uSource          = new Vector4(dims.Width, dims.Height, dims.X, dims.Y);
-            panelShaderData.Parameters.uHoverIntensity  = 1f;
-            panelShaderData.Parameters.uPixel           = 1f;
-            panelShaderData.Parameters.uColorResolution = 16f;
-            panelShaderData.Apply();
-            Main.spriteBatch.Draw(TextureAssets.MagicPixel.Value, dims, Color.White);
+                spriteBatch.End();
+                spriteBatch.Begin(
+                    SpriteSortMode.Immediate,
+                    BlendState.AlphaBlend,
+                    SamplerState.PointClamp,
+                    DepthStencilState.None,
+                    RasterizerState.CullNone,
+                    null,
+                    Main.UIScaleMatrix
+                );
 
-            spriteBatch.End();
-            spriteBatch.Begin(
-                SpriteSortMode.Immediate,
-                BlendState.AlphaBlend,
-                SamplerState.PointClamp,
-                DepthStencilState.None,
-                RasterizerState.CullNone,
-                null,
-                Main.UIScaleMatrix
-            );
-
-            Debug.Assert(flowerShaderData is not null);
-            flowerShaderData.Parameters.uSource = new Vector4(dims.Width, dims.Height, dims.X, dims.Y);
-            flowerShaderData.Parameters.uPixel  = 1f;
-            flowerShaderData.Apply();
-            Main.spriteBatch.Draw(TextureAssets.MagicPixel.Value, dims, Color.White);
-
+                flowerShaderData.Parameters.uSource = new Vector4(dims.Width, dims.Height, dims.X, dims.Y);
+                flowerShaderData.Parameters.uPixel  = 1f;
+                flowerShaderData.Apply();
+                Main.spriteBatch.Draw(TextureAssets.MagicPixel.Value, dims, Color.White);
+            }
             spriteBatch.End();
 
             Main.instance.GraphicsDevice.SetRenderTargets(oldRts);
 
-            var tempSnapshot = snapshot with { SamplerState = SamplerState.PointClamp };
-            tempSnapshot.Apply(spriteBatch);
-
-            spriteBatch.Draw(managedRt.Value, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 2f, SpriteEffects.None, 0f);
-
-            spriteBatch.End();
-
-            snapshot.Apply(spriteBatch);
+            spriteBatch.Begin(ss with { SamplerState = SamplerState.PointClamp });
+            {
+                spriteBatch.Draw(managedRt.Value, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 2f, SpriteEffects.None, 0f);
+            }
+            spriteBatch.Restart(in ss);
         }
 
         // Draw logo flower.

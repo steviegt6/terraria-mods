@@ -58,9 +58,9 @@ internal sealed class OverhauledModIcon : ILoadable
         private static string GetPulsatingText(string text, float time)
         {
             var lightPurple = light_pink;
-            var darkPurple  = dark_pink;
+            var darkPurple = dark_pink;
 
-            const float speed  = 3f;
+            const float speed = 3f;
             const float offset = 0.3f;
 
             // [c/______:x]
@@ -87,7 +87,7 @@ internal sealed class OverhauledModIcon : ILoadable
 
         public PetalImage() : base(TextureAssets.MagicPixel)
         {
-            icon     = Assets.Images.UI.ModIcon.Icon.Asset;
+            icon = Assets.Images.UI.ModIcon.Icon.Asset;
             iconDots = Assets.Images.UI.ModIcon.Icon_Dots.Asset;
 
             SetImage(icon);
@@ -141,12 +141,12 @@ internal sealed class OverhauledModIcon : ILoadable
     [InitializedInLoad]
     private static WrapperShaderData<Assets.Shaders.UI.CoolFlowerShader.Parameters>? flowerShaderData;
 
-    private static bool  isCurrentlyHandlingOurMod;
+    private static bool isCurrentlyHandlingOurMod;
     private static float hoverIntensity;
 
     // C50084 CE008C dark
     // E600E6        light
-    private static readonly Color dark_pink  = new(197, 0, 132);
+    private static readonly Color dark_pink = new(197, 0, 132);
     private static readonly Color light_pink = new(230, 0, 230);
 
     // In no particular order of importance.  We could order based on whether
@@ -168,10 +168,9 @@ internal sealed class OverhauledModIcon : ILoadable
 
         theMod = nsMod;
 
-        Main.QueueMainThreadAction(
-            () =>
+        Main.QueueMainThreadAction(() =>
             {
-                panelShaderData  = Assets.Shaders.UI.ModPanelShader.CreatePanelShader();
+                panelShaderData = Assets.Shaders.UI.ModPanelShader.CreatePanelShader();
                 flowerShaderData = Assets.Shaders.UI.CoolFlowerShader.CreateFlowerShader();
             }
         );
@@ -246,14 +245,14 @@ internal sealed class OverhauledModIcon : ILoadable
         orig(self);
         isCurrentlyHandlingOurMod = false;
 
-        UICommon.ButtonModInfoTexture   = modInfoTextureOrig;
+        UICommon.ButtonModInfoTexture = modInfoTextureOrig;
         UICommon.ButtonModConfigTexture = modConfigTextureOrig;
     }
 
     private static void SetHoverColors(
         Action<UIModItem, bool> orig,
-        UIModItem               self,
-        bool                    hovered
+        UIModItem self,
+        bool hovered
     )
     {
         Debug.Assert(theMod is not null);
@@ -265,7 +264,7 @@ internal sealed class OverhauledModIcon : ILoadable
         }
 
         // Always set to black, we have our own effect for hovering.
-        self.BorderColor     = Color.Black;
+        self.BorderColor = Color.Black;
         self.BackgroundColor = new Color(20, 20, 20);
 
         // TODO: Glow ring around the panel upon hovering?
@@ -273,8 +272,8 @@ internal sealed class OverhauledModIcon : ILoadable
 
     private static void Draw(
         Action<UIModItem, SpriteBatch> orig,
-        UIModItem                      self,
-        SpriteBatch                    spriteBatch
+        UIModItem self,
+        SpriteBatch spriteBatch
     )
     {
         Debug.Assert(theMod is not null);
@@ -336,8 +335,7 @@ internal sealed class OverhauledModIcon : ILoadable
         c.GotoNext(MoveType.After, x => x.MatchCall<UIModStateText>("get_DisplayColor"));
 
         c.EmitLdarg0(); // this
-        c.EmitDelegate(
-            static (Color displayColor, UIModStateText self) =>
+        c.EmitDelegate(static (Color displayColor, UIModStateText self) =>
             {
                 if (!isCurrentlyHandlingOurMod)
                 {
@@ -354,8 +352,7 @@ internal sealed class OverhauledModIcon : ILoadable
         var c = new ILCursor(il);
 
         c.GotoNext(MoveType.Before, x => x.MatchStfld<UIModItem>(nameof(UIModItem._modIcon)));
-        c.EmitDelegate(
-            (UIImage originalImage) =>
+        c.EmitDelegate((UIImage originalImage) =>
             {
                 if (!isCurrentlyHandlingOurMod || theMod is null)
                 {
@@ -364,9 +361,9 @@ internal sealed class OverhauledModIcon : ILoadable
 
                 return new PetalImage
                 {
-                    Left   = originalImage.Left,
-                    Top    = originalImage.Top,
-                    Width  = originalImage.Width,
+                    Left = originalImage.Left,
+                    Top = originalImage.Top,
+                    Width = originalImage.Width,
                     Height = originalImage.Height,
                 };
             }
@@ -374,8 +371,7 @@ internal sealed class OverhauledModIcon : ILoadable
 
         c.GotoNext(MoveType.Before, x => x.MatchStfld<UIModItem>(nameof(UIModItem._modName)));
         c.EmitLdarg0(); // this
-        c.EmitDelegate(
-            (UIText originalText, UIModItem self) =>
+        c.EmitDelegate((UIText originalText, UIModItem self) =>
             {
                 if (!isCurrentlyHandlingOurMod)
                 {
@@ -386,7 +382,7 @@ internal sealed class OverhauledModIcon : ILoadable
                 return new PulsatingAndAwesomeText(name + $" v{self._mod.Version}")
                 {
                     Left = originalText.Left,
-                    Top  = originalText.Top,
+                    Top = originalText.Top,
                 };
             }
         );
@@ -394,8 +390,8 @@ internal sealed class OverhauledModIcon : ILoadable
 
     private static void OverrideRegularPanelDrawing(
         Action<UIPanel, SpriteBatch> orig,
-        UIPanel                      self,
-        SpriteBatch                  spriteBatch
+        UIPanel self,
+        SpriteBatch spriteBatch
     )
     {
         if (!isCurrentlyHandlingOurMod || self is not UIModItem uiModItem)
@@ -412,8 +408,7 @@ internal sealed class OverhauledModIcon : ILoadable
 
         // Render our cool custom panel with a shader.
         {
-            var snapshot = new SpriteBatchSnapshot(spriteBatch);
-            spriteBatch.End();
+            spriteBatch.End(out var ss);
             spriteBatch.Begin(
                 SpriteSortMode.Immediate,
                 BlendState.NonPremultiplied,
@@ -423,49 +418,46 @@ internal sealed class OverhauledModIcon : ILoadable
                 null,
                 Main.UIScaleMatrix
             );
+            {
+                var dims = uiModItem.GetDimensions();
 
-            var dims = uiModItem.GetDimensions();
+                hoverIntensity += (self.IsMouseHovering ? 1f : -1f) / 15f;
+                hoverIntensity = Math.Clamp(hoverIntensity, 0f, 1f);
 
-            hoverIntensity += (self.IsMouseHovering ? 1f : -1f) / 15f;
-            hoverIntensity =  Math.Clamp(hoverIntensity, 0f, 1f);
+                Debug.Assert(panelShaderData is not null);
+                panelShaderData.Parameters.uGrayness = 1f;
+                panelShaderData.Parameters.uInColor = new Vector3(1f, 0f, 1f);
+                panelShaderData.Parameters.uSpeed = 0.2f;
+                panelShaderData.Parameters.uSource = new Vector4(dims.Width, dims.Height - 2f, dims.X, dims.Y);
+                panelShaderData.Parameters.uHoverIntensity = hoverIntensity;
+                panelShaderData.Parameters.uPixel = 2f;
+                panelShaderData.Parameters.uColorResolution = 10f;
+                panelShaderData.Apply();
 
-            Debug.Assert(panelShaderData is not null);
-            panelShaderData.Parameters.uGrayness        = 1f;
-            panelShaderData.Parameters.uInColor         = new Vector3(1f, 0f, 1f);
-            panelShaderData.Parameters.uSpeed           = 0.2f;
-            panelShaderData.Parameters.uSource          = new Vector4(dims.Width, dims.Height - 2f, dims.X, dims.Y);
-            panelShaderData.Parameters.uHoverIntensity  = hoverIntensity;
-            panelShaderData.Parameters.uPixel           = 2f;
-            panelShaderData.Parameters.uColorResolution = 10f;
-            panelShaderData.Apply();
+                Debug.Assert(uiModItem._backgroundTexture is not null);
+                uiModItem.DrawPanel(spriteBatch, uiModItem._backgroundTexture.Value, uiModItem.BackgroundColor);
 
-            Debug.Assert(uiModItem._backgroundTexture is not null);
-            uiModItem.DrawPanel(spriteBatch, uiModItem._backgroundTexture.Value, uiModItem.BackgroundColor);
+                spriteBatch.End();
+                spriteBatch.Begin(
+                    SpriteSortMode.Immediate,
+                    BlendState.AlphaBlend,
+                    SamplerState.PointClamp,
+                    DepthStencilState.None,
+                    RasterizerState.CullNone,
+                    null,
+                    Main.UIScaleMatrix
+                );
 
-            spriteBatch.End();
-            spriteBatch.Begin(
-                SpriteSortMode.Immediate,
-                BlendState.AlphaBlend,
-                SamplerState.PointClamp,
-                DepthStencilState.None,
-                RasterizerState.CullNone,
-                null,
-                Main.UIScaleMatrix
-            );
+                dims.X -= dims.Width / 2f;
+                dims.X += 40f; // 80 / 2
 
-            dims.X -= dims.Width / 2f;
-            dims.X += 40f; // 80 / 2
-
-            Debug.Assert(flowerShaderData is not null);
-            flowerShaderData.Parameters.uSource = new Vector4(dims.Width, dims.Height - 2f, dims.X, dims.Y);
-            flowerShaderData.Parameters.uPixel  = 2f;
-            flowerShaderData.Apply();
-            uiModItem.DrawPanel(spriteBatch, uiModItem._backgroundTexture.Value, uiModItem.BackgroundColor);
-            // Main.spriteBatch.Draw(TextureAssets.MagicPixel.Value, flowerDimensions, Color.White);
-            // Main.spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Color.White);
-
-            spriteBatch.End();
-            snapshot.Apply(spriteBatch);
+                Debug.Assert(flowerShaderData is not null);
+                flowerShaderData.Parameters.uSource = new Vector4(dims.Width, dims.Height - 2f, dims.X, dims.Y);
+                flowerShaderData.Parameters.uPixel = 2f;
+                flowerShaderData.Apply();
+                uiModItem.DrawPanel(spriteBatch, uiModItem._backgroundTexture.Value, uiModItem.BackgroundColor);
+            }
+            spriteBatch.Restart(ss);
         }
 
         Debug.Assert(uiModItem._borderTexture is not null);

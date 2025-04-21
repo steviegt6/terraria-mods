@@ -29,12 +29,11 @@ internal sealed class VanillaVertexStripTweak : ModSystem
     {
         base.Load();
 
-        Main.QueueMainThreadAction(
-            () =>
+        Main.QueueMainThreadAction(() =>
             {
                 shader = Assets.Shaders.Misc.VanillaVertexStripShader.CreateStripShader();
                 {
-                    shader.Parameters.uPixel           = 2f;
+                    shader.Parameters.uPixel = 2f;
                     shader.Parameters.uColorResolution = 16f;
                 }
             }
@@ -42,8 +41,7 @@ internal sealed class VanillaVertexStripTweak : ModSystem
 
         managedRt = new ManagedRenderTarget(reinitOnResolutionChange: true);
 
-        Main.QueueMainThreadAction(
-            () =>
+        Main.QueueMainThreadAction(() =>
             {
                 managedRt.Initialize(Main.screenWidth, Main.screenHeight);
 
@@ -54,9 +52,9 @@ internal sealed class VanillaVertexStripTweak : ModSystem
 
         IL_EmpressBladeDrawer.Draw += WrapDraw;
         IL_FinalFractalHelper.Draw += WrapDraw;
-        IL_FlameLashDrawer.Draw    += WrapDraw;
+        IL_FlameLashDrawer.Draw += WrapDraw;
         IL_MagicMissileDrawer.Draw += WrapDraw;
-        IL_RainbowRodDrawer.Draw   += WrapDraw;
+        IL_RainbowRodDrawer.Draw += WrapDraw;
 
         // Ugly...
         // IL_LightDiscDrawer.Draw    += WrapDraw; 
@@ -69,14 +67,12 @@ internal sealed class VanillaVertexStripTweak : ModSystem
 
         var c = new ILCursor(il);
 
-        c.EmitDelegate(
-            static () => new SpriteBatchSnapshot(Main.spriteBatch)
+        c.EmitDelegate(static () => new SpriteBatchSnapshot(Main.spriteBatch)
         );
         c.EmitStloc(snpIndex);
 
         c.EmitLdloc(snpIndex);
-        c.EmitDelegate(
-            static (SpriteBatchSnapshot snapshot) =>
+        c.EmitDelegate(static (SpriteBatchSnapshot ss) =>
             {
                 Debug.Assert(managedRt is not null);
 
@@ -88,7 +84,7 @@ internal sealed class VanillaVertexStripTweak : ModSystem
                 Main.instance.GraphicsDevice.SetRenderTarget(managedRt.Value);
                 Main.instance.GraphicsDevice.Clear(Color.Transparent);
 
-                snapshot.Apply(Main.spriteBatch);
+                Main.spriteBatch.Begin(in ss);
 
                 return rts;
             }
@@ -99,8 +95,7 @@ internal sealed class VanillaVertexStripTweak : ModSystem
 
         c.EmitLdloc(rtsIndex);
         c.EmitLdloc(snpIndex);
-        c.EmitDelegate(
-            static (RenderTargetBinding[] rts, SpriteBatchSnapshot snapshot) =>
+        c.EmitDelegate(static (RenderTargetBinding[] rts, SpriteBatchSnapshot ss) =>
             {
                 Debug.Assert(shader is not null);
                 Debug.Assert(managedRt is not null);
@@ -118,15 +113,14 @@ internal sealed class VanillaVertexStripTweak : ModSystem
                     null,
                     Main.GameViewMatrix.EffectMatrix
                 );
+                {
+                    shader.Parameters.uPixel = 2f * Main.GameViewMatrix.Zoom.X;
+                    shader.Parameters.uSize = new Vector2(managedRt.Value.Width, managedRt.Value.Height);
+                    shader.Apply();
 
-                shader.Parameters.uPixel = 2f * Main.GameViewMatrix.Zoom.X;
-                shader.Parameters.uSize  = new Vector2(managedRt.Value.Width, managedRt.Value.Height);
-                shader.Apply();
-
-                Main.spriteBatch.Draw(managedRt.Value, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Color.White);
-
-                Main.spriteBatch.End();
-                snapshot.Apply(Main.spriteBatch);
+                    Main.spriteBatch.Draw(managedRt.Value, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Color.White);
+                }
+                Main.spriteBatch.Restart(in ss);
             }
         );
     }
