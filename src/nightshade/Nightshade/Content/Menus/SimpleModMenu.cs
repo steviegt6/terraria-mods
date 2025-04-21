@@ -13,7 +13,6 @@ using ReLogic.Content;
 
 using Terraria;
 using Terraria.GameContent;
-using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
 
 namespace Nightshade.Content.Menus;

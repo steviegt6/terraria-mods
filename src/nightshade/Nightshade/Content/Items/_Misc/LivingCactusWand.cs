@@ -1,21 +1,22 @@
-using Terraria.ModLoader;
-using Terraria.ID;
-
 using Nightshade.Content.Tiles;
+
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Nightshade.Content.Items;
 
-public class LivingCactusWand : ModItem
+internal sealed class LivingCactusWand : ModItem
 {
     public override string Texture => Assets.Images.Items.Misc.LivingCactusWand.KEY;
 
     public override void SetDefaults()
     {
         base.SetDefaults();
+
         (Item.width, Item.height) = (28, 30);
 
-        Item.value   = 100;
-        Item.rare    = ItemRarityID.Green;
+        Item.value = 100;
+        Item.rare = ItemRarityID.Green;
 
         Item.tileWand = ItemID.Cactus;
         Item.createTile = ModContent.TileType<LivingCactus>();

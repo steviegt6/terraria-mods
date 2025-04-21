@@ -73,8 +73,6 @@ public interface IModifyStatPickups
                 c.GotoNext(MoveType.After, x => x.MatchLdcI4(50));
                 c.EmitPop();
                 c.EmitLdloc(amountVariable);
-
-                return;
             };
         }
     }

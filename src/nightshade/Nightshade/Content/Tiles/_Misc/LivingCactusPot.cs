@@ -13,7 +13,7 @@ using Terraria.ObjectData;
 
 namespace Nightshade.Content.Tiles;
 
-public class LivingCactusPot : ModTile
+internal sealed class LivingCactusPot : ModTile
 {
     public override string Texture => Assets.Images.Tiles.Misc.LivingCactusPot.KEY;
 
@@ -37,15 +37,17 @@ public class LivingCactusPot : ModTile
 
     public override IEnumerable<Item> GetItemDrops(int i, int j)
     {
-        if (Main.netMode != NetmodeID.Server)
+        if (Main.netMode == NetmodeID.Server)
         {
-            int goreAmt = Main.rand.Next(1, 2 + 1);
-            for (int k = 0; k < goreAmt; k++)
+            return base.GetItemDrops(i, j);
+        }
+
+        var goreAmt = Main.rand.Next(1, 2 + 1);
+        for (var k = 0; k < goreAmt; k++)
+        {
+            for (var l = 1; l < 3; l++)
             {
-                for (int l = 1; l < 3; l++)
-                {
-                    Gore.NewGore(new EntitySource_TileBreak(i, j), new Vector2(i, j) * 16, Main.rand.NextVector2CircularEdge(3f, 3f), Mod.Find<ModGore>($"LivingCactusPotGore{l}").Type);
-                }
+                Gore.NewGore(new EntitySource_TileBreak(i, j), new Vector2(i, j) * 16, Main.rand.NextVector2CircularEdge(3f, 3f), Mod.Find<ModGore>($"LivingCactusPotGore{l}").Type);
             }
         }
 
@@ -53,9 +55,7 @@ public class LivingCactusPot : ModTile
     }
 }
 
-
-
-public class LivingCactusPotPlacer : ModItem
+internal sealed class LivingCactusPotPlacer : ModItem
 {
     public override string Texture => Assets.Images.Items.Misc.LivingPalmWoodBlock.KEY;
 
@@ -70,17 +70,13 @@ public class LivingCactusPotPlacer : ModItem
     }
 }
 
-public class PotGoreLoader : ILoadable
+internal sealed class PotGoreLoader : ILoadable
 {
     public void Load(Mod mod)
     {
-        // Load the gore here
         mod.AddContent(new GenericGore("LivingCactusPotGore1", Assets.Images.Gores.Misc.CactusPotGore1.KEY));
         mod.AddContent(new GenericGore("LivingCactusPotGore2", Assets.Images.Gores.Misc.CactusPotGore2.KEY));
     }
 
-    public void Unload()
-    {
-
-    }
+    public void Unload() { }
 }
