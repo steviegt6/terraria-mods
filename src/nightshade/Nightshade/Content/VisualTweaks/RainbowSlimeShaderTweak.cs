@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-using Nightshade.Common.Features.AssetReplacement;
+using Nightshade.Core.AssetReplacement;
 using Nightshade.Core.Attributes;
 
 using Terraria;

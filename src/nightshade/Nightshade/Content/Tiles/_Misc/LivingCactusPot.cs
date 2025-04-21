@@ -1,14 +1,17 @@
-using Terraria;
+using System.Collections.Generic;
+
 using Microsoft.Xna.Framework;
+
+using Nightshade.Content.Gores;
+
+using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
-using Nightshade.Content.Gores;
-using System.Collections.Generic;
 
-using Nightshade.Content.Tiles;
+namespace Nightshade.Content.Tiles;
 
 public class LivingCactusPot : ModTile
 {

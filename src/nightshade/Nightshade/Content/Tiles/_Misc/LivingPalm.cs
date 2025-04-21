@@ -1,7 +1,8 @@
-using Terraria.ModLoader;
-using Terraria.ID;
-using Terraria;
 using Nightshade.Content.Items;
+
+using Terraria;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Nightshade.Content.Tiles;
 

@@ -1,6 +1,6 @@
 using ReLogic.Content;
 
-namespace Nightshade.Common.Features.AssetReplacement;
+namespace Nightshade.Core.AssetReplacement;
 
 /// <summary>
 ///     Provides a mutable reference to an asset.

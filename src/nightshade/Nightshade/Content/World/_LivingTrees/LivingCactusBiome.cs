@@ -1,9 +1,11 @@
-﻿using Microsoft.Xna.Framework;
-using Nightshade.Content.Tiles;
-using System;
+﻿using System;
 using System.Collections.Generic;
+
+using Microsoft.Xna.Framework;
+
+using Nightshade.Content.Tiles;
+
 using Terraria;
-using Terraria.GameContent.Generation;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.WorldBuilding;
