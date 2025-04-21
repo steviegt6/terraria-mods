@@ -10,7 +10,7 @@ using JetBrains.Annotations;
 
 using log4net;
 
-using Nightshade.Common.Features.ItemVariants;
+using Nightshade.Common.Features;
 
 using Terraria;
 using Terraria.ID;
@@ -19,7 +19,7 @@ using Terraria.ModLoader;
 // Configure where to look for our variants.
 [assembly: ItemVariantsPath("Assets/Images/Items/Variants/")]
 
-namespace Nightshade.Common.Features.ItemVariants;
+namespace Nightshade.Common.Features;
 
 [Autoload(Side = ModSide.Client)]
 [UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]

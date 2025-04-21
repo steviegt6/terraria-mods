@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace Nightshade.Common.Features.PlayerTracking;
+namespace Nightshade.Common.Features;
 
 internal static class CommonPlayerValues
 {

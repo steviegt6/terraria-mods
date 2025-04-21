@@ -7,9 +7,9 @@ using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
 
-using Hook = Nightshade.Common.Hooks.ItemRendering.IModifyItemDrawBasics;
+using Hook = Nightshade.Common.Hooks._ItemRendering.IModifyItemDrawBasics;
 
-namespace Nightshade.Common.Hooks.ItemRendering;
+namespace Nightshade.Common.Hooks._ItemRendering;
 
 public interface IModifyItemDrawBasics
 {

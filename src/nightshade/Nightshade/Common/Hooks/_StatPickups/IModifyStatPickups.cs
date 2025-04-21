@@ -7,9 +7,9 @@ using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
 
-using Hook = Nightshade.Common.Hooks.StatPickups.IModifyStatPickups;
+using Hook = Nightshade.Common.Hooks._StatPickups.IModifyStatPickups;
 
-namespace Nightshade.Common.Hooks.StatPickups;
+namespace Nightshade.Common.Hooks._StatPickups;
 
 public interface IModifyStatPickups
 {

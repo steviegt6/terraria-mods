@@ -1,7 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-using Nightshade.Common.Features.ChatTags;
+using Nightshade.Common.Features;
 
 using ReLogic.Graphics;
 

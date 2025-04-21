@@ -7,7 +7,7 @@ using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
 
-namespace Nightshade.Common.Hooks.ProjectileReflecting;
+namespace Nightshade.Common.Hooks._ProjectileReflecting;
 
 public interface INpcReflectable
 {

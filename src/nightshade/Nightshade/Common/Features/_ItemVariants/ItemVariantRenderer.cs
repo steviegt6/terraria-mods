@@ -3,13 +3,13 @@ using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-using Nightshade.Common.Hooks.ItemRendering;
+using Nightshade.Common.Hooks._ItemRendering;
 
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
 
-namespace Nightshade.Common.Features.ItemVariants;
+namespace Nightshade.Common.Features;
 
 /// <summary>
 ///     Responsible for rendering and handling item variants in-game.

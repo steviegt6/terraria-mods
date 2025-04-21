@@ -1,4 +1,4 @@
-namespace Nightshade.Common.Hooks.StatPickups;
+namespace Nightshade.Common.Hooks._StatPickups;
 
 public enum StatPickupKind
 {

@@ -1,7 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-using Nightshade.Common.Hooks.ItemRendering;
+using Nightshade.Common.Hooks._ItemRendering;
 using Nightshade.Content.Projectiles;
 
 using Terraria;

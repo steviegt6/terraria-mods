@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Nightshade.Common.Features.ItemVariants;
+namespace Nightshade.Common.Features;
 
 /// <summary>
 ///     Holds known variants.

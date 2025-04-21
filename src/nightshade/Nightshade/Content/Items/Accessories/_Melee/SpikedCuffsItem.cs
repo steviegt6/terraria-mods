@@ -1,4 +1,4 @@
-using Nightshade.Common.Features.PlayerTracking;
+using Nightshade.Common.Features;
 
 using Terraria;
 using Terraria.Enums;

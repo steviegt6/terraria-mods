@@ -9,9 +9,9 @@ using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
 
-using Hook = Nightshade.Common.Hooks.ItemRendering.IModifyInWorldRender;
+using Hook = Nightshade.Common.Hooks._ItemRendering.IModifyInWorldRender;
 
-namespace Nightshade.Common.Hooks.ItemRendering;
+namespace Nightshade.Common.Hooks._ItemRendering;
 
 /// <summary>
 ///     Provides a way to reliably modify the way an item is drawn according to

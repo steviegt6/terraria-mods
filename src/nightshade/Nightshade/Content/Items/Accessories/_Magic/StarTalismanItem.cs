@@ -1,4 +1,4 @@
-using Nightshade.Common.Hooks.StatPickups;
+using Nightshade.Common.Hooks._StatPickups;
 
 using Terraria;
 using Terraria.ID;

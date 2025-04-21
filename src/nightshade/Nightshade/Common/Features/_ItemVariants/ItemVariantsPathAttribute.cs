@@ -1,6 +1,6 @@
 using System;
 
-namespace Nightshade.Common.Features.ItemVariants;
+namespace Nightshade.Common.Features;
 
 /// <summary>
 ///     Describes the path to search for item variants in.
