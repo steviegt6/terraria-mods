@@ -14,7 +14,6 @@
 // begin UNIFORMS
 float uTime;
 float2 uSize;
-float uScale;
 float uIntensity;
 // end UNIFORMS
 #endif // TECHNIQUES

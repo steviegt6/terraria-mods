@@ -1,9 +1,9 @@
 {
   "uniforms": {
-    "uPixel": "float",
-    "uColorResolution": "float",
     "uTime": "float",
-    "uSize": "float2"
+    "uSize": "float2",
+    "uScale": "float",
+    "uIntensity": "float"
   },
   "passes": {
     "StripShader": {

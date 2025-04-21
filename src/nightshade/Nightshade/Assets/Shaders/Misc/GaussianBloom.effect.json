@@ -1,0 +1,13 @@
+{
+    "uniforms": {
+      "uTime": "float",
+      "uSize": "float2",
+      "uIntensity": "float"
+    },
+    "passes": {
+      "StripShader": {
+        "PixelShader": "ps_3_0 main"
+      }
+    },
+    "profile": "fx_2_0"
+  }

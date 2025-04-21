@@ -19,9 +19,12 @@ internal static class TungstenRT
 {
     [InitializedInLoad]
     private static ManagedRenderTarget? _mRT;
-
     [InitializedInLoad]
-    private static WrapperShaderData<Assets.Shaders.Misc.TungstenArmorMoltenShader.Parameters>? shader;
+    private static ManagedRenderTarget? _mRT_bloom;
+    [InitializedInLoad]
+    private static WrapperShaderData<Assets.Shaders.Misc.TungstenArmorMoltenShader.Parameters>? _immolationShader;
+    [InitializedInLoad]
+    private static WrapperShaderData<Assets.Shaders.Misc.GaussianBloom.Parameters>? _bloomShader;
 
     private static bool _shouldGammaBoost = false;
     public static void Initialize()
@@ -31,9 +34,15 @@ internal static class TungstenRT
             _mRT = new ManagedRenderTarget(screenWidth, screenHeight, true);
             _mRT.Initialize(screenWidth, screenHeight);
 
-            shader = AssetReferences.Assets.Shaders.Misc.TungstenArmorMoltenShader.CreateStripShader();
-            shader.Parameters.uPixel = 2f;
-            shader.Parameters.uSize = new Vector2(_mRT.Value.Width, _mRT.Value.Height);
+            _mRT_bloom = new ManagedRenderTarget(screenWidth, screenHeight, true);
+            _mRT_bloom.Initialize(screenWidth, screenHeight);
+
+            _immolationShader = AssetReferences.Assets.Shaders.Misc.TungstenArmorMoltenShader.CreateStripShader();
+            _immolationShader.Parameters.uSize = new Vector2(_mRT.Value.Width, _mRT.Value.Height);
+            _immolationShader.Parameters.uScale = 1f;
+
+            _bloomShader = AssetReferences.Assets.Shaders.Misc.GaussianBloom.CreateStripShader();
+            _bloomShader.Parameters.uSize = new Vector2(_mRT.Value.Width, _mRT.Value.Height);
         });
         Terraria.On_Lighting.GetColorClamped += (orig, x, y, c) =>
         {
@@ -52,11 +61,15 @@ internal static class TungstenRT
             return orig.Invoke(x, y, c);
         };
 
-        Terraria.Graphics.Renderers.On_LegacyPlayerRenderer.DrawPlayer += (orig, self, camera, player, position, rotation, origin, shadow, scale) =>
+        Terraria.Graphics.Renderers.On_LegacyPlayerRenderer.DrawPlayer += static (orig, self, camera, player, position, rotation, origin, shadow, scale) =>
         {
             Debug.Assert(_mRT != null);
             Debug.Assert(_mRT.Value != null);
-            Debug.Assert(shader != null);
+            Debug.Assert(_immolationShader != null);
+
+            Debug.Assert(_mRT_bloom != null);
+            Debug.Assert(_mRT_bloom.Value != null);
+            Debug.Assert(_bloomShader != null);
 
             var sbsn = new SpriteBatchSnapshot(Main.spriteBatch);
 
@@ -68,6 +81,25 @@ internal static class TungstenRT
             _shouldGammaBoost = true;
             orig.Invoke(self, camera, player, position, rotation, origin, shadow, scale);
             _shouldGammaBoost = false;
+            Main.spriteBatch.End();
+
+            graphics.graphicsDevice.SetRenderTarget(_mRT_bloom.Value);
+
+            Main.spriteBatch.Begin(
+            SpriteSortMode.Immediate,
+            BlendState.AlphaBlend,
+            SamplerState.PointClamp,
+            DepthStencilState.Default,
+            RasterizerState.CullNone,
+            null,
+            GameViewMatrix.EffectMatrix
+            );
+
+            _immolationShader.Parameters.uSize = _mRT.Value.Bounds.Size();
+            _immolationShader.Parameters.uScale = 1f;
+            _immolationShader.Apply();
+
+            spriteBatch.Draw(_mRT.Value, Vector2.Zero, Color.Red);
             Main.spriteBatch.End();
 
             graphics.graphicsDevice.SetRenderTargets(rts);
@@ -82,11 +114,27 @@ internal static class TungstenRT
             GameViewMatrix.EffectMatrix
             );
 
-            shader.Parameters.uPixel = 2f * Main.GameViewMatrix.Zoom.X;
-            shader.Parameters.uSize = new Vector2(1600, 900);
-            shader.Apply();
+            _immolationShader.Parameters.uSize = _mRT.Value.Bounds.Size();
+            _immolationShader.Parameters.uScale = 1f;
+            _immolationShader.Apply();
 
             spriteBatch.Draw(_mRT.Value, Vector2.Zero, Color.Red);
+            Main.spriteBatch.End();
+
+            Main.spriteBatch.Begin(
+            SpriteSortMode.Immediate,
+            BlendState.Additive,
+            SamplerState.PointClamp,
+            DepthStencilState.Default,
+            RasterizerState.CullNone,
+            null,
+            GameViewMatrix.EffectMatrix
+            );
+
+            _bloomShader.Parameters.uSize = _mRT.Value.Bounds.Size();
+            _bloomShader.Apply();
+
+            spriteBatch.Draw(_mRT_bloom.Value, Vector2.Zero, Color.Red);
             Main.spriteBatch.End();
 
             sbsn.Apply(Main.spriteBatch);
@@ -131,20 +179,5 @@ public class TungstenRTLoader : ILoadable
     public void Unload()
     {
         TungstenRT.Deinitialize();
-    }
-}
-
-public class TungstenArmorLighting : ModPlayer
-{
-    public override void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
-    {
-        base.DrawEffects(drawInfo, ref r, ref g, ref b, ref a, ref fullBright);
-
-        double luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-
-        if (luminance < 0.3f)
-        {
-            (r, g, b) = (0.3f * 0.2126f, 0.3f * 0.7152f, 0.3f * 0.0722f);
-        }
     }
 }

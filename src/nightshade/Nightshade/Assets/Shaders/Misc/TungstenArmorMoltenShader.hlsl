@@ -90,35 +90,32 @@ float fbm(float3 p,float scale){
   return n*n;  
 }
 
-
-float3 filmicToneMapping(inout float3 color)
+float3 overlay(in float3 src, in float3 dst, float intensity)
 {
-    color = max(0.0f.xxx, color - 0.0040000001899898052215576171875f.xxx);
-    color = (color * ((color * 6.19999980926513671875f) + 0.5f.xxx)) / ((color * ((color * 6.19999980926513671875f) + 1.7000000476837158203125f.xxx)) + 0.0599999986588954925537109375f.xxx);
-    return color;
-}
-
-float3 overlay(in float3 src, in float3 dst)
-{
-    return lerp(2.0 * src * dst, 1.0 - 2.0 * (1.0 - src) * (1.0-dst), step(0.5, dst));
+    return lerp(dst, lerp(2.0 * src * dst, 1.0 - 2.0 * (1.0 - src) * (1.0-dst), step(0.5, dst)), intensity);
 }
 
 float4 main(float4 sampleColor : COLOR0, float2 uv : TEXCOORD0, float4 fragCoord : SV_POSITION) : COLOR0
 {   
     fragCoord += float4(0.5f, 0.5f, 0.0f, 0.0f);
     float intensity = 1;
-    float2 uv2 = fragCoord.xy / (uSize / 10.);
+    
+    float2 uv2 = fragCoord.xy / uSize;
+    
     float3 param = float3(uv2.x, uv2.y, uSize.x*5. + uTime*0.1);
-    int param_1 = 2;
+
     float4 color = tex2D(uImage0, uv);
-    float fbm_1 = fbm(param, param_1) * 3;
-    float3 mult = float3(5 * fbm_1,.8 * fbm_1,.05 * fbm_1);
+    float fbm_1 = fbm(param, 10) * 3;
+    float3 mult = float3(5 * fbm_1,.8 * fbm_1,.05 * fbm_1) * abs(sin(uTime));
+
     mult = pow(mult.xyz, float3(smoothstep(1, .80, intensity - 0.5).xxx));
     mult = pow(mult.xyz, 0.80);
     float3 color_resolution = float3(8., 8., 8.);
     float3 janding =
-      floor((mult.xyz) * color_resolution) / (color_resolution - (1.).xxx);
-    janding = overlay(janding, color.xyz);
+    floor((mult.xyz) * color_resolution) / (color_resolution - (1.).xxx);
+
+    janding = overlay(janding, color.xyz, abs(sin(uTime)));
+
     return float4(janding.xyz, color.a);
 }
 
