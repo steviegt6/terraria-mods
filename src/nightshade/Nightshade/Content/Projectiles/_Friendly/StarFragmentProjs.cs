@@ -29,7 +29,7 @@ internal abstract class StarFragmentProj : ModProjectile
             {
                 var num7 = Main.maxTilesX / 4200.0;
                 num7 *= Star.starfallBoost;
-                num7 *= 5;
+                num7 *= 2;
 
                 if (!(Main.rand.Next(8000) < 10.0 * num7))
                 {

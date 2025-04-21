@@ -1,7 +1,7 @@
 using JetBrains.Annotations;
 
-using Nightshade.Common.Features.AssetReplacement;
 using Nightshade.Common.Loading;
+using Nightshade.Core;
 
 using Terraria;
 using Terraria.Graphics.Renderers;
@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 namespace Nightshade.Content.VisualTweaks;
 
 [UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
-internal sealed class StepStoolSprites : IInitializer
+internal sealed class StepStoolSprites : ILoad
 {
     private sealed class TrackHoC : ModPlayer
     {
@@ -38,7 +38,7 @@ internal sealed class StepStoolSprites : IInitializer
         }
     }
 
-    void IInitializer.Load()
+    void ILoad.Load()
     {
         // Replace the stool texture for the entire draw player routine because
         // other mods may modify the method strangely (CalRemix).
@@ -50,7 +50,7 @@ internal sealed class StepStoolSprites : IInitializer
                 return;
             }
 
-            using var _ = AssetReplacer.Extra(ExtrasID.PortableStool, Assets.Images.Items.Accessories.HandOfCreationStool.Asset);
+            using var _ = AssetReplacer.Extra(ExtrasID.PortableStool, Assets.Images.Items.Accessories.HandOfCreationStool.Asset.Value);
             orig(self, camera, player, position, rotation, origin, shadow, scale);
         };
     }

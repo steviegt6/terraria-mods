@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-using Nightshade.Common.Features.AssetReplacement;
+using Nightshade.Core;
 using Nightshade.Core.Attributes;
 
 using Terraria;
@@ -26,7 +26,7 @@ internal sealed class RainbowSlimeShaderTweak : GlobalNPC
     private const int rainbow_slime = NPCID.RainbowSlime;
 
     [InitializedInLoad]
-    private static AssetReplacementHandle<Texture2D>? rainbowSlimeTextureHandle;
+    private static AssetReplacer.Handle<Texture2D>? rainbowSlimeTextureHandle;
 
     [InitializedInLoad]
     private static MiscShaderData? rainbowSlimeShaderData;
@@ -37,7 +37,7 @@ internal sealed class RainbowSlimeShaderTweak : GlobalNPC
 
         rainbowSlimeTextureHandle = AssetReplacer.Npc(
             rainbow_slime,
-            Assets.Images.NPCs.RainbowSlime.Asset
+            Assets.Images.NPCs.RainbowSlime.Asset.Value
         );
 
 #pragma warning disable CS0618 // Type or member is obsolete

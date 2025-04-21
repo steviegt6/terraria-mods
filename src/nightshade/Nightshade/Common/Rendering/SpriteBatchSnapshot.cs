@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Nightshade.Common.Rendering;
 
-public struct SpriteBatchSnapshot(SpriteBatch spriteBatch)
+internal struct SpriteBatchSnapshot(SpriteBatch spriteBatch)
 {
     public SpriteSortMode SortMode { get; set; } = spriteBatch.sortMode;
 
@@ -18,22 +18,32 @@ public struct SpriteBatchSnapshot(SpriteBatch spriteBatch)
     public Effect? CustomEffect { get; set; } = spriteBatch.customEffect;
 
     public Matrix TransformMatrix { get; set; } = spriteBatch.transformMatrix;
+}
 
-    public void Apply(SpriteBatch spriteBatch)
+internal static class SpriteBatchSnapshotExtensions
+{
+    public static void End(this SpriteBatch @this, out SpriteBatchSnapshot ss)
     {
-        if (spriteBatch.beginCalled)
-        {
-            spriteBatch.End();
-        }
+        ss = new SpriteBatchSnapshot(@this);
+        @this.End();
+    }
 
-        spriteBatch.Begin(
-            SortMode,
-            BlendState,
-            SamplerState,
-            DepthStencilState,
-            RasterizerState,
-            CustomEffect,
-            TransformMatrix
+    public static void Begin(this SpriteBatch @this, in SpriteBatchSnapshot ss)
+    {
+        @this.Begin(
+            ss.SortMode,
+            ss.BlendState,
+            ss.SamplerState,
+            ss.DepthStencilState,
+            ss.RasterizerState,
+            ss.CustomEffect,
+            ss.TransformMatrix
         );
+    }
+
+    public static void Restart(this SpriteBatch @this, in SpriteBatchSnapshot ss)
+    {
+        @this.End();
+        @this.Begin(ss);
     }
 }

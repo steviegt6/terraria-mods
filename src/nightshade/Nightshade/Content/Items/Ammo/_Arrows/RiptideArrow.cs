@@ -1,4 +1,4 @@
-﻿using Nightshade.Common.Hooks.ProjectileReflecting;
+﻿using Nightshade.Common.Hooks._ProjectileReflecting;
 
 using Terraria;
 using Terraria.ID;
