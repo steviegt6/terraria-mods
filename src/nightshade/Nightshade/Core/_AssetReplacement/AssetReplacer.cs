@@ -4,7 +4,7 @@ using ReLogic.Content;
 
 using Terraria.GameContent;
 
-namespace Nightshade.Core.AssetReplacement;
+namespace Nightshade.Core;
 
 /// <summary>
 ///     Provides utility methods for replacing assets.

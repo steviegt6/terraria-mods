@@ -1,7 +1,7 @@
 using JetBrains.Annotations;
 
 using Nightshade.Common.Loading;
-using Nightshade.Core.AssetReplacement;
+using Nightshade.Core;
 
 using Terraria;
 using Terraria.Graphics.Renderers;

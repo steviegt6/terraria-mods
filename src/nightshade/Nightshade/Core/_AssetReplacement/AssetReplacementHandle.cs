@@ -2,7 +2,7 @@ using System;
 
 using ReLogic.Content;
 
-namespace Nightshade.Core.AssetReplacement;
+namespace Nightshade.Core;
 
 /// <summary>
 ///     A handle to an asset replacement.  Upon creation, the original asset is
