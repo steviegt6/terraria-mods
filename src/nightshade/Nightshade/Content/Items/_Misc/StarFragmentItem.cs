@@ -39,7 +39,7 @@ internal sealed class StarFragmentItem : ModItem
 
             var texturePath = textures[starFragmentItem.index - 1];
             texture = ModContent.Request<Texture2D>(texturePath).Value;
-            frame   = glowmaskFrame = texture.Frame();
+            frame = glowmaskFrame = texture.Frame();
         }
     }
 
@@ -67,6 +67,11 @@ internal sealed class StarFragmentItem : ModItem
             ItemRarityColor.Blue1,
             Item.sellPrice(silver: 1)
         );
+
+        if (index == 0)
+        {
+            index = 1;
+        }
     }
 
     public override void OnSpawn(IEntitySource source)
