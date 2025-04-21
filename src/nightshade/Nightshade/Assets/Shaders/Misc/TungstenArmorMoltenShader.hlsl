@@ -100,13 +100,13 @@ float4 main(float4 sampleColor : COLOR0, float2 uv : TEXCOORD0, float4 fragCoord
     fragCoord += float4(0.5f, 0.5f, 0.0f, 0.0f);
     float intensity = 1;
     
-    float2 uv2 = fragCoord.xy / uSize;
+    float2 uv2 = fragCoord.xy / (uSize / 10);
     
     float3 param = float3(uv2.x, uv2.y, uSize.x*5. + uTime*0.1);
 
     float4 color = tex2D(uImage0, uv);
-    float fbm_1 = fbm(param, 10) * 3;
-    float3 mult = float3(5 * fbm_1,.8 * fbm_1,.05 * fbm_1) * abs(sin(uTime));
+    float fbm_1 = fbm(param, 2) * 3;
+    float3 mult = float3(5 * fbm_1,.8 * fbm_1,.05 * fbm_1);
 
     mult = pow(mult.xyz, float3(smoothstep(1, .80, intensity - 0.5).xxx));
     mult = pow(mult.xyz, 0.80);
@@ -114,7 +114,7 @@ float4 main(float4 sampleColor : COLOR0, float2 uv : TEXCOORD0, float4 fragCoord
     float3 janding =
     floor((mult.xyz) * color_resolution) / (color_resolution - (1.).xxx);
 
-    janding = overlay(janding, color.xyz, abs(sin(uTime)));
+    janding = overlay(janding, color.xyz, 1.0f);
 
     return float4(janding.xyz, color.a);
 }
