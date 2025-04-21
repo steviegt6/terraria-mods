@@ -5,14 +5,25 @@ using Terraria.ModLoader;
 namespace Nightshade.Common.Loading;
 
 [UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature, ImplicitUseTargetFlags.WithInheritors)]
-public interface IInitializer : ILoadable
+internal interface IInitializer : ILoadable
 {
     void ILoadable.Load(Mod mod)
     {
-        Load();
+        (this as ILoad)?.Load();
     }
 
-    void ILoadable.Unload() { }
+    void ILoadable.Unload()
+    {
+        (this as IUnload)?.Unload();
+    }
+}
 
+internal interface ILoad : IInitializer
+{
     void Load();
+}
+
+internal interface IUnload : IInitializer
+{
+    new void Unload();
 }

@@ -13,9 +13,9 @@ namespace Nightshade.Common.Hooks.StatPickups;
 
 public interface IModifyStatPickups
 {
-    private sealed class ModifyStatPickupsImplementation : IInitializer
+    private sealed class ModifyStatPickupsImplementation : ILoad
     {
-        void IInitializer.Load()
+        void ILoad.Load()
         {
             IL_Player.PickupItem += il =>
             {

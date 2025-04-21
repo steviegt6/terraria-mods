@@ -4,12 +4,12 @@ using Terraria.UI.Chat;
 
 namespace Nightshade.Common.Features.ChatTags;
 
-public interface ILoadableTagHandler<TSelf> : ITagHandler, IInitializer
+internal interface ILoadableTagHandler<TSelf> : ITagHandler, ILoad
     where TSelf : ILoadableTagHandler<TSelf>, new()
 {
     string[] TagNames { get; }
 
-    void IInitializer.Load()
+    void ILoad.Load()
     {
         ChatManager.Register<TSelf>(TagNames);
     }

@@ -13,9 +13,9 @@ namespace Nightshade.Common.Hooks.ItemRendering;
 
 public interface IModifyItemDrawBasics
 {
-    private sealed class ModifyItemDrawBasicsImplementation : IInitializer
+    private sealed class ModifyItemDrawBasicsImplementation : ILoad
     {
-        void IInitializer.Load()
+        void ILoad.Load()
         {
             On_Main.DrawItem_GetBasics += (On_Main.orig_DrawItem_GetBasics orig, Main self, Item item, int slot, out Texture2D texture, out Rectangle frame, out Rectangle glowmaskFrame) =>
             {

@@ -11,9 +11,9 @@ namespace Nightshade.Common.Hooks.ProjectileReflecting;
 
 public interface INpcReflectable
 {
-    private sealed class NpcReflectableImplementation : IInitializer
+    private sealed class NpcReflectableImplementation : ILoad
     {
-        void IInitializer.Load()
+        void ILoad.Load()
         {
             IL_Projectile.CanBeReflected += il =>
             {

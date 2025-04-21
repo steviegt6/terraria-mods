@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 namespace Nightshade.Content.VisualTweaks;
 
 [UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
-internal sealed class StepStoolSprites : IInitializer
+internal sealed class StepStoolSprites : ILoad
 {
     private sealed class TrackHoC : ModPlayer
     {
@@ -38,7 +38,7 @@ internal sealed class StepStoolSprites : IInitializer
         }
     }
 
-    void IInitializer.Load()
+    void ILoad.Load()
     {
         // Replace the stool texture for the entire draw player routine because
         // other mods may modify the method strangely (CalRemix).

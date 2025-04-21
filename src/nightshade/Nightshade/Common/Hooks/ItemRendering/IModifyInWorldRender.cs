@@ -22,9 +22,9 @@ namespace Nightshade.Common.Hooks.ItemRendering;
 /// </summary>
 public interface IModifyInWorldRender
 {
-    private sealed class ModifyInWorldRenderImplementation : IInitializer
+    private sealed class ModifyInWorldRenderImplementation : ILoad
     {
-        void IInitializer.Load()
+        void ILoad.Load()
         {
             IL_Main.DrawItem += il =>
             {
