@@ -1,7 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 
+using MonoMod.Cil;
+
 using Terraria;
 using Terraria.GameContent.Generation;
+using Terraria.ID;
 using Terraria.IO;
 using Terraria.ModLoader;
 using Terraria.WorldBuilding;
@@ -13,6 +16,21 @@ internal sealed class LivingTreeGen : ModSystem
     public override void Load()
     {
         WorldGen.DetourPass((PassLegacy)WorldGen.VanillaGenPasses["Micro Biomes"], GenLivingTrees);
+
+        WorldGen.ModifyPass(
+            (PassLegacy)WorldGen.VanillaGenPasses["Oasis"],
+            il =>
+            {
+                // Basically just run our code if PlaceOasis fails.
+
+                var c = new ILCursor(il);
+
+                c.GotoNext(MoveType.Before, x => x.MatchCall<WorldGen>(nameof(WorldGen.PlaceOasis)));
+                c.Remove();
+
+                c.EmitDelegate((int x, int y) => WorldGen.PlaceOasis(x, y) || PlaceBallCactus(x, y));
+            }
+        );
     }
 
     private static int LivingCactusCount { get; set; }
@@ -54,5 +72,13 @@ internal sealed class LivingTreeGen : ModSystem
 
         var locationX = WorldGen.genRand.NextBool() ? GenVars.desertHiveRight : GenVars.desertHiveLeft;
         cactus.Place(new Point(locationX, GenVars.desertHiveHigh), GenVars.structures);
+    }
+
+    private static bool PlaceBallCactus(int x, int y)
+    {
+        WorldGen.PlaceTile(x, y, TileID.DiamondGemspark);
+        
+        // test
+        return true;
     }
 }
