@@ -91,3 +91,5 @@ Projectiles: {
 	StarFragmentProj5.DisplayName: Star Fragment
 	StarFragmentProjSpawner.DisplayName: Star Fragment Proj Spawner
 }
+
+NPCs.Snapper.DisplayName: Snapper
