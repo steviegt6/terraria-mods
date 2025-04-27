@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 
 using MonoMod.Cil;
-
+using Nightshade.Content.Items;
 using Terraria;
 using Terraria.GameContent.Generation;
 using Terraria.ID;
@@ -33,16 +33,16 @@ internal sealed class LivingTreeGen : ModSystem
         );
     }
 
-    private static int LivingCactusCount { get; set; }
+	private static int LivingCactusCount { get; set; }
 
     private static void GenLivingTrees(WorldGen.orig_GenPassDetour orig, object self, GenerationProgress progress, GameConfiguration configuration)
     {
-        GenCactus(progress);
+        GenCacti(progress);
 
         orig(self, progress, configuration);
     }
 
-    private static void GenCactus(GenerationProgress progress)
+    private static void GenCacti(GenerationProgress progress)
     {
         progress.Message = Lang.gen[76].Value + ".. More Living Trees";
 
@@ -50,16 +50,18 @@ internal sealed class LivingTreeGen : ModSystem
 
         if (WorldGen.drunkWorldGen)
         {
-            LivingCactusCount *= 20;
+            LivingCactusCount *= 22;
         }
 
-        var fallback = 0;
-        var currentCactusCount = 0;
+        int fallback = 0;
+        float currentCactusCount = 0;
 
-        var cactus = GenVars.configuration.CreateBiome<LivingCactusBiome>();
+		LivingCactusBiome cactus = GenVars.configuration.CreateBiome<LivingCactusBiome>();
         while (currentCactusCount < LivingCactusCount && fallback < 20000)
         {
-            if (cactus.Place(WorldGen.RandomRectanglePoint(GenVars.desertHiveLeft + 25, GenVars.desertHiveHigh + 100, GenVars.desertHiveRight - 25, GenVars.desertHiveLow - 50), GenVars.structures))
+            cactus.Round = WorldGen.genRand.NextBool();
+
+			if (cactus.Place(WorldGen.RandomRectanglePoint(GenVars.desertHiveLeft + 25, GenVars.desertHiveHigh + 100, GenVars.desertHiveRight - 25, GenVars.desertHiveLow - 50), GenVars.structures))
             {
                 currentCactusCount++;
                 progress.Set((float)currentCactusCount / LivingCactusCount);
@@ -70,7 +72,7 @@ internal sealed class LivingTreeGen : ModSystem
 
         // if (WorldGen.genRand.NextBool(20))
 
-        var locationX = WorldGen.genRand.NextBool() ? GenVars.desertHiveRight : GenVars.desertHiveLeft;
+        int locationX = WorldGen.genRand.NextBool() ? GenVars.desertHiveRight : GenVars.desertHiveLeft;
         cactus.Place(new Point(locationX, GenVars.desertHiveHigh), GenVars.structures);
     }
 
