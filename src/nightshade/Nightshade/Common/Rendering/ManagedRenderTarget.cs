@@ -84,7 +84,18 @@ internal sealed class ManagedRenderTarget : IDisposable
 
     public void Dispose()
     {
-        Dispose(true);
+        if (!ThreadCheck.IsMainThread)
+        {
+            Main.RunOnMainThread(() =>
+                {
+                    Dispose(true);
+                }
+            );
+        }
+        else
+        {
+            Dispose(true);
+        }
     }
 
     private void Dispose(bool forRealsies)
