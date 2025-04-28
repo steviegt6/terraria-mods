@@ -137,7 +137,7 @@ internal static class TungstenRT
             spriteBatch.Draw(_mRT_bloom.Value, Vector2.Zero, Color.Red);
             Main.spriteBatch.End();
 
-            sbsn.Apply(Main.spriteBatch);
+            Main.spriteBatch.Begin(in sbsn);
         };
     }
 
