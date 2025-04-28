@@ -78,6 +78,14 @@ internal sealed class LivingTreeGen : ModSystem
 
     private static bool PlaceBallCactus(int x, int y)
     {
+        // Let's not spawn too many.
+        if (WorldGen.genRand.NextBool())
+        {
+            return false;
+        }
+        
+        
+        
         var cactus = GenVars.configuration.CreateBiome<LivingCactusBiome>();
         cactus.Round = true;
 
