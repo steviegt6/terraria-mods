@@ -1,8 +1,14 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Diagnostics;
+
+using Microsoft.Xna.Framework;
 
 using MonoMod.Cil;
+
 using Nightshade.Content.Items;
+
 using Terraria;
+using Terraria.GameContent.Biomes;
+using Terraria.GameContent.Biomes.Desert;
 using Terraria.GameContent.Generation;
 using Terraria.ID;
 using Terraria.IO;
@@ -17,12 +23,13 @@ internal sealed class LivingTreeGen : ModSystem
     {
         WorldGen.DetourPass((PassLegacy)WorldGen.VanillaGenPasses["Micro Biomes"], GenLivingTrees);
 
+        // When attempting to place oases, place a ball cactus instead if it
+        // fails.  These spawn outside of the desert (instead, in dunes), so it
+        // adds some nice variety.
         WorldGen.ModifyPass(
             (PassLegacy)WorldGen.VanillaGenPasses["Oasis"],
             il =>
             {
-                // Basically just run our code if PlaceOasis fails.
-
                 var c = new ILCursor(il);
 
                 c.GotoNext(MoveType.Before, x => x.MatchCall<WorldGen>(nameof(WorldGen.PlaceOasis)));
@@ -31,9 +38,41 @@ internal sealed class LivingTreeGen : ModSystem
                 c.EmitDelegate((int x, int y) => WorldGen.PlaceOasis(x, y) || PlaceBallCactus(x, y));
             }
         );
+
+        // Try to place ball cacti on the surface desert similarly to the desert
+        // entrances.
+        On_DesertHive.Place += (orig, description) =>
+        {
+            var cactusTryCount = WorldGen.genRand.Next(0, 1);
+            var range = new Point(description.Desert.Left, description.Desert.Right);
+            for (var i = 0; i < cactusTryCount;)
+            {
+                var x = WorldGen.genRand.Next(range.X, range.Y);
+                var y = description.Surface[x];
+
+                // if below ground, travel up
+                while (Main.tile[x, y - 1].HasTile)
+                {
+                    y--;
+
+                    if (y < description.Desert.Y)
+                    {
+                        break;
+                    }
+                }
+
+                i++;
+
+                var cactus = GenVars.configuration.CreateBiome<LivingCactusBiome>();
+                cactus.Round = true;
+                cactus.Place(new Point(x, y), GenVars.structures);
+            }
+
+            orig(description);
+        };
     }
 
-	private static int LivingCactusCount { get; set; }
+    private static int LivingCactusCount { get; set; }
 
     private static void GenLivingTrees(WorldGen.orig_GenPassDetour orig, object self, GenerationProgress progress, GameConfiguration configuration)
     {
@@ -56,12 +95,12 @@ internal sealed class LivingTreeGen : ModSystem
         int fallback = 0;
         float currentCactusCount = 0;
 
-		LivingCactusBiome cactus = GenVars.configuration.CreateBiome<LivingCactusBiome>();
+        LivingCactusBiome cactus = GenVars.configuration.CreateBiome<LivingCactusBiome>();
         while (currentCactusCount < LivingCactusCount && fallback < 20000)
         {
             cactus.Round = WorldGen.genRand.NextBool();
 
-			if (cactus.Place(WorldGen.RandomRectanglePoint(GenVars.desertHiveLeft + 25, GenVars.desertHiveHigh + 100, GenVars.desertHiveRight - 25, GenVars.desertHiveLow - 50), GenVars.structures))
+            if (cactus.Place(WorldGen.RandomRectanglePoint(GenVars.desertHiveLeft + 25, GenVars.desertHiveHigh + 100, GenVars.desertHiveRight - 25, GenVars.desertHiveLow - 50), GenVars.structures))
             {
                 currentCactusCount++;
                 progress.Set((float)currentCactusCount / LivingCactusCount);
@@ -83,9 +122,7 @@ internal sealed class LivingTreeGen : ModSystem
         {
             return false;
         }
-        
-        
-        
+
         var cactus = GenVars.configuration.CreateBiome<LivingCactusBiome>();
         cactus.Round = true;
 
