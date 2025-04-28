@@ -78,9 +78,9 @@ internal sealed class LivingTreeGen : ModSystem
 
     private static bool PlaceBallCactus(int x, int y)
     {
-        WorldGen.PlaceTile(x, y, TileID.DiamondGemspark);
-        
-        // test
-        return true;
+        var cactus = GenVars.configuration.CreateBiome<LivingCactusBiome>();
+        cactus.Round = true;
+
+        return cactus.Place(new Point(x, y), GenVars.structures);
     }
 }
