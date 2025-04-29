@@ -74,7 +74,7 @@ internal sealed class PreDigester : ModItem
 
         On_Player.DropItemFromExtractinator += (orig, self, type, stack) =>
         {
-            if (instanceToSendItemsTo is not null)
+            if (instanceToSendItemsTo is not null && instanceToSendItemsTo.IsAcceptingItems())
             {
                 // Give coins directly to the player.
                 if (ItemID.Sets.CommonCoin[type])
@@ -83,7 +83,12 @@ internal sealed class PreDigester : ModItem
                     return;
                 }
 
-                wasFull = !instanceToSendItemsTo.AddExtractinatorResult(type, stack);
+                wasFull = !instanceToSendItemsTo.AddExtractinatorResult(type, stack, out var remaining);
+                
+                if (remaining > 0)
+                {
+                    self.QuickSpawnItem(self.GetSource_ItemUse(Item, "PreDigester"), type, remaining);
+                }
                 return;
             }
 
@@ -216,14 +221,26 @@ internal sealed class PreDigester : ModItem
         return false;
     }
 
-    private bool AddExtractinatorResult(int itemType, int stack)
+    private bool IsAcceptingItems()
     {
-        if (storedItems.Select(x => x.stack).Sum() + stack > max_items)
+        return storedItems.Select(x => x.stack).Sum() < max_items;
+    }
+
+    private bool AddExtractinatorResult(int itemType, int stack, out int remaining)
+    {
+        var totalItems = storedItems.Select(x => x.stack).Sum();
+        if (totalItems >= max_items)
         {
-            return false;
+            // Carry over any that won't make it in so we can spit it out.
+            remaining = totalItems + stack - max_items;
+            stack -= remaining;
+        }
+        else
+        {
+            remaining = 0;
         }
         
-        // Respect max stack sizes for items when adding
+        // Respect max stack sizes for items when adding.
         var maxStackSize = ContentSamples.ItemsByType[itemType].maxStack;
         for (var i = 0; i < storedItems.Count; i++)
         {
