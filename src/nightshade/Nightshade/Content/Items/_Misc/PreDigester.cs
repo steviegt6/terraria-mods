@@ -82,6 +82,40 @@ internal sealed class PreDigester : ModItem
         };
     }
 
+    public override void ModifyTooltips(List<TooltipLine> tooltips)
+    {
+        base.ModifyTooltips(tooltips);
+        
+        // TODO: Sort tooltips properly
+        
+        var silt = new TooltipLine(Mod, "PreDigesterSiltCount", $"{GetItemTag(currentSilt, ItemID.SiltBlock)}/{GetItemTag(max_silt, ItemID.SiltBlock)}");
+        tooltips.Add(silt);
+
+        var items = "";
+        foreach (var (itemType, stack) in storedItems)
+        {
+            if (stack <= 0)
+            {
+                continue;
+            }
+            
+            items += $"{GetItemTag(stack, itemType)} ";
+        }
+        if (items.Length > 0)
+        {
+            items = items[..^1];
+        }
+        var itemsLine = new TooltipLine(Mod, "PreDigesterItems", items);
+        tooltips.Add(itemsLine);
+
+        return;
+        
+        static string GetItemTag(int amount, int type)
+        {
+            return $"[i/s{amount}:{type}]";
+        }
+    }
+
     public override bool? UseItem(Player player)
     {
         if (currentSilt == 0)
