@@ -15,6 +15,7 @@ internal sealed class LivingPalmWood : ModTile
         base.SetStaticDefaults();
 
         Main.tileSolid[Type] = true;
+        Main.tileBlockLight[Type] = true;
 
         RegisterItemDrop(ModContent.ItemType<LivingPalmWoodBlock>());
 
@@ -30,7 +31,6 @@ internal sealed class LivingPalmWood : ModTile
         Main.tileMerge[TileID.Dirt][Type] = true;
         Main.tileMerge[Type][TileID.Grass] = true;
         Main.tileMerge[TileID.Grass][Type] = true;
-        Main.tileBlockLight[Type] = true;
 
         DustType = DustID.PalmWood;
         HitSound = SoundID.Grass;
