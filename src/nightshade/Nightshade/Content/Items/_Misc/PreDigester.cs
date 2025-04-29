@@ -48,7 +48,7 @@ internal sealed class PreDigester : ModItem
         }
     }
 
-    private const int max_items = 20;
+    private const int max_items = 5;
 
     public override string Texture => Assets.Images.Items.Misc.PreDigester.KEY;
 
@@ -72,9 +72,15 @@ internal sealed class PreDigester : ModItem
 
         On_Player.DropItemFromExtractinator += (orig, self, type, stack) =>
         {
-            // Give coins directly to the player.
-            if (instanceToSendItemsTo is not null && !ItemID.Sets.CommonCoin[type])
+            if (instanceToSendItemsTo is not null)
             {
+                // Give coins directly to the player.
+                if (ItemID.Sets.CommonCoin[type])
+                {
+                    self.QuickSpawnItem(self.GetSource_ItemUse(Item, "PreDigester"), type, stack);
+                    return;
+                }
+                
                 instanceToSendItemsTo.AddExtractinatorResult(type, stack, out wasFull);
                 return;
             }
