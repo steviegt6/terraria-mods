@@ -181,14 +181,27 @@ internal sealed class PreDigester : ModItem
     {
         base.SaveData(tag);
 
-        tag["storedItems"] = storedItems;
+        tag["storedItems"] = storedItems.Select(x => $"{x.itemType}/{x.stack}").ToArray();
     }
 
     public override void LoadData(TagCompound tag)
     {
         base.LoadData(tag);
 
-        storedItems = tag.Get<List<(int, int)>>("storedItems");
+        var storedItems = tag.GetList<string>("storedItems");
+        this.storedItems.Clear();
+        foreach (var item in storedItems)
+        {
+            var parts = item.Split('/');
+            if (parts.Length != 2)
+            {
+                continue;
+            }
+
+            var itemType = int.Parse(parts[0]);
+            var stack = int.Parse(parts[1]);
+            this.storedItems.Add((itemType, stack));
+        }
     }
 
     /// <summary>
