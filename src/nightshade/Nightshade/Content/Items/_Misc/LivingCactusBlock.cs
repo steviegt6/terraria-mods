@@ -14,8 +14,5 @@ public sealed class LivingCactusBlock : ModItem
         base.SetDefaults();
 
         Item.DefaultToPlaceableTile(ModContent.TileType<LivingCactus>());
-
-        Item.value = 100;
-        Item.rare = ItemRarityID.Green;
     }
 }
