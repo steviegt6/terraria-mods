@@ -80,8 +80,8 @@ internal sealed class PreDigester : ModItem
                     self.QuickSpawnItem(self.GetSource_ItemUse(Item, "PreDigester"), type, stack);
                     return;
                 }
-                
-                instanceToSendItemsTo.AddExtractinatorResult(type, stack, out wasFull);
+
+                wasFull = !instanceToSendItemsTo.AddExtractinatorResult(type, stack);
                 return;
             }
 
@@ -214,19 +214,25 @@ internal sealed class PreDigester : ModItem
         return false;
     }
 
-    private void AddExtractinatorResult(int itemType, int stack, out bool failed)
+    private bool AddExtractinatorResult(int itemType, int stack)
     {
         if (storedItems.Count >= max_items && !storedItems.ContainsKey(itemType))
         {
-            failed = true;
-            return;
+            return false;
         }
 
-        failed = false;
         if (!storedItems.TryAdd(itemType, stack))
         {
-            storedItems[itemType] += stack;
+            var newStack = storedItems[itemType] + stack;
+            if (newStack > ContentSamples.ItemsByType[itemType].stack)
+            {
+                return false;
+            }
+            
+            storedItems[itemType] = newStack;
         }
+
+        return true;
     }
 
     private static bool CanBeExtracted(int itemType)
