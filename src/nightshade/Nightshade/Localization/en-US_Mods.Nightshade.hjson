@@ -124,6 +124,11 @@ Items: {
 		DisplayName: Living Cactus Wood Wand
 		Tooltip: ""
 	}
+
+	PreDigester: {
+		DisplayName: Pre-Digester
+		Tooltip: Processes loose sediment from the comfort of your inventory
+	}
 }
 
 Projectiles: {
