@@ -43,7 +43,7 @@ internal sealed class LivingTreeGen : ModSystem
         // entrances.
         On_DesertHive.Place += (orig, description) =>
         {
-            var cactusTryCount = WorldGen.genRand.Next(0, 1);
+            var cactusTryCount = WorldGen.genRand.Next(0, 2);
             var range = new Point(description.Desert.Left, description.Desert.Right);
             for (var i = 0; i < cactusTryCount;)
             {
@@ -65,6 +65,7 @@ internal sealed class LivingTreeGen : ModSystem
 
                 var cactus = GenVars.configuration.CreateBiome<LivingCactusBiome>();
                 cactus.Round = true;
+                cactus.WithWater = false;
                 cactus.Place(new Point(x, y), GenVars.structures);
             }
 
@@ -118,14 +119,14 @@ internal sealed class LivingTreeGen : ModSystem
     private static bool PlaceBallCactus(int x, int y)
     {
         // Let's not spawn too many.
-        if (WorldGen.genRand.NextBool())
+        if (!WorldGen.genRand.NextBool(3))
         {
             return false;
         }
 
         var cactus = GenVars.configuration.CreateBiome<LivingCactusBiome>();
         cactus.Round = true;
-
+        cactus.WithWater = false;
         return cactus.Place(new Point(x, y), GenVars.structures);
     }
 }

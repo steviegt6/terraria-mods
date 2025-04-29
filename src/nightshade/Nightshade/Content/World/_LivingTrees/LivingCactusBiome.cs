@@ -26,6 +26,8 @@ internal sealed class LivingCactusBiome : MicroBiome
 
     public bool Round { get; set; }
 
+    public bool WithWater { get; set; } = true;
+
     public override bool Place(Point origin, StructureMap? structures)
     {
         int height = WorldGen.genRand.Next(40, 55);
@@ -50,7 +52,7 @@ internal sealed class LivingCactusBiome : MicroBiome
         }
 
         if (Round)
-            GenerateRoundLivingCactus(origin.X, origin.Y, width, height);
+            GenerateRoundLivingCactus(origin.X, origin.Y, width, height, WithWater);
         else
 			GenerateTallLivingCactus(origin.X, origin.Y, height);
 
@@ -97,7 +99,7 @@ internal sealed class LivingCactusBiome : MicroBiome
         return onOutside && onEdge;
     }
 
-    private static void GenerateRoundLivingCactus(int x, int y, int width, int height)
+    private static void GenerateRoundLivingCactus(int x, int y, int width, int height, bool withWater)
 	{
 		int curvature = WorldGen.genRand.Next(8, 15); // Higher is less curved
 		int curveDir = WorldGen.genRand.NextBool().ToDirectionInt();
@@ -182,7 +184,10 @@ internal sealed class LivingCactusBiome : MicroBiome
 			GenerateRoot(x + i, y - 2, 2.6, 11.0, new Vector2(i, 3.5f / (Math.Abs(i) + 1)));
 		}
 
-		WorldUtils.Gen(new Point(x, y - 5), new Shapes.HalfCircle(4), new Actions.SetLiquid());
+        if (withWater)
+        {
+            WorldUtils.Gen(new Point(x, y - 5), new Shapes.HalfCircle(4), new Actions.SetLiquid());
+        }
 
 		PlacePotsEverywhere(x, y - height / 5, 32);
 	}
