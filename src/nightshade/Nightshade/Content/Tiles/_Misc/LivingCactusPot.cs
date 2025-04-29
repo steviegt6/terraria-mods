@@ -13,35 +13,25 @@ using Terraria.ObjectData;
 
 namespace Nightshade.Content.Tiles;
 
-internal sealed class LivingCactusPot : ModTile
+internal sealed class LivingCactusPot : AbstractPot
 {
     public override string Texture => Assets.Images.Tiles.Misc.LivingCactusPot.KEY;
 
     public override void SetStaticDefaults()
     {
-        Main.tileFrameImportant[Type] = true;
-        Main.tileLavaDeath[Type] = true;
-        Main.tileWaterDeath[Type] = false;
-        Main.tileOreFinderPriority[Type] = 100;
-        Main.tileSpelunker[Type] = true;
-        Main.tileCut[Type] = true;
-
-        TileObjectData.newTile.CopyFrom(TileObjectData.Style2x2);
-        TileObjectData.newTile.DrawYOffset = 2;
-        TileObjectData.newTile.RandomStyleRange = 3;
-        TileObjectData.addTile(Type);
         AddMapEntry(new Color(47, 79, 79), Language.GetText("MapObject.Pot")); // dark slate gray
         DustType = 29;
-        HitSound = SoundID.Shatter;
     }
 
-    public override IEnumerable<Item> GetItemDrops(int i, int j)
+    public override void KillMultiTile(int i, int j, int frameX, int frameY)
     {
+        base.KillMultiTile(i, j, frameX, frameY);
+
         if (Main.netMode == NetmodeID.Server)
         {
-            return base.GetItemDrops(i, j);
+            return;
         }
-
+        
         var goreAmt = Main.rand.Next(1, 2 + 1);
         for (var k = 0; k < goreAmt; k++)
         {
@@ -50,8 +40,6 @@ internal sealed class LivingCactusPot : ModTile
                 Gore.NewGore(new EntitySource_TileBreak(i, j), new Vector2(i, j) * 16, Main.rand.NextVector2CircularEdge(3f, 3f), Mod.Find<ModGore>($"LivingCactusPotGore{l}").Type);
             }
         }
-
-        return base.GetItemDrops(i, j);
     }
 }
 
