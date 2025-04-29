@@ -1,9 +1,10 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 
 using Microsoft.Xna.Framework;
 
 using MonoMod.Cil;
-
+using Nightshade.Common.Utilities;
 using Nightshade.Content.Items;
 
 using Terraria;
@@ -73,7 +74,7 @@ internal sealed class LivingTreeGen : ModSystem
         };
     }
 
-    private static int LivingCactusCount { get; set; }
+	private static int LivingCactusCount { get; set; }
 
     private static void GenLivingTrees(WorldGen.orig_GenPassDetour orig, object self, GenerationProgress progress, GameConfiguration configuration)
     {
@@ -120,6 +121,12 @@ internal sealed class LivingTreeGen : ModSystem
     {
         // Let's not spawn too many.
         if (!WorldGen.genRand.NextBool(3))
+        {
+            return false;
+        }
+
+        float terrainSlope = NightshadeGenUtil.GetAverageSurfaceSlope(x, y, 15);
+        if (Math.Abs(terrainSlope) > 0.2f)
         {
             return false;
         }
