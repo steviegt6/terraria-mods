@@ -91,7 +91,7 @@ Items: {
 	}
 
 	LivingCactusWoodBlock: {
-		DisplayName: Living Cactus Wood Block
+		DisplayName: Living Cactus Wood
 		Tooltip: ""
 	}
 
@@ -107,6 +107,21 @@ Items: {
 
 	LivingCactusPotPlacer: {
 		DisplayName: Living Cactus Pot Placer
+		Tooltip: ""
+	}
+
+	CactusWoodBlock: {
+		DisplayName: Cactus Wood
+		Tooltip: ""
+	}
+
+	CactusWoodPlatformBlock: {
+		DisplayName: Cactus Wood Platform
+		Tooltip: ""
+	}
+
+	LivingCactusWoodWand: {
+		DisplayName: Living Cactus Wood Wand
 		Tooltip: ""
 	}
 }

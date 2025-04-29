@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 using Microsoft.Xna.Framework;
-
+using Nightshade.Common.Utilities;
 using Nightshade.Content.Tiles;
 
 using Terraria;
@@ -18,7 +18,7 @@ internal sealed class LivingCactusBiome : MicroBiome
 
     private static ushort WoodType => (ushort)ModContent.TileType<LivingCactusWood>();
 
-    private static ushort PlatformType => TileID.Platforms;
+    private static ushort PlatformType => (ushort)ModContent.TileType<CactusWoodPlatform>();
 
     private static ushort WoodWallType => WallID.LivingWood;
 
@@ -35,7 +35,7 @@ internal sealed class LivingCactusBiome : MicroBiome
 
         if (Round)
         {
-            height = WorldGen.genRand.Next(25, 28);
+            height = WorldGen.genRand.Next(18, 22);
             width = (int)(height * WorldGen.genRand.NextFloat(0.8f, 1f));
 		}
 
@@ -189,7 +189,8 @@ internal sealed class LivingCactusBiome : MicroBiome
             WorldUtils.Gen(new Point(x, y - 5), new Shapes.HalfCircle(4), new Actions.SetLiquid());
         }
 
-		PlacePotsEverywhere(x, y - height / 5, 32);
+        PlaceLootChest(x, NightshadeGenUtil.GetNearestSurface(x, y - 5, 5), 2, false);
+		PlacePotsEverywhere(x, y - height / 5, width * 2);
 	}
 
 	private static void GenerateTallLivingCactus(int x, int y, int height)
@@ -281,7 +282,7 @@ internal sealed class LivingCactusBiome : MicroBiome
             }
         }
 
-        PlaceLootChest(x + offsetX, y - height + stalk_half_width * 2);
+        PlaceLootChest(x + offsetX, y - height + stalk_half_width * 2, 4, true);
 
         const int stalk_outer_thick = 2;
         for (int j = 0; j < height + stalk_outer_thick; j++)
@@ -549,15 +550,20 @@ internal sealed class LivingCactusBiome : MicroBiome
             if (!WorldGen.SolidTile(x + (i + solidCount) * direction, y))
             {
                 Main.tile[x + (i + solidCount) * direction, y].ResetToType(PlatformType);
+                WorldGen.SquareTileFrame(x + (i + solidCount) * direction, y);
             }
         }
     }
 
-    private static void PlaceLootChest(int x, int y, int width = 4)
+    private static void PlaceLootChest(int x, int y, int width = 4, bool platform = false)
     {
-        TryPlacePlatform(x, y, 1, width / 2 + 1);
-        TryPlacePlatform(x, y, -1, width / 2 + 1);
-        WorldGen.PlaceChest(x - 1 + WorldGen.genRand.Next(-width / 2 + 1, width / 2), y - 1, style: 10);
+        if (platform)
+        {
+			TryPlacePlatform(x, y, 1, width / 2 + 1);
+			TryPlacePlatform(x, y, -1, width / 2 + 1);
+		}
+
+		WorldGen.PlaceChest(x - 1 + WorldGen.genRand.Next(-width / 2 + 1, width / 2), y - 1, style: 10);
     }
 
     private static void PlacePotsEverywhere(int x, int y, int radius)
