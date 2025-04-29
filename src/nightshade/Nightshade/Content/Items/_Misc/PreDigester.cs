@@ -1,9 +1,15 @@
+using Microsoft.Xna.Framework;
+using Nightshade.Content.Dusts;
+using Nightshade.Content.Projectiles.Held;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
 using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -65,7 +71,13 @@ internal sealed class PreDigester : ModItem
 
         (Item.width, Item.height) = (24, 12);
 
-        Item.useStyle = ItemUseStyleID.Thrust;
+        Item.useTime = 42;
+        Item.useAnimation = 42;
+        Item.autoReuse = true;
+        Item.useStyle = ItemUseStyleID.Shoot;
+        Item.noUseGraphic = true;
+        Item.channel = true;
+        Item.shoot = ModContent.ProjectileType<PreDigesterHeldProj>();
     }
 
     public override void Load()
@@ -94,6 +106,43 @@ internal sealed class PreDigester : ModItem
 
             orig(self, type, stack);
         };
+    }
+
+    public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+    {
+        if (player.ownedProjectileCounts[ModContent.ProjectileType<PreDigesterHeldProj>()] == 0)
+        {
+            Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<PreDigesterHeldProj>(), damage, knockback, player.whoAmI);
+        }
+        return false;
+    }
+
+    public override void HoldItem(Player player)
+    {
+        if (!player.channel)
+        {
+            player.itemAnimation = 0;
+        }
+        if (player.itemAnimation == 1 && player.channel && storedItems.Count > 0)
+        {
+            var item = storedItems[storedItems.Count - 1];
+
+            //Visuals
+            Vector2 spewPos = player.RotatedRelativePoint(player.MountedCenter) + new Vector2(20 * player.direction, -10);
+            for (int i = 0; i < 3; i++) Dust.NewDust(spewPos, 0, 0, DustID.Silt, 0, 0);
+            for (int i = 0; i < Math.Ceiling(item.stack / 10f); i++)
+            {
+                Dust itemSpew = Dust.NewDustPerfect(spewPos, ModContent.DustType<ItemTextureDust>(), new Vector2(Main.rand.NextFloat(-1f, 1f), Main.rand.NextFloat(-2f, -4f)), Scale: 0.7f);
+                itemSpew.customData = item.itemType;
+            }
+            //
+
+            if (item.stack > 0)
+            {
+                player.QuickSpawnItem(player.GetSource_ItemUse(Item, "PreDigester"), item.itemType, item.stack);
+                storedItems.RemoveAt(storedItems.Count - 1);
+            }
+        }
     }
 
     public override void ModifyTooltips(List<TooltipLine> tooltips)
@@ -128,27 +177,6 @@ internal sealed class PreDigester : ModItem
         {
             return $"[i/s{amount}:{type}]";
         }
-    }
-
-    public override bool? UseItem(Player player)
-    {
-        if (storedItems.Count == 0)
-        {
-            return base.UseItem(player);
-        }
-
-        foreach (var (itemType, stack) in storedItems)
-        {
-            if (stack <= 0)
-            {
-                continue;
-            }
-
-            player.QuickSpawnItem(player.GetSource_ItemUse(Item, "PreDigester"), itemType, stack);
-        }
-
-        storedItems.Clear();
-        return true;
     }
 
     public override void NetSend(BinaryWriter writer)
