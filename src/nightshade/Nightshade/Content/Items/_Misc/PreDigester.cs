@@ -74,7 +74,7 @@ internal sealed class PreDigester : ModItem
 
         On_Player.DropItemFromExtractinator += (orig, self, type, stack) =>
         {
-            if (instanceToSendItemsTo is not null && instanceToSendItemsTo.IsAcceptingItems())
+            if (instanceToSendItemsTo is not null)
             {
                 // Give coins directly to the player.
                 if (ItemID.Sets.CommonCoin[type])
@@ -199,6 +199,11 @@ internal sealed class PreDigester : ModItem
     {
         // Means this item can't be extracted.
         if (!CanBeExtracted(itemType))
+        {
+            return false;
+        }
+
+        if (!IsAcceptingItems())
         {
             return false;
         }
