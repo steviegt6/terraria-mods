@@ -48,11 +48,10 @@ internal sealed class PreDigester : ModItem
         }
     }
     
-    private const int max_silt = 20;
+    private const int max_items = 20;
 
     public override string Texture => Assets.Images.Items.Misc.PreDigester.KEY;
 
-    private int currentSilt;
     private Dictionary<int, int> storedItems = [];
 
     private static PreDigester? instanceToSendItemsTo;
@@ -88,8 +87,8 @@ internal sealed class PreDigester : ModItem
         
         // TODO: Sort tooltips properly
         
-        var silt = new TooltipLine(Mod, "PreDigesterSiltCount", $"{GetItemTag(currentSilt, ItemID.SiltBlock)}/{GetItemTag(max_silt, ItemID.SiltBlock)}");
-        tooltips.Add(silt);
+        /*var silt = new TooltipLine(Mod, "PreDigesterSiltCount", $"{GetItemTag(currentSilt, ItemID.SiltBlock)}/{GetItemTag(max_silt, ItemID.SiltBlock)}");
+        tooltips.Add(silt);*/
 
         var items = "";
         foreach (var (itemType, stack) in storedItems)
@@ -118,12 +117,11 @@ internal sealed class PreDigester : ModItem
 
     public override bool? UseItem(Player player)
     {
-        if (currentSilt == 0)
+        if (storedItems.Count == 0)
         {
             return base.UseItem(player);
         }
 
-        currentSilt = 0;
         foreach (var (itemType, stack) in storedItems)
         {
             if (stack <= 0)
@@ -142,8 +140,6 @@ internal sealed class PreDigester : ModItem
     {
         base.NetSend(writer);
         
-        writer.Write(currentSilt);
-        
         writer.Write(storedItems.Count);
         foreach (var kvp in storedItems)
         {
@@ -156,8 +152,6 @@ internal sealed class PreDigester : ModItem
     {
         base.NetReceive(reader);
         
-        currentSilt = reader.ReadInt32();
-
         var count = reader.ReadInt32();
         storedItems.Clear();
         for (var i = 0; i < count; i++)
@@ -172,7 +166,6 @@ internal sealed class PreDigester : ModItem
     {
         base.SaveData(tag);
         
-        tag["currentSilt"] = currentSilt;
         tag["storedItems"] = storedItems;
     }
     
@@ -180,7 +173,6 @@ internal sealed class PreDigester : ModItem
     {
         base.LoadData(tag);
         
-        currentSilt = tag.GetInt("currentSilt");
         storedItems = tag.Get<Dictionary<int, int>>("storedItems");
     }
 
@@ -196,19 +188,12 @@ internal sealed class PreDigester : ModItem
             return false;
         }
 
-        if (currentSilt >= max_silt)
-        {
-            return false;
-        }
-
         ExtractItem(player, itemType);
         return true;
     }
 
     private void ExtractItem(Player player, int itemType)
     {
-        currentSilt++;
-
         instanceToSendItemsTo = this;
         player.ExtractinatorUse(itemType, TileID.Extractinator);
         instanceToSendItemsTo = null;
