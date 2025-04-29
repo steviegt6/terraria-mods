@@ -43,11 +43,11 @@ internal sealed class PreDigester : ModItem
             {
                 item.TurnToAir();
             }
-            
+
             return true;
         }
     }
-    
+
     private const int max_items = 20;
 
     public override string Texture => Assets.Images.Items.Misc.PreDigester.KEY;
@@ -55,7 +55,8 @@ internal sealed class PreDigester : ModItem
     private Dictionary<int, int> storedItems = [];
 
     private static PreDigester? instanceToSendItemsTo;
-    
+    private static bool wasFull;
+
     public override void SetDefaults()
     {
         base.SetDefaults();
@@ -74,7 +75,7 @@ internal sealed class PreDigester : ModItem
             // Give coins directly to the player.
             if (instanceToSendItemsTo is not null && !ItemID.Sets.CommonCoin[type])
             {
-                instanceToSendItemsTo.AddExtractinatorResult(type, stack);
+                instanceToSendItemsTo.AddExtractinatorResult(type, stack, out wasFull);
                 return;
             }
 
@@ -85,9 +86,9 @@ internal sealed class PreDigester : ModItem
     public override void ModifyTooltips(List<TooltipLine> tooltips)
     {
         base.ModifyTooltips(tooltips);
-        
+
         // TODO: Sort tooltips properly
-        
+
         /*var silt = new TooltipLine(Mod, "PreDigesterSiltCount", $"{GetItemTag(currentSilt, ItemID.SiltBlock)}/{GetItemTag(max_silt, ItemID.SiltBlock)}");
         tooltips.Add(silt);*/
 
@@ -98,7 +99,7 @@ internal sealed class PreDigester : ModItem
             {
                 continue;
             }
-            
+
             items += $"{GetItemTag(stack, itemType)} ";
         }
         if (items.Length > 0)
@@ -109,7 +110,7 @@ internal sealed class PreDigester : ModItem
         tooltips.Add(itemsLine);
 
         return;
-        
+
         static string GetItemTag(int amount, int type)
         {
             return $"[i/s{amount}:{type}]";
@@ -129,10 +130,10 @@ internal sealed class PreDigester : ModItem
             {
                 continue;
             }
-            
+
             player.QuickSpawnItem(player.GetSource_ItemUse(Item, "PreDigester"), itemType, stack);
         }
-        
+
         storedItems.Clear();
         return true;
     }
@@ -140,7 +141,7 @@ internal sealed class PreDigester : ModItem
     public override void NetSend(BinaryWriter writer)
     {
         base.NetSend(writer);
-        
+
         writer.Write(storedItems.Count);
         foreach (var kvp in storedItems)
         {
@@ -152,7 +153,7 @@ internal sealed class PreDigester : ModItem
     public override void NetReceive(BinaryReader reader)
     {
         base.NetReceive(reader);
-        
+
         var count = reader.ReadInt32();
         storedItems.Clear();
         for (var i = 0; i < count; i++)
@@ -166,14 +167,14 @@ internal sealed class PreDigester : ModItem
     public override void SaveData(TagCompound tag)
     {
         base.SaveData(tag);
-        
+
         tag["storedItems"] = storedItems;
     }
-    
+
     public override void LoadData(TagCompound tag)
     {
         base.LoadData(tag);
-        
+
         storedItems = tag.Get<Dictionary<int, int>>("storedItems");
     }
 
@@ -189,25 +190,39 @@ internal sealed class PreDigester : ModItem
             return false;
         }
 
-        ExtractItem(player, itemType);
-        return true;
+        return ExtractItem(player, itemType);
     }
 
-    private void ExtractItem(Player player, int itemType)
+    private bool ExtractItem(Player player, int itemType)
     {
         instanceToSendItemsTo = this;
         player.ExtractinatorUse(itemType, TileID.Extractinator);
         instanceToSendItemsTo = null;
+
+        if (!wasFull)
+        {
+            return true;
+        }
+
+        wasFull = false;
+        return false;
     }
 
-    private void AddExtractinatorResult(int itemType, int stack)
+    private void AddExtractinatorResult(int itemType, int stack, out bool failed)
     {
+        if (storedItems.Count >= max_items && !storedItems.ContainsKey(itemType))
+        {
+            failed = true;
+            return;
+        }
+
+        failed = false;
         if (!storedItems.TryAdd(itemType, stack))
         {
             storedItems[itemType] += stack;
         }
     }
-    
+
     private static bool CanBeExtracted(int itemType)
     {
         return ItemID.Sets.ExtractinatorMode[itemType] != -1;
