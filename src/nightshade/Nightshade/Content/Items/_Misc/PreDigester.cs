@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 using Terraria;
 using Terraria.ID;
@@ -48,11 +50,11 @@ internal sealed class PreDigester : ModItem
         }
     }
 
-    private const int max_items = 5;
+    private const int max_items = 200;
 
     public override string Texture => Assets.Images.Items.Misc.PreDigester.KEY;
 
-    private Dictionary<int, int> storedItems = [];
+    private List<(int itemType, int stack)> storedItems = [];
 
     private static PreDigester? instanceToSendItemsTo;
     private static bool wasFull;
@@ -149,10 +151,10 @@ internal sealed class PreDigester : ModItem
         base.NetSend(writer);
 
         writer.Write(storedItems.Count);
-        foreach (var kvp in storedItems)
+        foreach (var (itemType, stack) in storedItems)
         {
-            writer.Write(kvp.Key);
-            writer.Write(kvp.Value);
+            writer.Write(itemType);
+            writer.Write(stack);
         }
     }
 
@@ -166,7 +168,7 @@ internal sealed class PreDigester : ModItem
         {
             var itemType = reader.ReadInt32();
             var stack = reader.ReadInt32();
-            storedItems[itemType] = stack;
+            storedItems.Add((itemType, stack));
         }
     }
 
@@ -181,7 +183,7 @@ internal sealed class PreDigester : ModItem
     {
         base.LoadData(tag);
 
-        storedItems = tag.Get<Dictionary<int, int>>("storedItems");
+        storedItems = tag.Get<List<(int, int)>>("storedItems");
     }
 
     /// <summary>
@@ -216,20 +218,41 @@ internal sealed class PreDigester : ModItem
 
     private bool AddExtractinatorResult(int itemType, int stack)
     {
-        if (storedItems.Count >= max_items && !storedItems.ContainsKey(itemType))
+        if (storedItems.Select(x => x.stack).Sum() + stack > max_items)
         {
             return false;
         }
-
-        if (!storedItems.TryAdd(itemType, stack))
+        
+        // Respect max stack sizes for items when adding
+        var maxStackSize = ContentSamples.ItemsByType[itemType].maxStack;
+        for (var i = 0; i < storedItems.Count; i++)
         {
-            var newStack = storedItems[itemType] + stack;
-            if (newStack > ContentSamples.ItemsByType[itemType].stack)
-            {
-                return false;
-            }
+            var (t, s) = storedItems[i];
             
-            storedItems[itemType] = newStack;
+            if (itemType != t)
+            {
+                continue;
+            }
+
+            if (s >= maxStackSize)
+            {
+                continue;
+            }
+
+            var add = Math.Min(stack, maxStackSize - s);
+            stack -= add;
+            storedItems[i] = (t, s + add);
+            
+            if (stack <= 0)
+            {
+                return true;
+            }
+        }
+        
+        // If we still have some stack, add it as a new item.
+        if (stack > 0)
+        {
+            storedItems.Add((itemType, stack));
         }
 
         return true;
