@@ -71,7 +71,8 @@ internal sealed class PreDigester : ModItem
 
         On_Player.DropItemFromExtractinator += (orig, self, type, stack) =>
         {
-            if (instanceToSendItemsTo is not null)
+            // Give coins directly to the player.
+            if (instanceToSendItemsTo is not null && !ItemID.Sets.CommonCoin[type])
             {
                 instanceToSendItemsTo.AddExtractinatorResult(type, stack);
                 return;
