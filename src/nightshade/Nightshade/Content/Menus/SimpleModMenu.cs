@@ -69,6 +69,7 @@ internal sealed class SimpleModMenu : ModMenu
         Debug.Assert(panelShaderData is not null);
         Debug.Assert(flowerShaderData is not null);
 
+        Main.menuMode = 888;
         // Background rendering.
         {
             var dims = new Rectangle(0, 0, Main.screenWidth / 2, Main.screenHeight / 2);
@@ -127,6 +128,8 @@ internal sealed class SimpleModMenu : ModMenu
             spriteBatch.Restart(in ss);
         }
 
+        return false; 
+        
         // Draw logo flower.
         {
             var rotation = Main.GlobalTimeWrappedHourly / 10f;
