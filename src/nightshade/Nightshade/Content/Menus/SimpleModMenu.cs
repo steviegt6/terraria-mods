@@ -15,6 +15,7 @@ using Terraria;
 using Terraria.GameContent;
 using Terraria.ModLoader;
 
+
 namespace Nightshade.Content.Menus;
 
 // very simple btw
@@ -50,6 +51,11 @@ internal sealed class SimpleModMenu : ModMenu
             {
                 panelShaderData  = Assets.Shaders.UI.ModPanelShader.CreatePanelShader();
                 flowerShaderData = Assets.Shaders.UI.CoolFlowerShader.CreateFlowerShader();
+
+                On_Main.DrawVersionNumber += (orig, color, up) =>
+                {
+                    return;
+                };
             }
         );
 
@@ -129,7 +135,7 @@ internal sealed class SimpleModMenu : ModMenu
         }
 
         return false; 
-        
+
         // Draw logo flower.
         {
             var rotation = Main.GlobalTimeWrappedHourly / 10f;
