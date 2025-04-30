@@ -128,7 +128,7 @@ internal sealed class PreDigester : ModItem
             var item = storedItems[storedItems.Count - 1];
 
             //Visuals
-            Vector2 spewPos = player.RotatedRelativePoint(player.MountedCenter) + new Vector2(20 * player.direction, -10);
+            Vector2 spewPos = player.RotatedRelativePoint(player.MountedCenter) + new Vector2(15 * player.direction, -5);
             for (int i = 0; i < 3; i++) Dust.NewDust(spewPos, 0, 0, DustID.Silt, 0, 0);
             for (int i = 0; i < Math.Ceiling(item.stack / 10f); i++)
             {

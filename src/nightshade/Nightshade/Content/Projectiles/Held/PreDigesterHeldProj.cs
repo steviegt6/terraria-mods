@@ -57,7 +57,7 @@ namespace Nightshade.Content.Projectiles.Held
                 Projectile.rotation = MathHelper.Lerp(Projectile.rotation, 0.2f, 0.1f);
                 sackScale = MathHelper.Lerp(sackScale, 1f, 0.1f);
                 sackRot = MathHelper.Lerp(sackRot, 0f, 0.1f);
-                Projectile.Opacity += 0.1f;
+                Projectile.Opacity += 0.2f;
             }
             //Go Down and Spew
             else if (Projectile.ai[1] == 1)
@@ -73,7 +73,7 @@ namespace Nightshade.Content.Projectiles.Held
                 Projectile.rotation = MathHelper.Lerp(Projectile.rotation, 1f, 0.1f);
                 sackScale = MathHelper.Lerp(sackScale, 1f, 0.1f);
                 sackRot = MathHelper.Lerp(sackRot, 1f, 0.1f);
-                Projectile.Opacity -= 0.1f;
+                Projectile.Opacity -= 0.2f;
                 if (Projectile.Opacity <= 0f) Projectile.Kill();
             }
 
