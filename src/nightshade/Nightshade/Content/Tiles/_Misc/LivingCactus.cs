@@ -10,21 +10,19 @@ using Terraria.ModLoader;
 
 namespace Nightshade.Content.Tiles;
 
-internal sealed class LivingCactus : ModTile
+public sealed class LivingCactus : ModTile
 {
     public override string Texture => Assets.Images.Tiles.Misc.LivingCactus.KEY;
 
     public override void SetStaticDefaults()
     {
-        base.SetStaticDefaults();
-
         TileID.Sets.CanBeClearedDuringGeneration[Type] = false;
         TileID.Sets.CanBeClearedDuringOreRunner[Type] = false;
+
         Main.tileSolid[Type] = true;
+		Main.tileBlockLight[Type] = true;
 
-        RegisterItemDrop(ItemID.Cactus);
-
-        TileID.Sets.ChecksForMerge[Type] = true;
+		TileID.Sets.ChecksForMerge[Type] = true;
         Main.tileMerge[Type][ModContent.TileType<LivingCactusWood>()] = true;
         Main.tileMerge[Type][TileID.Sand] = true;
         Main.tileMerge[TileID.Sand][Type] = true;
@@ -36,12 +34,13 @@ internal sealed class LivingCactus : ModTile
         Main.tileMerge[TileID.Dirt][Type] = true;
         Main.tileMerge[Type][TileID.Grass] = true;
         Main.tileMerge[TileID.Grass][Type] = true;
-        Main.tileBlockLight[Type] = true;
 
         DustType = DustID.t_Cactus;
         HitSound = SoundID.Dig;
 
-        AddMapEntry(new Color(121, 158, 29));
+		RegisterItemDrop(ItemID.Cactus);
+
+		AddMapEntry(new Color(121, 158, 29));
     }
 
     public override IEnumerable<Item> GetItemDrops(int i, int j) => [new Item(ItemID.Cactus)];
@@ -54,21 +53,21 @@ internal sealed class LivingCactus : ModTile
     }
 }
 
-internal sealed class LivingCactusWood : ModTile
+public sealed class LivingCactusWood : ModTile
 {
     public override string Texture => Assets.Images.Tiles.Misc.LivingCactusWood.KEY;
 
     public override void SetStaticDefaults()
     {
-        base.SetStaticDefaults();
-
         TileID.Sets.CanBeClearedDuringGeneration[Type] = false;
         TileID.Sets.CanBeClearedDuringOreRunner[Type] = false;
+
         Main.tileSolid[Type] = true;
+		Main.tileBrick[Type] = true;
+		Main.tileBlockLight[Type] = true;
 
-        RegisterItemDrop(ModContent.ItemType<LivingCactusWoodBlock>());
-
-        Main.tileMerge[Type][ModContent.TileType<LivingCactus>()] = true;
+		TileID.Sets.ChecksForMerge[Type] = true;
+		Main.tileMerge[Type][ModContent.TileType<LivingCactus>()] = true;
         Main.tileMerge[Type][TileID.Sand] = true;
         Main.tileMerge[TileID.Sand][Type] = true;
         Main.tileMerge[Type][TileID.Sandstone] = true;
@@ -79,11 +78,13 @@ internal sealed class LivingCactusWood : ModTile
         Main.tileMerge[TileID.Dirt][Type] = true;
         Main.tileMerge[Type][TileID.Grass] = true;
         Main.tileMerge[TileID.Grass][Type] = true;
-        Main.tileBlockLight[Type] = true;
 
         DustType = DustID.PalmWood;
         HitSound = SoundID.Dig;
 
-        AddMapEntry(new Color(207, 167, 82));
+		RegisterItemDrop(ModContent.ItemType<CactusWoodBlock>());
+		AddMapEntry(new Color(207, 167, 82));
     }
+
+	public override IEnumerable<Item> GetItemDrops(int i, int j) => [new Item(ModContent.ItemType<CactusWoodBlock>())];
 }

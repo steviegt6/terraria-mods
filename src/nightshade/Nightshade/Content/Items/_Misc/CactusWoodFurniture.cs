@@ -1,0 +1,21 @@
+using Nightshade.Content.Tiles;
+
+using Terraria.ID;
+using Terraria.ModLoader;
+
+namespace Nightshade.Content.Items;
+
+public sealed class CactusWoodPlatformBlock : ModItem
+{
+	public override string Texture => Assets.Images.Items.Misc.CactusWoodFurniture.CactusWoodPlatformBlock.KEY;
+
+	public override void SetDefaults()
+	{
+		base.SetDefaults();
+
+		Item.DefaultToPlaceableTile(ModContent.TileType<CactusWoodPlatform>());
+
+		Item.value = 50;
+		Item.rare = ItemRarityID.Green;
+	}
+}

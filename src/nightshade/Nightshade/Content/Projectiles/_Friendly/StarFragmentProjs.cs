@@ -1,4 +1,4 @@
-using System;
+/*using System;
 
 using Microsoft.Xna.Framework;
 
@@ -386,4 +386,4 @@ internal sealed class StarFragmentProjSpawner : ModProjectile
         );
         Projectile.Kill();
     }
-}
+}*/
