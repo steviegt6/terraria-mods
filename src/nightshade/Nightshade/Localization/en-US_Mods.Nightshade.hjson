@@ -79,6 +79,56 @@ Items: {
 			'Shards from the heavens'
 			'''
 	}
+
+	LivingCactusBlock: {
+		DisplayName: Living Cactus Block
+		Tooltip: ""
+	}
+
+	LivingCactusWand: {
+		DisplayName: Living Cactus Wand
+		Tooltip: ""
+	}
+
+	LivingCactusWoodBlock: {
+		DisplayName: Living Cactus Wood
+		Tooltip: ""
+	}
+
+	LivingPalmLeafBlock: {
+		DisplayName: Living Palm Leaf Block
+		Tooltip: ""
+	}
+
+	LivingPalmWoodBlock: {
+		DisplayName: Living Palm Wood Block
+		Tooltip: ""
+	}
+
+	LivingCactusPotPlacer: {
+		DisplayName: Living Cactus Pot Placer
+		Tooltip: ""
+	}
+
+	CactusWoodBlock: {
+		DisplayName: Cactus Wood
+		Tooltip: ""
+	}
+
+	CactusWoodPlatformBlock: {
+		DisplayName: Cactus Wood Platform
+		Tooltip: ""
+	}
+
+	LivingCactusWoodWand: {
+		DisplayName: Living Cactus Wood Wand
+		Tooltip: ""
+	}
+
+	PreDigester: {
+		DisplayName: Pre-Digester
+		Tooltip: Processes loose sediment from the comfort of your inventory
+	}
 }
 
 Projectiles: {

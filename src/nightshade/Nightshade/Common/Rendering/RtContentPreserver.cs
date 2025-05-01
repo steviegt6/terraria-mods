@@ -3,13 +3,12 @@ using Microsoft.Xna.Framework.Graphics;
 using Nightshade.Common.Loading;
 
 using Terraria;
-using Terraria.ModLoader;
 
 namespace Nightshade.Common.Rendering;
 
-internal sealed class RtContentPreserver : IInitializer
+internal sealed class RtContentPreserver : ILoad
 {
-    void IInitializer.Load()
+    void ILoad.Load()
     {
         Main.RunOnMainThread(
             () =>
