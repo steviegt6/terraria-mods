@@ -1,7 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
-using System.Diagnostics.Eventing.Reader;
-using System.Numerics;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
@@ -12,6 +10,44 @@ namespace Nightshade.Content.NPCs.Crimson;
 
 internal sealed class Snapper : ModNPC
 {
+    private sealed class CoolBloodDust : ModDust
+    {
+        public override string Texture => Assets.Images.Dusts.CoolBloodDust.KEY;
+
+        public override void OnSpawn(Dust dust)
+        {
+            base.OnSpawn(dust);
+
+            dust.rotation = Main.rand.NextFloat(MathHelper.TwoPi);
+        }
+
+        public override bool Update(Dust dust)
+        {
+            dust.position += dust.velocity;
+            dust.velocity.X *= 0.98f;
+            dust.velocity.Y += 0.2f;
+            dust.rotation += dust.velocity.X / 5f;
+
+            if (Collision.SolidCollision(dust.position - Vector2.One * 4f, 8, 8) && dust.fadeIn == 0f)
+            {
+                dust.velocity = Vector2.Zero;
+                dust.scale -= 0.1f;
+            }
+
+            if (dust.scale < 0f)
+            {
+                dust.active = false;
+            }
+
+            return false;
+        }
+
+        public override Color? GetAlpha(Dust dust, Color lightColor)
+        {
+            return lightColor;
+        }
+    }
+
     public override string Texture => Assets.Images.NPCs.Crimson.Snapper.KEY;
 
     private ref float TimerForPlayersColliding => ref NPC.ai[0];
@@ -66,7 +102,7 @@ internal sealed class Snapper : ModNPC
             CooldownUntilCanBiteAgain = MathF.Max(CooldownUntilCanBiteAgain, 0);
         }
 
-        NPC.alpha += IsUnableToBite ? -25 : 25;
+        NPC.alpha += (IsUnableToBite || TimerForPlayersColliding > 25) ? -25 : 25;
         NPC.alpha = MathHelper.Clamp(NPC.alpha, 0, 230);
     }
 
