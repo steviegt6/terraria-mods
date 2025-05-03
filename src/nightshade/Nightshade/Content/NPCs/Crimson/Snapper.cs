@@ -66,6 +66,7 @@ internal sealed class Snapper : ModNPC
 
         Main.npcFrameCount[NPC.type] = 2;
         NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Confused] = true;
+        NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Poisoned] = true;
 
         NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers()
         {
@@ -80,15 +81,15 @@ internal sealed class Snapper : ModNPC
 
         (NPC.width, NPC.height) = (88, 24);
 
-        NPC.damage = 10;
-        NPC.defense = 5;
-        NPC.lifeMax = 60;
+        NPC.damage = 40;
+        NPC.defense = 6;
+        NPC.lifeMax = 150;
         NPC.value = Item.buyPrice(silver: 20);
         NPC.knockBackResist = 0f;
         NPC.HitSound = SoundID.NPCHit20;
         NPC.DeathSound = SoundID.NPCDeath12;
 
-        NPC.alpha = 230;
+        NPC.alpha = NPC.IsABestiaryIconDummy ? 0 : 230;
     }
 
     public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
@@ -97,7 +98,9 @@ internal sealed class Snapper : ModNPC
 
         bestiaryEntry.Info.AddRange([
             BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.TheCrimson,
-			new FlavorTextBestiaryInfoElement("Mods.Nightshade.NPCs.Snapper.Bestiary"),
+            BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.UndergroundCrimson,
+            new BestiaryPortraitBackgroundProviderPreferenceInfoElement(BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.TheCrimson),
+            new FlavorTextBestiaryInfoElement("Mods.Nightshade.NPCs.Snapper.Bestiary"),
         ]);
     }
 
@@ -201,7 +204,7 @@ internal sealed class Snapper : ModNPC
 
     public override float SpawnChance(NPCSpawnInfo spawnInfo)
     {
-        return SpawnCondition.Crimson.Chance * 0.1f;
+        return SpawnCondition.Crimson.Chance * 0.2f;
     }
 
     public override void ModifyNPCLoot(NPCLoot npcLoot)
