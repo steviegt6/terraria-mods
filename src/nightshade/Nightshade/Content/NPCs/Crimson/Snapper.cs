@@ -97,7 +97,7 @@ internal sealed class Snapper : ModNPC
 
         bestiaryEntry.Info.AddRange([
             BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.TheCrimson,
-			new FlavorTextBestiaryInfoElement("Mods.NIGHTSHADE.NPCs.Snapper.Bestiary"),
+			new FlavorTextBestiaryInfoElement("Mods.Nightshade.NPCs.Snapper.Bestiary"),
         ]);
     }
 
