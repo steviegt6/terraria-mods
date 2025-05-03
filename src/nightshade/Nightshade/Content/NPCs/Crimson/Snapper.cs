@@ -88,6 +88,7 @@ internal sealed class Snapper : ModNPC
         NPC.knockBackResist = 0f;
         NPC.HitSound = SoundID.NPCHit20;
         NPC.DeathSound = SoundID.NPCDeath12;
+        NPC.rarity = 1;
 
         NPC.alpha = NPC.IsABestiaryIconDummy ? 0 : 230;
     }
@@ -142,7 +143,7 @@ internal sealed class Snapper : ModNPC
         {
             HasCollidedWithPlayerThisFrame = true;
             PreviousTimerForPlayersColliding = TimerForPlayersColliding;
-            TimerForPlayersColliding += victimHitbox.Intersects(npcHitbox) && !IsUnableToBite ? 2 : -5;
+            TimerForPlayersColliding += victimHitbox.Intersects(npcHitbox) && !IsUnableToBite ? 1 : -1;
             TimerForPlayersColliding = MathHelper.Clamp(TimerForPlayersColliding, 0, 30);
         }
         return false;
@@ -150,7 +151,7 @@ internal sealed class Snapper : ModNPC
 
     public override bool CanHitPlayer(Player target, ref int cooldownSlot)
     {
-        return TimerForPlayersColliding == 30 && !IsUnableToBite;
+        return TimerForPlayersColliding > 25 && TimerForPlayersColliding < 30 && !IsUnableToBite;
     }
 
     public override void OnHitPlayer(Player target, Player.HurtInfo hitInfo)
@@ -165,8 +166,7 @@ internal sealed class Snapper : ModNPC
                 target.AddBuff(BuffID.Rabies, 15 * 60, true); //lol
             }
             CooldownUntilCanBiteAgain = 5 * 60;
-            TimerForPlayersColliding -= 1;
-            PreviousTimerForPlayersColliding -= 1;
+            PreviousTimerForPlayersColliding = TimerForPlayersColliding;
             NPC.netUpdate = true;
 
             Vector2 dustPosition = new Vector2(NPC.Hitbox.X + (NPC.direction == 1 ? NPC.Hitbox.Width / 2 : 0), NPC.Hitbox.Y + NPC.Hitbox.Height * 0.8f);
@@ -204,6 +204,10 @@ internal sealed class Snapper : ModNPC
 
     public override float SpawnChance(NPCSpawnInfo spawnInfo)
     {
+        if (spawnInfo.PlayerSafe || spawnInfo.Water)
+        {
+            return 0f;
+        }
         return SpawnCondition.Crimson.Chance * 0.2f;
     }
 
