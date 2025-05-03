@@ -21,6 +21,11 @@ UI: {
 }
 
 Items: {
+	Banners: {
+		TooltipDefault: "{$CommonItemTooltip.BannerBonus}{0}"
+		TooltipWeak: "{$CommonItemTooltip.BannerBonusReduced}{0}"
+	}
+
 	StarTalismanItem: {
 		DisplayName: Star Talisman
 		Tooltip: Increases mana gained from star pickups by 20%
@@ -92,4 +97,10 @@ Projectiles: {
 	StarFragmentProjSpawner.DisplayName: Star Fragment Proj Spawner
 }
 
-NPCs.Snapper.DisplayName: Snapper
+NPCs: {
+	Snapper: {
+		DisplayName: Snapper
+		BannerDisplayName: Snapper Banner
+		Bestiary: To hide from their prey, these ravenous beasts will coat themselves with a illusionary pheromone that confuses their unsuspecting victims.
+	}
+}

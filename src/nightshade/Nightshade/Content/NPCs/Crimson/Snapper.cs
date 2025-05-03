@@ -1,6 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Nightshade.Content.Dusts;
+using Nightshade.Content.Tiles;
 using System;
+using System.Diagnostics.Eventing.Reader;
+using System.IO;
 using Terraria;
+using Terraria.Audio;
+using Terraria.Enums;
+using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -10,47 +18,11 @@ namespace Nightshade.Content.NPCs.Crimson;
 
 internal sealed class Snapper : ModNPC
 {
-    private sealed class CoolBloodDust : ModDust
-    {
-        public override string Texture => Assets.Images.Dusts.CoolBloodDust.KEY;
-
-        public override void OnSpawn(Dust dust)
-        {
-            base.OnSpawn(dust);
-
-            dust.rotation = Main.rand.NextFloat(MathHelper.TwoPi);
-        }
-
-        public override bool Update(Dust dust)
-        {
-            dust.position += dust.velocity;
-            dust.velocity.X *= 0.98f;
-            dust.velocity.Y += 0.2f;
-            dust.rotation += dust.velocity.X / 5f;
-
-            if (Collision.SolidCollision(dust.position - Vector2.One * 4f, 8, 8) && dust.fadeIn == 0f)
-            {
-                dust.velocity = Vector2.Zero;
-                dust.scale -= 0.1f;
-            }
-
-            if (dust.scale < 0f)
-            {
-                dust.active = false;
-            }
-
-            return false;
-        }
-
-        public override Color? GetAlpha(Dust dust, Color lightColor)
-        {
-            return lightColor;
-        }
-    }
-
     public override string Texture => Assets.Images.NPCs.Crimson.Snapper.KEY;
+    //string IHasMonsterBanner.ItemTexture => Assets.Images.NPCs.Crimson.Snapper_BannerItem.KEY;
 
     private ref float TimerForPlayersColliding => ref NPC.ai[0];
+    private ref float PreviousTimerForPlayersColliding => ref NPC.ai[1];
     //To prevent the enemy from snapping faster the more players are touching it
     private bool HasCollidedWithPlayerThisFrame
     {
@@ -61,7 +33,32 @@ internal sealed class Snapper : ModNPC
         }
     }
     private ref float CooldownUntilCanBiteAgain => ref NPC.ai[2];
+    private bool ShouldMouthStayClosedForced => CooldownUntilCanBiteAgain > 30;
     private bool IsUnableToBite => CooldownUntilCanBiteAgain > 0;
+
+    public override void Load()
+    {
+        base.Load();
+
+        GoreLoader.AddGoreFromTexture<SimpleModGore>(Mod, Texture + "_Gore1");
+        GoreLoader.AddGoreFromTexture<SimpleModGore>(Mod, Texture + "_Gore2");
+    }
+
+    public override bool IsLoadingEnabled(Mod mod)
+    {
+        int npcType = NPCLoader.NPCCount;
+        int bannerType = MonsterBannerItem.RegisterMonsterBanner(
+            mod,
+            name: "SnapperBanner",
+            npcType: npcType,
+            itemTexture: Assets.Images.NPCs.Crimson.Snapper_BannerItem.KEY,
+            tileTexture: Assets.Images.NPCs.Crimson.Snapper_BannerTile.KEY
+        );
+        Banner = npcType;
+        BannerItem = bannerType;
+
+        return base.IsLoadingEnabled(mod);
+    }
 
     public override void SetStaticDefaults()
     {
@@ -69,13 +66,19 @@ internal sealed class Snapper : ModNPC
 
         Main.npcFrameCount[NPC.type] = 2;
         NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Confused] = true;
+
+        NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers()
+        {
+            Frame = 1,
+        };
+        NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
     }
 
     public override void SetDefaults()
     {
         base.SetDefaults();
 
-        (NPC.width, NPC.height) = (88, 48);
+        (NPC.width, NPC.height) = (88, 24);
 
         NPC.damage = 10;
         NPC.defense = 5;
@@ -86,9 +89,16 @@ internal sealed class Snapper : ModNPC
         NPC.DeathSound = SoundID.NPCDeath12;
 
         NPC.alpha = 230;
+    }
 
-        Banner = Type;
-        BannerItem = ItemID.FaceMonsterBanner;
+    public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+    {
+        base.SetBestiary(database, bestiaryEntry);
+
+        bestiaryEntry.Info.AddRange([
+            BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.TheCrimson,
+			new FlavorTextBestiaryInfoElement("Mods.NIGHTSHADE.NPCs.Snapper.Bestiary"),
+        ]);
     }
 
     public override void AI()
@@ -102,17 +112,34 @@ internal sealed class Snapper : ModNPC
             CooldownUntilCanBiteAgain = MathF.Max(CooldownUntilCanBiteAgain, 0);
         }
 
-        NPC.alpha += (IsUnableToBite || TimerForPlayersColliding > 25) ? -25 : 25;
-        NPC.alpha = MathHelper.Clamp(NPC.alpha, 0, 230);
+        if (TimerForPlayersColliding > 25 && PreviousTimerForPlayersColliding <= 25)
+        {
+            SoundEngine.PlaySound(SoundID.ChesterClose.WithPitchOffset(-0.5f), NPC.Center);
+        }
+        else if (TimerForPlayersColliding <= 25 && PreviousTimerForPlayersColliding > 25)
+        {
+            SoundEngine.PlaySound(SoundID.ChesterOpen.WithVolume(0.25f).WithPitchOffset(-0.5f), NPC.Center);
+        }
+
+        if (NPC.IsABestiaryIconDummy)
+        {
+            NPC.alpha = 0;
+        }
+        else
+        {
+            NPC.alpha += (TimerForPlayersColliding > 25) ? -25 : 25;
+            NPC.alpha = MathHelper.Clamp(NPC.alpha, 0, 230);
+        }
     }
 
     public override bool ModifyCollisionData(Rectangle victimHitbox, ref int immunityCooldownSlot, ref MultipliableFloat damageMultiplier, ref Rectangle npcHitbox)
     {
         npcHitbox = new Rectangle(npcHitbox.X + (NPC.direction == 1 ? npcHitbox.Width / 2 : 0), npcHitbox.Y, npcHitbox.Width / 2, npcHitbox.Height);
-        if (!HasCollidedWithPlayerThisFrame && !IsUnableToBite)
+        if (!HasCollidedWithPlayerThisFrame && !ShouldMouthStayClosedForced)
         {
             HasCollidedWithPlayerThisFrame = true;
-            TimerForPlayersColliding += victimHitbox.Intersects(npcHitbox) ? 2 : -5;
+            PreviousTimerForPlayersColliding = TimerForPlayersColliding;
+            TimerForPlayersColliding += victimHitbox.Intersects(npcHitbox) && !IsUnableToBite ? 2 : -5;
             TimerForPlayersColliding = MathHelper.Clamp(TimerForPlayersColliding, 0, 30);
         }
         return false;
@@ -120,14 +147,14 @@ internal sealed class Snapper : ModNPC
 
     public override bool CanHitPlayer(Player target, ref int cooldownSlot)
     {
-        return TimerForPlayersColliding == 30;
+        return TimerForPlayersColliding == 30 && !IsUnableToBite;
     }
 
-    public override void OnHitPlayer(Player target, Player.HurtInfo hurtInfo)
+    public override void OnHitPlayer(Player target, Player.HurtInfo hitInfo)
     {
-        base.OnHitPlayer(target, hurtInfo);
+        base.OnHitPlayer(target, hitInfo);
 
-        if (hurtInfo.Damage > 0)
+        if (hitInfo.Damage > 0)
         {
             target.AddBuff(BuffID.Bleeding, 5 * 60, true);
             if (Main.expertMode)
@@ -135,8 +162,32 @@ internal sealed class Snapper : ModNPC
                 target.AddBuff(BuffID.Rabies, 15 * 60, true); //lol
             }
             CooldownUntilCanBiteAgain = 5 * 60;
-            TimerForPlayersColliding = 0;
+            TimerForPlayersColliding -= 1;
+            PreviousTimerForPlayersColliding -= 1;
             NPC.netUpdate = true;
+
+            Vector2 dustPosition = new Vector2(NPC.Hitbox.X + (NPC.direction == 1 ? NPC.Hitbox.Width / 2 : 0), NPC.Hitbox.Y + NPC.Hitbox.Height * 0.8f);
+            for (int i = 0; i < 16; i++)
+            {
+                Dust.NewDust(dustPosition, NPC.Hitbox.Width / 2, 8, ModContent.DustType<CoolBloodDust>(), SpeedX: 1 * hitInfo.HitDirection, SpeedY: -0.2f, Scale: 0.8f);
+            }
+            SoundEngine.PlaySound(SoundID.NPCDeath23, NPC.Center);
+
+        }
+    }
+
+    public override void HitEffect(NPC.HitInfo hitInfo)
+    {
+        for (int i = 0; i < (NPC.life <= 0 ? 32 : 12); i++)
+        {
+            Dust.NewDust(NPC.position, NPC.width, NPC.height, ModContent.DustType<CoolBloodDust>(), SpeedX: 2f * hitInfo.HitDirection, SpeedY: -0.5f, Scale: 0.8f, Alpha: NPC.life <= 0 ? 0 : NPC.alpha);
+        }
+        if (NPC.life <= 0)
+        {
+            for (int i = 1; i <= 2; i++)
+            {
+                Gore.NewGore(NPC.GetSource_Death(), NPC.Center, Vector2.Zero, Mod.Find<ModGore>($"{Name}_Gore{i}").Type, NPC.scale);
+            }
         }
     }
 
@@ -145,7 +196,7 @@ internal sealed class Snapper : ModNPC
         base.FindFrame(frameHeight);
 
         NPC.spriteDirection = NPC.direction;
-        NPC.frame.Y = frameHeight * (TimerForPlayersColliding > 25 || IsUnableToBite ? 1 : 0);
+        NPC.frame.Y = frameHeight * (TimerForPlayersColliding > 25 || ShouldMouthStayClosedForced ? 1 : 0);
     }
 
     public override float SpawnChance(NPCSpawnInfo spawnInfo)
