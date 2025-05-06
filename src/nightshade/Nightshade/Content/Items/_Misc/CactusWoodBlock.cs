@@ -14,8 +14,5 @@ public sealed class CactusWoodBlock : ModItem
 		base.SetDefaults();
 
 		Item.DefaultToPlaceableTile(ModContent.TileType<CactusWood>());
-
-		Item.value = 100;
-		Item.rare = ItemRarityID.Green;
 	}
 }

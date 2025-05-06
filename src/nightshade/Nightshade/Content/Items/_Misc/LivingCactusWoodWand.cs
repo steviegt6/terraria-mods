@@ -26,4 +26,12 @@ internal sealed class LivingCactusWoodWand : ModItem
         Item.useTime = 15;
         Item.useStyle = ItemUseStyleID.Swing;
     }
+
+	public override void AddRecipes()
+	{
+        CreateRecipe()
+            .AddIngredient<CactusWoodBlock>(30)
+            .AddTile(TileID.LivingLoom)
+            .Register();
+	}
 }
