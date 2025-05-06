@@ -129,6 +129,11 @@ Items: {
 		DisplayName: Pre-Digester
 		Tooltip: Processes loose sediment from the comfort of your inventory
 	}
+
+	CoconutChest: {
+		DisplayName: Coconut Chest
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
