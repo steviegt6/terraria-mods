@@ -47,7 +47,7 @@ public class RenderTargetPool : ModSystem
             targets[key] = queue = [];
         }
 
-        return queue.TryDequeue(out var rt) ? rt : new RenderTarget2D(Main.instance.GraphicsDevice, width, height);
+        return queue.TryDequeue(out var rt) ? rt : new RenderTarget2D(Main.instance.GraphicsDevice, width, height, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.PreserveContents);
     }
 
     /// <summary>

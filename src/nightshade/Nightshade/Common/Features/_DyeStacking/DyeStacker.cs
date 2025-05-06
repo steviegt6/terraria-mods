@@ -23,6 +23,8 @@ internal sealed class DyeStacker : ModSystem
             base.SetDefaults(entity);
 
             entity.dye = BindShader(
+                GameShaders.Armor.GetShaderIdFromItemId(ItemID.AcidDye),
+                GameShaders.Armor.GetShaderIdFromItemId(ItemID.GelDye),
                 GameShaders.Armor.GetShaderIdFromItemId(ItemID.RedDye)
             );
         }
@@ -50,6 +52,7 @@ internal sealed class DyeStacker : ModSystem
         Main.RunOnMainThread(() =>
             {
                 immediateRenderer = new SpriteBatch(Main.instance.GraphicsDevice);
+                immediateRenderer?.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null);
             }
         );
     }
@@ -78,14 +81,12 @@ internal sealed class DyeStacker : ModSystem
         if (dye_map.TryGetValue(cdd.shader, out var shaders))
         {
             var texture = cdd.texture;
-
-            immediateRenderer?.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null);
+            
+            var rts = Main.instance.GraphicsDevice.GetRenderTargets();
+            RtContentPreserver.ApplyToBindings(rts);
 
             for (var i = 0; i < shaders.Length - 1; i++)
             {
-                var oldRts = Main.instance.GraphicsDevice.GetRenderTargets();
-                RtContentPreserver.ApplyToBindings(oldRts);
-
                 var rt = RenderTargetPool.Get(cdd.texture.Width, cdd.texture.Height);
                 Main.instance.GraphicsDevice.SetRenderTarget(rt);
                 Main.instance.GraphicsDevice.Clear(Color.Transparent);
@@ -97,8 +98,14 @@ internal sealed class DyeStacker : ModSystem
                 GameShaders.Armor.Apply(localShaderIndex, player, cdd);
 
                 immediateRenderer?.Draw(texture, Vector2.Zero, Color.White);
-
-                Main.instance.GraphicsDevice.SetRenderTargets(oldRts);
+                // if (cdd.useDestinationRectangle)
+                // {
+                //     immediateRenderer?.Draw(texture, cdd.destinationRectangle, cdd.sourceRect, cdd.color, cdd.rotation, cdd.origin, cdd.effect, 0f);
+                // }
+                // else
+                // {
+                //     immediateRenderer?.Draw(texture, cdd.position, cdd.sourceRect, cdd.color, cdd.rotation, cdd.origin, cdd.scale, cdd.effect, 0f);
+                // }
 
                 if (i != 0)
                 {
@@ -111,16 +118,23 @@ internal sealed class DyeStacker : ModSystem
                 texture = rt;
             }
 
-            immediateRenderer?.End();
-
             // Make it use the final shader.
-            cdd.shader = 0;
-            cdd.texture = texture;
+            {
+                PlayerDrawHelper.UnpackShader(shaders[^1], out var localShaderIndex, out var shaderType);
+                Debug.Assert(shaderType == PlayerDrawHelper.ShaderConfiguration.ArmorShader);
+
+                cdd.shader = localShaderIndex;
+                cdd.texture = texture;
+            }
 
             if (texture is RenderTarget2D toReturn)
             {
                 hanging_targets.Enqueue(toReturn);
             }
+
+            Main.instance.GraphicsDevice.SetRenderTargets(rts);
+
+            // immediateRenderer?.End();
         }
 
         // Final render pass.
