@@ -29,6 +29,7 @@ internal sealed class DyeStacker : ModSystem
     }
 
     private static readonly Dictionary<int, int[]> dye_map = [];
+    private static readonly Queue<RenderTarget2D> hanging_targets = [];
 
     private static int count;
     private static SpriteBatch? immediateRenderer;
@@ -51,6 +52,16 @@ internal sealed class DyeStacker : ModSystem
                 immediateRenderer = new SpriteBatch(Main.instance.GraphicsDevice);
             }
         );
+    }
+
+    public override void PostUpdateEverything()
+    {
+        base.PostUpdateEverything();
+
+        while (hanging_targets.TryDequeue(out var rt))
+        {
+            RenderTargetPool.Return(rt);
+        }
     }
 
     // Basically all uses of armor shaders are done with DrawData which routes
@@ -105,9 +116,12 @@ internal sealed class DyeStacker : ModSystem
             // Make it use the final shader.
             cdd.shader = 0;
             cdd.texture = texture;
-        }
 
-        // TODO: We leak a pooled Target at the end.
+            if (texture is RenderTarget2D toReturn)
+            {
+                hanging_targets.Enqueue(toReturn);
+            }
+        }
 
         // Final render pass.
         orig(player, cHead, ref cdd);
