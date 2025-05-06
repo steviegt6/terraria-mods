@@ -23,8 +23,6 @@ internal sealed class DyeStacker : ModSystem
             base.SetDefaults(entity);
 
             entity.dye = BindShader(
-                GameShaders.Armor.GetShaderIdFromItemId(ItemID.AcidDye),
-                GameShaders.Armor.GetShaderIdFromItemId(ItemID.GelDye),
                 GameShaders.Armor.GetShaderIdFromItemId(ItemID.RedDye)
             );
         }
@@ -51,7 +49,6 @@ internal sealed class DyeStacker : ModSystem
         Main.RunOnMainThread(() =>
             {
                 immediateRenderer = new SpriteBatch(Main.instance.GraphicsDevice);
-                immediateRenderer.Begin(SpriteSortMode.Immediate, null, null, null, null, null);
             }
         );
     }
@@ -69,13 +66,18 @@ internal sealed class DyeStacker : ModSystem
         // TODO: Should we handle cHead?
         if (dye_map.TryGetValue(cdd.shader, out var shaders))
         {
+            var texture = cdd.texture;
+
+            immediateRenderer?.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null);
+
             for (var i = 0; i < shaders.Length - 1; i++)
             {
                 var oldRts = Main.instance.GraphicsDevice.GetRenderTargets();
                 RtContentPreserver.ApplyToBindings(oldRts);
 
                 var rt = RenderTargetPool.Get(cdd.texture.Width, cdd.texture.Height);
-                Main.instance.GraphicsDevice.SetRenderTargets(rt);
+                Main.instance.GraphicsDevice.SetRenderTarget(rt);
+                Main.instance.GraphicsDevice.Clear(Color.Transparent);
 
                 PlayerDrawHelper.UnpackShader(shaders[i], out var localShaderIndex, out var shaderType);
                 Debug.Assert(shaderType == PlayerDrawHelper.ShaderConfiguration.ArmorShader);
@@ -83,23 +85,26 @@ internal sealed class DyeStacker : ModSystem
                 GameShaders.Hair.Apply(0, player, cdd);
                 GameShaders.Armor.Apply(localShaderIndex, player, cdd);
 
-                immediateRenderer?.Draw(cdd.texture, Vector2.Zero, Color.White);
+                immediateRenderer?.Draw(texture, Vector2.Zero, Color.White);
 
                 Main.instance.GraphicsDevice.SetRenderTargets(oldRts);
 
                 if (i != 0)
                 {
-                    if (cdd.texture is RenderTarget2D cddRt)
+                    if (texture is RenderTarget2D cddRt)
                     {
                         RenderTargetPool.Return(cddRt);
                     }
                 }
 
-                cdd.texture = rt;
+                texture = rt;
             }
 
+            immediateRenderer?.End();
+
             // Make it use the final shader.
-            cdd.shader = shaders[^1];
+            cdd.shader = 0;
+            cdd.texture = texture;
         }
 
         // TODO: We leak a pooled Target at the end.
