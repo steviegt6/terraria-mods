@@ -5,9 +5,9 @@ using Terraria.ModLoader;
 
 namespace Nightshade.Content.Items;
 
-internal sealed class LivingCactusWand : ModItem
+internal sealed class LivingCactusWoodWand : ModItem
 {
-    public override string Texture => Assets.Images.Items.Misc.LivingCactusWand.KEY;
+    public override string Texture => Assets.Images.Items.Misc.LivingCactusWoodWand.KEY;
 
     public override void SetDefaults()
     {
@@ -18,8 +18,8 @@ internal sealed class LivingCactusWand : ModItem
         Item.value = 100;
         Item.rare = ItemRarityID.Green;
 
-        Item.tileWand = ItemID.Cactus;
-        Item.createTile = ModContent.TileType<LivingCactus>();
+        Item.tileWand = ModContent.ItemType<CactusWoodBlock>();
+		Item.createTile = ModContent.TileType<LivingCactusWood>();
 
         Item.autoReuse = true;
         Item.useAnimation = 20;
@@ -29,10 +29,9 @@ internal sealed class LivingCactusWand : ModItem
 
 	public override void AddRecipes()
 	{
-		CreateRecipe()
-			.AddIngredient(ItemID.Cactus, 15)
-			.AddIngredient<CactusWoodBlock>(15)
-			.AddTile(TileID.LivingLoom)
-			.Register();
+        CreateRecipe()
+            .AddIngredient<CactusWoodBlock>(30)
+            .AddTile(TileID.LivingLoom)
+            .Register();
 	}
 }

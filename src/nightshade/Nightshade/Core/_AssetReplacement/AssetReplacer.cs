@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 using ReLogic.Content;
 
+using Terraria;
 using Terraria.GameContent;
 
 namespace Nightshade.Core;
@@ -38,6 +39,7 @@ internal static class AssetReplacer
     
     public static Handle<Texture2D> Npc(int value, Texture2D newAsset)
     {
+        Main.instance.LoadNPC(value);
         return Replace(TextureAssets.Npc[value], newAsset);
     }
     

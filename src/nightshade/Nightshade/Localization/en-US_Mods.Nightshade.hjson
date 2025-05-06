@@ -91,7 +91,7 @@ Items: {
 	}
 
 	LivingCactusWoodBlock: {
-		DisplayName: Living Cactus Wood Block
+		DisplayName: Living Cactus Wood
 		Tooltip: ""
 	}
 
@@ -109,6 +109,31 @@ Items: {
 		DisplayName: Living Cactus Pot Placer
 		Tooltip: ""
 	}
+
+	CactusWoodBlock: {
+		DisplayName: Cactus Wood
+		Tooltip: ""
+	}
+
+	CactusWoodPlatformBlock: {
+		DisplayName: Cactus Wood Platform
+		Tooltip: ""
+	}
+
+	LivingCactusWoodWand: {
+		DisplayName: Living Cactus Wood Wand
+		Tooltip: ""
+	}
+
+	PreDigester: {
+		DisplayName: Pre-Digester
+		Tooltip: Processes loose sediment from the comfort of your inventory
+	}
+
+	CoconutChest: {
+		DisplayName: Coconut Chest
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
@@ -120,4 +145,5 @@ Projectiles: {
 	StarFragmentProj4.DisplayName: Star Fragment
 	StarFragmentProj5.DisplayName: Star Fragment
 	StarFragmentProjSpawner.DisplayName: Star Fragment Proj Spawner
+	PreDigesterHeldProj.DisplayName: Pre Digester Held Proj
 }
