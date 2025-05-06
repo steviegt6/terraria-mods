@@ -48,11 +48,11 @@ internal sealed class DyeStacker : ModSystem
         base.Load();
 
         On_PlayerDrawHelper.SetShaderForData += ManipulateDrawDataToOnlyUseFinalShader;
+        On_PlayerDrawLayers.DrawPlayer_RenderAllLayers += PropagateDrawDataChanges;
 
         Main.RunOnMainThread(() =>
             {
                 immediateRenderer = new SpriteBatch(Main.instance.GraphicsDevice);
-                immediateRenderer?.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null);
             }
         );
     }
@@ -78,16 +78,19 @@ internal sealed class DyeStacker : ModSystem
     private static void ManipulateDrawDataToOnlyUseFinalShader(On_PlayerDrawHelper.orig_SetShaderForData orig, Player player, int cHead, ref DrawData cdd)
     {
         // TODO: Should we handle cHead?
-        if (dye_map.TryGetValue(cdd.shader, out var shaders))
+        if (cdd.texture is not null && dye_map.TryGetValue(cdd.shader, out var shaders))
         {
             var texture = cdd.texture;
-            
+
             var rts = Main.instance.GraphicsDevice.GetRenderTargets();
             RtContentPreserver.ApplyToBindings(rts);
+
 
             for (var i = 0; i < shaders.Length - 1; i++)
             {
                 var rt = RenderTargetPool.Get(cdd.texture.Width, cdd.texture.Height);
+                hanging_targets.Enqueue(rt);
+
                 Main.instance.GraphicsDevice.SetRenderTarget(rt);
                 Main.instance.GraphicsDevice.Clear(Color.Transparent);
 
@@ -97,47 +100,81 @@ internal sealed class DyeStacker : ModSystem
                 GameShaders.Hair.Apply(0, player, cdd);
                 GameShaders.Armor.Apply(localShaderIndex, player, cdd);
 
+                immediateRenderer?.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null);
                 immediateRenderer?.Draw(texture, Vector2.Zero, Color.White);
-                // if (cdd.useDestinationRectangle)
-                // {
-                //     immediateRenderer?.Draw(texture, cdd.destinationRectangle, cdd.sourceRect, cdd.color, cdd.rotation, cdd.origin, cdd.effect, 0f);
-                // }
-                // else
-                // {
-                //     immediateRenderer?.Draw(texture, cdd.position, cdd.sourceRect, cdd.color, cdd.rotation, cdd.origin, cdd.scale, cdd.effect, 0f);
-                // }
-
-                if (i != 0)
-                {
-                    if (texture is RenderTarget2D cddRt)
-                    {
-                        RenderTargetPool.Return(cddRt);
-                    }
-                }
+                immediateRenderer?.End();
 
                 texture = rt;
             }
 
             // Make it use the final shader.
             {
-                PlayerDrawHelper.UnpackShader(shaders[^1], out var localShaderIndex, out var shaderType);
-                Debug.Assert(shaderType == PlayerDrawHelper.ShaderConfiguration.ArmorShader);
-
-                cdd.shader = localShaderIndex;
+                cdd.shader = shaders[^1];
                 cdd.texture = texture;
             }
-
-            if (texture is RenderTarget2D toReturn)
-            {
-                hanging_targets.Enqueue(toReturn);
-            }
-
+            
             Main.instance.GraphicsDevice.SetRenderTargets(rts);
-
-            // immediateRenderer?.End();
         }
 
         // Final render pass.
         orig(player, cHead, ref cdd);
+    }
+
+    // We regrettably rewrite this entire method for one minor edit.
+    private static void PropagateDrawDataChanges(On_PlayerDrawLayers.orig_DrawPlayer_RenderAllLayers orig, ref PlayerDrawSet drawinfo)
+    {
+        var drawDataCache = drawinfo.DrawDataCache.ToArray();
+        if (PlayerDrawLayers.spriteBuffer == null)
+        {
+            PlayerDrawLayers.spriteBuffer = new SpriteDrawBuffer(Main.graphics.GraphicsDevice, 200);
+        }
+        else
+        {
+            PlayerDrawLayers.spriteBuffer.CheckGraphicsDevice(Main.graphics.GraphicsDevice);
+        }
+
+        for (var i = 0; i < drawDataCache.Length; i++)
+        {
+            PlayerDrawHelper.SetShaderForData(drawinfo.drawPlayer, drawinfo.cHead, ref drawDataCache[i]);
+            if (drawDataCache[i].texture != null)
+            {
+                drawDataCache[i].Draw(PlayerDrawLayers.spriteBuffer);
+            }
+        }
+
+        PlayerDrawLayers.spriteBuffer.UploadAndBind();
+        var cdd = default(DrawData);
+        var num = 0;
+        for (var i = 0; i <= drawDataCache.Length; i++)
+        {
+            if (drawinfo.projectileDrawPosition == i)
+            {
+                if (cdd.shader != 0)
+                {
+                    Main.pixelShader.CurrentTechnique.Passes[0].Apply();
+                }
+
+                PlayerDrawLayers.spriteBuffer.Unbind();
+                PlayerDrawLayers.DrawHeldProj(drawinfo, Main.projectile[drawinfo.drawPlayer.heldProj]);
+                PlayerDrawLayers.spriteBuffer.Bind();
+            }
+
+            if (i == drawDataCache.Length)
+            {
+                continue;
+            }
+
+            cdd = drawDataCache[i];
+            cdd.sourceRect ??= cdd.texture.Frame();
+
+            PlayerDrawHelper.SetShaderForData(drawinfo.drawPlayer, drawinfo.cHead, ref cdd);
+            if (cdd.texture != null)
+            {
+                PlayerDrawLayers.spriteBuffer.DrawSingle(num++);
+            }
+        }
+
+        PlayerDrawLayers.spriteBuffer.Unbind();
+        Main.pixelShader.CurrentTechnique.Passes[0].Apply();
     }
 }
