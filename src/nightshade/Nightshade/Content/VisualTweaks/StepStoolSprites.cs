@@ -1,8 +1,6 @@
 using Daybreak.Common.Assets;
 using Daybreak.Core.Hooks;
 
-using JetBrains.Annotations;
-
 using Terraria;
 using Terraria.Graphics.Renderers;
 using Terraria.ID;
