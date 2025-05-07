@@ -1,7 +1,8 @@
+using Daybreak.Common.Assets;
+
 using JetBrains.Annotations;
 
 using Nightshade.Common.Loading;
-using Nightshade.Core;
 
 using Terraria;
 using Terraria.Graphics.Renderers;
@@ -50,8 +51,10 @@ internal sealed class StepStoolSprites : ILoad
                 return;
             }
 
-            using var _ = AssetReplacer.Extra(ExtrasID.PortableStool, Assets.Images.Items.Accessories.HandOfCreationStool.Asset.Value);
-            orig(self, camera, player, position, rotation, origin, shadow, scale);
+            using (AssetReplacer.Extra(ExtrasID.PortableStool, Assets.Images.Items.Accessories.HandOfCreationStool.Asset.Value))
+            {
+                orig(self, camera, player, position, rotation, origin, shadow, scale);
+            }
         };
     }
 }

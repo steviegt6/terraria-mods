@@ -1,11 +1,12 @@
 using System.Diagnostics;
 
+using Daybreak.Common.Assets;
+
 using JetBrains.Annotations;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-using Nightshade.Core;
 using Nightshade.Core.Attributes;
 
 using Terraria;
