@@ -19,15 +19,18 @@ namespace Daybreak.Common.Features.ModPanel;
 public abstract class ModPanelStyle
 {
     /// <summary>
-    ///     An override for the "Mod Info" button texture.
+    ///     Optionally overrides the "ModInfo" texture.
     /// </summary>
     public virtual Asset<Texture2D>? ModInfoTexture => null;
 
     /// <summary>
-    ///     An override for the "Mod Config" button texture.
+    ///     Optionally overrides the "ModConfig" texture.
     /// </summary>
     public virtual Asset<Texture2D>? ModConfigTexture => null;
 
+    /// <summary>
+    ///     Optionally overrides the "InnerPanel" texture.
+    /// </summary>
     public virtual Asset<Texture2D>? InnerPanelTexture => null;
 
     // I guess if someone was really crazy, they could do all the initialization
@@ -67,28 +70,51 @@ public abstract class ModPanelStyle
     {
         return modName;
     }
+    /// <summary>
+    ///     Invoked before hover colors are set.
+    /// </summary>
 
     public virtual bool PreSetHoverColors(UIModItem element, bool hovered)
     {
         return true;
     }
 
+    /// <summary>
+    ///     Invoked after hover colors are set.
+    /// </summary>
     public virtual void PostSetHoverColors(UIModItem element, bool hovered) { }
 
+    /// <summary>
+    ///     Invoked before the element is drawn.
+    /// </summary>
     public virtual bool PreDraw(UIModItem element, SpriteBatch sb)
     {
         return true;
     }
 
+    /// <summary>
+    ///     Invoked after the element is drawn.
+    /// </summary>
     public virtual void PostDraw(UIModItem element, SpriteBatch sb) { }
 
+    /// <summary>
+    ///     Invoked specifically before the panel is drawn, assuming
+    ///     <see cref="PreDraw"/> returned <see langword="true"/>.
+    /// </summary>
     public virtual bool PreDrawPanel(UIModItem element, SpriteBatch sb)
     {
         return true;
     }
 
+    /// <summary>
+    ///     Invoked specifically after the panel is drawn, assuming
+    ///     <see cref="PreDraw"/> returned <see langword="true"/>.
+    /// </summary>
     public virtual void PostDrawPanel(UIModItem element, SpriteBatch sb) { }
 
+    /// <summary>
+    ///     Modifies the "Enabled"/"Disabled" button text.
+    /// </summary>
     public virtual Color ModifyEnabledTextColor(bool enabled, Color color)
     {
         return color;
