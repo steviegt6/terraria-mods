@@ -1,8 +1,7 @@
 using Daybreak.Common.Assets;
+using Daybreak.Core.Hooks;
 
 using JetBrains.Annotations;
-
-using Nightshade.Common.Loading;
 
 using Terraria;
 using Terraria.Graphics.Renderers;
@@ -11,7 +10,6 @@ using Terraria.ModLoader;
 
 namespace Nightshade.Content.VisualTweaks;
 
-[UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
 internal sealed class StepStoolSprites : ILoad
 {
     private sealed class TrackHoC : ModPlayer
