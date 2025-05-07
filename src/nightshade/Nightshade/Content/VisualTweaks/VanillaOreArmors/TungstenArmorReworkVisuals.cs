@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Nightshade.Common.Rendering;
 using Nightshade.Core;
 using Nightshade.Core.Attributes;
+using Daybreak.Common.Rendering;
 
 using Terraria;
 using Terraria.DataStructures;
