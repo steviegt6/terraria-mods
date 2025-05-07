@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Text;
 
+using Daybreak.Common.Rendering;
+
 using JetBrains.Annotations;
 
 using Microsoft.Xna.Framework;
@@ -10,7 +12,6 @@ using Microsoft.Xna.Framework.Graphics;
 
 using MonoMod.Cil;
 
-using Nightshade.Common.Rendering;
 using Nightshade.Core;
 using Nightshade.Core.Attributes;
 

@@ -1,17 +1,13 @@
 ﻿using System;
-using System.Diagnostics;
 
 using Microsoft.Xna.Framework;
 
 using MonoMod.Cil;
 using Nightshade.Common.Utilities;
-using Nightshade.Content.Items;
 
 using Terraria;
-using Terraria.GameContent.Biomes;
 using Terraria.GameContent.Biomes.Desert;
 using Terraria.GameContent.Generation;
-using Terraria.ID;
 using Terraria.IO;
 using Terraria.ModLoader;
 using Terraria.WorldBuilding;

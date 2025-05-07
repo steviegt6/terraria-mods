@@ -10,4 +10,9 @@
         <AssemblyVersion>1.0.0</AssemblyVersion>
     </PropertyGroup>
 
+    <ItemGroup>
+        <Publicize Include="FNA"/>
+        <Publicize Include="ReLogic"/>
+    </ItemGroup>
+
 </Project>

@@ -1,6 +1,5 @@
 using Nightshade.Content.Tiles;
 
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Nightshade.Content.Items;

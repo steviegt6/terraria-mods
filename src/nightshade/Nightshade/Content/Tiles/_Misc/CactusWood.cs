@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 using Microsoft.Xna.Framework;
 
 using Nightshade.Content.Items;
