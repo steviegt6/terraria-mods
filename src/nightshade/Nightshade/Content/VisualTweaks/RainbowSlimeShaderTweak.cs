@@ -26,7 +26,6 @@ internal sealed class RainbowSlimeShaderTweak : GlobalNPC
 {
     private const int rainbow_slime = NPCID.RainbowSlime;
 
-    [InitializedInLoad]
     private static AssetReplacer.Handle<Texture2D>? rainbowSlimeTextureHandle;
 
     [InitializedInLoad]
@@ -35,11 +34,6 @@ internal sealed class RainbowSlimeShaderTweak : GlobalNPC
     public override void Load()
     {
         base.Load();
-
-        rainbowSlimeTextureHandle = AssetReplacer.Npc(
-            rainbow_slime,
-            Assets.Images.NPCs.RainbowSlime.Asset.Value
-        );
 
 #pragma warning disable CS0618 // Type or member is obsolete
         rainbowSlimeShaderData = new MiscShaderData(Main.PixelShaderRef, "QueenSlime");
@@ -50,13 +44,6 @@ internal sealed class RainbowSlimeShaderTweak : GlobalNPC
 #pragma warning restore CS0618 // Type or member is obsolete
     }
 
-    public override void Unload()
-    {
-        base.Unload();
-
-        rainbowSlimeTextureHandle?.Dispose();
-    }
-
     public override bool AppliesToEntity(NPC entity, bool lateInstantiation)
     {
         return entity.type == rainbow_slime;
@@ -65,6 +52,12 @@ internal sealed class RainbowSlimeShaderTweak : GlobalNPC
     public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
         Debug.Assert(rainbowSlimeShaderData is not null);
+
+        rainbowSlimeTextureHandle?.Dispose();
+        rainbowSlimeTextureHandle = AssetReplacer.Npc(
+            rainbow_slime,
+            Assets.Images.NPCs.RainbowSlime.Asset.Value
+        );
 
         // Since we override the rendering entirely, just make the NPC white.
         npc.color = Color.White;
@@ -90,6 +83,8 @@ internal sealed class RainbowSlimeShaderTweak : GlobalNPC
 
     public override void PostDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
+        rainbowSlimeTextureHandle?.Dispose();
+
         Main.pixelShader.CurrentTechnique.Passes[0].Apply();
 
         if (!npc.IsABestiaryIconDummy)
