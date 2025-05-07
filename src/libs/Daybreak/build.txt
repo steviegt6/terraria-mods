@@ -1,0 +1,5 @@
+displayName = DAYBREAK
+author = Tomat
+version = 1.0.0
+homepage = https://discord.gg/6Fm4ZTHVub
+side = NoSync

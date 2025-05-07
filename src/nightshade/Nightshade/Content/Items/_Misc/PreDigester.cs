@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 
 using Terraria;
+using Terraria.Enums;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -66,6 +67,11 @@ internal sealed class PreDigester : ModItem
         (Item.width, Item.height) = (24, 12);
 
         Item.useStyle = ItemUseStyleID.Thrust;
+
+        Item.SetShopValues(
+            rarity: ItemRarityColor.Blue1,
+            coinValue: Item.sellPrice(gold: 1, silver: 50)
+        );
     }
 
     public override void Load()
@@ -84,7 +90,7 @@ internal sealed class PreDigester : ModItem
                 }
 
                 wasFull = !instanceToSendItemsTo.AddExtractinatorResult(type, stack, out var remaining);
-                
+
                 if (remaining > 0)
                 {
                     self.QuickSpawnItem(self.GetSource_ItemUse(Item, "PreDigester"), type, remaining);
@@ -257,13 +263,13 @@ internal sealed class PreDigester : ModItem
         {
             remaining = 0;
         }
-        
+
         // Respect max stack sizes for items when adding.
         var maxStackSize = ContentSamples.ItemsByType[itemType].maxStack;
         for (var i = 0; i < storedItems.Count; i++)
         {
             var (t, s) = storedItems[i];
-            
+
             if (itemType != t)
             {
                 continue;
@@ -277,13 +283,13 @@ internal sealed class PreDigester : ModItem
             var add = Math.Min(stack, maxStackSize - s);
             stack -= add;
             storedItems[i] = (t, s + add);
-            
+
             if (stack <= 0)
             {
                 return true;
             }
         }
-        
+
         // If we still have some stack, add it as a new item.
         if (stack > 0)
         {

@@ -1,0 +1,1 @@
+Library mod for developers that does cool things.  Might also do things for players.

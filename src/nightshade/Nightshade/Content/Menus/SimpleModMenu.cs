@@ -1,5 +1,7 @@
 using System.Diagnostics;
 
+using Daybreak.Common.Rendering;
+
 using JetBrains.Annotations;
 
 using Microsoft.Xna.Framework;

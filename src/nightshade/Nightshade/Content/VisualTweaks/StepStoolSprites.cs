@@ -1,7 +1,5 @@
-using JetBrains.Annotations;
-
-using Nightshade.Common.Loading;
-using Nightshade.Core;
+using Daybreak.Common.Assets;
+using Daybreak.Core.Hooks;
 
 using Terraria;
 using Terraria.Graphics.Renderers;
@@ -10,7 +8,6 @@ using Terraria.ModLoader;
 
 namespace Nightshade.Content.VisualTweaks;
 
-[UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
 internal sealed class StepStoolSprites : ILoad
 {
     private sealed class TrackHoC : ModPlayer
@@ -50,8 +47,10 @@ internal sealed class StepStoolSprites : ILoad
                 return;
             }
 
-            using var _ = AssetReplacer.Extra(ExtrasID.PortableStool, Assets.Images.Items.Accessories.HandOfCreationStool.Asset.Value);
-            orig(self, camera, player, position, rotation, origin, shadow, scale);
+            using (AssetReplacer.Extra(ExtrasID.PortableStool, Assets.Images.Items.Accessories.HandOfCreationStool.Asset.Value))
+            {
+                orig(self, camera, player, position, rotation, origin, shadow, scale);
+            }
         };
     }
 }

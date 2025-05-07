@@ -1,4 +1,4 @@
-using Nightshade.Common.Loading;
+using Daybreak.Core.Hooks;
 
 using Terraria.UI.Chat;
 

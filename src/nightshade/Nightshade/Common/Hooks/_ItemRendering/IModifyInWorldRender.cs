@@ -1,9 +1,9 @@
+using Daybreak.Core.Hooks;
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using MonoMod.Cil;
-
-using Nightshade.Common.Loading;
 
 using Terraria;
 using Terraria.ModLoader;

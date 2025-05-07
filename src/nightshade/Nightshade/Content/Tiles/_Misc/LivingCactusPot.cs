@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 using Microsoft.Xna.Framework;
 
 using Nightshade.Content.Gores;
@@ -9,7 +7,6 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.ObjectData;
 
 namespace Nightshade.Content.Tiles;
 

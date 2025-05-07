@@ -1,6 +1,5 @@
 using Nightshade.Content.Tiles;
 
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Nightshade.Content.Items;
@@ -14,8 +13,5 @@ public sealed class CactusWoodBlock : ModItem
 		base.SetDefaults();
 
 		Item.DefaultToPlaceableTile(ModContent.TileType<CactusWood>());
-
-		Item.value = 100;
-		Item.rare = ItemRarityID.Green;
 	}
 }
