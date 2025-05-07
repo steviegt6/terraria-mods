@@ -1,4 +1,4 @@
-using Daybreak.Common.Cil;
+using Daybreak.Common.CIL;
 
 using MonoMod.Cil;
 

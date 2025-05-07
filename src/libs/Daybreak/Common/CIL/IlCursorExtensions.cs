@@ -3,7 +3,7 @@ using Mono.Cecil.Cil;
 
 using MonoMod.Cil;
 
-namespace Daybreak.Common.Cil;
+namespace Daybreak.Common.CIL;
 
 /// <summary>
 ///     API extensions for <see cref="ILCursor"/>s and related APIs.

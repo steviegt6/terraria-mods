@@ -1,6 +1,6 @@
 using System.Diagnostics;
 
-using Daybreak.Common.Cil;
+using Daybreak.Common.CIL;
 using Daybreak.Common.Rendering;
 
 using Microsoft.Xna.Framework;
