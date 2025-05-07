@@ -8,7 +8,6 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoMod.Cil;
 
 using Nightshade.Common.Rendering;
-using Nightshade.Common.Utilities;
 using Nightshade.Core;
 using Nightshade.Core.Attributes;
 

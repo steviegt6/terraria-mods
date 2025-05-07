@@ -1,7 +1,8 @@
-﻿using MonoMod.Cil;
+﻿using Daybreak.Common.Cil;
+
+using MonoMod.Cil;
 
 using Nightshade.Common.Loading;
-using Nightshade.Common.Utilities;
 
 using Terraria;
 using Terraria.ModLoader;
