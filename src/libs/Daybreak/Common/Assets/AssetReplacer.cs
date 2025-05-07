@@ -9,13 +9,21 @@ using Terraria.GameContent;
 
 namespace Daybreak.Common.Assets;
 
-// TODO: How does this interact with resource packs?
+// This API specifically does not mesh well with permanent modifications because
+// they may be overridden by resource packs.
 
 /// <summary>
-///     Facilitates the dynamic (and optionally transient) replacement of
+///     Facilitates the dynamic and necessarily transient replacement of
 ///     <see cref="Asset{T}"/> values.
 /// </summary>
 /// <remarks>
+///     <b>
+///         If you are intending to permanently modify an asset for the length
+///         of your mod's existence rather than in a specific or defined
+///         context, either replace the <see cref="Asset{T}"/> instance directly
+///         or use the Resource Pack API (TODO).
+///     </b>
+///     <br />
 ///     The provided APIs directly mutate the contents of an
 ///     <see cref="Asset{T}"/> rather than, say, the stored instances in
 ///     <see cref="TextureAssets"/>.  As a result, these replacements
