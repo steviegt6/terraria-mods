@@ -87,17 +87,22 @@ internal sealed class CustomModPanelImpl : ILoad
             var modConfigTextureNew = style.ModConfigTexture;
             UICommon.ButtonModConfigTexture = modConfigTextureNew ?? UICommon.ButtonModConfigTexture;
         }
-        
-        if (style.PreInitialize(self))
-        {
-            orig(self);
-        }
-        style.PostInitialize(self);
 
-        currentMod = null;
+        try
+        {
+            if (style.PreInitialize(self))
+            {
+                orig(self);
+            }
+            style.PostInitialize(self);
+        }
+        finally
+        {
+            currentMod = null;
         
-        UICommon.ButtonModInfoTexture = modInfoTextureOrig;
-        UICommon.ButtonModConfigTexture = modConfigTextureOrig;
+            UICommon.ButtonModInfoTexture = modInfoTextureOrig;
+            UICommon.ButtonModConfigTexture = modConfigTextureOrig;   
+        }
     }
 
     private static void ModifyAppendedFields(ILContext il)
@@ -181,15 +186,20 @@ internal sealed class CustomModPanelImpl : ILoad
         }
 
         currentMod = mod;
-        if (styleProvider.PanelStyle.PreDraw(self, spriteBatch))
+        try
         {
-            orig(self, spriteBatch);
+            if (styleProvider.PanelStyle.PreDraw(self, spriteBatch))
+            {
+                orig(self, spriteBatch);
+            }
+            styleProvider.PanelStyle.PostDraw(self, spriteBatch);
         }
-        styleProvider.PanelStyle.PostDraw(self, spriteBatch);
-        currentMod = null;
+        finally
+        {
+            currentMod = null;
         
-        
-        UICommon.InnerPanelTexture = innerPanelTextureOrig;
+            UICommon.InnerPanelTexture = innerPanelTextureOrig;   
+        }
     }
 
     private static void OverrideRegularPanelDrawing(
