@@ -23,7 +23,7 @@ using Terraria.UI.Chat;
 
 namespace Nightshade.Content.VisualTweaks.UI;
 
-internal sealed class NightshadePanelStyle : ModPanelStyle, ILoad
+internal sealed class NightshadePanelStyle : ModPanelStyleExt, ILoad
 {
     private sealed class ModName : UIText
     {
