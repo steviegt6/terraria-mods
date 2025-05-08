@@ -56,8 +56,11 @@ public abstract class ModPanelStyle
     /// <summary>
     ///     If <see cref="PreInitialize"/> returns <see langword="true"/>, this
     ///     method is invoked to modify the mod icon during initialization.
+    ///     <br />
+    ///     To remove the icon and shift relevant elements to the left, return
+    ///     <see langword="null"/>
     /// </summary>
-    public virtual UIImage ModifyModIcon(UIModItem element, UIImage modIcon)
+    public virtual UIImage? ModifyModIcon(UIModItem element, UIImage modIcon)
     {
         return modIcon;
     }

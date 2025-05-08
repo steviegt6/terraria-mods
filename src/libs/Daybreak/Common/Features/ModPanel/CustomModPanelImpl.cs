@@ -11,6 +11,7 @@ using MonoMod.Cil;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader;
 using Terraria.ModLoader.UI;
+using Terraria.UI;
 
 namespace Daybreak.Common.Features.ModPanel;
 
@@ -121,6 +122,28 @@ internal sealed class CustomModPanelImpl : ILoad
                 return styleProvider.PanelStyle.ModifyModIcon(self, originalImage);
             }
         );
+
+        c.EmitLdarg0();
+        c.EmitDelegate((UIImage? modIcon, UIModItem self) =>
+        {
+            if (modIcon is null)
+            {
+                self._modIconAdjust = 0;
+            }
+
+            return modIcon;
+        });
+        
+        c.GotoNext(MoveType.After, x => x.MatchStfld<UIModItem>(nameof(UIModItem._modIcon)));
+
+        var skipAppend = c.DefineLabel();
+        c.EmitLdarg0();
+        c.EmitLdfld(typeof(UIModItem).GetField(nameof(UIModItem._modIcon), BindingFlags.NonPublic | BindingFlags.Instance)!);
+        c.EmitLdcI4(0); // null
+        c.EmitBeq(skipAppend);
+
+        c.GotoNext(MoveType.After, x => x.MatchCall<UIElement>(nameof(UIElement.Append)));
+        c.MarkLabel(skipAppend);
 
         c.GotoNext(MoveType.Before, x => x.MatchStfld<UIModItem>(nameof(UIModItem._modName)));
         c.EmitLdarg0();
