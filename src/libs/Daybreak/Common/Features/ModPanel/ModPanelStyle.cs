@@ -60,7 +60,7 @@ public abstract class ModPanelStyle
     ///     To remove the icon and shift relevant elements to the left, return
     ///     <see langword="null"/>
     /// </summary>
-    public virtual UIImage? ModifyModIcon(UIModItem element, UIImage modIcon)
+    public virtual UIImage? ModifyModIcon(UIModItem element, UIImage modIcon, ref int modIconAdjust)
     {
         return modIcon;
     }

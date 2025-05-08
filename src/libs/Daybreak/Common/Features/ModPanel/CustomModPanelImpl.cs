@@ -119,20 +119,9 @@ internal sealed class CustomModPanelImpl : ILoad
                     return originalImage;
                 }
 
-                return styleProvider.PanelStyle.ModifyModIcon(self, originalImage);
+                return styleProvider.PanelStyle.ModifyModIcon(self, originalImage, ref self._modIconAdjust);
             }
         );
-
-        c.EmitLdarg0();
-        c.EmitDelegate((UIImage? modIcon, UIModItem self) =>
-        {
-            if (modIcon is null)
-            {
-                self._modIconAdjust = 0;
-            }
-
-            return modIcon;
-        });
         
         c.GotoNext(MoveType.After, x => x.MatchStfld<UIModItem>(nameof(UIModItem._modIcon)));
 

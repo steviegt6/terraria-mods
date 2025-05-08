@@ -174,7 +174,7 @@ internal sealed class NightshadePanelStyle : ModPanelStyle, ILoad
         return base.PreInitialize(element);
     }
 
-    public override UIImage ModifyModIcon(UIModItem element, UIImage modIcon)
+    public override UIImage ModifyModIcon(UIModItem element, UIImage modIcon, ref int modIconAdjust)
     {
         return new ModIcon
         {
