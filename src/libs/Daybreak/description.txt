@@ -7,3 +7,5 @@ It has convenient things like some utilities for IL editing, transient asset rep
 For more information:
 - https://github.com/steviegt6/terraria-mods/tree/master/src/libs/Daybreak
 - https://discord.gg/6Fm4ZTHVub
+
+DAYBREAK's animated panel shaders are by dreitone.
