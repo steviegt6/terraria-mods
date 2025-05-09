@@ -276,7 +276,7 @@ internal sealed class NightshadePanelStyle : ModPanelStyleExt
                 BlendState.NonPremultiplied,
                 SamplerState.PointClamp,
                 DepthStencilState.None,
-                RasterizerState.CullNone,
+                ss.RasterizerState,
                 null,
                 Main.UIScaleMatrix
             );
@@ -305,7 +305,7 @@ internal sealed class NightshadePanelStyle : ModPanelStyleExt
                     BlendState.AlphaBlend,
                     SamplerState.PointClamp,
                     DepthStencilState.None,
-                    RasterizerState.CullNone,
+                    ss.RasterizerState,
                     null,
                     Main.UIScaleMatrix
                 );
