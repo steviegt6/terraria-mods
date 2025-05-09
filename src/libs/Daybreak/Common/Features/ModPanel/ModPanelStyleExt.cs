@@ -15,52 +15,52 @@ namespace Daybreak.Common.Features.ModPanel;
 /// </summary>
 public abstract class ModPanelStyleExt : ModPanelStyle
 {
-    public override bool PreInitialize(UIPanel element)
+    public sealed override bool PreInitialize(UIPanel element)
     {
         return PreInitialize((UIModItem)element);
     }
 
-    public override void PostInitialize(UIPanel element)
+    public sealed override void PostInitialize(UIPanel element)
     {
         PostInitialize((UIModItem)element);
     }
 
-    public override UIImage? ModifyModIcon(UIPanel element, UIImage modIcon, ref int modIconAdjust)
+    public sealed override UIImage? ModifyModIcon(UIPanel element, UIImage modIcon, ref int modIconAdjust)
     {
         return ModifyModIcon((UIModItem)element, modIcon, ref modIconAdjust);
     }
 
-    public override UIText ModifyModName(UIPanel element, UIText modName)
+    public sealed override UIText ModifyModName(UIPanel element, UIText modName)
     {
         return ModifyModName((UIModItem)element, modName);
     }
 
-    public override bool PreSetHoverColors(UIPanel element, bool hovered)
+    public sealed override bool PreSetHoverColors(UIPanel element, bool hovered)
     {
         return PreSetHoverColors((UIModItem)element, hovered);
     }
 
-    public override void PostSetHoverColors(UIPanel element, bool hovered)
+    public sealed override void PostSetHoverColors(UIPanel element, bool hovered)
     {
         PostSetHoverColors((UIModItem)element, hovered);
     }
 
-    public override bool PreDraw(UIPanel element, SpriteBatch sb)
+    public sealed override bool PreDraw(UIPanel element, SpriteBatch sb)
     {
         return PreDraw((UIModItem)element, sb);
     }
 
-    public override void PostDraw(UIPanel element, SpriteBatch sb)
+    public sealed override void PostDraw(UIPanel element, SpriteBatch sb)
     {
         PostDraw((UIModItem)element, sb);
     }
 
-    public override bool PreDrawPanel(UIPanel element, SpriteBatch sb)
+    public sealed override bool PreDrawPanel(UIPanel element, SpriteBatch sb)
     {
         return PreDrawPanel((UIModItem)element, sb);
     }
 
-    public override void PostDrawPanel(UIPanel element, SpriteBatch sb)
+    public sealed override void PostDrawPanel(UIPanel element, SpriteBatch sb)
     {
         PostDrawPanel((UIModItem)element, sb);
     }
