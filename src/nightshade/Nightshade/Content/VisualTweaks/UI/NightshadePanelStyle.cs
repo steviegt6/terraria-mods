@@ -1,10 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
 using Daybreak.Common.Features.ModPanel;
 using Daybreak.Common.Rendering;
-using Daybreak.Core.Hooks;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -23,7 +23,7 @@ using Terraria.UI.Chat;
 
 namespace Nightshade.Content.VisualTweaks.UI;
 
-internal sealed class NightshadePanelStyle : ModPanelStyle, ILoad
+internal sealed class NightshadePanelStyle : ModPanelStyleExt
 {
     private sealed class ModName : UIText
     {
@@ -74,11 +74,13 @@ internal sealed class NightshadePanelStyle : ModPanelStyle, ILoad
 
     private sealed class ModIcon : UIImage
     {
+        private readonly bool useCensor;
         private readonly Asset<Texture2D> icon;
         private readonly Asset<Texture2D> iconDots;
 
-        public ModIcon() : base(TextureAssets.MagicPixel)
+        public ModIcon(bool useCensor) : base(TextureAssets.MagicPixel)
         {
+            this.useCensor = useCensor;
             icon = Assets.Images.UI.ModIcon.Icon.Asset;
             iconDots = Assets.Images.UI.ModIcon.Icon_Dots.Asset;
 
@@ -93,6 +95,21 @@ internal sealed class NightshadePanelStyle : ModPanelStyle, ILoad
             var dims = GetDimensions();
             dims.X += offset;
             dims.Y += offset;
+
+            if (useCensor)
+            {
+                spriteBatch.Draw(
+                    TextureAssets.MagicPixel.Value,
+                    new Rectangle((int)dims.X - 25, (int)dims.Y - 25, 50, 50),
+                    null,
+                    Color.Black,
+                    0f,
+                    Vector2.Zero,
+                    SpriteEffects.None,
+                    0f
+                );
+                return;
+            }
 
             var rotation = Main.GlobalTimeWrappedHourly / 10f;
 
@@ -147,14 +164,20 @@ internal sealed class NightshadePanelStyle : ModPanelStyle, ILoad
 
     private static float hoverIntensity;
 
-    public override Asset<Texture2D>? ModInfoTexture => Assets.Images.UI.ModLoader.ButtonModInfo.Asset;
+    private static bool AprilFools => DateTime.Now.Month == 4 && DateTime.Now.Day == 1;
 
-    public override Asset<Texture2D>? ModConfigTexture => Assets.Images.UI.ModLoader.ButtonModConfig.Asset;
-
-    public override Asset<Texture2D>? InnerPanelTexture => Assets.Images.UI.ModLoader.InnerPanelBackground.Asset;
-
-    void ILoad.Load()
+    public override Dictionary<TextureKind, Asset<Texture2D>> TextureOverrides { get; } = new()
     {
+        { TextureKind.ModInfo, Assets.Images.UI.ModLoader.ButtonModInfo.Asset },
+        { TextureKind.ModConfig, Assets.Images.UI.ModLoader.ButtonModConfig.Asset },
+        { TextureKind.Deps, Assets.Images.UI.ModLoader.ButtonDeps.Asset },
+        { TextureKind.InnerPanel, Assets.Images.UI.ModLoader.InnerPanelBackground.Asset },
+    };
+
+    public override void Load()
+    {
+        base.Load();
+
         Main.QueueMainThreadAction(() =>
             {
                 panelShaderData = Assets.Shaders.UI.ModPanelShader.CreatePanelShader();
@@ -174,9 +197,9 @@ internal sealed class NightshadePanelStyle : ModPanelStyle, ILoad
         return base.PreInitialize(element);
     }
 
-    public override UIImage ModifyModIcon(UIModItem element, UIImage modIcon)
+    public override UIImage ModifyModIcon(UIModItem element, UIImage modIcon, ref int modIconAdjust)
     {
-        return new ModIcon
+        return new ModIcon(AprilFools)
         {
             Left = modIcon.Left,
             Top = modIcon.Top,
@@ -187,7 +210,9 @@ internal sealed class NightshadePanelStyle : ModPanelStyle, ILoad
 
     public override UIText ModifyModName(UIModItem element, UIText modName)
     {
-        var name = Mods.Nightshade.UI.ModIcon.ModName.GetTextValue();
+        var name = AprilFools
+            ? Mods.Nightshade.UI.ModIcon.AprilFools.ModName.GetTextValue()
+            : Mods.Nightshade.UI.ModIcon.ModName.GetTextValue();
         return new ModName(name + $" v{element._mod.Version}")
         {
             Left = modName.Left,

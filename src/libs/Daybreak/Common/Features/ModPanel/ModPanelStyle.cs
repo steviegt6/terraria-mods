@@ -1,9 +1,16 @@
+using System;
+using System.Collections.Generic;
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using ReLogic.Content;
 
+using Terraria;
+using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
+using Terraria.Localization;
+using Terraria.ModLoader;
 using Terraria.ModLoader.UI;
 
 namespace Daybreak.Common.Features.ModPanel;
@@ -15,23 +22,125 @@ namespace Daybreak.Common.Features.ModPanel;
 /// <remarks>
 ///     This style may be applied to any mod, technically, so references to your
 ///     mod instance should be explicit and not assumed.
+///     <br />
+///     If you are using an assembly publicizer, you may instead extend
+///     <see cref="ModPanelStyleExt"/>, which lets you directly interface with
+///     the <see cref="UIModItem"/> instead of the generic <see cref="UIPanel"/>
+///     instance.
 /// </remarks>
-public abstract class ModPanelStyle
+public abstract class ModPanelStyle : ModType
 {
-    /// <summary>
-    ///     Optionally overrides the "ModInfo" texture.
-    /// </summary>
-    public virtual Asset<Texture2D>? ModInfoTexture => null;
+    private readonly struct TextureOverrider : IDisposable
+    {
+        private readonly Dictionary<TextureKind, Asset<Texture2D>> originals = [];
+
+        public TextureOverrider(Dictionary<TextureKind, Asset<Texture2D>> overrides)
+        {
+            foreach (var (kind, @override) in overrides)
+            {
+                originals[kind] = Get(kind);
+                Set(kind, @override);
+            }
+        }
+
+        public void Dispose()
+        {
+            foreach (var (kind, original) in originals)
+            {
+                Set(kind, original);
+            }
+        }
+
+        private static Asset<Texture2D> Get(TextureKind kind)
+        {
+            switch (kind)
+            {
+                case TextureKind.ModInfo:
+                    return UICommon.ButtonModInfoTexture;
+
+                case TextureKind.ModConfig:
+                    return UICommon.ButtonModConfigTexture;
+
+                case TextureKind.Deps:
+                    return UICommon.ButtonDepsTexture;
+
+                case TextureKind.TranslationMod:
+                    return UICommon.ButtonTranslationModTexture;
+
+                case TextureKind.Error:
+                    return UICommon.ButtonErrorTexture;
+
+                case TextureKind.InnerPanel:
+                    return UICommon.InnerPanelTexture;
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
+            }
+        }
+
+        private static void Set(TextureKind kind, Asset<Texture2D> asset)
+        {
+            switch (kind)
+            {
+                case TextureKind.ModInfo:
+                    UICommon.ButtonModInfoTexture = asset;
+                    break;
+
+                case TextureKind.ModConfig:
+                    UICommon.ButtonModConfigTexture = asset;
+                    break;
+
+                case TextureKind.Deps:
+                    UICommon.ButtonDepsTexture = asset;
+                    break;
+
+                case TextureKind.TranslationMod:
+                    UICommon.ButtonTranslationModTexture = asset;
+                    break;
+
+                case TextureKind.Error:
+                    UICommon.ButtonErrorTexture = asset;
+                    break;
+
+                case TextureKind.InnerPanel:
+                    UICommon.InnerPanelTexture = asset;
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
+            }
+        }
+    }
 
     /// <summary>
-    ///     Optionally overrides the "ModConfig" texture.
+    ///     An "information" item for the panel, such as the amount of items the
+    ///     mod adds.
     /// </summary>
-    public virtual Asset<Texture2D>? ModConfigTexture => null;
+    public readonly record struct PanelInfo(UIHoverImage InfoImage);
+
+    public enum TextureKind
+    {
+        ModInfo,
+        ModConfig,
+        Deps,
+        TranslationMod,
+        Error,
+        InnerPanel,
+    }
 
     /// <summary>
-    ///     Optionally overrides the "InnerPanel" texture.
+    ///     Supplying this dictionary with values for the
+    ///     <see cref="TextureKind"/> keys will allow you to override the
+    ///     default textures used by tModLoader with your own.
     /// </summary>
-    public virtual Asset<Texture2D>? InnerPanelTexture => null;
+    public virtual Dictionary<TextureKind, Asset<Texture2D>> TextureOverrides { get; } = [];
+
+    public sealed override void Register()
+    {
+        CustomModPanelImpl.AddPanelStyle(Mod, this);
+    }
+
+    public sealed override void InitTemplateInstance() { }
 
     // I guess if someone was really crazy, they could do all the initialization
     // themselves.
@@ -42,7 +151,7 @@ public abstract class ModPanelStyle
     ///     <see langword="false"/> to cancel regular initialization behavior,
     ///     <see langword="true"/> to enable regular execution.
     /// </returns>
-    public virtual bool PreInitialize(UIModItem element)
+    public virtual bool PreInitialize(UIPanel element)
     {
         return true;
     }
@@ -51,13 +160,16 @@ public abstract class ModPanelStyle
     ///     Invoked after <see cref="UIModItem.OnInitialize"/> is called
     ///     regardless of what <see cref="PreInitialize"/> returns.
     /// </summary>
-    public virtual void PostInitialize(UIModItem element) { }
+    public virtual void PostInitialize(UIPanel element) { }
 
     /// <summary>
     ///     If <see cref="PreInitialize"/> returns <see langword="true"/>, this
     ///     method is invoked to modify the mod icon during initialization.
+    ///     <br />
+    ///     To remove the icon and shift relevant elements to the left, return
+    ///     <see langword="null"/>
     /// </summary>
-    public virtual UIImage ModifyModIcon(UIModItem element, UIImage modIcon)
+    public virtual UIImage? ModifyModIcon(UIPanel element, UIImage modIcon, ref int modIconAdjust)
     {
         return modIcon;
     }
@@ -66,15 +178,15 @@ public abstract class ModPanelStyle
     ///     If <see cref="PreInitialize"/> returns <see langword="true"/>, this
     ///     method is invoked to modify the mod name during initialization.
     /// </summary>
-    public virtual UIText ModifyModName(UIModItem element, UIText modName)
+    public virtual UIText ModifyModName(UIPanel element, UIText modName)
     {
         return modName;
     }
+
     /// <summary>
     ///     Invoked before hover colors are set.
     /// </summary>
-
-    public virtual bool PreSetHoverColors(UIModItem element, bool hovered)
+    public virtual bool PreSetHoverColors(UIPanel element, bool hovered)
     {
         return true;
     }
@@ -82,12 +194,12 @@ public abstract class ModPanelStyle
     /// <summary>
     ///     Invoked after hover colors are set.
     /// </summary>
-    public virtual void PostSetHoverColors(UIModItem element, bool hovered) { }
+    public virtual void PostSetHoverColors(UIPanel element, bool hovered) { }
 
     /// <summary>
     ///     Invoked before the element is drawn.
     /// </summary>
-    public virtual bool PreDraw(UIModItem element, SpriteBatch sb)
+    public virtual bool PreDraw(UIPanel element, SpriteBatch sb)
     {
         return true;
     }
@@ -95,13 +207,13 @@ public abstract class ModPanelStyle
     /// <summary>
     ///     Invoked after the element is drawn.
     /// </summary>
-    public virtual void PostDraw(UIModItem element, SpriteBatch sb) { }
+    public virtual void PostDraw(UIPanel element, SpriteBatch sb) { }
 
     /// <summary>
     ///     Invoked specifically before the panel is drawn, assuming
     ///     <see cref="PreDraw"/> returned <see langword="true"/>.
     /// </summary>
-    public virtual bool PreDrawPanel(UIModItem element, SpriteBatch sb)
+    public virtual bool PreDrawPanel(UIPanel element, SpriteBatch sb)
     {
         return true;
     }
@@ -110,7 +222,7 @@ public abstract class ModPanelStyle
     ///     Invoked specifically after the panel is drawn, assuming
     ///     <see cref="PreDraw"/> returned <see langword="true"/>.
     /// </summary>
-    public virtual void PostDrawPanel(UIModItem element, SpriteBatch sb) { }
+    public virtual void PostDrawPanel(UIPanel element, SpriteBatch sb) { }
 
     /// <summary>
     ///     Modifies the "Enabled"/"Disabled" button text.
@@ -118,5 +230,60 @@ public abstract class ModPanelStyle
     public virtual Color ModifyEnabledTextColor(bool enabled, Color color)
     {
         return color;
+    }
+
+    private static readonly string[] info_keys =
+    [
+        "tModLoader.ModsXItems",
+        "tModLoader.ModsXNPCs",
+        "tModLoader.ModsXTiles",
+        "tModLoader.ModsXWalls",
+        "tModLoader.ModsXBuffs",
+        "tModLoader.ModsXMounts",
+    ];
+
+    public virtual IEnumerable<PanelInfo> GetInfos(Mod mod)
+    {
+        return GetDefaultInfos(mod);
+    }
+
+    internal IDisposable OverrideTextures()
+    {
+        return new TextureOverrider(TextureOverrides);
+    }
+
+    internal static IEnumerable<PanelInfo> GetDefaultInfos(Mod mod)
+    {
+        // Mirrors tML's default behavior of showing items, NPCs, tiles, walls,
+        // buffs, and mounts, but more optimized.
+
+        var values = new int[info_keys.Length];
+        foreach (var content in mod.GetContent())
+        {
+            values[0] += content is ModItem ? 1 : 0;
+            values[1] += content is ModNPC ? 1 : 0;
+            values[2] += content is ModTile ? 1 : 0;
+            values[3] += content is ModWall ? 1 : 0;
+            values[4] += content is ModBuff ? 1 : 0;
+            values[5] += content is ModMount ? 1 : 0;
+        }
+
+        for (var i = 0; i < info_keys.Length; i++)
+        {
+            var count = values[i];
+            if (count <= 0)
+            {
+                continue;
+            }
+
+            // Our implementation will handle determining offsets.
+            // TODO: Should we let people override this?
+            yield return new PanelInfo(
+                new UIHoverImage(Main.Assets.Request<Texture2D>(TextureAssets.InfoIcon[i].Name), Language.GetTextValue(info_keys[i], count))
+                {
+                    RemoveFloatingPointsFromDrawPosition = true,
+                }
+            );
+        }
     }
 }

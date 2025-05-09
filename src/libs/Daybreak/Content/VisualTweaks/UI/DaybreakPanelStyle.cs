@@ -12,12 +12,15 @@ using Terraria;
 using Terraria.ModLoader.UI;
 using Microsoft.Xna.Framework;
 
-internal sealed class DaybreakPanelStyle : ModPanelStyle, ILoad
+internal sealed class DaybreakPanelStyle : ModPanelStyleExt
 {
     private static WrapperShaderData<Assets.Shaders.UI.ModPanelShader.Parameters>? panelShaderData;
-    void ILoad.Load()
+
+    public override void Load()
     {
-       panelShaderData = Assets.Shaders.UI.ModPanelShader.CreatePanelShader();
+        base.Load();
+        
+        panelShaderData = Assets.Shaders.UI.ModPanelShader.CreatePanelShader();
     }
 
     public override bool PreDrawPanel(UIModItem element, SpriteBatch sb)
