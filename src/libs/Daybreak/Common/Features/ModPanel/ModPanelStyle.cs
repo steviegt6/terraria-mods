@@ -6,7 +6,10 @@ using Microsoft.Xna.Framework.Graphics;
 
 using ReLogic.Content;
 
+using Terraria;
+using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.UI;
 
@@ -108,6 +111,12 @@ public abstract class ModPanelStyle : ModType
             }
         }
     }
+
+    /// <summary>
+    ///     An "information" item for the panel, such as the amount of items the
+    ///     mod adds.
+    /// </summary>
+    public readonly record struct PanelInfo(UIHoverImage InfoImage);
 
     public enum TextureKind
     {
@@ -223,8 +232,58 @@ public abstract class ModPanelStyle : ModType
         return color;
     }
 
+    private static readonly string[] info_keys =
+    [
+        "tModLoader.ModsXItems",
+        "tModLoader.ModsXNPCs",
+        "tModLoader.ModsXTiles",
+        "tModLoader.ModsXWalls",
+        "tModLoader.ModsXBuffs",
+        "tModLoader.ModsXMounts",
+    ];
+
+    public virtual IEnumerable<PanelInfo> GetInfos(Mod mod)
+    {
+        return GetDefaultInfos(mod);
+    }
+
     internal IDisposable OverrideTextures()
     {
         return new TextureOverrider(TextureOverrides);
+    }
+
+    internal static IEnumerable<PanelInfo> GetDefaultInfos(Mod mod)
+    {
+        // Mirrors tML's default behavior of showing items, NPCs, tiles, walls,
+        // buffs, and mounts, but more optimized.
+
+        var values = new int[info_keys.Length];
+        foreach (var content in mod.GetContent())
+        {
+            values[0] += content is ModItem ? 1 : 0;
+            values[1] += content is ModNPC ? 1 : 0;
+            values[2] += content is ModTile ? 1 : 0;
+            values[3] += content is ModWall ? 1 : 0;
+            values[4] += content is ModBuff ? 1 : 0;
+            values[5] += content is ModMount ? 1 : 0;
+        }
+
+        for (var i = 0; i < info_keys.Length; i++)
+        {
+            var count = values[i];
+            if (count <= 0)
+            {
+                continue;
+            }
+
+            // Our implementation will handle determining offsets.
+            // TODO: Should we let people override this?
+            yield return new PanelInfo(
+                new UIHoverImage(Main.Assets.Request<Texture2D>(TextureAssets.InfoIcon[i].Name), Language.GetTextValue(info_keys[i], count))
+                {
+                    RemoveFloatingPointsFromDrawPosition = true,
+                }
+            );
+        }
     }
 }

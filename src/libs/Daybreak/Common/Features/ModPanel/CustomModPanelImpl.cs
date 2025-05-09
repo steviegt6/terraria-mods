@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
@@ -141,36 +142,80 @@ internal sealed class CustomModPanelImpl : ILoad, IUnload
     {
         var c = new ILCursor(il);
 
-        c.GotoNext(MoveType.Before, x => x.MatchStfld<UIModItem>(nameof(UIModItem._modIcon)));
-        c.EmitLdarg0();
-        c.EmitDelegate((UIImage originalImage, UIModItem self) => !TryGetPanelStyle(currentMod, out var style)
-            ? originalImage
-            : style.ModifyModIcon(self, originalImage, ref self._modIconAdjust)
-        );
+        // Modify the mod icon.
+        {
+            c.GotoNext(MoveType.Before, x => x.MatchStfld<UIModItem>(nameof(UIModItem._modIcon)));
+            c.EmitLdarg0();
+            c.EmitDelegate((UIImage originalImage, UIModItem self) => !TryGetPanelStyle(currentMod, out var style)
+                ? originalImage
+                : style.ModifyModIcon(self, originalImage, ref self._modIconAdjust)
+            );
 
-        c.GotoNext(MoveType.After, x => x.MatchStfld<UIModItem>(nameof(UIModItem._modIcon)));
+            c.GotoNext(MoveType.After, x => x.MatchStfld<UIModItem>(nameof(UIModItem._modIcon)));
 
-        var skipAppend = c.DefineLabel();
-        c.EmitLdarg0();
-        c.EmitLdfld(typeof(UIModItem).GetField(nameof(UIModItem._modIcon), BindingFlags.NonPublic | BindingFlags.Instance)!);
-        c.EmitLdcI4(0); // null
-        c.EmitBeq(skipAppend);
+            // Support not appending the icon by returning null.
+            var skipAppend = c.DefineLabel();
+            c.EmitLdarg0();
+            c.EmitLdfld(typeof(UIModItem).GetField(nameof(UIModItem._modIcon), BindingFlags.NonPublic | BindingFlags.Instance)!);
+            c.EmitLdcI4(0); // null
+            c.EmitBeq(skipAppend);
 
-        c.GotoNext(MoveType.After, x => x.MatchCall<UIElement>(nameof(UIElement.Append)));
-        c.MarkLabel(skipAppend);
+            c.GotoNext(MoveType.After, x => x.MatchCall<UIElement>(nameof(UIElement.Append)));
+            c.MarkLabel(skipAppend);
+        }
 
-        c.GotoNext(MoveType.Before, x => x.MatchStfld<UIModItem>(nameof(UIModItem._modName)));
-        c.EmitLdarg0();
-        c.EmitDelegate((UIText originalText, UIModItem self) =>
-            {
-                if (!TryGetPanelStyle(currentMod, out var style))
+        // Modify the mod name.
+        {
+            c.GotoNext(MoveType.Before, x => x.MatchStfld<UIModItem>(nameof(UIModItem._modName)));
+            c.EmitLdarg0();
+            c.EmitDelegate((UIText originalText, UIModItem self) => !TryGetPanelStyle(currentMod, out var style)
+                ? originalText
+                : style.ModifyModName(self, originalText)
+            );
+        }
+
+        // Modify the info buttons.
+        {
+            // Move into the actual block that handles this.
+            c.GotoNext(MoveType.After, x => x.MatchStfld<UIModItem>(nameof(UIModItem._loaded)));
+            var pos = c.Index;
+
+            // Do this manually since currentMod is null if the mod doesn't
+            // provide a style.
+            var modInfoLoc = -1;
+            c.GotoPrev(x => x.MatchLdloc(out modInfoLoc));
+            Debug.Assert(modInfoLoc != -1);
+
+            c.Index = pos;
+            c.EmitLdarg0();
+            c.EmitLdloc(modInfoLoc);
+            c.EmitDelegate((UIModItem self, Mod mod) =>
                 {
-                    return originalText;
-                }
+                    var infos = TryGetPanelStyle(mod, out var style)
+                        ? style.GetInfos(mod).ToArray()
+                        : ModPanelStyle.GetDefaultInfos(mod).ToArray();
 
-                return style.ModifyModName(self, originalText);
-            }
-        );
+                    var xOffset = -40;
+                    foreach (var info in infos)
+                    {
+                        var image = info.InfoImage;
+                        {
+                            image.Left = StyleDimension.FromPixelsAndPercent(xOffset, 1f);
+                        }
+
+                        self.Append(image);
+                        xOffset -= 18;
+                    }
+                }
+            );
+
+            // Actually jump out now to avoid running the original logic.
+            var label = c.DefineLabel();
+            c.EmitBr(label);
+
+            c.GotoNext(MoveType.After, x => x.MatchBlt(out _));
+            c.MarkLabel(label);
+        }
     }
 
     // TODO: Don't remember if we can use currentMod here, but I'd rather

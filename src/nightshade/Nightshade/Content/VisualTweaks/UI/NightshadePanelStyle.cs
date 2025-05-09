@@ -5,7 +5,6 @@ using System.Text;
 
 using Daybreak.Common.Features.ModPanel;
 using Daybreak.Common.Rendering;
-using Daybreak.Core.Hooks;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
