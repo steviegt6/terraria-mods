@@ -1,4 +1,4 @@
-DAYSHADE introduces new APIs for loading that fundamentally change how loading
+DAYBREAK introduces new APIs for loading that fundamentally change how loading
 functions if developers so choose to use the features.
 
 Instead of pushing for ModX implementations and weird fragmentation between
