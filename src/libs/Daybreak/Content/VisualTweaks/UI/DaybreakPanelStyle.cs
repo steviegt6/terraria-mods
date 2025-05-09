@@ -56,7 +56,7 @@ internal sealed class DaybreakPanelStyle : ModPanelStyleExt
                 BlendState.Additive,
                 SamplerState.PointClamp,
                 DepthStencilState.None,
-                RasterizerState.CullNone,
+                ss.RasterizerState,
                 null,
                 Main.UIScaleMatrix
             );
