@@ -112,8 +112,8 @@ internal sealed class DaybreakPanelStyle : ModPanelStyleExt
         }
     }
 
-    private static readonly Color color_1 = new(177, 100, 100);
-    private static readonly Color color_2 = new(255, 122, 2);
+    private static readonly Color color_1 = new(255, 147, 0);
+    private static readonly Color color_2 = new(255, 182, 55);
     
     private static WrapperShaderData<Assets.Shaders.UI.ModPanelShader.Parameters>? panelShaderData;
     private static WrapperShaderData<Assets.Shaders.UI.PowerfulSunIcon.Parameters>? whenDayBreaksShaderData;
