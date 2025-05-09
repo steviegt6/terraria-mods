@@ -128,6 +128,13 @@ internal sealed class DaybreakPanelStyle : ModPanelStyleExt
         whenDayBreaksShaderData = Assets.Shaders.UI.PowerfulSunIcon.CreatePanelShader();
     }
 
+    public override bool PreInitialize(UIModItem element)
+    {
+        element.BorderColor = new Color(25, 5, 5);
+        
+        return base.PreInitialize(element);
+    }
+
     public override UIImage ModifyModIcon(UIModItem element, UIImage modIcon, ref int modIconAdjust)
     {
         return new ModIcon
@@ -147,6 +154,13 @@ internal sealed class DaybreakPanelStyle : ModPanelStyleExt
             Left = modName.Left,
             Top = modName.Top,
         };
+    }
+
+    public override bool PreSetHoverColors(UIModItem element, bool hovered)
+    {
+        element.BorderColor = new Color(25, 5, 5);
+
+        return false;
     }
 
     public override bool PreDrawPanel(UIModItem element, SpriteBatch sb)
