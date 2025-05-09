@@ -31,6 +31,7 @@ namespace Daybreak.Common.Features.ModPanel;
 ///     instance.
 /// </remarks>
 [PublicAPI]
+[Autoload(Side = ModSide.Client)]
 public abstract class ModPanelStyle : ModType
 {
     private readonly struct TextureOverrider : IDisposable
