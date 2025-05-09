@@ -27,7 +27,7 @@ public sealed class DaybreakNpcSets : ModSystem
     public override void ResizeArrays()
     {
         base.ResizeArrays();
-        
+
         CanParty = CreateSet<bool?>(nameof(CanParty), null);
         ContributesToEocSpawn = CreateSet<bool?>(nameof(ContributesToEocSpawn), null);
         ContributesToTravelingMerchantSpawn = CreateSet<bool?>(nameof(ContributesToTravelingMerchantSpawn), null);
@@ -35,11 +35,11 @@ public sealed class DaybreakNpcSets : ModSystem
         VulnerableToAfterPartyOfDoom = CreateSet<bool?>(nameof(VulnerableToAfterPartyOfDoom), null);
 
         return;
-        
+
         T[] CreateSet<T>(string name, T defaultState)
         {
             return NPCID.Sets.Factory.CreateNamedSet(Mod, name)
-                        .RegisterCustomSet<T>(defaultState);
+                        .RegisterCustomSet(defaultState);
         }
     }
 
@@ -67,29 +67,29 @@ public sealed class DaybreakNpcSets : ModSystem
         c.Remove();
         c.EmitDelegate(static (NPC npc) => ContributesToEocSpawn[npc.type] ?? npc.townNPC);
     }
-    
+
     private static void ConsiderWhetherNpcLetsTravelingMerchantSpawn(ILContext il)
     {
         var c = new ILCursor(il);
-        
+
         c.GotoNext(MoveType.Before, x => x.MatchLdfld<NPC>(nameof(NPC.townNPC)));
         c.Remove();
         c.EmitDelegate(static (NPC npc) => ContributesToTravelingMerchantSpawn[npc.type] ?? npc.townNPC);
     }
-    
+
     private static void ConsiderWhetherTravelingMerchantCanSpawnNearNpc(ILContext il)
     {
         var c = new ILCursor(il);
-        
+
         c.GotoNext(MoveType.Before, x => x.MatchLdfld<NPC>(nameof(NPC.townNPC)));
         c.Remove();
         c.EmitDelegate(static (NPC npc) => TravelingMerchantCanSpawnNear[npc.type] ?? npc.townNPC);
     }
-    
+
     private static void ConsiderVulnerabilityToAfterPartyOfDoom(ILContext il)
     {
         var c = new ILCursor(il);
-        
+
         c.GotoNext(MoveType.Before, x => x.MatchLdfld<NPC>(nameof(NPC.townNPC)));
         c.Remove();
         c.EmitDelegate(static (NPC npc) => VulnerableToAfterPartyOfDoom[npc.type] ?? npc.townNPC);
