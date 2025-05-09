@@ -18,6 +18,7 @@ using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
+using Terraria.ModLoader;
 using Terraria.ModLoader.UI;
 using Terraria.UI.Chat;
 
@@ -195,6 +196,16 @@ internal sealed class NightshadePanelStyle : ModPanelStyleExt
         element.BorderColor = Color.Black;
 
         return base.PreInitialize(element);
+    }
+
+    public override void PostInitialize(UIModItem element)
+    {
+        base.PostInitialize(element);
+
+        if (ModLoader.HasMod("ConciseModList") && element._configButton is not null)
+        {
+            element._configButton._texture = Assets.Images.UI.ModLoader.ButtonModConfig_ConciseModsList.Asset;
+        }
     }
 
     public override UIImage ModifyModIcon(UIModItem element, UIImage modIcon, ref int modIconAdjust)
