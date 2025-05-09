@@ -20,6 +20,7 @@ using Terraria.UI;
 
 namespace Daybreak.Common.Features.ModPanel;
 
+[Autoload(Side = ModSide.Client)]
 internal sealed class CustomModPanelImpl : ILoad, IUnload
 {
     // The current mod whose panel style to use.
