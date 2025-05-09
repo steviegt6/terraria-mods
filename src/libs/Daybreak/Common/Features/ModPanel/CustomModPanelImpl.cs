@@ -125,19 +125,7 @@ internal sealed class CustomModPanelImpl : ILoad, IUnload
             return;
         }
 
-        var modInfoTextureOrig = UICommon.ButtonModInfoTexture;
-        {
-            var modInfoTextureNew = style.ModInfoTexture;
-            UICommon.ButtonModInfoTexture = modInfoTextureNew ?? UICommon.ButtonModInfoTexture;
-        }
-
-        var modConfigTextureOrig = UICommon.ButtonModConfigTexture;
-        {
-            var modConfigTextureNew = style.ModConfigTexture;
-            UICommon.ButtonModConfigTexture = modConfigTextureNew ?? UICommon.ButtonModConfigTexture;
-        }
-
-        try
+        using (style.OverrideTextures())
         {
             if (style.PreInitialize(self))
             {
@@ -145,13 +133,8 @@ internal sealed class CustomModPanelImpl : ILoad, IUnload
             }
             style.PostInitialize(self);
         }
-        finally
-        {
-            currentMod = null;
 
-            UICommon.ButtonModInfoTexture = modInfoTextureOrig;
-            UICommon.ButtonModConfigTexture = modConfigTextureOrig;
-        }
+        currentMod = null;
     }
 
     private static void ModifyAppendedFields(ILContext il)
@@ -223,26 +206,15 @@ internal sealed class CustomModPanelImpl : ILoad, IUnload
             return;
         }
 
-        var innerPanelTextureOrig = UICommon.InnerPanelTexture;
+        using (style.OverrideTextures())
         {
-            var innerPanelTextureNew = style.InnerPanelTexture;
-            UICommon.InnerPanelTexture = innerPanelTextureNew ?? UICommon.InnerPanelTexture;
-        }
-
-        currentMod = mod;
-        try
-        {
+            currentMod = mod;
             if (style.PreDraw(self, spriteBatch))
             {
                 orig(self, spriteBatch);
             }
             style.PostDraw(self, spriteBatch);
-        }
-        finally
-        {
             currentMod = null;
-
-            UICommon.InnerPanelTexture = innerPanelTextureOrig;
         }
     }
 

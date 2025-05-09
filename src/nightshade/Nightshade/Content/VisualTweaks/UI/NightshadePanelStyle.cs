@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
@@ -147,11 +148,12 @@ internal sealed class NightshadePanelStyle : ModPanelStyleExt
 
     private static float hoverIntensity;
 
-    public override Asset<Texture2D>? ModInfoTexture => Assets.Images.UI.ModLoader.ButtonModInfo.Asset;
-
-    public override Asset<Texture2D>? ModConfigTexture => Assets.Images.UI.ModLoader.ButtonModConfig.Asset;
-
-    public override Asset<Texture2D>? InnerPanelTexture => Assets.Images.UI.ModLoader.InnerPanelBackground.Asset;
+    public override Dictionary<TextureKind, Asset<Texture2D>> TextureOverrides { get; } = new()
+    {
+        { TextureKind.ModInfo, Assets.Images.UI.ModLoader.ButtonModInfo.Asset },
+        { TextureKind.ModConfig, Assets.Images.UI.ModLoader.ButtonModConfig.Asset },
+        { TextureKind.InnerPanel, Assets.Images.UI.ModLoader.InnerPanelBackground.Asset },
+    };
 
     public override void Load()
     {
