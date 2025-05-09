@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 
 using Terraria.GameContent.UI.Elements;
+using Terraria.ModLoader;
 using Terraria.ModLoader.UI;
 
 namespace Daybreak.Common.Features.ModPanel;
@@ -21,7 +22,7 @@ namespace Daybreak.Common.Features.ModPanel;
 ///     the <see cref="UIModItem"/> instead of the generic <see cref="UIPanel"/>
 ///     instance.
 /// </remarks>
-public abstract class ModPanelStyle
+public abstract class ModPanelStyle : ModType
 {
     /// <summary>
     ///     Optionally overrides the "ModInfo" texture.
@@ -37,6 +38,13 @@ public abstract class ModPanelStyle
     ///     Optionally overrides the "InnerPanel" texture.
     /// </summary>
     public virtual Asset<Texture2D>? InnerPanelTexture => null;
+
+    public sealed override void Register()
+    {
+        CustomModPanelImpl.AddPanelStyle(Mod, this);
+    }
+
+    public sealed override void InitTemplateInstance() { }
 
     // I guess if someone was really crazy, they could do all the initialization
     // themselves.

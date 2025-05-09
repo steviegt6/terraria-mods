@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Reflection;
 
 using Daybreak.Core.Hooks;
@@ -15,10 +18,58 @@ using Terraria.UI;
 
 namespace Daybreak.Common.Features.ModPanel;
 
-internal sealed class CustomModPanelImpl : ILoad
+internal sealed class CustomModPanelImpl : ILoad, IUnload
 {
     // The current mod whose panel style to use.
     private static Mod? currentMod;
+
+    private static readonly Dictionary<Mod, List<ModPanelStyle>> panel_styles = [];
+
+    public static void AddPanelStyle(Mod mod, ModPanelStyle style)
+    {
+        if (panel_styles.TryGetValue(mod, out var styles))
+        {
+            // TODO: We should support multiple styles.  Issue is handling
+            //       reinitialization.
+            ModContent.GetInstance<ModImpl>().Logger.Warn($"Mod \"${mod.Name}\" has already registered a ModPanelStyle and is attempting to add another one; only the first one loaded will be displayed.");
+        }
+        else
+        {
+            panel_styles[mod] = styles = [];
+        }
+
+        styles.Add(style);
+    }
+
+    public static bool TryGetPanelStyle(Mod? mod, [NotNullWhen(returnValue: true)] out ModPanelStyle? style)
+    {
+        if (mod is null)
+        {
+            style = null;
+            return false;
+        }
+
+        if (panel_styles.TryGetValue(mod, out var styles))
+        {
+            // We should always have at least one style, but let's be safe.
+            style = styles.FirstOrDefault();
+            return style is not null;
+        }
+
+        style = null;
+        return false;
+    }
+
+    /*private static bool TryGetPanelStyle(string modName, [NotNullWhen(returnValue: true)] out ModPanelStyle? style)
+    {
+        if (!ModLoader.TryGetMod(modName, out var mod))
+        {
+            style = null;
+            return false;
+        }
+
+        return TryGetPanelStyle(mod, out style);
+    }*/
 
     void ILoad.Load()
     {
@@ -41,7 +92,7 @@ internal sealed class CustomModPanelImpl : ILoad
             GetMethod(nameof(UIModItem.Draw)),
             Draw
         );
-        
+
         MonoModHooks.Add(
             typeof(UIPanel).GetMethod("DrawSelf", BindingFlags.NonPublic | BindingFlags.Instance),
             OverrideRegularPanelDrawing
@@ -60,22 +111,19 @@ internal sealed class CustomModPanelImpl : ILoad
         }
     }
 
+    void IUnload.Unload()
+    {
+        currentMod = null;
+        panel_styles.Clear();
+    }
+
     private static void OnInitialize(Action<UIModItem> orig, UIModItem self)
     {
-        if (!ModLoader.TryGetMod(self._mod.Name, out var mod))
+        if (!ModLoader.TryGetMod(self._mod.Name, out currentMod) || !TryGetPanelStyle(currentMod, out var style))
         {
             orig(self);
             return;
         }
-
-        if (mod is not IHasModPanelStyle styleProvider)
-        {
-            orig(self);
-            return;
-        }
-
-        currentMod = mod;
-        var style = styleProvider.PanelStyle;
 
         var modInfoTextureOrig = UICommon.ButtonModInfoTexture;
         {
@@ -100,9 +148,9 @@ internal sealed class CustomModPanelImpl : ILoad
         finally
         {
             currentMod = null;
-        
+
             UICommon.ButtonModInfoTexture = modInfoTextureOrig;
-            UICommon.ButtonModConfigTexture = modConfigTextureOrig;   
+            UICommon.ButtonModConfigTexture = modConfigTextureOrig;
         }
     }
 
@@ -112,17 +160,11 @@ internal sealed class CustomModPanelImpl : ILoad
 
         c.GotoNext(MoveType.Before, x => x.MatchStfld<UIModItem>(nameof(UIModItem._modIcon)));
         c.EmitLdarg0();
-        c.EmitDelegate((UIImage originalImage, UIModItem self) =>
-            {
-                if (currentMod is not IHasModPanelStyle styleProvider)
-                {
-                    return originalImage;
-                }
-
-                return styleProvider.PanelStyle.ModifyModIcon(self, originalImage, ref self._modIconAdjust);
-            }
+        c.EmitDelegate((UIImage originalImage, UIModItem self) => !TryGetPanelStyle(currentMod, out var style)
+            ? originalImage
+            : style.ModifyModIcon(self, originalImage, ref self._modIconAdjust)
         );
-        
+
         c.GotoNext(MoveType.After, x => x.MatchStfld<UIModItem>(nameof(UIModItem._modIcon)));
 
         var skipAppend = c.DefineLabel();
@@ -138,39 +180,35 @@ internal sealed class CustomModPanelImpl : ILoad
         c.EmitLdarg0();
         c.EmitDelegate((UIText originalText, UIModItem self) =>
             {
-                if (currentMod is not IHasModPanelStyle styleProvider)
+                if (!TryGetPanelStyle(currentMod, out var style))
                 {
                     return originalText;
                 }
 
-                return styleProvider.PanelStyle.ModifyModName(self, originalText);
+                return style.ModifyModName(self, originalText);
             }
         );
     }
 
+    // TODO: Don't remember if we can use currentMod here, but I'd rather
+    // minimize its usage in cases where we actually can determine the context.
     private static void SetHoverColors(
         Action<UIModItem, bool> orig,
         UIModItem self,
         bool hovered
     )
     {
-        if (!ModLoader.TryGetMod(self._mod.Name, out var mod))
+        if (!ModLoader.TryGetMod(self._mod.Name, out var mod) || !TryGetPanelStyle(mod, out var style))
         {
             orig(self, hovered);
             return;
         }
 
-        if (mod is not IHasModPanelStyle styleProvider)
-        {
-            orig(self, hovered);
-            return;
-        }
-
-        if (styleProvider.PanelStyle.PreSetHoverColors(self, hovered))
+        if (style.PreSetHoverColors(self, hovered))
         {
             orig(self, hovered);
         }
-        styleProvider.PanelStyle.PostSetHoverColors(self, hovered);
+        style.PostSetHoverColors(self, hovered);
     }
 
     private static void Draw(
@@ -179,13 +217,7 @@ internal sealed class CustomModPanelImpl : ILoad
         SpriteBatch spriteBatch
     )
     {
-        if (!ModLoader.TryGetMod(self._mod.Name, out var mod))
-        {
-            orig(self, spriteBatch);
-            return;
-        }
-
-        if (mod is not IHasModPanelStyle styleProvider)
+        if (!ModLoader.TryGetMod(self._mod.Name, out var mod) || !TryGetPanelStyle(mod, out var style))
         {
             orig(self, spriteBatch);
             return;
@@ -193,24 +225,24 @@ internal sealed class CustomModPanelImpl : ILoad
 
         var innerPanelTextureOrig = UICommon.InnerPanelTexture;
         {
-            var innerPanelTextureNew = styleProvider.PanelStyle.InnerPanelTexture;
+            var innerPanelTextureNew = style.InnerPanelTexture;
             UICommon.InnerPanelTexture = innerPanelTextureNew ?? UICommon.InnerPanelTexture;
         }
 
         currentMod = mod;
         try
         {
-            if (styleProvider.PanelStyle.PreDraw(self, spriteBatch))
+            if (style.PreDraw(self, spriteBatch))
             {
                 orig(self, spriteBatch);
             }
-            styleProvider.PanelStyle.PostDraw(self, spriteBatch);
+            style.PostDraw(self, spriteBatch);
         }
         finally
         {
             currentMod = null;
-        
-            UICommon.InnerPanelTexture = innerPanelTextureOrig;   
+
+            UICommon.InnerPanelTexture = innerPanelTextureOrig;
         }
     }
 
@@ -220,17 +252,17 @@ internal sealed class CustomModPanelImpl : ILoad
         SpriteBatch spriteBatch
     )
     {
-        if (currentMod is not IHasModPanelStyle styleProvider || self is not UIModItem uiModItem)
+        if (!TryGetPanelStyle(currentMod, out var style) || self is not UIModItem uiModItem)
         {
             orig(self, spriteBatch);
             return;
         }
 
-        if (styleProvider.PanelStyle.PreDrawPanel(uiModItem, spriteBatch))
+        if (style.PreDrawPanel(uiModItem, spriteBatch))
         {
             orig(self, spriteBatch);
         }
-        styleProvider.PanelStyle.PostDrawPanel(uiModItem, spriteBatch);
+        style.PostDrawPanel(uiModItem, spriteBatch);
     }
 
     private static void DrawCustomColoredEnabledText(ILContext il)
@@ -242,12 +274,12 @@ internal sealed class CustomModPanelImpl : ILoad
         c.EmitLdarg0(); // this
         c.EmitDelegate(static (Color displayColor, UIModStateText self) =>
             {
-                if (currentMod is not IHasModPanelStyle styleProvider)
+                if (!TryGetPanelStyle(currentMod, out var style))
                 {
                     return displayColor;
                 }
 
-                return styleProvider.PanelStyle.ModifyEnabledTextColor(self._enabled, displayColor);
+                return style.ModifyEnabledTextColor(self._enabled, displayColor);
             }
         );
     }

@@ -23,7 +23,7 @@ using Terraria.UI.Chat;
 
 namespace Nightshade.Content.VisualTweaks.UI;
 
-internal sealed class NightshadePanelStyle : ModPanelStyleExt, ILoad
+internal sealed class NightshadePanelStyle : ModPanelStyleExt
 {
     private sealed class ModName : UIText
     {
@@ -153,8 +153,10 @@ internal sealed class NightshadePanelStyle : ModPanelStyleExt, ILoad
 
     public override Asset<Texture2D>? InnerPanelTexture => Assets.Images.UI.ModLoader.InnerPanelBackground.Asset;
 
-    void ILoad.Load()
+    public override void Load()
     {
+        base.Load();
+
         Main.QueueMainThreadAction(() =>
             {
                 panelShaderData = Assets.Shaders.UI.ModPanelShader.CreatePanelShader();

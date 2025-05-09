@@ -1,7 +1,4 @@
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
-using ReLogic.Content;
 
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader.UI;
@@ -9,18 +6,13 @@ using Terraria.ModLoader.UI;
 namespace Daybreak.Common.Features.ModPanel;
 
 /// <summary>
-///     Facilitates the customization of <see cref="UIModItem"/>s through
-///     various hooks.
-/// </summary>
-/// <remarks>
-///     This style may be applied to any mod, technically, so references to your
-///     mod instance should be explicit and not assumed.
+///     An API extension to <see cref="ModPanelStyle"/> that enables you to
+///     directly interface with the <see cref="UIModItem"/> instance rather than
+///     the diluted <see cref="UIPanel"/> instance.
 ///     <br />
-///     If you are using an assembly publicizer, you may instead extend
-///     <see cref="ModPanelStyleExt"/>, which lets you directly interface with
-///     the <see cref="UIModItem"/> instead of the generic <see cref="UIPanel"/>
-///     instance.
-/// </remarks>
+///     Intended for use by developers with assembly publicizers who need
+///     convenient access to the object.
+/// </summary>
 public abstract class ModPanelStyleExt : ModPanelStyle
 {
     public override bool PreInitialize(UIPanel element)
@@ -79,45 +71,45 @@ public abstract class ModPanelStyleExt : ModPanelStyle
         return true;
     }
 
-    /// <inheritdoc cref="ModPanelStyle.PreInitialize"/>
+    /// <inheritdoc cref="ModPanelStyle.PostInitialize"/>
     public virtual void PostInitialize(UIModItem element) { }
 
-    /// <inheritdoc cref="ModPanelStyle.PreInitialize"/>
+    /// <inheritdoc cref="ModPanelStyle.ModifyModIcon"/>
     public virtual UIImage? ModifyModIcon(UIModItem element, UIImage modIcon, ref int modIconAdjust)
     {
         return modIcon;
     }
 
-    /// <inheritdoc cref="ModPanelStyle.PreInitialize"/>
+    /// <inheritdoc cref="ModPanelStyle.ModifyModName"/>
     public virtual UIText ModifyModName(UIModItem element, UIText modName)
     {
         return modName;
     }
 
-    /// <inheritdoc cref="ModPanelStyle.PreInitialize"/>
+    /// <inheritdoc cref="ModPanelStyle.PreSetHoverColors"/>
     public virtual bool PreSetHoverColors(UIModItem element, bool hovered)
     {
         return true;
     }
 
-    /// <inheritdoc cref="ModPanelStyle.PreInitialize"/>
+    /// <inheritdoc cref="ModPanelStyle.PostSetHoverColors"/>
     public virtual void PostSetHoverColors(UIModItem element, bool hovered) { }
 
-    /// <inheritdoc cref="ModPanelStyle.PreInitialize"/>
+    /// <inheritdoc cref="ModPanelStyle.PreDraw"/>
     public virtual bool PreDraw(UIModItem element, SpriteBatch sb)
     {
         return true;
     }
 
-    /// <inheritdoc cref="ModPanelStyle.PreInitialize"/>
+    /// <inheritdoc cref="ModPanelStyle.PostDraw"/>
     public virtual void PostDraw(UIModItem element, SpriteBatch sb) { }
 
-    /// <inheritdoc cref="ModPanelStyle.PreInitialize"/>
+    /// <inheritdoc cref="ModPanelStyle.PreDrawPanel"/>
     public virtual bool PreDrawPanel(UIModItem element, SpriteBatch sb)
     {
         return true;
     }
 
-    /// <inheritdoc cref="ModPanelStyle.PreInitialize"/>
+    /// <inheritdoc cref="ModPanelStyle.PostDrawPanel"/>
     public virtual void PostDrawPanel(UIModItem element, SpriteBatch sb) { }
 }
