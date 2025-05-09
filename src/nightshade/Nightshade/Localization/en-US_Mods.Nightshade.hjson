@@ -147,3 +147,5 @@ Projectiles: {
 	StarFragmentProjSpawner.DisplayName: Star Fragment Proj Spawner
 	PreDigesterHeldProj.DisplayName: Pre Digester Held Proj
 }
+
+Configs.DummyConfig.DisplayName: Dummy Config

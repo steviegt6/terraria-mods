@@ -152,6 +152,7 @@ internal sealed class NightshadePanelStyle : ModPanelStyleExt
     {
         { TextureKind.ModInfo, Assets.Images.UI.ModLoader.ButtonModInfo.Asset },
         { TextureKind.ModConfig, Assets.Images.UI.ModLoader.ButtonModConfig.Asset },
+        { TextureKind.Deps, Assets.Images.UI.ModLoader.ButtonDeps.Asset },
         { TextureKind.InnerPanel, Assets.Images.UI.ModLoader.InnerPanelBackground.Asset },
     };
 
