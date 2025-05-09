@@ -75,11 +75,13 @@ internal sealed class NightshadePanelStyle : ModPanelStyleExt
 
     private sealed class ModIcon : UIImage
     {
+        private readonly bool useCensor;
         private readonly Asset<Texture2D> icon;
         private readonly Asset<Texture2D> iconDots;
 
-        public ModIcon() : base(TextureAssets.MagicPixel)
+        public ModIcon(bool useCensor) : base(TextureAssets.MagicPixel)
         {
+            this.useCensor = useCensor;
             icon = Assets.Images.UI.ModIcon.Icon.Asset;
             iconDots = Assets.Images.UI.ModIcon.Icon_Dots.Asset;
 
@@ -94,6 +96,21 @@ internal sealed class NightshadePanelStyle : ModPanelStyleExt
             var dims = GetDimensions();
             dims.X += offset;
             dims.Y += offset;
+
+            if (useCensor)
+            {
+                spriteBatch.Draw(
+                    TextureAssets.MagicPixel.Value,
+                    new Rectangle((int)dims.X - 25, (int)dims.Y - 25, 50, 50),
+                    null,
+                    Color.Black,
+                    0f,
+                    Vector2.Zero,
+                    SpriteEffects.None,
+                    0f
+                );
+                return;
+            }
 
             var rotation = Main.GlobalTimeWrappedHourly / 10f;
 
@@ -148,6 +165,8 @@ internal sealed class NightshadePanelStyle : ModPanelStyleExt
 
     private static float hoverIntensity;
 
+    private static bool AprilFools => DateTime.Now.Month == 4 && DateTime.Now.Day == 1;
+
     public override Dictionary<TextureKind, Asset<Texture2D>> TextureOverrides { get; } = new()
     {
         { TextureKind.ModInfo, Assets.Images.UI.ModLoader.ButtonModInfo.Asset },
@@ -181,7 +200,7 @@ internal sealed class NightshadePanelStyle : ModPanelStyleExt
 
     public override UIImage ModifyModIcon(UIModItem element, UIImage modIcon, ref int modIconAdjust)
     {
-        return new ModIcon
+        return new ModIcon(AprilFools)
         {
             Left = modIcon.Left,
             Top = modIcon.Top,
@@ -192,7 +211,9 @@ internal sealed class NightshadePanelStyle : ModPanelStyleExt
 
     public override UIText ModifyModName(UIModItem element, UIText modName)
     {
-        var name = Mods.Nightshade.UI.ModIcon.ModName.GetTextValue();
+        var name = AprilFools
+            ? Mods.Nightshade.UI.ModIcon.AprilFools.ModName.GetTextValue()
+            : Mods.Nightshade.UI.ModIcon.ModName.GetTextValue();
         return new ModName(name + $" v{element._mod.Version}")
         {
             Left = modName.Left,
