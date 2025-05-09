@@ -5,6 +5,7 @@ using Daybreak.Common.Rendering;
 using Daybreak.Core;
 
 using System.Diagnostics;
+using System.Text;
 
 using Microsoft.Xna.Framework.Graphics;
 
@@ -15,22 +16,57 @@ using Microsoft.Xna.Framework;
 
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
+using Terraria.UI.Chat;
 
 namespace Daybreak.Content.VisualTweaks.UI;
 
 internal sealed class DaybreakPanelStyle : ModPanelStyleExt
 {
-    private static WrapperShaderData<Assets.Shaders.UI.ModPanelShader.Parameters>? panelShaderData;
-    private static WrapperShaderData<Assets.Shaders.UI.PowerfulSunIcon.Parameters>? whenDayBreaksShaderData;
-    
-    private static float hoverIntensity;
-
-    public override void Load()
+    private sealed class ModName : UIText
     {
-        base.Load();
+        private readonly string originalText;
 
-        panelShaderData = Assets.Shaders.UI.ModPanelShader.CreatePanelShader();
-        whenDayBreaksShaderData = Assets.Shaders.UI.PowerfulSunIcon.CreatePanelShader();
+        public ModName(string text, float textScale = 1, bool large = false) : base(text, textScale, large)
+        {
+            if (ChatManager.Regexes.Format.Matches(text).Count != 0)
+            {
+                throw new InvalidOperationException("The text cannot contain formatting.");
+            }
+
+            originalText = text;
+        }
+
+        public override void DrawSelf(SpriteBatch spriteBatch)
+        {
+            var formattedText = GetPulsatingText(originalText, Main.GlobalTimeWrappedHourly);
+            SetText(formattedText);
+
+            base.DrawSelf(spriteBatch);
+        }
+
+        private static string GetPulsatingText(string text, float time)
+        {
+            var lightPurple = color_1;
+            var darkPurple = color_2;
+
+            const float speed = 3f;
+            const float offset = 0.3f;
+
+            // [c/______:x]
+            const int character_length = 12;
+
+            var sb = new StringBuilder(character_length * text.Length);
+            for (var i = 0; i < text.Length; i++)
+            {
+                var wave = MathF.Sin(time * speed + i * offset);
+
+                // Factor normalized 0-1.
+                var color = Color.Lerp(lightPurple, darkPurple, (wave + 1f) / 2f);
+
+                sb.Append($"[c/{color.Hex3()}:{text[i]}]");
+            }
+            return sb.ToString();
+        }
     }
 
     private sealed class ModIcon() : UIImage(TextureAssets.MagicPixel)
@@ -76,6 +112,22 @@ internal sealed class DaybreakPanelStyle : ModPanelStyleExt
         }
     }
 
+    private static readonly Color color_1 = new(177, 100, 100);
+    private static readonly Color color_2 = new(255, 122, 2);
+    
+    private static WrapperShaderData<Assets.Shaders.UI.ModPanelShader.Parameters>? panelShaderData;
+    private static WrapperShaderData<Assets.Shaders.UI.PowerfulSunIcon.Parameters>? whenDayBreaksShaderData;
+
+    private static float hoverIntensity;
+
+    public override void Load()
+    {
+        base.Load();
+
+        panelShaderData = Assets.Shaders.UI.ModPanelShader.CreatePanelShader();
+        whenDayBreaksShaderData = Assets.Shaders.UI.PowerfulSunIcon.CreatePanelShader();
+    }
+
     public override UIImage ModifyModIcon(UIModItem element, UIImage modIcon, ref int modIconAdjust)
     {
         return new ModIcon
@@ -84,6 +136,16 @@ internal sealed class DaybreakPanelStyle : ModPanelStyleExt
             Top = modIcon.Top,
             Width = modIcon.Width,
             Height = modIcon.Height,
+        };
+    }
+
+    public override UIText ModifyModName(UIModItem element, UIText modName)
+    {
+        var name = Mods.Daybreak.UI.ModIcon.ModName.GetTextValue();
+        return new ModName(name + $" v{element._mod.Version}")
+        {
+            Left = modName.Left,
+            Top = modName.Top,
         };
     }
 
@@ -109,10 +171,10 @@ internal sealed class DaybreakPanelStyle : ModPanelStyleExt
             );
             {
                 var dims = element.GetDimensions();
-                
+
                 hoverIntensity += (element.IsMouseHovering ? 1f : -1f) / 15f;
                 hoverIntensity = Math.Clamp(hoverIntensity, 0f, 1f);
-                
+
                 Debug.Assert(panelShaderData is not null);
                 panelShaderData.Parameters.uGrayness = 1f;
                 panelShaderData.Parameters.uInColor = new Vector3(1f, 0f, 1f);
@@ -133,5 +195,10 @@ internal sealed class DaybreakPanelStyle : ModPanelStyleExt
         element.DrawPanel(sb, element._borderTexture.Value, element.BorderColor);
 
         return false;
+    }
+    
+    public override Color ModifyEnabledTextColor(bool enabled, Color color)
+    {
+        return enabled ? color_2 : color_1;
     }
 }
