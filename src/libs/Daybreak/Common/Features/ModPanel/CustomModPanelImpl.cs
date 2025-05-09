@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 
 using Daybreak.Core.Hooks;
 
@@ -12,6 +13,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 using MonoMod.Cil;
 
+using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader;
 using Terraria.ModLoader.UI;
@@ -95,20 +97,101 @@ internal sealed class CustomModPanelImpl : ILoad, IUnload
         );
 
         MonoModHooks.Add(
-            typeof(UIPanel).GetMethod("DrawSelf", BindingFlags.NonPublic | BindingFlags.Instance),
+            typeof(UIPanel).GetMethod(nameof(UIPanel.DrawSelf), BindingFlags.NonPublic | BindingFlags.Instance),
             OverrideRegularPanelDrawing
         );
 
         MonoModHooks.Modify(
-            typeof(UIModStateText).GetMethod("DrawEnabledText", BindingFlags.NonPublic | BindingFlags.Instance),
+            typeof(UIModStateText).GetMethod(nameof(UIModStateText.DrawEnabledText), BindingFlags.NonPublic | BindingFlags.Instance),
             DrawCustomColoredEnabledText
         );
+
+        ConciseModListCompat();
 
         return;
 
         static MethodInfo GetMethod(string name)
         {
             return typeof(UIModItem).GetMethod(name, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance)!;
+        }
+
+        static void ConciseModListCompat()
+        {
+            if (!ModLoader.TryGetMod("ConciseModList", out var conciseModList))
+            {
+                return;
+            }
+
+            var asm = conciseModList.Code;
+
+            var type = asm.GetType("ConciseModList.ConciseUIModItem");
+            if (type is null)
+            {
+                return;
+            }
+
+            MonoModHooks.Add(
+                type.GetMethod(nameof(UIModItem.OnInitialize), BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance),
+                OnInitialize
+            );
+
+            MonoModHooks.Add(
+                type.GetMethod(nameof(UIModItem.DrawSelf), BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance),
+                Draw
+            );
+
+            MonoModHooks.Add(
+                type.GetMethod("ManageDrawing", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance),
+                OverrideRegularPanelDrawing
+            );
+
+            MonoModHooks.Modify(
+                type.GetMethod(nameof(UIModItem.OnInitialize), BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance),
+                il =>
+                {
+                    var c = new ILCursor(il);
+
+                    c.GotoNext(MoveType.After, x => x.MatchStfld<UIModItem>(nameof(UIModItem._modIconAdjust)));
+
+                    c.EmitLdarg0();
+                    c.EmitDelegate((UIModItem self) =>
+                        {
+                            if (self._mod.modFile.HasFile("icon.png"))
+                            {
+                                try
+                                {
+                                    using (self._mod.modFile.Open())
+                                    using (var s = self._mod.modFile.GetStream("icon.png"))
+                                    {
+                                        var iconTexture = Main.Assets.CreateUntracked<Texture2D>(s, ".png").Value;
+
+                                        if (iconTexture.Width != 80 || iconTexture.Height != 80)
+                                        {
+                                            return;
+                                        }
+                                        self._modIcon.ImageScale = 1f;
+                                        self._modIcon.Left.Pixels = -1;
+                                        self._modIcon.Top.Pixels = -1;
+                                        self._modIcon.SetImage(iconTexture);
+                                    }
+                                }
+                                catch (Exception e)
+                                {
+                                    Logging.tML.Error("Unknown error", e);
+                                }
+                            }
+
+                            self._modIcon = !TryGetPanelStyle(currentMod, out var style)
+                                ? self._modIcon
+                                : style.ModifyModIcon(self, self._modIcon, ref self._modIconAdjust);
+                        }
+                    );
+
+                    c.GotoNext(MoveType.Before, x => x.MatchCall("ConciseModList.ConciseUIModItem", "SetIconImage"));
+                    c.Remove();
+                    c.EmitPop();
+                }
+            );
         }
     }
 
