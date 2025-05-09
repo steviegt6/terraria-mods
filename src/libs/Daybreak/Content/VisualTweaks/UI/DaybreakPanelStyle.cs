@@ -1,0 +1,218 @@
+using System;
+
+using Daybreak.Common.Features.ModPanel;
+using Daybreak.Common.Rendering;
+using Daybreak.Core;
+
+using System.Diagnostics;
+using System.Text;
+
+using Microsoft.Xna.Framework.Graphics;
+
+using Terraria;
+using Terraria.ModLoader.UI;
+
+using Microsoft.Xna.Framework;
+
+using Terraria.GameContent;
+using Terraria.GameContent.UI.Elements;
+using Terraria.UI.Chat;
+
+namespace Daybreak.Content.VisualTweaks.UI;
+
+internal sealed class DaybreakPanelStyle : ModPanelStyleExt
+{
+    private sealed class ModName : UIText
+    {
+        private readonly string originalText;
+
+        public ModName(string text, float textScale = 1, bool large = false) : base(text, textScale, large)
+        {
+            if (ChatManager.Regexes.Format.Matches(text).Count != 0)
+            {
+                throw new InvalidOperationException("The text cannot contain formatting.");
+            }
+
+            originalText = text;
+        }
+
+        public override void DrawSelf(SpriteBatch spriteBatch)
+        {
+            var formattedText = GetPulsatingText(originalText, Main.GlobalTimeWrappedHourly);
+            SetText(formattedText);
+
+            base.DrawSelf(spriteBatch);
+        }
+
+        private static string GetPulsatingText(string text, float time)
+        {
+            var lightPurple = color_1;
+            var darkPurple = color_2;
+
+            const float speed = 3f;
+            const float offset = 0.3f;
+
+            // [c/______:x]
+            const int character_length = 12;
+
+            var sb = new StringBuilder(character_length * text.Length);
+            for (var i = 0; i < text.Length; i++)
+            {
+                var wave = MathF.Sin(time * speed + i * offset);
+
+                // Factor normalized 0-1.
+                var color = Color.Lerp(lightPurple, darkPurple, (wave + 1f) / 2f);
+
+                sb.Append($"[c/{color.Hex3()}:{text[i]}]");
+            }
+            return sb.ToString();
+        }
+    }
+
+    private sealed class ModIcon() : UIImage(TextureAssets.MagicPixel)
+    {
+        public override void DrawSelf(SpriteBatch spriteBatch)
+        {
+            spriteBatch.End(out var ss);
+            spriteBatch.Begin(
+                SpriteSortMode.Immediate,
+                BlendState.Additive,
+                SamplerState.PointClamp,
+                DepthStencilState.None,
+                ss.RasterizerState,
+                null,
+                Main.UIScaleMatrix
+            );
+
+            // const int offset = (80 - 46) / 2;
+            var dims = GetDimensions().ToRectangle();
+
+            Debug.Assert(whenDayBreaksShaderData is not null);
+            whenDayBreaksShaderData.Parameters.uGrayness = 1f;
+            whenDayBreaksShaderData.Parameters.uInColor = new Vector3(1f, 0f, 1f);
+            whenDayBreaksShaderData.Parameters.uSpeed = 0.2f;
+            whenDayBreaksShaderData.Parameters.uSource = new Vector4(dims.Width, dims.Height - 2f, dims.X, dims.Y);
+            whenDayBreaksShaderData.Parameters.uPixel = 2f;
+            whenDayBreaksShaderData.Parameters.uColorResolution = 10f;
+            whenDayBreaksShaderData.Apply();
+
+            spriteBatch.Draw(
+                TextureAssets.MagicPixel.Value,
+                dims.TopLeft(),
+                dims,
+                Color.Red,
+                0f,
+                Vector2.Zero,
+                1f,
+                SpriteEffects.None,
+                0f
+            );
+
+            spriteBatch.Restart(ss);
+        }
+    }
+
+    private static readonly Color color_1 = new(255, 147, 0);
+    private static readonly Color color_2 = new(255, 182, 55);
+    
+    private static WrapperShaderData<Assets.Shaders.UI.ModPanelShader.Parameters>? panelShaderData;
+    private static WrapperShaderData<Assets.Shaders.UI.PowerfulSunIcon.Parameters>? whenDayBreaksShaderData;
+
+    private static float hoverIntensity;
+
+    public override void Load()
+    {
+        base.Load();
+
+        panelShaderData = Assets.Shaders.UI.ModPanelShader.CreatePanelShader();
+        whenDayBreaksShaderData = Assets.Shaders.UI.PowerfulSunIcon.CreatePanelShader();
+    }
+
+    public override bool PreInitialize(UIModItem element)
+    {
+        element.BorderColor = new Color(25, 5, 5);
+        
+        return base.PreInitialize(element);
+    }
+
+    public override UIImage ModifyModIcon(UIModItem element, UIImage modIcon, ref int modIconAdjust)
+    {
+        return new ModIcon
+        {
+            Left = modIcon.Left,
+            Top = modIcon.Top,
+            Width = modIcon.Width,
+            Height = modIcon.Height,
+        };
+    }
+
+    public override UIText ModifyModName(UIModItem element, UIText modName)
+    {
+        var name = Mods.Daybreak.UI.ModIcon.ModName.GetTextValue();
+        return new ModName(name + $" v{element._mod.Version}")
+        {
+            Left = modName.Left,
+            Top = modName.Top,
+        };
+    }
+
+    public override bool PreSetHoverColors(UIModItem element, bool hovered)
+    {
+        element.BorderColor = new Color(25, 5, 5);
+
+        return false;
+    }
+
+    public override bool PreDrawPanel(UIModItem element, SpriteBatch sb)
+    {
+        if (element._needsTextureLoading)
+        {
+            element._needsTextureLoading = false;
+            element.LoadTextures();
+        }
+
+        // Render our cool custom panel with a shader.
+        {
+            sb.End(out var ss);
+            sb.Begin(
+                SpriteSortMode.Immediate,
+                BlendState.NonPremultiplied,
+                SamplerState.PointClamp,
+                DepthStencilState.None,
+                ss.RasterizerState,
+                null,
+                Main.UIScaleMatrix
+            );
+            {
+                var dims = element.GetDimensions();
+
+                hoverIntensity += (element.IsMouseHovering ? 1f : -1f) / 15f;
+                hoverIntensity = Math.Clamp(hoverIntensity, 0f, 1f);
+
+                Debug.Assert(panelShaderData is not null);
+                panelShaderData.Parameters.uGrayness = 1f;
+                panelShaderData.Parameters.uInColor = new Vector3(1f, 0f, 1f);
+                panelShaderData.Parameters.uSpeed = 0.2f;
+                panelShaderData.Parameters.uSource = new Vector4(dims.Width, dims.Height - 2f, dims.X, dims.Y);
+                panelShaderData.Parameters.uHoverIntensity = hoverIntensity;
+                panelShaderData.Parameters.uPixel = 2f;
+                panelShaderData.Parameters.uColorResolution = 10f;
+                panelShaderData.Apply();
+
+                Debug.Assert(element._backgroundTexture is not null);
+                element.DrawPanel(sb, element._backgroundTexture.Value, element.BackgroundColor);
+            }
+            sb.Restart(ss);
+        }
+
+        Debug.Assert(element._borderTexture is not null);
+        element.DrawPanel(sb, element._borderTexture.Value, element.BorderColor);
+
+        return false;
+    }
+    
+    public override Color ModifyEnabledTextColor(bool enabled, Color color)
+    {
+        return enabled ? color_2 : color_1;
+    }
+}

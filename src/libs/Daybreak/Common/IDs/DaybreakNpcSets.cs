@@ -1,7 +1,6 @@
 using MonoMod.Cil;
 
 using Terraria;
-using Terraria.GameContent;
 using Terraria.GameContent.Events;
 using Terraria.ID;
 using Terraria.ModLoader;
