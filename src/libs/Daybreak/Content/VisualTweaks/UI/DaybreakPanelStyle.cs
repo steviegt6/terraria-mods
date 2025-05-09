@@ -1,38 +1,29 @@
+using System;
+
 using Daybreak.Common.Features.ModPanel;
 using Daybreak.Common.Rendering;
-using Daybreak.Core.Hooks;
 using Daybreak.Core;
 
 using System.Diagnostics;
 
 using Microsoft.Xna.Framework.Graphics;
 
-
 using Terraria;
 using Terraria.ModLoader.UI;
-using Microsoft.Xna.Framework;
-
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
-
-using Daybreak.Common.Features.ModPanel;
-using Daybreak.Common.Rendering;
 
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
-
-using ReLogic.Content;
-
-using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
+
+namespace Daybreak.Content.VisualTweaks.UI;
+
 internal sealed class DaybreakPanelStyle : ModPanelStyleExt
 {
     private static WrapperShaderData<Assets.Shaders.UI.ModPanelShader.Parameters>? panelShaderData;
     private static WrapperShaderData<Assets.Shaders.UI.PowerfulSunIcon.Parameters>? whenDayBreaksShaderData;
+    
+    private static float hoverIntensity;
 
     public override void Load()
     {
@@ -42,12 +33,8 @@ internal sealed class DaybreakPanelStyle : ModPanelStyleExt
         whenDayBreaksShaderData = Assets.Shaders.UI.PowerfulSunIcon.CreatePanelShader();
     }
 
-    private sealed class ModIcon : UIImage
+    private sealed class ModIcon() : UIImage(TextureAssets.MagicPixel)
     {
-        public ModIcon() : base(TextureAssets.MagicPixel)
-        {
-        }
-
         public override void DrawSelf(SpriteBatch spriteBatch)
         {
             spriteBatch.End(out var ss);
@@ -60,7 +47,7 @@ internal sealed class DaybreakPanelStyle : ModPanelStyleExt
                 null,
                 Main.UIScaleMatrix
             );
-            
+
             // const int offset = (80 - 46) / 2;
             var dims = GetDimensions().ToRectangle();
 
@@ -91,7 +78,7 @@ internal sealed class DaybreakPanelStyle : ModPanelStyleExt
 
     public override UIImage ModifyModIcon(UIModItem element, UIImage modIcon, ref int modIconAdjust)
     {
-        return new ModIcon()
+        return new ModIcon
         {
             Left = modIcon.Left,
             Top = modIcon.Top,
@@ -122,11 +109,16 @@ internal sealed class DaybreakPanelStyle : ModPanelStyleExt
             );
             {
                 var dims = element.GetDimensions();
+                
+                hoverIntensity += (element.IsMouseHovering ? 1f : -1f) / 15f;
+                hoverIntensity = Math.Clamp(hoverIntensity, 0f, 1f);
+                
                 Debug.Assert(panelShaderData is not null);
                 panelShaderData.Parameters.uGrayness = 1f;
                 panelShaderData.Parameters.uInColor = new Vector3(1f, 0f, 1f);
                 panelShaderData.Parameters.uSpeed = 0.2f;
                 panelShaderData.Parameters.uSource = new Vector4(dims.Width, dims.Height - 2f, dims.X, dims.Y);
+                panelShaderData.Parameters.uHoverIntensity = hoverIntensity;
                 panelShaderData.Parameters.uPixel = 2f;
                 panelShaderData.Parameters.uColorResolution = 10f;
                 panelShaderData.Apply();

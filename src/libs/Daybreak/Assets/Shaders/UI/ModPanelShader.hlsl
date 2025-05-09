@@ -135,7 +135,14 @@ float4 main(float2 coords : SV_POSITION, float2 tex_coords : TEXCOORD0) : COLOR0
                      float3(255. / 255., 122. / 255., 2. / 255.), a2);        
    
 
-    finalCol += float3(177. / 255., 100. / 255., 100. / 255.) * border(uv, 0.001);
+    float3 outline = float3(177. / 255., 100. / 255., 100. / 255.) * border(uv, 0.001);
+    finalCol += outline;
+
+    finalCol = lerp(
+        outline,
+        finalCol,
+        uHoverIntensity
+    );
 
     // Take the original texture into account.  This is because we draw to a UI
     // panel which will have corners and stuff of that nature, so we don't want
