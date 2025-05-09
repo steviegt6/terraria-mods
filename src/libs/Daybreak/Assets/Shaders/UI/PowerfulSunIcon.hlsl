@@ -1,5 +1,6 @@
 #undef TECHNIQUES
 #include "ModPanelShader.effect.uniforms.hlsl"
+#include "../pixelation.hlsl"
 
 float3 rayGun(float2 ray, float2 uv, float3 col, float delay, float size, float len)
 {
@@ -35,7 +36,7 @@ float4 main(float2 coords : SV_POSITION, float2 tex_coords : TEXCOORD0) : COLOR0
     float2 position = uSource.zw;
 
     coords -= position;
-    float2 uv = coords / resolution;
+    float2 uv = normalize_with_pixelation(coords, uPixel, resolution);
 
     float t = uTime / 15;
     float2x2 rotTime = float2x2( cos(t), sin(t), -sin(t), cos(t) );
