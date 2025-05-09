@@ -79,13 +79,13 @@ internal sealed class CustomModPanelImpl : ILoad
         var modInfoTextureOrig = UICommon.ButtonModInfoTexture;
         {
             var modInfoTextureNew = style.ModInfoTexture;
-            UICommon.ButtonModInfoTexture = modInfoTextureNew;
+            UICommon.ButtonModInfoTexture = modInfoTextureNew ?? modInfoTextureOrig;
         }
 
         var modConfigTextureOrig = UICommon.ButtonModConfigTexture;
         {
             var modConfigTextureNew = style.ModConfigTexture;
-            UICommon.ButtonModConfigTexture = modConfigTextureNew;
+            UICommon.ButtonModConfigTexture = modConfigTextureNew ?? modConfigTextureOrig;
         }
         
         if (style.PreInitialize(self))
@@ -177,7 +177,7 @@ internal sealed class CustomModPanelImpl : ILoad
         var innerPanelTextureOrig = UICommon.InnerPanelTexture;
         {
             var innerPanelTextureNew = styleProvider.PanelStyle.InnerPanelTexture;
-            UICommon.InnerPanelTexture = innerPanelTextureNew;
+            UICommon.InnerPanelTexture = innerPanelTextureNew ?? innerPanelTextureOrig;
         }
 
         currentMod = mod;
