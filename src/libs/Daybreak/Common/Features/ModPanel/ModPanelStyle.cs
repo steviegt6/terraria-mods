@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 
+using JetBrains.Annotations;
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -28,6 +30,7 @@ namespace Daybreak.Common.Features.ModPanel;
 ///     the <see cref="UIModItem"/> instead of the generic <see cref="UIPanel"/>
 ///     instance.
 /// </remarks>
+[PublicAPI]
 public abstract class ModPanelStyle : ModType
 {
     private readonly struct TextureOverrider : IDisposable

@@ -1,3 +1,5 @@
+using JetBrains.Annotations;
+
 using Microsoft.Xna.Framework.Graphics;
 
 using Terraria.GameContent.UI.Elements;
@@ -13,6 +15,7 @@ namespace Daybreak.Common.Features.ModPanel;
 ///     Intended for use by developers with assembly publicizers who need
 ///     convenient access to the object.
 /// </summary>
+[PublicAPI]
 public abstract class ModPanelStyleExt : ModPanelStyle
 {
     public sealed override bool PreInitialize(UIPanel element)

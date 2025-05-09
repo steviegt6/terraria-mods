@@ -9,6 +9,7 @@ namespace Daybreak.Core.Hooks;
 ///     <see cref="ILoadable"/> and facilitates basic execution of the
 ///     <see cref="ILoad"/> and <see cref="IUnload"/> hooks if present.
 /// </summary>
+[PublicAPI]
 [UsedImplicitly(
     ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature,
     ImplicitUseTargetFlags.WithInheritors | ImplicitUseTargetFlags.WithMembers
@@ -26,11 +27,13 @@ public interface IInitializer : ILoadable
     }
 }
 
+[PublicAPI]
 public interface ILoad : IInitializer
 {
     void Load();
 }
 
+[PublicAPI]
 public interface IUnload : IInitializer
 {
     new void Unload();

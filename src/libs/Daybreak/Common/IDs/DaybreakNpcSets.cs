@@ -1,3 +1,5 @@
+using JetBrains.Annotations;
+
 using MonoMod.Cil;
 
 using Terraria;
@@ -12,6 +14,7 @@ namespace Daybreak.Common.IDs;
 // TODO: Support custom hook for EmoteBubble.CheckForNPCsToReactToEmoteBubble
 // TODO: Party of Doom Main.DoUpdateInWorld
 
+[PublicAPI]
 public sealed class DaybreakNpcSets : ModSystem
 {
     public static bool?[] CanParty = [];

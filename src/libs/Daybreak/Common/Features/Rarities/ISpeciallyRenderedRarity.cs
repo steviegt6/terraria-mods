@@ -30,7 +30,6 @@ public interface ISpeciallyRenderedRarity
     /// <param name="maxWidth">The max width (uncommon).</param>
     /// <param name="spread">The spread (uncommon).</param>
     /// <param name="ui">Whether this is rendering to the UI or in-world.</param>
-    [PublicAPI]
     void RenderRarityText(
         SpriteBatch sb,
         DynamicSpriteFont font,
