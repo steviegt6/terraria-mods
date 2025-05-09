@@ -115,6 +115,11 @@ float border(float2 uv, float epsilion)
     return border_o;
 }
 
+float mySmoothstep(float edge0, float edge1, float x) {
+    x = clamp((x - edge0) / (edge1 - edge0), 0.0, 1.0); 
+    return x * x * (3. - 2. * x);
+}
+
 float4 main(float2 coords : SV_POSITION, float2 tex_coords : TEXCOORD0) : COLOR0
 {
     float2 resolution = uSource.xy;
@@ -141,7 +146,7 @@ float4 main(float2 coords : SV_POSITION, float2 tex_coords : TEXCOORD0) : COLOR0
     finalCol = lerp(
         outline,
         finalCol,
-        uHoverIntensity
+        mySmoothstep(0., 1., uHoverIntensity)
     );
 
     // Take the original texture into account.  This is because we draw to a UI
