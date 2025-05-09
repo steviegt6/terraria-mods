@@ -1,6 +1,7 @@
 using MonoMod.Cil;
 
 using Terraria;
+using Terraria.GameContent;
 using Terraria.GameContent.Events;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -24,6 +25,10 @@ public sealed class DaybreakNpcSets : ModSystem
 
     public static bool?[] VulnerableToAfterPartyOfDoom = [];
 
+    public static bool[] TownNpcContributesToTownNpcSlots = [];
+
+    public static bool?[] ContributesToTownNpcSpawnCount = [];
+
     public override void ResizeArrays()
     {
         base.ResizeArrays();
@@ -33,6 +38,8 @@ public sealed class DaybreakNpcSets : ModSystem
         ContributesToTravelingMerchantSpawn = CreateSet<bool?>(nameof(ContributesToTravelingMerchantSpawn), null);
         TravelingMerchantCanSpawnNear = CreateSet<bool?>(nameof(TravelingMerchantCanSpawnNear), null);
         VulnerableToAfterPartyOfDoom = CreateSet<bool?>(nameof(VulnerableToAfterPartyOfDoom), null);
+        TownNpcContributesToTownNpcSlots = CreateSet(nameof(TownNpcContributesToTownNpcSlots), true);
+        ContributesToTownNpcSpawnCount = CreateSet<bool?>(nameof(ContributesToTownNpcSpawnCount), true);
 
         return;
 
@@ -52,6 +59,8 @@ public sealed class DaybreakNpcSets : ModSystem
         IL_Main.UpdateTime += ConsiderWhetherNpcLetsTravelingMerchantSpawn;
         IL_WorldGen.SpawnTravelNPC += ConsiderWhetherTravelingMerchantCanSpawnNearNpc;
         IL_Main.DoUpdateInWorld += ConsiderVulnerabilityToAfterPartyOfDoom;
+        On_NPC.AddIntoPlayersTownNPCSlots += ConsiderWhetherTownNpcActuallyCountsForSlots;
+        IL_Main.UpdateTime_SpawnTownNPCs += ConsiderWhetherTownNpcShouldBeConsideredForSpawnCounts;
     }
 
     private static bool ConsiderWhetherNpcCanParty(On_BirthdayParty.orig_CanNPCParty orig, NPC n)
@@ -93,5 +102,24 @@ public sealed class DaybreakNpcSets : ModSystem
         c.GotoNext(MoveType.Before, x => x.MatchLdfld<NPC>(nameof(NPC.townNPC)));
         c.Remove();
         c.EmitDelegate(static (NPC npc) => VulnerableToAfterPartyOfDoom[npc.type] ?? npc.townNPC);
+    }
+
+    private static void ConsiderWhetherTownNpcActuallyCountsForSlots(On_NPC.orig_AddIntoPlayersTownNPCSlots orig, NPC self)
+    {
+        if (!TownNpcContributesToTownNpcSlots[self.type])
+        {
+            return;
+        }
+
+        orig(self);
+    }
+
+    private static void ConsiderWhetherTownNpcShouldBeConsideredForSpawnCounts(ILContext il)
+    {
+        var c = new ILCursor(il);
+
+        c.GotoNext(MoveType.Before, x => x.MatchLdfld<NPC>(nameof(NPC.townNPC)));
+        c.Remove();
+        c.EmitDelegate(static (NPC npc) => ContributesToTownNpcSpawnCount[npc.type] ?? npc.townNPC);
     }
 }
