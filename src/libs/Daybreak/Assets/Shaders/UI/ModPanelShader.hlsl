@@ -124,6 +124,7 @@ float4 main(float2 coords : SV_POSITION, float2 tex_coords : TEXCOORD0) : COLOR0
 
     // Normalize the coordinates but with optional pixelation.
     float2 uv = normalize_with_pixelation(coords, uPixel, resolution);
+    uv /= 10.0;
     float f = fbm(float3(uv, 2.0), 2.0);
     
     float a2 = smoothstep(-0.5, 0.5, f);
