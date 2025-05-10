@@ -261,7 +261,7 @@ internal sealed class DaybreakPanelStyle : ModPanelStyleExt
                 panelShaderDataSampler.Parameters.uSource = new Vector4(dims.Width, dims.Height, dims.X, dims.Y);
                 
                 Main.instance.GraphicsDevice.Textures[1] = panelTargetToBeUpscaled;
-                Main.instance.GraphicsDevice.SamplerStates[1] = SamplerState.LinearWrap;
+                Main.instance.GraphicsDevice.SamplerStates[1] = SamplerState.PointClamp;
                 
                 panelShaderDataSampler.Apply();
                 Debug.Assert(element._backgroundTexture is not null);
