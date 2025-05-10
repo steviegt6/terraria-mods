@@ -10,7 +10,7 @@ float4 main(float2 coords : SV_POSITION, float2 tex_coords : TEXCOORD0) : COLOR0
     coords -= position;
 
     // Normalize the coordinates but with optional pixelation.
-    float2 uv = normalize_with_pixelation(coords, 2.0f, resolution);
+    float2 uv = normalize_with_pixelation(coords, 1.0f, resolution);
 
     // uImage1 is at half the resolution of uImage0 (resolution), sample it such
     // that we get a free pixelation effect (2x)

@@ -119,16 +119,16 @@ float mySmoothstep(float edge0, float edge1, float x) {
     return x * x * (3. - 2. * x);
 }
 
-float4 main(float2 coords : SV_POSITION, float2 tex_coords : TEXCOORD0) : COLOR0
-{
-    float2 resolution = uSource.xy;
+float4 main(float2 coords : SV_POSITION, float2 tex_coords : TEXCOORD0) : COLOR0 {
+
+    float2 resolution = 800.0f.xx;
     float2 position = uSource.zw;
 
     coords -= position;
 
     // Normalize the coordinates but with optional pixelation.
     float2 uv = coords / resolution;
-    uv /= 4.0;
+
     float f = fbm(float3(uv, 2.0), 2.0);
     
     float a2 = smoothstep(-0.5, 0.5, f);
@@ -139,7 +139,7 @@ float4 main(float2 coords : SV_POSITION, float2 tex_coords : TEXCOORD0) : COLOR0
                      float3(255. / 255., 122. / 255., 2. / 255.), a2);        
    
 
-    float3 outline = float3(177. / 255., 100. / 255., 100. / 255.) * border(uv, 0.001);
+    float3 outline = float3(177. / 255., 100. / 255., 100. / 255.) * border(uv, 0.00025);
     finalCol += outline;
 
     finalCol = lerp(
