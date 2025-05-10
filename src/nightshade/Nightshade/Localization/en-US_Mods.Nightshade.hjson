@@ -135,6 +135,15 @@ Items: {
 		DisplayName: Coconut Chest
 		Tooltip: ""
 	}
+
+	CactusSplashJug: {
+		DisplayName: Cactus Splash Jug
+		Tooltip:
+			'''
+			Restores some health
+			Right click to splash yourself
+			'''
+	}
 }
 
 Projectiles: {
@@ -147,6 +156,7 @@ Projectiles: {
 	StarFragmentProj5.DisplayName: Star Fragment
 	StarFragmentProjSpawner.DisplayName: Star Fragment Proj Spawner
 	PreDigesterHeldProj.DisplayName: Pre Digester Held Proj
+	CactusSplashJugThrown.DisplayName: Cactus Splash Jug Thrown
 }
 
 Configs.DummyConfig.DisplayName: Dummy Config
