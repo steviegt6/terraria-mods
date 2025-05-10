@@ -1,5 +1,6 @@
 #undef TECHNIQUES
 #include "ModPanelShader.effect.uniforms.hlsl"
+#include "../pixelation.hlsl"
 float rand(float2 uv)
 {    
 	float x = dot(uv,float2(4371.321,-9137.327));    
@@ -127,8 +128,8 @@ float4 main(float2 coords : SV_POSITION, float2 tex_coords : TEXCOORD0) : COLOR0
     coords -= position;
 
     // Normalize the coordinates but with optional pixelation.
-    float2 uv = coords / resolution;
-    uv /= 4.0;
+    float2 uv = normalize_with_pixelation(coords, uPixel, resolution);
+    uv /= 8.0;
     float f = fbm(float3(uv, 2.0), 2.0);
     
     float a2 = smoothstep(-0.5, 0.5, f);
@@ -148,7 +149,12 @@ float4 main(float2 coords : SV_POSITION, float2 tex_coords : TEXCOORD0) : COLOR0
         mySmoothstep(0., 1., uHoverIntensity)
     );
 
-    return float4(finalCol, 1.);
+    // Take the original texture into account.  This is because we draw to a UI
+    // panel which will have corners and stuff of that nature, so we don't want
+    // to draw over that.  We don't reference the original texture for the
+    // shader's effects, but we'll take alpha into account.
+    float alpha = tex2D(uImage0, tex_coords).a;
+    return float4(finalCol, alpha);
 }
 
 #define TECHNIQUES
