@@ -130,6 +130,14 @@ internal sealed class DaybreakPanelStyle : ModPanelStyleExt
         panelShaderData = Assets.Shaders.UI.ModPanelShader.CreatePanelShader();
         panelShaderDataSampler = Assets.Shaders.UI.ModPanelShaderSampler.CreatePanelShader();
         whenDayBreaksShaderData = Assets.Shaders.UI.PowerfulSunIcon.CreatePanelShader();
+
+        Main.RunOnMainThread(
+            () =>
+            {
+                Main.graphics.GraphicsDevice.PresentationParameters.RenderTargetUsage = RenderTargetUsage.PreserveContents;
+                Main.graphics.ApplyChanges();
+            }
+        );
     }
 
     public override bool PreInitialize(UIModItem element)
