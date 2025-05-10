@@ -135,6 +135,11 @@ Items: {
 		DisplayName: Coconut Chest
 		Tooltip: ""
 	}
+
+	VerletTesting: {
+		DisplayName: Verlet Testing
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
