@@ -16,7 +16,6 @@ using Microsoft.Xna.Framework;
 
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
-using Terraria.UI;
 using Terraria.UI.Chat;
 
 namespace Daybreak.Content.VisualTweaks.UI;
@@ -117,6 +116,7 @@ internal sealed class DaybreakPanelStyle : ModPanelStyleExt
     private static readonly Color color_2 = new(255, 182, 55);
 
     private static WrapperShaderData<Assets.Shaders.UI.ModPanelShader.Parameters>? panelShaderData;
+    private static WrapperShaderData<Assets.Shaders.UI.ModPanelShaderSampler.Parameters>? panelShaderDataSampler;
     private static WrapperShaderData<Assets.Shaders.UI.PowerfulSunIcon.Parameters>? whenDayBreaksShaderData;
 
     private static RenderTarget2D? panelTargetToBeUpscaled;
@@ -128,6 +128,7 @@ internal sealed class DaybreakPanelStyle : ModPanelStyleExt
         base.Load();
 
         panelShaderData = Assets.Shaders.UI.ModPanelShader.CreatePanelShader();
+        panelShaderDataSampler = Assets.Shaders.UI.ModPanelShaderSampler.CreatePanelShader();
         whenDayBreaksShaderData = Assets.Shaders.UI.PowerfulSunIcon.CreatePanelShader();
     }
 
@@ -235,31 +236,38 @@ internal sealed class DaybreakPanelStyle : ModPanelStyleExt
                 panelShaderData.Parameters.uColorResolution = 10f;
                 panelShaderData.Apply();
 
-                var oldDimensions = element._dimensions;
-                element._dimensions = new CalculatedStyle(0f, 0f, oldDimensions.Width, oldDimensions.Height);
-                element.DrawPanel(sb, element._backgroundTexture.Value, element.BackgroundColor);
-                element._dimensions = oldDimensions;
+                sb.Draw(
+                    TextureAssets.MagicPixel.Value,
+                    new Rectangle(0, 0, targetWidth, targetHeight),
+                    Color.White
+                );
             }
             sb.End();
 
             Main.instance.GraphicsDevice.SetRenderTargets(oldRts);
             Main.instance.GraphicsDevice.ScissorRectangle = scissor;
 
-            sb.Begin(in ss);
-            
-            Main.pixelShader.CurrentTechnique.Passes[0].Apply();
-
-            sb.Draw(
-                panelTargetToBeUpscaled,
-                new Vector2(dims.X, dims.Y),
+            sb.Begin(
+                SpriteSortMode.Immediate,
+                BlendState.NonPremultiplied,
+                SamplerState.PointClamp,
+                DepthStencilState.None,
+                ss.RasterizerState,
                 null,
-                Color.White,
-                0f,
-                Vector2.Zero,
-                2f,
-                SpriteEffects.None,
-                0f
+                Main.UIScaleMatrix
             );
+            {
+                Debug.Assert(panelShaderDataSampler is not null);
+                panelShaderDataSampler.Parameters.uSource = new Vector4(dims.Width, dims.Height, dims.X, dims.Y);
+                
+                Main.instance.GraphicsDevice.Textures[1] = panelTargetToBeUpscaled;
+                Main.instance.GraphicsDevice.SamplerStates[1] = SamplerState.LinearWrap;
+                
+                panelShaderDataSampler.Apply();
+                Debug.Assert(element._backgroundTexture is not null);
+                element.DrawPanel(sb, element._backgroundTexture.Value, element.BackgroundColor);
+            }
+            sb.Restart(in ss);
         }
 
         Debug.Assert(element._borderTexture is not null);
