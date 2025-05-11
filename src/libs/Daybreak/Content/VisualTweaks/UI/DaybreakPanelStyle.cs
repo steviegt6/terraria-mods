@@ -91,7 +91,7 @@ internal sealed class DaybreakPanelStyle : ModPanelStyleExt
             whenDayBreaksShaderData.Parameters.uGrayness = 1f;
             whenDayBreaksShaderData.Parameters.uInColor = new Vector3(1f, 0f, 1f);
             whenDayBreaksShaderData.Parameters.uSpeed = 0.2f;
-            whenDayBreaksShaderData.Parameters.uSource = new Vector4(dims.Width, dims.Height - 2f, dims.X, dims.Y);
+            whenDayBreaksShaderData.Parameters.uSource = Transform(new Vector4(dims.Width, dims.Height - 2f, dims.X, dims.Y));
             whenDayBreaksShaderData.Parameters.uPixel = 2f;
             whenDayBreaksShaderData.Parameters.uColorResolution = 10f;
             whenDayBreaksShaderData.Apply();
@@ -131,8 +131,7 @@ internal sealed class DaybreakPanelStyle : ModPanelStyleExt
         panelShaderDataSampler = Assets.Shaders.UI.ModPanelShaderSampler.CreatePanelShader();
         whenDayBreaksShaderData = Assets.Shaders.UI.PowerfulSunIcon.CreatePanelShader();
 
-        Main.RunOnMainThread(
-            () =>
+        Main.RunOnMainThread(() =>
             {
                 Main.graphics.GraphicsDevice.PresentationParameters.RenderTargetUsage = RenderTargetUsage.PreserveContents;
                 Main.graphics.ApplyChanges();
@@ -266,11 +265,11 @@ internal sealed class DaybreakPanelStyle : ModPanelStyleExt
             );
             {
                 Debug.Assert(panelShaderDataSampler is not null);
-                panelShaderDataSampler.Parameters.uSource = new Vector4(dims.Width, dims.Height, dims.X, dims.Y);
-                
+                panelShaderDataSampler.Parameters.uSource = Transform(new Vector4(dims.Width, dims.Height, dims.X, dims.Y));
+
                 Main.instance.GraphicsDevice.Textures[1] = panelTargetToBeUpscaled;
                 Main.instance.GraphicsDevice.SamplerStates[1] = SamplerState.PointClamp;
-                
+
                 panelShaderDataSampler.Apply();
                 Debug.Assert(element._backgroundTexture is not null);
                 element.DrawPanel(sb, element._backgroundTexture.Value, element.BackgroundColor);
@@ -287,5 +286,12 @@ internal sealed class DaybreakPanelStyle : ModPanelStyleExt
     public override Color ModifyEnabledTextColor(bool enabled, Color color)
     {
         return enabled ? color_2 : color_1;
+    }
+
+    private static Vector4 Transform(Vector4 vector)
+    {
+        var vec1 = Vector2.Transform(new Vector2(vector.X, vector.Y), Main.UIScaleMatrix);
+        var vec2 = Vector2.Transform(new Vector2(vector.Z, vector.W), Main.UIScaleMatrix);
+        return new Vector4(vec1, vec2.X, vec2.Y);
     }
 }
