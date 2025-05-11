@@ -40,7 +40,7 @@ internal sealed class NightshadePanelStyle : ModPanelStyleExt
             originalText = text;
         }
 
-        public override void DrawSelf(SpriteBatch spriteBatch)
+        protected override void DrawSelf(SpriteBatch spriteBatch)
         {
             var formattedText = GetPulsatingText(originalText, Main.GlobalTimeWrappedHourly);
             SetText(formattedText);
@@ -88,7 +88,7 @@ internal sealed class NightshadePanelStyle : ModPanelStyleExt
             SetImage(icon);
         }
 
-        public override void DrawSelf(SpriteBatch spriteBatch)
+        protected override void DrawSelf(SpriteBatch spriteBatch)
         {
             // const int offset = (80 - 46) / 2;
             const int offset = 40;

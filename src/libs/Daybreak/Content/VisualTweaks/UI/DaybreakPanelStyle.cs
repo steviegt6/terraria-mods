@@ -36,7 +36,7 @@ internal sealed class DaybreakPanelStyle : ModPanelStyleExt
             originalText = text;
         }
 
-        public override void DrawSelf(SpriteBatch spriteBatch)
+        protected override void DrawSelf(SpriteBatch spriteBatch)
         {
             var formattedText = GetPulsatingText(originalText, Main.GlobalTimeWrappedHourly);
             SetText(formattedText);
@@ -71,7 +71,7 @@ internal sealed class DaybreakPanelStyle : ModPanelStyleExt
 
     private sealed class ModIcon() : UIImage(TextureAssets.MagicPixel)
     {
-        public override void DrawSelf(SpriteBatch spriteBatch)
+        protected override void DrawSelf(SpriteBatch spriteBatch)
         {
             spriteBatch.End(out var ss);
             spriteBatch.Begin(
