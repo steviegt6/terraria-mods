@@ -120,7 +120,7 @@ float mySmoothstep(float edge0, float edge1, float x) {
 }
 
 float4 main(float2 coords : SV_POSITION, float2 tex_coords : TEXCOORD0) : COLOR0 {
-    float2 resolution = 1600.0f.xx;
+    float2 resolution = 800.0f.xx;
     float2 position = uSource.zw;
 
     coords -= position;
