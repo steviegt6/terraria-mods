@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 using Terraria.ModLoader;
@@ -5,7 +6,7 @@ using Terraria.ModLoader;
 namespace Daybreak.Common.Features.Achievements;
 
 // TODO: [DependsOn<AchievementImpl>]
-public sealed class VanillaAchievements : ModSystem
+internal sealed class VanillaAchievements : ModSystem
 {
     private sealed class VanillaCategory : AchievementCategory
     {
@@ -28,6 +29,19 @@ public sealed class VanillaAchievements : ModSystem
         {
             Name = "Terraria/" + name;
             VANILLA_ACHIEVEMENTS_BY_NAME[key = name] = this;
+        }
+
+        public override IEnumerable<AchievementCategory> GetCategories()
+        {
+            yield return categories[key] switch
+            {
+                Terraria.Achievements.AchievementCategory.None => throw new InvalidOperationException("Vanilla category '" + key + "' is none."),
+                Terraria.Achievements.AchievementCategory.Slayer => IDs.VanillaAchievements.Categories.Slayer,
+                Terraria.Achievements.AchievementCategory.Collector => IDs.VanillaAchievements.Categories.Collector,
+                Terraria.Achievements.AchievementCategory.Explorer => IDs.VanillaAchievements.Categories.Explorer,
+                Terraria.Achievements.AchievementCategory.Challenger => IDs.VanillaAchievements.Categories.Challenger,
+                _ => throw new ArgumentOutOfRangeException(),
+            };
         }
     }
 
