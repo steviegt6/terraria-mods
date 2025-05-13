@@ -32,13 +32,11 @@ internal sealed class CustomModPanelImpl : ILoad, IUnload
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            ModContent.GetInstance<ModImpl>().Logger.Info(_mod.Name);
             if (!ModLoader.TryGetMod(_mod.Name, out var mod) || !TryGetPanelStyle(mod, out var style))
             {
                 base.Draw(spriteBatch);
                 return;
             }
-            ModContent.GetInstance<ModImpl>().Logger.Info(style.GetType().Name);
 
             using (style.OverrideTextures())
             {
