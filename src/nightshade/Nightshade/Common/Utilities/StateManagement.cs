@@ -14,11 +14,16 @@ public abstract class State<T> where T : struct
     internal StateController<T>? enclosingController;
 
     /// <summary>
-    /// Called when the state is pushed onto the stack; perform any necessary setup here.
+    /// Called when the state is pushed onto the stack; perform any necessary setup here. Use Resource Acquisition Is Initialization (RAII) as your entity does not necessarily know what is going on inside the state.
     /// </summary>
     /// <param name="parameters">A struct parameter to use inside the state.</param>
     /// <returns></returns>
     public abstract bool Enter(params T[] parameters);
+    /// <summary>
+    /// Called when the state is popped from the stack; perform any necessary cleanup of unmanaged resources here.
+    /// </summary>
+    /// <param name="parameters"></param>
+    /// <returns></returns>
     public abstract bool Exit(params T[] parameters);
     public abstract bool Update(params T[] parameters);
 
