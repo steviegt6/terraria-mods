@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 
 using Terraria;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace Daybreak.Common.Features.Achievements;
@@ -28,6 +29,10 @@ internal sealed class VanillaAchievements : ModSystem
     private sealed class VanillaAchievement : Achievement
     {
         public override string Name { get; }
+
+        public override LocalizedText DisplayName => Language.GetText($"Achievements.{key}_Name");
+
+        public override LocalizedText Description => Language.GetText($"Achievements.{key}_Description");
 
         public override float AdvisorOrder => orders.GetValueOrDefault(key, -1f);
 
