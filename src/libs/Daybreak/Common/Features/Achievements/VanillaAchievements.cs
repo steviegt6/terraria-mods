@@ -67,7 +67,7 @@ internal sealed class VanillaAchievements : ModSystem
             };
         }
 
-        public override Asset<Texture2D>? GetIcon(out Rectangle frame, out int hoveredOffset)
+        public override Asset<Texture2D> GetIcon(out Rectangle frame, out int lockedOffset)
         {
             var idx = icon_indices[key];
             frame = new Rectangle(
@@ -76,7 +76,7 @@ internal sealed class VanillaAchievements : ModSystem
                 icon_size,
                 icon_size
             );
-            hoveredOffset = 528;
+            lockedOffset = 528;
             return Main.Assets.Request<Texture2D>("Images/UI/Achievements");
         }
     }

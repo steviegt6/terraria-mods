@@ -67,5 +67,5 @@ public abstract class Achievement : ModType, ILocalizedModType
     /// <summary>
     ///     Gets the texture and frame used for the advisor card icon.
     /// </summary>
-    public abstract Asset<Texture2D> GetIcon(out Rectangle frame, out int hoveredOffset);
+    public abstract Asset<Texture2D> GetIcon(out Rectangle frame, out int lockedOffset);
 }

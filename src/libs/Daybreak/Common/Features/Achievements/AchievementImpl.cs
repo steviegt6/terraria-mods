@@ -320,7 +320,7 @@ internal sealed class AchievementImpl : ModSystem
         {
             hovered = false;
 
-            var texture = card.GetIcon(out var cardFrame, out var hoveredOffset);
+            var texture = card.GetIcon(out var cardFrame, out var lockedOffset);
 
             if (Main.MouseScreen.Between(position, position + cardFrame.Size() * scale))
             {
@@ -344,7 +344,7 @@ internal sealed class AchievementImpl : ModSystem
             }
 
             var frame = cardFrame;
-            frame.X += hoveredOffset;
+            frame.X += lockedOffset;
             spriteBatch.Draw(texture.Value, position, frame, color, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
             spriteBatch.Draw(achievements_border_texture.Value, position + vector, null, color, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
             if (hovered)
