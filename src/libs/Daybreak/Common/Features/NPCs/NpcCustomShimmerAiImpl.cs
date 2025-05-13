@@ -37,10 +37,10 @@ internal sealed class NpcCustomShimmerAiImpl : ILoad
 
         if (behavior.HasFlag(INpcCustomShimmerAi.Behavior.ResetAi))
         {
-            for (var i = 0; i < NPC.maxAI; i++)
-            {
-                self.ai[i] = 0f;
-            }
+            self.ai[0] = 25f;
+            self.ai[1] = 0f;
+            self.ai[2] = 0f;
+            self.ai[3] = 0f;
         }
 
         if (behavior.HasFlag(INpcCustomShimmerAi.Behavior.NetUpdate))

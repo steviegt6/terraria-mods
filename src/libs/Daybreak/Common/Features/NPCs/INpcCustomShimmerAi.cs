@@ -21,7 +21,8 @@ public interface INpcCustomShimmerAi
     public enum Behavior
     {
         /// <summary>
-        ///     Resets all <see cref="NPC.ai"/> values to <c>0</c>.
+        ///     Resets all <see cref="NPC.ai"/> values to <c>0</c>, aside from
+        ///     index <c>0</c>, which is set to <c>25f</c>.
         /// </summary>
         ResetAi = 1 << 0,
         
