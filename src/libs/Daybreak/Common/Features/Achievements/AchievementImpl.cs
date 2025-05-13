@@ -1,10 +1,13 @@
 using System.Diagnostics.CodeAnalysis;
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 using Terraria;
 using Terraria.GameContent.UI.Chat;
+using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.UI;
 using Terraria.UI.Chat;
 
 namespace Daybreak.Common.Features.Achievements;
@@ -33,11 +36,40 @@ internal sealed class AchievementImpl : ModSystem
         }
     }
 
+    // TODO
+    private sealed class CompatibleAchievementUnlockedPopup : IInGameNotification
+    {
+        public bool ShouldBeRemoved { get; }
+
+        private readonly Achievement achievement;
+
+        public CompatibleAchievementUnlockedPopup(Achievement achievement)
+        {
+            this.achievement = achievement;
+        }
+
+        public void Update()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void DrawInGame(SpriteBatch spriteBatch, Vector2 bottomAnchorPosition)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void PushAnchor(ref Vector2 positionAnchorBottom)
+        {
+            throw new System.NotImplementedException();
+        }
+    }
+
     public override void Load()
     {
         base.Load();
 
         On_AchievementTagHandler.Terraria_UI_Chat_ITagHandler_Parse += UseCompatibleTextSnippetForAchievementTag;
+        On_InGameNotificationsTracker.AddCompleted += AddModdedAchievementsAsCompletedInPlaceOfVanilla;
     }
 
     private static TextSnippet UseCompatibleTextSnippetForAchievementTag(
@@ -85,6 +117,25 @@ internal sealed class AchievementImpl : ModSystem
                 return false;
             }
         }
+    }
+
+    private static void AddModdedAchievementsAsCompletedInPlaceOfVanilla(
+        On_InGameNotificationsTracker.orig_AddCompleted orig,
+        Terraria.Achievements.Achievement achievement
+    )
+    {
+        if (Main.netMode == NetmodeID.Server)
+        {
+            return;
+        }
+
+        if (!VanillaAchievements.VANILLA_ACHIEVEMENTS_BY_NAME.TryGetValue(achievement.Name, out var ach))
+        {
+            // TODO: Throw exception?
+            return;
+        }
+
+        InGameNotificationsTracker.AddNotification(new CompatibleAchievementUnlockedPopup(ach));
     }
 
     public static void Register(Achievement achievement) { }
