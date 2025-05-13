@@ -20,12 +20,46 @@ internal sealed class NpcCustomShimmerAiImpl : ILoad
             return;
         }
 
-        if (!self.SpawnedFromStatue
-         && NPCID.Sets.ShimmerTransformToNPC[self.type] < 0
-         && NPCID.Sets.ShimmerTransformToItem[self.type] < 0
-         && NPCID.Sets.ShimmerTownTransform[self.type])
+        if (self.SpawnedFromStatue
+         || NPCID.Sets.ShimmerTransformToNPC[self.type] >= 0
+         || NPCID.Sets.ShimmerTransformToItem[self.type] >= 0
+         || !NPCID.Sets.ShimmerTownTransform[self.type])
         {
-            shimmerHandler.GetShimmered();
+            return;
+        }
+
+        var behavior = shimmerHandler.GetShimmered();
+
+        if (behavior == INpcCustomShimmerAi.Behavior.None)
+        {
+            return;
+        }
+
+        if (behavior.HasFlag(INpcCustomShimmerAi.Behavior.ResetAi))
+        {
+            for (var i = 0; i < NPC.maxAI; i++)
+            {
+                self.ai[i] = 0f;
+            }
+        }
+
+        if (behavior.HasFlag(INpcCustomShimmerAi.Behavior.NetUpdate))
+        {
+            self.netUpdate = true;
+        }
+
+        if (behavior.HasFlag(INpcCustomShimmerAi.Behavior.ShimmerTransparency))
+        {
+            self.shimmerTransparency = 0.89f;
+        }
+
+        if (behavior.HasFlag(INpcCustomShimmerAi.Behavior.RemoveShimmerDebuff))
+        {
+            var idx = self.FindBuffIndex(BuffID.Shimmer);
+            if (idx != -1)
+            {
+                self.DelBuff(idx);
+            }
         }
     }
 }
