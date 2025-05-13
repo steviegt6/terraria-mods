@@ -1,1 +1,39 @@
 UI.ModIcon.ModName: DAYBREAK
+
+Configs: {
+	AchievementConfig: {
+		DisplayName: Modded Achievements
+
+		AreAchievementsPresent: {
+			Label: Are achievements present?
+			Tooltip:
+				'''
+				[c/ff0000:Strictly informative.]
+				Indicates whether modded achievements are present that expect this feature to be enabled.
+				On: Modded achievements have been loaded, not just vanilla achievements.
+				Off: Only vanilla achievements have been loaded.
+				'''
+		}
+
+		UseAchievements: {
+			Label: Use DAYBREAK's Achievement System
+			Tooltip:
+				'''
+				Determines whether to use DAYBREAK's achievement system.
+				Default: Only use it when modded achievements are present.
+				Always Enable: Always use DAYBREAK's achievement system, even if no modded achievements are present.
+				Always Disable: Never use DAYBREAK's achievement system, even if modded achievements are present.
+
+				Players may want to set this to Always Enable to benefit from DAYBREAK's rewritten achievement handling, associating achievements with players and worlds.
+				Players may want to set this to Always Disable if they don't want to interact with modded achievements.
+				'''
+		}
+	}
+
+	AchievementOverride: {
+		Tooltip: ""
+		Default.Label: Default
+		AlwaysEnable.Label: Always Enable
+		AlwaysDisable.Label: Always Disable
+	}
+}

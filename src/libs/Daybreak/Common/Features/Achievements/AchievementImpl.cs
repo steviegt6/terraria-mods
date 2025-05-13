@@ -374,8 +374,8 @@ internal sealed class AchievementImpl : ModSystem
         }
     }
 
-    private static readonly List<Achievement> achievements = [];
-    private static readonly List<AchievementCategory> categories = [];
+    public static readonly List<Achievement> ACHIEVEMENTS = [];
+    public static readonly List<AchievementCategory> CATEGORIES = [];
 
     public override void Load()
     {
@@ -389,7 +389,7 @@ internal sealed class AchievementImpl : ModSystem
     {
         base.PostSetupContent();
 
-        CustomAchievementAdvisor.Cards = achievements.Where(x => x.AdvisorOrder >= 0f).OrderBy(x => x.AdvisorOrder).ToArray();
+        CustomAchievementAdvisor.Cards = ACHIEVEMENTS.Where(x => x.AdvisorOrder >= 0f).OrderBy(x => x.AdvisorOrder).ToArray();
     }
 
     private static TextSnippet UseCompatibleTextSnippetForAchievementTag(
@@ -460,11 +460,11 @@ internal sealed class AchievementImpl : ModSystem
 
     public static void Register(Achievement achievement)
     {
-        achievements.Add(achievement);
+        ACHIEVEMENTS.Add(achievement);
     }
 
     public static void RegisterCategory(AchievementCategory category)
     {
-        categories.Add(category);
+        CATEGORIES.Add(category);
     }
 }
