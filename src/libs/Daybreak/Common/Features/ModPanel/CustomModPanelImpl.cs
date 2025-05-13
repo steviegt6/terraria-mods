@@ -5,14 +5,10 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-
 using Daybreak.Core.Hooks;
-
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
 using MonoMod.Cil;
-
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
@@ -26,6 +22,7 @@ namespace Daybreak.Common.Features.ModPanel;
 [Autoload(Side = ModSide.Client)]
 internal sealed class CustomModPanelImpl : ILoad, IUnload
 {
+    // REMEMBER TO USE DUMBWORKAROUND IN HOOKS FOR DRAW/DRAWSELF
     private sealed class DumbWorkaround : UIModItem
     {
         public DumbWorkaround(LocalMod mod) : base(mod) { }
@@ -54,14 +51,14 @@ internal sealed class CustomModPanelImpl : ILoad, IUnload
         {
             var ptr = typeof(UIPanel).GetMethod("DrawSelf", BindingFlags.NonPublic | BindingFlags.Instance)!.MethodHandle.GetFunctionPointer();
             var baseDrawSelf = (Action<SpriteBatch>)Activator.CreateInstance(typeof(Action<SpriteBatch>), this, ptr)!;
-
+            bool drawPanelDivider = false;
             if (!TryGetPanelStyle(currentMod, out var style))
             {
                 baseDrawSelf(spriteBatch);
             }
             else
             {
-                if (style.PreDrawPanel(this, spriteBatch))
+                if (style.PreDrawPanel(this, spriteBatch, ref drawPanelDivider))
                 {
                     baseDrawSelf(spriteBatch);
                 }
@@ -70,6 +67,7 @@ internal sealed class CustomModPanelImpl : ILoad, IUnload
 
             var innerDimensions = GetInnerDimensions();
             var drawPos = new Vector2(innerDimensions.X + 5f + _modIconAdjust, innerDimensions.Y + 30f);
+            if (drawPanelDivider)
             spriteBatch.Draw(UICommon.DividerTexture.Value, drawPos, null, Color.White, 0f, Vector2.Zero, new Vector2((innerDimensions.Width - 10f - _modIconAdjust) / 8f, 1f), SpriteEffects.None, 0f);
             drawPos = new Vector2(innerDimensions.X + 10f + _modIconAdjust, innerDimensions.Y + 45f);
 
@@ -184,28 +182,23 @@ internal sealed class CustomModPanelImpl : ILoad, IUnload
                     );
                 }
             );
-
             MonoModHooks.Add(
                 GetMethod(nameof(UIModItem.OnInitialize)),
                 OnInitialize
             );
-
             MonoModHooks.Modify(
                 GetMethod(nameof(UIModItem.OnInitialize)),
                 ModifyAppendedFields
             );
         }
-
         MonoModHooks.Add(
             GetMethod(nameof(UIModItem.SetHoverColors)),
             SetHoverColors
         );
-
         MonoModHooks.Modify(
             typeof(UIModStateText).GetMethod(nameof(UIModStateText.DrawEnabledText), BindingFlags.NonPublic | BindingFlags.Instance),
             DrawCustomColoredEnabledText
         );
-
         return;
 
         static MethodInfo GetMethod(string name)
@@ -237,7 +230,6 @@ internal sealed class CustomModPanelImpl : ILoad, IUnload
                 type.GetMethod("DrawSelf", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance),
                 Draw
             );
-
             MonoModHooks.Add(
                 type.GetMethod("ManageDrawing", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance),
                 OverrideRegularPanelDrawing
@@ -300,7 +292,6 @@ internal sealed class CustomModPanelImpl : ILoad, IUnload
         currentMod = null;
         panel_styles.Clear();
     }
-
     private static void OnInitialize(Action<UIModItem> orig, UIModItem self)
     {
         if (!ModLoader.TryGetMod(self._mod.Name, out currentMod) || !TryGetPanelStyle(currentMod, out var style))
@@ -433,7 +424,6 @@ internal sealed class CustomModPanelImpl : ILoad, IUnload
             orig(self, spriteBatch);
             return;
         }
-
         using (style.OverrideTextures())
         {
             currentMod = mod;
@@ -457,8 +447,8 @@ internal sealed class CustomModPanelImpl : ILoad, IUnload
             orig(self, spriteBatch);
             return;
         }
-
-        if (style.PreDrawPanel(uiModItem, spriteBatch))
+        bool _ = false;
+        if (style.PreDrawPanel(uiModItem, spriteBatch, ref _))
         {
             orig(self, spriteBatch);
         }

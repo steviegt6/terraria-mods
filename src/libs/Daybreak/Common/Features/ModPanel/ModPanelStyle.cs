@@ -217,7 +217,7 @@ public abstract class ModPanelStyle : ModType
     ///     Invoked specifically before the panel is drawn, assuming
     ///     <see cref="PreDraw"/> returned <see langword="true"/>.
     /// </summary>
-    public virtual bool PreDrawPanel(UIPanel element, SpriteBatch sb)
+    public virtual bool PreDrawPanel(UIPanel element, SpriteBatch sb, ref bool shouldDrawDivider)
     {
         return true;
     }

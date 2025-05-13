@@ -271,8 +271,9 @@ internal sealed class NightshadePanelStyle : ModPanelStyleExt
         }
     }
 
-    public override bool PreDrawPanel(UIModItem element, SpriteBatch sb)
+    public override bool PreDrawPanel(UIModItem element, SpriteBatch sb, ref bool shouldDrawDivider)
     {
+        shouldDrawDivider = true;
         if (element._needsTextureLoading)
         {
             element._needsTextureLoading = false;

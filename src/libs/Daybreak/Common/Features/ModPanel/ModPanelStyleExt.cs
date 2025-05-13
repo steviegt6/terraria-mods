@@ -58,9 +58,9 @@ public abstract class ModPanelStyleExt : ModPanelStyle
         PostDraw((UIModItem)element, sb);
     }
 
-    public sealed override bool PreDrawPanel(UIPanel element, SpriteBatch sb)
+    public sealed override bool PreDrawPanel(UIPanel element, SpriteBatch sb, ref bool shouldDrawDivider)
     {
-        return PreDrawPanel((UIModItem)element, sb);
+        return PreDrawPanel((UIModItem)element, sb, ref shouldDrawDivider);
     }
 
     public sealed override void PostDrawPanel(UIPanel element, SpriteBatch sb)
@@ -108,7 +108,7 @@ public abstract class ModPanelStyleExt : ModPanelStyle
     public virtual void PostDraw(UIModItem element, SpriteBatch sb) { }
 
     /// <inheritdoc cref="ModPanelStyle.PreDrawPanel"/>
-    public virtual bool PreDrawPanel(UIModItem element, SpriteBatch sb)
+    public virtual bool PreDrawPanel(UIModItem element, SpriteBatch sb, ref bool shouldDrawDivider)
     {
         return true;
     }
