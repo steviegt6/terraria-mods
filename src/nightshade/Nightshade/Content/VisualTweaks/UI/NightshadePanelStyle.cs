@@ -1,10 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
 using Daybreak.Common.Features.ModPanel;
 using Daybreak.Common.Rendering;
-using Daybreak.Core.Hooks;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -18,12 +18,13 @@ using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
+using Terraria.ModLoader;
 using Terraria.ModLoader.UI;
 using Terraria.UI.Chat;
 
 namespace Nightshade.Content.VisualTweaks.UI;
 
-internal sealed class NightshadePanelStyle : ModPanelStyle, ILoad
+internal sealed class NightshadePanelStyle : ModPanelStyleExt
 {
     private sealed class ModName : UIText
     {
@@ -39,7 +40,7 @@ internal sealed class NightshadePanelStyle : ModPanelStyle, ILoad
             originalText = text;
         }
 
-        public override void DrawSelf(SpriteBatch spriteBatch)
+        protected override void DrawSelf(SpriteBatch spriteBatch)
         {
             var formattedText = GetPulsatingText(originalText, Main.GlobalTimeWrappedHourly);
             SetText(formattedText);
@@ -74,18 +75,20 @@ internal sealed class NightshadePanelStyle : ModPanelStyle, ILoad
 
     private sealed class ModIcon : UIImage
     {
+        private readonly bool useCensor;
         private readonly Asset<Texture2D> icon;
         private readonly Asset<Texture2D> iconDots;
 
-        public ModIcon() : base(TextureAssets.MagicPixel)
+        public ModIcon(bool useCensor) : base(TextureAssets.MagicPixel)
         {
+            this.useCensor = useCensor;
             icon = Assets.Images.UI.ModIcon.Icon.Asset;
             iconDots = Assets.Images.UI.ModIcon.Icon_Dots.Asset;
 
             SetImage(icon);
         }
 
-        public override void DrawSelf(SpriteBatch spriteBatch)
+        protected override void DrawSelf(SpriteBatch spriteBatch)
         {
             // const int offset = (80 - 46) / 2;
             const int offset = 40;
@@ -93,6 +96,21 @@ internal sealed class NightshadePanelStyle : ModPanelStyle, ILoad
             var dims = GetDimensions();
             dims.X += offset;
             dims.Y += offset;
+
+            if (useCensor)
+            {
+                spriteBatch.Draw(
+                    TextureAssets.MagicPixel.Value,
+                    new Rectangle((int)dims.X - 25, (int)dims.Y - 25, 50, 50),
+                    null,
+                    Color.Black,
+                    0f,
+                    Vector2.Zero,
+                    SpriteEffects.None,
+                    0f
+                );
+                return;
+            }
 
             var rotation = Main.GlobalTimeWrappedHourly / 10f;
 
@@ -147,14 +165,20 @@ internal sealed class NightshadePanelStyle : ModPanelStyle, ILoad
 
     private static float hoverIntensity;
 
-    public override Asset<Texture2D>? ModInfoTexture => Assets.Images.UI.ModLoader.ButtonModInfo.Asset;
+    private static bool AprilFools => DateTime.Now.Month == 4 && DateTime.Now.Day == 1;
 
-    public override Asset<Texture2D>? ModConfigTexture => Assets.Images.UI.ModLoader.ButtonModConfig.Asset;
-
-    public override Asset<Texture2D>? InnerPanelTexture => Assets.Images.UI.ModLoader.InnerPanelBackground.Asset;
-
-    void ILoad.Load()
+    public override Dictionary<TextureKind, Asset<Texture2D>> TextureOverrides { get; } = new()
     {
+        { TextureKind.ModInfo, Assets.Images.UI.ModLoader.ButtonModInfo.Asset },
+        { TextureKind.ModConfig, Assets.Images.UI.ModLoader.ButtonModConfig.Asset },
+        { TextureKind.Deps, Assets.Images.UI.ModLoader.ButtonDeps.Asset },
+        { TextureKind.InnerPanel, Assets.Images.UI.ModLoader.InnerPanelBackground.Asset },
+    };
+
+    public override void Load()
+    {
+        base.Load();
+
         Main.QueueMainThreadAction(() =>
             {
                 panelShaderData = Assets.Shaders.UI.ModPanelShader.CreatePanelShader();
@@ -174,9 +198,19 @@ internal sealed class NightshadePanelStyle : ModPanelStyle, ILoad
         return base.PreInitialize(element);
     }
 
-    public override UIImage ModifyModIcon(UIModItem element, UIImage modIcon)
+    public override void PostInitialize(UIModItem element)
     {
-        return new ModIcon
+        base.PostInitialize(element);
+
+        if (ModLoader.HasMod("ConciseModList") && element._configButton is not null)
+        {
+            element._configButton._texture = Assets.Images.UI.ModLoader.ButtonModConfig_ConciseModsList.Asset;
+        }
+    }
+
+    public override UIImage ModifyModIcon(UIModItem element, UIImage modIcon, ref int modIconAdjust)
+    {
+        return new ModIcon(AprilFools)
         {
             Left = modIcon.Left,
             Top = modIcon.Top,
@@ -187,7 +221,9 @@ internal sealed class NightshadePanelStyle : ModPanelStyle, ILoad
 
     public override UIText ModifyModName(UIModItem element, UIText modName)
     {
-        var name = Mods.Nightshade.UI.ModIcon.ModName.GetTextValue();
+        var name = AprilFools
+            ? Mods.Nightshade.UI.ModIcon.AprilFools.ModName.GetTextValue()
+            : Mods.Nightshade.UI.ModIcon.ModName.GetTextValue();
         return new ModName(name + $" v{element._mod.Version}")
         {
             Left = modName.Left,
@@ -251,7 +287,7 @@ internal sealed class NightshadePanelStyle : ModPanelStyle, ILoad
                 BlendState.NonPremultiplied,
                 SamplerState.PointClamp,
                 DepthStencilState.None,
-                RasterizerState.CullNone,
+                ss.RasterizerState,
                 null,
                 Main.UIScaleMatrix
             );
@@ -265,7 +301,7 @@ internal sealed class NightshadePanelStyle : ModPanelStyle, ILoad
                 panelShaderData.Parameters.uGrayness = 1f;
                 panelShaderData.Parameters.uInColor = new Vector3(1f, 0f, 1f);
                 panelShaderData.Parameters.uSpeed = 0.2f;
-                panelShaderData.Parameters.uSource = new Vector4(dims.Width, dims.Height - 2f, dims.X, dims.Y);
+                panelShaderData.Parameters.uSource = Transform(new Vector4(dims.Width, dims.Height - 2f, dims.X, dims.Y));
                 panelShaderData.Parameters.uHoverIntensity = hoverIntensity;
                 panelShaderData.Parameters.uPixel = 2f;
                 panelShaderData.Parameters.uColorResolution = 10f;
@@ -280,7 +316,7 @@ internal sealed class NightshadePanelStyle : ModPanelStyle, ILoad
                     BlendState.AlphaBlend,
                     SamplerState.PointClamp,
                     DepthStencilState.None,
-                    RasterizerState.CullNone,
+                    ss.RasterizerState,
                     null,
                     Main.UIScaleMatrix
                 );
@@ -289,7 +325,7 @@ internal sealed class NightshadePanelStyle : ModPanelStyle, ILoad
                 dims.X += 40f; // 80 / 2
 
                 Debug.Assert(flowerShaderData is not null);
-                flowerShaderData.Parameters.uSource = new Vector4(dims.Width, dims.Height - 2f, dims.X, dims.Y);
+                flowerShaderData.Parameters.uSource = Transform(new Vector4(dims.Width, dims.Height - 2f, dims.X, dims.Y));
                 flowerShaderData.Parameters.uPixel = 2f;
                 flowerShaderData.Apply();
                 element.DrawPanel(sb, element._backgroundTexture.Value, element.BackgroundColor);
@@ -306,5 +342,12 @@ internal sealed class NightshadePanelStyle : ModPanelStyle, ILoad
     public override Color ModifyEnabledTextColor(bool enabled, Color color)
     {
         return enabled ? light_pink : dark_pink;
+    }
+    
+    private static Vector4 Transform(Vector4 vector)
+    {
+        var vec1 = Vector2.Transform(new Vector2(vector.X, vector.Y), Main.UIScaleMatrix);
+        var vec2 = Vector2.Transform(new Vector2(vector.Z, vector.W), Main.UIScaleMatrix);
+        return new Vector4(vec1, vec2.X, vec2.Y);
     }
 }

@@ -8,11 +8,13 @@
 
         <Version>1.0.0</Version>
         <AssemblyVersion>1.0.0</AssemblyVersion>
+
+        <GenerateDocumentationFile>True</GenerateDocumentationFile>
     </PropertyGroup>
 
     <ItemGroup>
-        <Publicize Include="FNA"/>
-        <Publicize Include="ReLogic"/>
+        <Publicize Include="FNA" IncludeCompilerGeneratedMembers="false" IncludeVirtualMembers="false"/>
+        <Publicize Include="ReLogic" IncludeCompilerGeneratedMembers="false" IncludeVirtualMembers="false"/>
     </ItemGroup>
 
 </Project>

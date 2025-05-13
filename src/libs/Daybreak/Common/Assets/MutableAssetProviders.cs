@@ -1,3 +1,5 @@
+using JetBrains.Annotations;
+
 using ReLogic.Content;
 
 namespace Daybreak.Common.Assets;
@@ -12,6 +14,7 @@ namespace Daybreak.Common.Assets;
 ///     in the context in which an asset is provided for the
 ///     <see cref="AssetReplacer"/> API.
 /// </remarks>
+[PublicAPI]
 public interface IMutableAssetProvider<T>
     where T : class
 {
@@ -26,7 +29,7 @@ public interface IMutableAssetProvider<T>
 /// </summary>
 /// <param name="Source">The <see cref="Asset{T}"/> to be mutated.</param>
 /// <typeparam name="T">The type of the asset.</typeparam>
-public readonly record struct ReLogicMutableAssetProvider<T>(Asset<T> Source) : IMutableAssetProvider<T>
+internal readonly record struct ReLogicMutableAssetProvider<T>(Asset<T> Source) : IMutableAssetProvider<T>
     where T : class
 {
     public T Asset

@@ -55,7 +55,7 @@
         <!-- It's reasonable to publicize tModLoader.  Don't include
              compiler-generated members since it breaks events and some other
              stuff. -->
-        <Publicize Include="tModLoader" IncludeCompilerGeneratedMembers="false"/>
+        <Publicize Include="tModLoader" IncludeCompilerGeneratedMembers="false" IncludeVirtualMembers="false"/>
     </ItemGroup>
 
     <ItemGroup>

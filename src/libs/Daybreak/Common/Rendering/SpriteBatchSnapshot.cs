@@ -1,3 +1,5 @@
+using JetBrains.Annotations;
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -21,6 +23,7 @@ namespace Daybreak.Common.Rendering;
 ///     <see cref="SpriteBatch"/>, use the APIs provided in
 ///     <see cref="SpriteBatchSnapshotExtensions"/>.
 /// </remarks>
+[PublicAPI]
 public struct SpriteBatchSnapshot(SpriteBatch spriteBatch)
 {
     /// <summary>
@@ -63,6 +66,7 @@ public struct SpriteBatchSnapshot(SpriteBatch spriteBatch)
 ///     Extensions to <see cref="SpriteBatch"/> using
 ///     <see cref="SpriteBatchSnapshot"/> instances.
 /// </summary>
+[PublicAPI]
 public static class SpriteBatchSnapshotExtensions
 {
     /// <summary>

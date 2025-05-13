@@ -1,3 +1,5 @@
+using JetBrains.Annotations;
+
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 
@@ -8,6 +10,7 @@ namespace Daybreak.Common.CIL;
 /// <summary>
 ///     API extensions for <see cref="ILCursor"/>s and related APIs.
 /// </summary>
+[PublicAPI]
 public static class IlCursorExtensions
 {
 #region AddVariable

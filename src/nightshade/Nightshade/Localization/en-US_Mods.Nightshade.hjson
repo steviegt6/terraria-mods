@@ -1,5 +1,6 @@
 UI: {
 	ModIcon: {
+		AprilFools.ModName: NAMELESS MOD OF NIGHT
 		ModName: NIGHTSHADE
 		AuthorHeader: Made with [c/CE008C:♥] by:
 
@@ -147,3 +148,5 @@ Projectiles: {
 	StarFragmentProjSpawner.DisplayName: Star Fragment Proj Spawner
 	PreDigesterHeldProj.DisplayName: Pre Digester Held Proj
 }
+
+Configs.DummyConfig.DisplayName: Dummy Config

@@ -1,5 +1,7 @@
 using System;
 
+using JetBrains.Annotations;
+
 using Microsoft.Xna.Framework.Graphics;
 
 using ReLogic.Content;
@@ -31,6 +33,7 @@ namespace Daybreak.Common.Assets;
 ///     be needed, but they made be superseded by direct changes to values in
 ///     <see cref="TextureAssets"/> by other mods.
 /// </remarks>
+[PublicAPI]
 public static class AssetReplacer
 {
     // Implementation detail for curious developers: the actual logic is indeed
