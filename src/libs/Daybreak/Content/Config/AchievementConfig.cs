@@ -21,7 +21,7 @@ internal sealed class AchievementConfig : ModConfig
     // client.
     public override ConfigScope Mode => ConfigScope.ServerSide;
 
-    public bool AreAchievementsPresent => AchievementImpl.ACHIEVEMENTS.Count > 0;
+    public bool AreAchievementsPresent => AchievementImpl.ACHIEVEMENTS.Count > VanillaAchievements.VANILLA_ACHIEVEMENTS_BY_NAME.Keys.Count;
 
     [DrawTicks]
     [ReloadRequired]
