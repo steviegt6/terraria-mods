@@ -23,6 +23,20 @@ namespace Daybreak.Common.Features.ModPanel;
 internal sealed class CustomModPanelImpl : ILoad, IUnload
 {
     // REMEMBER TO USE DUMBWORKAROUND IN HOOKS FOR DRAW/DRAWSELF
+    // TODO : 
+    // ModStateUIText:
+    // string ModifyModStateText(string text, bool enabled), (get_DisplayText), if fsr this breaks, also modify Recalculate()
+    // bool PreDrawModStateText(string text, bool enabled)
+    // void PostDrawModStateText(string text, bool enabled)
+    // bool PreDrawModStatePanel(bool enabled)
+    // void PostDrawModStatePanel(bool enabled)
+    // UIModItem:
+    // Custom hover tooltip text setting
+    // Custom hover tooltip panel / text drawing
+    // ^ both pre/post draw
+    // Swap UIImage for Config/More info buttons
+    // Modify ReloadRequiredText
+    // PreDraw ReloadRequiredText / PostDrawReloadRequiredText
     private sealed class DumbWorkaround : UIModItem
     {
         public DumbWorkaround(LocalMod mod) : base(mod) { }
