@@ -138,11 +138,7 @@ internal sealed class DaybreakPanelStyle : ModPanelStyleExt
             }
         );
     }
-    public override string ModifyEnabledText(bool enabled, ref string text)
-    {
-        text = enabled ? "I AM ENABLED" : "I AM DISABLED";
-        return text;
-    }
+
     public override bool PreInitialize(UIModItem element)
     {
         element.BorderColor = new Color(25, 5, 5);
