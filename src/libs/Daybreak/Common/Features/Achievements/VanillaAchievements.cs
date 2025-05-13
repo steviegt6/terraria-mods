@@ -67,7 +67,7 @@ internal sealed class VanillaAchievements : ModSystem
             };
         }
 
-        public override Asset<Texture2D>? GetAdvisorIcon(out Rectangle frame, out int hoveredOffset)
+        public override Asset<Texture2D>? GetIcon(out Rectangle frame, out int hoveredOffset)
         {
             var idx = icon_indices[key];
             frame = new Rectangle(

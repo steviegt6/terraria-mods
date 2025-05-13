@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 
 using Terraria;
+using Terraria.GameContent;
 using Terraria.GameContent.UI.Chat;
 using Terraria.GameInput;
 using Terraria.ID;
@@ -46,28 +47,120 @@ internal sealed class AchievementImpl : ModSystem
     // TODO
     private sealed class CompatibleAchievementUnlockedPopup : IInGameNotification
     {
-        public bool ShouldBeRemoved { get; }
+        public bool ShouldBeRemoved { get; private set; }
 
-        private readonly Achievement achievement;
+        private float Scale
+        {
+            get
+            {
+                if (timeLeft < 30)
+                {
+                    return MathHelper.Lerp(0f, 1f, timeLeft / 30f);
+                }
+
+                if (timeLeft > 285)
+                {
+                    return MathHelper.Lerp(1f, 0f, (timeLeft - 285f) / 15f);
+                }
+
+                return 1f;
+            }
+        }
+
+        private float Opacity
+        {
+            get
+            {
+                var scale = Scale;
+                if (scale <= 0.5f)
+                {
+                    return 0f;
+                }
+
+                return (scale - 0.5f) / 0.5f;
+            }
+        }
+
+        private int timeLeft;
+
+        private readonly string title;
+        private readonly Rectangle frame;
+        private readonly Asset<Texture2D> texture;
+
+        private static readonly Asset<Texture2D> border_texture = Main.Assets.Request<Texture2D>("Images/UI/Achievement_Borders");
 
         public CompatibleAchievementUnlockedPopup(Achievement achievement)
         {
-            this.achievement = achievement;
+            timeLeft = 300;
+            title = achievement.DisplayName.Value;
+            texture = achievement.GetIcon(out frame, out _);
         }
 
         public void Update()
         {
-            throw new System.NotImplementedException();
+            timeLeft--;
+
+            if (timeLeft < 0)
+            {
+                timeLeft = 0;
+            }
         }
 
         public void DrawInGame(SpriteBatch spriteBatch, Vector2 bottomAnchorPosition)
         {
-            throw new System.NotImplementedException();
+            var opacity = Opacity;
+            if (opacity <= 0f)
+            {
+                return;
+            }
+
+            var textScale = Scale * 1.1f;
+            var textSize = (FontAssets.ItemStack.Value.MeasureString(title) + new Vector2(58f, 10f)) * textScale;
+            var panelBackground = Utils.CenteredRectangle(bottomAnchorPosition + new Vector2(0f, (0f - textSize.Y) * 0.5f), textSize);
+            var mouseOver = panelBackground.Contains(Main.MouseScreen.ToPoint());
+            Utils.DrawInvBG(c: mouseOver ? new Color(64, 109, 164) * 0.75f : new Color(64, 109, 164) * 0.5f, sb: spriteBatch, R: panelBackground);
+            var iconScale = textScale * 0.3f;
+            var drawPos = panelBackground.Right() - Vector2.UnitX * textScale * (12f + iconScale * frame.Width);
+            spriteBatch.Draw(texture.Value, drawPos, frame, Color.White * opacity, 0f, new Vector2(0f, frame.Height / 2f), iconScale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(border_texture.Value, drawPos, null, Color.White * opacity, 0f, new Vector2(0f, frame.Height / 2f), iconScale, SpriteEffects.None, 0f);
+            Utils.DrawBorderString(
+                color: new Color(Main.mouseTextColor, Main.mouseTextColor, Main.mouseTextColor / 5, Main.mouseTextColor) * opacity,
+                sb: spriteBatch,
+                text: title,
+                pos: drawPos - Vector2.UnitX * 10f,
+                scale: textScale * 0.9f,
+                anchorx: 1f,
+                anchory: 0.4f
+            );
+
+            if (mouseOver)
+            {
+                OnMouseOver();
+            }
         }
 
         public void PushAnchor(ref Vector2 positionAnchorBottom)
         {
-            throw new System.NotImplementedException();
+            positionAnchorBottom.Y -= 50f * Opacity;
+        }
+
+        private void OnMouseOver()
+        {
+            if (PlayerInput.IgnoreMouseInterface)
+            {
+                return;
+            }
+
+            Main.LocalPlayer.mouseInterface = true;
+            if (!Main.mouseLeft || !Main.mouseLeftRelease)
+            {
+                return;
+            }
+
+            Main.mouseLeftRelease = false;
+            // TODO: IngameFancyUI.OpenAchievementsAndGoto(achievement);
+            timeLeft = 0;
+            ShouldBeRemoved = true;
         }
     }
 
@@ -227,12 +320,7 @@ internal sealed class AchievementImpl : ModSystem
         {
             hovered = false;
 
-            var texture = card.GetAdvisorIcon(out var cardFrame, out var hoveredOffset);
-            if (texture is null)
-            {
-                // TODO: Throw?
-                return;
-            }
+            var texture = card.GetIcon(out var cardFrame, out var hoveredOffset);
 
             if (Main.MouseScreen.Between(position, position + cardFrame.Size() * scale))
             {
