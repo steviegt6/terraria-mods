@@ -458,7 +458,13 @@ internal sealed class AchievementImpl : ModSystem
         InGameNotificationsTracker.AddNotification(new CompatibleAchievementUnlockedPopup(ach));
     }
 
-    public static void Register(Achievement achievement) { }
+    public static void Register(Achievement achievement)
+    {
+        achievements.Add(achievement);
+    }
 
-    public static void RegisterCategory(AchievementCategory category) { }
+    public static void RegisterCategory(AchievementCategory category)
+    {
+        categories.Add(category);
+    }
 }
