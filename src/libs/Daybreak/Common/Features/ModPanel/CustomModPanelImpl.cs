@@ -7,13 +7,14 @@ using System.Reflection;
 using System.Threading.Tasks;
 
 using Daybreak.Core.Hooks;
-
+using Humanizer;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using MonoMod.Cil;
 
 using Terraria;
+using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -206,6 +207,19 @@ internal sealed class CustomModPanelImpl : ILoad, IUnload
             DrawCustomColoredEnabledText
         );
 
+        MonoModHooks.Modify(
+            typeof(UIModStateText).GetProperty(nameof(UIModStateText.DisplayText), BindingFlags.NonPublic | BindingFlags.Instance).GetGetMethod(true),
+            ModifyModStateText
+        );
+        MonoModHooks.Modify(
+            GetMethod("DrawSelf"),
+            DrawUIModItemPanel
+        );
+        // this HAS to be edited for whatever reason, because just editing the getter for DisplayText isnt enough for Recalculate() to work :DDDD
+        /*MonoModHooks.Modify(
+            typeof(UIModStateText).GetMethod(nameof(UIModStateText.Recalculate), BindingFlags.Public | BindingFlags.Instance),
+            RecalculateModStateTextPanel
+        );*/
         return;
 
         static MethodInfo GetMethod(string name)
@@ -232,16 +246,15 @@ internal sealed class CustomModPanelImpl : ILoad, IUnload
                 type.GetMethod(nameof(UIModItem.OnInitialize), BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance),
                 OnInitialize
             );
-
             MonoModHooks.Add(
                 type.GetMethod("DrawSelf", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance),
                 Draw
             );
 
-            MonoModHooks.Add(
+            /*MonoModHooks.Add(
                 type.GetMethod("ManageDrawing", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance),
                 OverrideRegularPanelDrawing
-            );
+            );*/
 
             MonoModHooks.Modify(
                 type.GetMethod(nameof(UIModItem.OnInitialize), BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance),
@@ -482,5 +495,82 @@ internal sealed class CustomModPanelImpl : ILoad, IUnload
                 return style.ModifyEnabledTextColor(self._enabled, displayColor);
             }
         );
+    }
+    private static void ModifyModStateText(ILContext il)
+    {
+        ILCursor c = new ILCursor(il);
+        c.EmitLdarg0();
+        c.EmitDelegate(static (UIModStateText self) =>
+        {
+            string text = self._enabled ? Language.GetTextValue("GameUI.Enabled") : Language.GetTextValue("GameUI.Disabled");
+            if (!TryGetPanelStyle(currentMod, out var style))
+            {
+                return text;
+            }
+            return style.ModifyEnabledText(self._enabled, ref text);
+        });
+        c.EmitRet();
+    }
+    private static void RecalculateModStateTextPanel(ILContext il)
+    {
+        ILCursor c = new ILCursor(il);
+        c.GotoNext(MoveType.After, i => i.MatchCall<UIModStateText>("get_DisplayText"));
+        c.EmitPop(); // pop the original value because its broken fsr
+        c.EmitLdarg0(); // this instance of UIModStateText
+        c.EmitDelegate(static (UIModStateText self) =>
+        {
+            string text = self._enabled ? Language.GetTextValue("GameUI.Enabled") : Language.GetTextValue("GameUI.Disabled");
+            if (!TryGetPanelStyle (currentMod, out var style))
+            {
+                return text;
+            }
+            return style.ModifyEnabledText(self._enabled, ref text);
+        });
+    }
+    private static void DrawUIModItemPanel(ILContext il)
+    {
+        ILCursor c = new ILCursor(il);
+        c.EmitLdarg0();
+        c.EmitLdarg1();
+        c.EmitDelegate(static (UIModItem self, SpriteBatch sb) =>
+        {
+            ModContent.GetInstance<ModImpl>().Logger.Info("dddd");
+            Console.WriteLine("wtf");
+            if (!ModLoader.TryGetMod(self._mod.Name, out Mod mod) || !TryGetPanelStyle(mod, out var style))
+            {
+                Console.WriteLine("wtf");
+                return true; // original panel drawing
+            }
+            else
+            {
+                /*using (style.OverrideTextures())
+                {
+                    currentMod = mod;
+                    if (style.PreDraw(self, sb))
+                    {
+                        return true; // original panel drawing
+                    }
+                    style.PostDraw(self, sb);
+                    currentMod = null;
+                }*/
+                Console.WriteLine(TryGetPanelStyle(mod, out _));
+                Main.spriteBatch.Draw(TextureAssets.Item[10].Value, Main.MouseScreen, Color.White);
+                return true;
+            }
+        });
+        ILLabel label = il.DefineLabel();
+        c.EmitBrtrue(label); // if the delegate above returns true, branch over the original panel & divider texture draws
+        c.GotoNext(MoveType.After,
+            i => i.MatchLdfld("Terraria.ModLoader.UI.UIModItem", "_modIconAdjust"),
+            i => i.MatchConvR4(),
+            i => i.MatchSub(),
+            i => i.MatchLdcR4(8),
+            i => i.MatchDiv(),
+            i => i.MatchLdcR4(1),
+            i => i.MatchNewobj<Vector2>(),
+            i => i.MatchLdcI4(0),
+            i => i.MatchLdcR4(0.0f),
+            i => i.MatchCallvirt<SpriteBatch>("Draw"));
+        c.MarkLabel(label);
     }
 }

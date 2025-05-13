@@ -229,11 +229,18 @@ public abstract class ModPanelStyle : ModType
     public virtual void PostDrawPanel(UIPanel element, SpriteBatch sb) { }
 
     /// <summary>
-    ///     Modifies the "Enabled"/"Disabled" button text.
+    ///     Modifies the "Enabled"/"Disabled" button text color.
     /// </summary>
     public virtual Color ModifyEnabledTextColor(bool enabled, Color color)
     {
         return color;
+    }
+    /// <summary>
+    ///     Modifies the "Enabled"/"Disabled" button text.
+    /// </summary>
+    public virtual string ModifyEnabledText(bool enabled, ref string text)
+    {
+        return text;
     }
 
     private static readonly string[] info_keys =
