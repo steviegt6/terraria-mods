@@ -8,6 +8,9 @@ namespace Daybreak.Common.Features.Achievements;
 /// </summary>
 public abstract class AchievementCategory : ModType
 {
+    // TODO
+    public virtual bool IsCompleted { get; set; } = false;
+
     protected sealed override void Register()
     {
         AchievementImpl.RegisterCategory(this);

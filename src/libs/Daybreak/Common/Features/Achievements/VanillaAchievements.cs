@@ -1,6 +1,12 @@
 using System;
 using System.Collections.Generic;
 
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+
+using ReLogic.Content;
+
+using Terraria;
 using Terraria.ModLoader;
 
 namespace Daybreak.Common.Features.Achievements;
@@ -23,7 +29,13 @@ internal sealed class VanillaAchievements : ModSystem
     {
         public override string Name { get; }
 
+        public override float AdvisorOrder => orders.GetValueOrDefault(key, -1f);
+
         private readonly string key;
+
+        private const int icon_size = 64;
+        private const int icon_size_with_space = 66;
+        private const int icons_per_row = 8;
 
         public VanillaAchievement(string name)
         {
@@ -43,12 +55,37 @@ internal sealed class VanillaAchievements : ModSystem
                 _ => throw new ArgumentOutOfRangeException(),
             };
         }
+
+        public override bool IsPresentlyAvailable()
+        {
+            return key switch
+            {
+                "MASTERMIND" => WorldGen.crimson,
+                "WORM_FODDER" => !WorldGen.crimson,
+                "PLAY_ON_A_SPECIAL_SEED" => Main.specialSeedWorld,
+                _ => true,
+            };
+        }
+
+        public override Asset<Texture2D>? GetAdvisorIcon(out Rectangle frame, out int hoveredOffset)
+        {
+            var idx = icon_indices[key];
+            frame = new Rectangle(
+                idx % icons_per_row * icon_size_with_space,
+                idx / icons_per_row * icon_size_with_space,
+                icon_size,
+                icon_size
+            );
+            hoveredOffset = 528;
+            return Main.Assets.Request<Texture2D>("Images/UI/Achievements");
+        }
     }
 
     internal static readonly Dictionary<string, AchievementCategory> VANILLA_CATEGORIES_BY_NAME = [];
     internal static readonly Dictionary<string, Achievement> VANILLA_ACHIEVEMENTS_BY_NAME = [];
 
     private static readonly Dictionary<string, int> icon_indices = [];
+    private static readonly Dictionary<string, float> orders = [];
     private static readonly Dictionary<string, Terraria.Achievements.AchievementCategory> categories = [];
 
     private static readonly string[] vanilla_categories =
@@ -302,6 +339,45 @@ internal sealed class VanillaAchievements : ModSystem
         {
             Mod.AddContent(new VanillaAchievement(achievement));
         }
+
+        num = 0;
+        orders["TIMBER"] = num++;
+        orders["BENCHED"] = num++;
+        orders["OBTAIN_HAMMER"] = num++;
+        orders["NO_HOBO"] = num++;
+        orders["YOU_CAN_DO_IT"] = num++;
+        orders["OOO_SHINY"] = num++;
+        orders["HEAVY_METAL"] = num++;
+        orders["MATCHING_ATTIRE"] = num++;
+        orders["HEART_BREAKER"] = num++;
+        orders["I_AM_LOOT"] = num++;
+        orders["HOLD_ON_TIGHT"] = num++;
+        orders["STAR_POWER"] = num++;
+        orders["EYE_ON_YOU"] = num++;
+        orders["SMASHING_POPPET"] = num++;
+        orders["WHERES_MY_HONEY"] = num++;
+        orders["STING_OPERATION"] = num++;
+        orders["BONED"] = num++;
+        orders["DUNGEON_HEIST"] = num++;
+        orders["ITS_GETTING_HOT_IN_HERE"] = num++;
+        orders["MINER_FOR_FIRE"] = num++;
+        orders["STILL_HUNGRY"] = num++;
+        orders["ITS_HARD"] = num++;
+        orders["BEGONE_EVIL"] = num++;
+        orders["EXTRA_SHINY"] = num++;
+        orders["HEAD_IN_THE_CLOUDS"] = num++;
+        orders["BUCKETS_OF_BOLTS"] = num++;
+        orders["DRAX_ATTAX"] = num++;
+        orders["PHOTOSYNTHESIS"] = num++;
+        orders["GET_A_LIFE"] = num++;
+        orders["THE_GREAT_SOUTHERN_PLANTKILL"] = num++;
+        orders["TEMPLE_RAIDER"] = num++;
+        orders["LIHZAHRDIAN_IDOL"] = num++;
+        orders["ROBBING_THE_GRAVE"] = num++;
+        orders["OBSESSIVE_DEVOTION"] = num++;
+        orders["STAR_DESTROYER"] = num++;
+        orders["CHAMPION_OF_TERRARIA"] = num++;
+        _ = num;
 
         /*
          * 			Achievement achievement = new Achievement("TIMBER");
