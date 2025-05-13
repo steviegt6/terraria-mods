@@ -7,266 +7,29 @@ namespace Daybreak.Common.Features.Achievements;
 // TODO: [DependsOn<AchievementImpl>]
 public sealed class VanillaAchievements : ModSystem
 {
-    private abstract class VanillaCategory : AchievementCategory
+    private sealed class VanillaCategory : AchievementCategory
     {
         public override string Name { get; }
 
-        protected VanillaCategory(string name)
+        public VanillaCategory(string name)
         {
             Name = "Terraria/" + name;
             VANILLA_CATEGORIES_BY_NAME[name] = this;
         }
     }
 
-    private sealed class CategorySlayer() : VanillaCategory("Slayer");
-
-    private sealed class CategoryCollector() : VanillaCategory("Collector");
-
-    private sealed class CategoryExplorer() : VanillaCategory("Explorer");
-
-    private sealed class CategoryChallenger() : VanillaCategory("Challenger");
-
-    private abstract class VanillaAchievement : Achievement
+    private sealed class VanillaAchievement : Achievement
     {
         public override string Name { get; }
 
-        protected VanillaAchievement(string name)
+        private readonly string key;
+
+        public VanillaAchievement(string name)
         {
             Name = "Terraria/" + name;
-            VANILLA_ACHIEVEMENTS_BY_NAME[name] = this;
+            VANILLA_ACHIEVEMENTS_BY_NAME[key = name] = this;
         }
     }
-
-
-    private sealed class AchievementTimber() : VanillaAchievement("TIMBER");
-
-    private sealed class AchievementNoHobo() : VanillaAchievement("NO_HOBO");
-
-    private sealed class AchievementObtainHammer() : VanillaAchievement("OBTAIN_HAMMER");
-
-    private sealed class AchievementHeartBreaker() : VanillaAchievement("HEART_BREAKER");
-
-    private sealed class AchievementOooShiny() : VanillaAchievement("OOO_SHINY");
-
-    private sealed class AchievementHeavyMetal() : VanillaAchievement("HEAVY_METAL");
-
-    private sealed class AchievementAmLoot() : VanillaAchievement("I_AM_LOOT");
-
-    private sealed class AchievementStarPower() : VanillaAchievement("STAR_POWER");
-
-    private sealed class AchievementHoldOnTight() : VanillaAchievement("HOLD_ON_TIGHT");
-
-    private sealed class AchievementEyeOnYou() : VanillaAchievement("EYE_ON_YOU");
-
-    private sealed class AchievementSmashingPoppet() : VanillaAchievement("SMASHING_POPPET");
-
-    private sealed class AchievementWormFodder() : VanillaAchievement("WORM_FODDER");
-
-    private sealed class AchievementMastermind() : VanillaAchievement("MASTERMIND");
-
-    private sealed class AchievementWheresMyHoney() : VanillaAchievement("WHERES_MY_HONEY");
-
-    private sealed class AchievementStingOperation() : VanillaAchievement("STING_OPERATION");
-
-    private sealed class AchievementBoned() : VanillaAchievement("BONED");
-
-    private sealed class AchievementDungeonHeist() : VanillaAchievement("DUNGEON_HEIST");
-
-    private sealed class AchievementItsGettingHotInHere() : VanillaAchievement("ITS_GETTING_HOT_IN_HERE");
-
-    private sealed class AchievementMinerForFire() : VanillaAchievement("MINER_FOR_FIRE");
-
-    private sealed class AchievementStillHungry() : VanillaAchievement("STILL_HUNGRY");
-
-    private sealed class AchievementItsHard() : VanillaAchievement("ITS_HARD");
-
-    private sealed class AchievementBegoneEvil() : VanillaAchievement("BEGONE_EVIL");
-
-    private sealed class AchievementExtraShiny() : VanillaAchievement("EXTRA_SHINY");
-
-    private sealed class AchievementHeadInTheClouds() : VanillaAchievement("HEAD_IN_THE_CLOUDS");
-
-    private sealed class AchievementLikeABoss() : VanillaAchievement("LIKE_A_BOSS");
-
-    private sealed class AchievementBucketsOfBolts() : VanillaAchievement("BUCKETS_OF_BOLTS");
-
-    private sealed class AchievementDraxAttax() : VanillaAchievement("DRAX_ATTAX");
-
-    private sealed class AchievementPhotosynthesis() : VanillaAchievement("PHOTOSYNTHESIS");
-
-    private sealed class AchievementGetALife() : VanillaAchievement("GET_A_LIFE");
-
-    private sealed class AchievementTheGreatSouthernPlantkill() : VanillaAchievement("THE_GREAT_SOUTHERN_PLANTKILL");
-
-    private sealed class AchievementTempleRaider() : VanillaAchievement("TEMPLE_RAIDER");
-
-    private sealed class AchievementLihzahrdianIdol() : VanillaAchievement("LIHZAHRDIAN_IDOL");
-
-    private sealed class AchievementRobbingTheGrave() : VanillaAchievement("ROBBING_THE_GRAVE");
-
-    private sealed class AchievementBigBooty() : VanillaAchievement("BIG_BOOTY");
-
-    private sealed class AchievementFishOutOfWater() : VanillaAchievement("FISH_OUT_OF_WATER");
-
-    private sealed class AchievementObsessiveDevotion() : VanillaAchievement("OBSESSIVE_DEVOTION");
-
-    private sealed class AchievementStarDestroyer() : VanillaAchievement("STAR_DESTROYER");
-
-    private sealed class AchievementChampionOfTerraria() : VanillaAchievement("CHAMPION_OF_TERRARIA");
-
-    private sealed class AchievementBloodbath() : VanillaAchievement("BLOODBATH");
-
-    private sealed class AchievementGoblinPunter() : VanillaAchievement("GOBLIN_PUNTER");
-
-    private sealed class AchievementKillTheSun() : VanillaAchievement("KILL_THE_SUN");
-
-    private sealed class AchievementWalkThePlank() : VanillaAchievement("WALK_THE_PLANK");
-
-    private sealed class AchievementDoYouWantToSlayASnowman() : VanillaAchievement("DO_YOU_WANT_TO_SLAY_A_SNOWMAN");
-
-    private sealed class AchievementTinFoilHatter() : VanillaAchievement("TIN_FOIL_HATTER");
-
-    private sealed class AchievementBalefulHarvest() : VanillaAchievement("BALEFUL_HARVEST");
-
-    private sealed class AchievementIceScream() : VanillaAchievement("ICE_SCREAM");
-
-    private sealed class AchievementSlipperyShinobi() : VanillaAchievement("SLIPPERY_SHINOBI");
-
-    private sealed class AchievementStickySituation() : VanillaAchievement("STICKY_SITUATION");
-
-    private sealed class AchievementRealEstateAgent() : VanillaAchievement("REAL_ESTATE_AGENT");
-
-    private sealed class AchievementNotTheBees() : VanillaAchievement("NOT_THE_BEES");
-
-    private sealed class AchievementJeepersCreepers() : VanillaAchievement("JEEPERS_CREEPERS");
-
-    private sealed class AchievementFunkytown() : VanillaAchievement("FUNKYTOWN");
-
-    private sealed class AchievementIntoOrbit() : VanillaAchievement("INTO_ORBIT");
-
-    private sealed class AchievementRockBottom() : VanillaAchievement("ROCK_BOTTOM");
-
-    private sealed class AchievementMechaMayhem() : VanillaAchievement("MECHA_MAYHEM");
-
-    private sealed class AchievementGelatinWorldTour() : VanillaAchievement("GELATIN_WORLD_TOUR");
-
-    private sealed class AchievementFashionStatement() : VanillaAchievement("FASHION_STATEMENT");
-
-    private sealed class AchievementVehicularManslaughter() : VanillaAchievement("VEHICULAR_MANSLAUGHTER");
-
-    private sealed class AchievementBulldozer() : VanillaAchievement("BULLDOZER");
-
-    private sealed class AchievementThereAreSomeWhoCallHim() : VanillaAchievement("THERE_ARE_SOME_WHO_CALL_HIM");
-
-    private sealed class AchievementDeceiverOfFools() : VanillaAchievement("DECEIVER_OF_FOOLS");
-
-    private sealed class AchievementSwordOfTheHero() : VanillaAchievement("SWORD_OF_THE_HERO");
-
-    private sealed class AchievementLuckyBreak() : VanillaAchievement("LUCKY_BREAK");
-
-    private sealed class AchievementThrowingLines() : VanillaAchievement("THROWING_LINES");
-
-    private sealed class AchievementDyeHard() : VanillaAchievement("DYE_HARD");
-
-    private sealed class AchievementFrequentFlyer() : VanillaAchievement("FREQUENT_FLYER");
-
-    private sealed class AchievementTheCavalry() : VanillaAchievement("THE_CAVALRY");
-
-    private sealed class AchievementCompletelyAwesome() : VanillaAchievement("COMPLETELY_AWESOME");
-
-    private sealed class AchievementTilDeath() : VanillaAchievement("TIL_DEATH");
-
-    private sealed class AchievementArchaeologist() : VanillaAchievement("ARCHAEOLOGIST");
-
-    private sealed class AchievementPrettyInPink() : VanillaAchievement("PRETTY_IN_PINK");
-
-    private sealed class AchievementRainbowsAndUnicorns() : VanillaAchievement("RAINBOWS_AND_UNICORNS");
-
-    private sealed class AchievementYouAndWhatArmy() : VanillaAchievement("YOU_AND_WHAT_ARMY");
-
-    private sealed class AchievementPrismancer() : VanillaAchievement("PRISMANCER");
-
-    private sealed class AchievementItCanTalk() : VanillaAchievement("IT_CAN_TALK");
-
-    private sealed class AchievementWatchYourStep() : VanillaAchievement("WATCH_YOUR_STEP");
-
-    private sealed class AchievementMarathonMedalist() : VanillaAchievement("MARATHON_MEDALIST");
-
-    private sealed class AchievementGloriousGoldenPole() : VanillaAchievement("GLORIOUS_GOLDEN_POLE");
-
-    private sealed class AchievementServantInTraining() : VanillaAchievement("SERVANT_IN_TRAINING");
-
-    private sealed class AchievementGoodLittleSlave() : VanillaAchievement("GOOD_LITTLE_SLAVE");
-
-    private sealed class AchievementTroutMonkey() : VanillaAchievement("TROUT_MONKEY");
-
-    private sealed class AchievementFastAndFishious() : VanillaAchievement("FAST_AND_FISHIOUS");
-
-    private sealed class AchievementSupremeHelperMinion() : VanillaAchievement("SUPREME_HELPER_MINION");
-
-    private sealed class AchievementToppedOff() : VanillaAchievement("TOPPED_OFF");
-
-    private sealed class AchievementSlayerOfWorlds() : VanillaAchievement("SLAYER_OF_WORLDS");
-
-    private sealed class AchievementYouCanDoIt() : VanillaAchievement("YOU_CAN_DO_IT");
-
-    private sealed class AchievementSickThrow() : VanillaAchievement("SICK_THROW");
-
-    private sealed class AchievementMatchingAttire() : VanillaAchievement("MATCHING_ATTIRE");
-
-    private sealed class AchievementBenched() : VanillaAchievement("BENCHED");
-
-    private sealed class AchievementDefeatQueenSlime() : VanillaAchievement("DEFEAT_QUEEN_SLIME");
-
-    private sealed class AchievementDefeatEmpressOfLight() : VanillaAchievement("DEFEAT_EMPRESS_OF_LIGHT");
-
-    private sealed class AchievementGetZenith() : VanillaAchievement("GET_ZENITH");
-
-    private sealed class AchievementFindAFairy() : VanillaAchievement("FIND_A_FAIRY");
-
-    private sealed class AchievementDefeatDreadnautilus() : VanillaAchievement("DEFEAT_DREADNAUTILUS");
-
-    private sealed class AchievementDefeatOldOnesArmyTier3() : VanillaAchievement("DEFEAT_OLD_ONES_ARMY_TIER3");
-
-    private sealed class AchievementFlyAKiteOnAWindyDay() : VanillaAchievement("FLY_A_KITE_ON_A_WINDY_DAY");
-
-    private sealed class AchievementTurnGnomeToStatue() : VanillaAchievement("TURN_GNOME_TO_STATUE");
-
-    private sealed class AchievementTalkToNpcAtMaxHappiness() : VanillaAchievement("TALK_TO_NPC_AT_MAX_HAPPINESS");
-
-    private sealed class AchievementGetTerrasparkBoots() : VanillaAchievement("GET_TERRASPARK_BOOTS");
-
-    private sealed class AchievementThrowAParty() : VanillaAchievement("THROW_A_PARTY");
-
-    private sealed class AchievementPetThePet() : VanillaAchievement("PET_THE_PET");
-
-    private sealed class AchievementGoLavaFishing() : VanillaAchievement("GO_LAVA_FISHING");
-
-    private sealed class AchievementFoundGraveyard() : VanillaAchievement("FOUND_GRAVEYARD");
-
-    private sealed class AchievementDieToDeadMansChest() : VanillaAchievement("DIE_TO_DEAD_MANS_CHEST");
-
-    private sealed class AchievementDefeatDeerclops() : VanillaAchievement("DEFEAT_DEERCLOPS");
-
-    private sealed class AchievementGetGoldenDelight() : VanillaAchievement("GET_GOLDEN_DELIGHT");
-
-    private sealed class AchievementDrinkBottledWaterWhileDrowning() : VanillaAchievement("DRINK_BOTTLED_WATER_WHILE_DROWNING");
-
-    private sealed class AchievementGetCellPhone() : VanillaAchievement("GET_CELL_PHONE");
-
-    private sealed class AchievementGetAnkhShield() : VanillaAchievement("GET_ANKH_SHIELD");
-
-    private sealed class AchievementGainTorchGodsFavor() : VanillaAchievement("GAIN_TORCH_GODS_FAVOR");
-
-    private sealed class AchievementPlayOnASpecialSeed() : VanillaAchievement("PLAY_ON_A_SPECIAL_SEED");
-
-    private sealed class AchievementAllTownSlimes() : VanillaAchievement("ALL_TOWN_SLIMES");
-
-    private sealed class AchievementTransmuteItem() : VanillaAchievement("TRANSMUTE_ITEM");
-
-    private sealed class AchievementPurifyEntireWorld() : VanillaAchievement("PURIFY_ENTIRE_WORLD");
-
-    private sealed class AchievementToInfinityAndBeyond() : VanillaAchievement("TO_INFINITY_AND_BEYOND");
 
     internal static readonly Dictionary<string, AchievementCategory> VANILLA_CATEGORIES_BY_NAME = [];
     internal static readonly Dictionary<string, Achievement> VANILLA_ACHIEVEMENTS_BY_NAME = [];
@@ -274,9 +37,19 @@ public sealed class VanillaAchievements : ModSystem
     private static readonly Dictionary<string, int> icon_indices = [];
     private static readonly Dictionary<string, Terraria.Achievements.AchievementCategory> categories = [];
 
+    private static readonly string[] vanilla_categories =
+    [
+        "Slayer", "Collector", "Explorer", "Challenger",
+    ];
+
     public override void Load()
     {
         base.Load();
+
+        foreach (var category in vanilla_categories)
+        {
+            Mod.AddContent(new VanillaCategory(category));
+        }
 
         var num = 0;
         icon_indices["TIMBER"] = num++;
@@ -510,6 +283,11 @@ public sealed class VanillaAchievements : ModSystem
         categories["GLORIOUS_GOLDEN_POLE"] = Terraria.Achievements.AchievementCategory.Collector;
         categories["TEMPLE_RAIDER"] = Terraria.Achievements.AchievementCategory.Collector;
         categories["LIKE_A_BOSS"] = Terraria.Achievements.AchievementCategory.Collector;
+
+        foreach (var achievement in icon_indices.Keys)
+        {
+            Mod.AddContent(new VanillaAchievement(achievement));
+        }
 
         /*
          * 			Achievement achievement = new Achievement("TIMBER");
