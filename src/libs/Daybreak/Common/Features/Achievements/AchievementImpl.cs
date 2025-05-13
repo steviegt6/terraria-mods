@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
+using Daybreak.Content.Config;
 using Daybreak.Core.Hooks;
 
 using Microsoft.Xna.Framework;
@@ -44,7 +45,6 @@ internal sealed class AchievementImpl : ModSystem
         }
     }
 
-    // TODO
     private sealed class CompatibleAchievementUnlockedPopup : IInGameNotification
     {
         public bool ShouldBeRemoved { get; private set; }
@@ -176,6 +176,11 @@ internal sealed class AchievementImpl : ModSystem
 
         void ILoad.Load()
         {
+            if (!AchievementConfig.AreAchievementsEnabled())
+            {
+                return;
+            }
+
             On_AchievementAdvisor.DrawOneAchievement += (_, _, batch, position, large) =>
             {
                 DrawOneAchievement(batch, position, large);
@@ -380,6 +385,11 @@ internal sealed class AchievementImpl : ModSystem
     public override void Load()
     {
         base.Load();
+
+        if (!AchievementConfig.AreAchievementsEnabled())
+        {
+            return;
+        }
 
         On_AchievementTagHandler.Terraria_UI_Chat_ITagHandler_Parse += UseCompatibleTextSnippetForAchievementTag;
         On_InGameNotificationsTracker.AddCompleted += AddModdedAchievementsAsCompletedInPlaceOfVanilla;
