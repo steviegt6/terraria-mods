@@ -36,7 +36,7 @@ internal sealed class DaybreakPanelStyle : ModPanelStyleExt
             originalText = text;
         }
 
-        public override void DrawSelf(SpriteBatch spriteBatch)
+        protected override void DrawSelf(SpriteBatch spriteBatch)
         {
             var formattedText = GetPulsatingText(originalText, Main.GlobalTimeWrappedHourly);
             SetText(formattedText);
@@ -71,7 +71,7 @@ internal sealed class DaybreakPanelStyle : ModPanelStyleExt
 
     private sealed class ModIcon() : UIImage(TextureAssets.MagicPixel)
     {
-        public override void DrawSelf(SpriteBatch spriteBatch)
+        protected override void DrawSelf(SpriteBatch spriteBatch)
         {
             spriteBatch.End(out var ss);
             spriteBatch.Begin(
@@ -91,7 +91,7 @@ internal sealed class DaybreakPanelStyle : ModPanelStyleExt
             whenDayBreaksShaderData.Parameters.uGrayness = 1f;
             whenDayBreaksShaderData.Parameters.uInColor = new Vector3(1f, 0f, 1f);
             whenDayBreaksShaderData.Parameters.uSpeed = 0.2f;
-            whenDayBreaksShaderData.Parameters.uSource = new Vector4(dims.Width, dims.Height - 2f, dims.X, dims.Y);
+            whenDayBreaksShaderData.Parameters.uSource = Transform(new Vector4(dims.Width, dims.Height - 2f, dims.X, dims.Y));
             whenDayBreaksShaderData.Parameters.uPixel = 2f;
             whenDayBreaksShaderData.Parameters.uColorResolution = 10f;
             whenDayBreaksShaderData.Apply();
@@ -114,9 +114,12 @@ internal sealed class DaybreakPanelStyle : ModPanelStyleExt
 
     private static readonly Color color_1 = new(255, 147, 0);
     private static readonly Color color_2 = new(255, 182, 55);
-    
+
     private static WrapperShaderData<Assets.Shaders.UI.ModPanelShader.Parameters>? panelShaderData;
+    private static WrapperShaderData<Assets.Shaders.UI.ModPanelShaderSampler.Parameters>? panelShaderDataSampler;
     private static WrapperShaderData<Assets.Shaders.UI.PowerfulSunIcon.Parameters>? whenDayBreaksShaderData;
+
+    private static RenderTarget2D? panelTargetToBeUpscaled;
 
     private static float hoverIntensity;
 
@@ -125,13 +128,21 @@ internal sealed class DaybreakPanelStyle : ModPanelStyleExt
         base.Load();
 
         panelShaderData = Assets.Shaders.UI.ModPanelShader.CreatePanelShader();
+        panelShaderDataSampler = Assets.Shaders.UI.ModPanelShaderSampler.CreatePanelShader();
         whenDayBreaksShaderData = Assets.Shaders.UI.PowerfulSunIcon.CreatePanelShader();
+
+        Main.RunOnMainThread(() =>
+            {
+                Main.graphics.GraphicsDevice.PresentationParameters.RenderTargetUsage = RenderTargetUsage.PreserveContents;
+                Main.graphics.ApplyChanges();
+            }
+        );
     }
 
     public override bool PreInitialize(UIModItem element)
     {
         element.BorderColor = new Color(25, 5, 5);
-        
+
         return base.PreInitialize(element);
     }
 
@@ -174,6 +185,41 @@ internal sealed class DaybreakPanelStyle : ModPanelStyleExt
         // Render our cool custom panel with a shader.
         {
             sb.End(out var ss);
+
+            var dims = element.GetDimensions();
+
+            var targetWidth = (int)(dims.Width / 2f);
+            var targetHeight = (int)((dims.Height - 2f) / 2f);
+
+            if (panelTargetToBeUpscaled is null || panelTargetToBeUpscaled.Width != targetWidth || panelTargetToBeUpscaled.Height != targetHeight)
+            {
+                panelTargetToBeUpscaled?.Dispose();
+                panelTargetToBeUpscaled = new RenderTarget2D(
+                    Main.instance.GraphicsDevice,
+                    targetWidth,
+                    targetHeight,
+                    false,
+                    SurfaceFormat.Color,
+                    DepthFormat.None,
+                    0,
+                    RenderTargetUsage.PreserveContents
+                );
+            }
+
+            var oldRts = Main.instance.GraphicsDevice.GetRenderTargets();
+            var scissor = Main.instance.GraphicsDevice.ScissorRectangle;
+            foreach (var oldRt in oldRts)
+            {
+                if (oldRt.RenderTarget is RenderTarget2D rt)
+                {
+                    rt.RenderTargetUsage = RenderTargetUsage.PreserveContents;
+                }
+            }
+
+            Main.instance.GraphicsDevice.SetRenderTarget(panelTargetToBeUpscaled);
+            Main.instance.GraphicsDevice.Clear(Color.Transparent);
+            Main.instance.GraphicsDevice.ScissorRectangle = new Rectangle(0, 0, Main.graphics.PreferredBackBufferWidth, Main.graphics.PreferredBackBufferHeight);
+
             sb.Begin(
                 SpriteSortMode.Immediate,
                 BlendState.NonPremultiplied,
@@ -184,8 +230,6 @@ internal sealed class DaybreakPanelStyle : ModPanelStyleExt
                 Main.UIScaleMatrix
             );
             {
-                var dims = element.GetDimensions();
-
                 hoverIntensity += (element.IsMouseHovering ? 1f : -1f) / 15f;
                 hoverIntensity = Math.Clamp(hoverIntensity, 0f, 1f);
 
@@ -193,16 +237,44 @@ internal sealed class DaybreakPanelStyle : ModPanelStyleExt
                 panelShaderData.Parameters.uGrayness = 1f;
                 panelShaderData.Parameters.uInColor = new Vector3(1f, 0f, 1f);
                 panelShaderData.Parameters.uSpeed = 0.2f;
-                panelShaderData.Parameters.uSource = new Vector4(dims.Width, dims.Height - 2f, dims.X, dims.Y);
+                panelShaderData.Parameters.uSource = new Vector4(targetWidth, targetHeight, 0, 0);
                 panelShaderData.Parameters.uHoverIntensity = hoverIntensity;
-                panelShaderData.Parameters.uPixel = 2f;
+                panelShaderData.Parameters.uPixel = 1f;
                 panelShaderData.Parameters.uColorResolution = 10f;
                 panelShaderData.Apply();
 
+                sb.Draw(
+                    TextureAssets.MagicPixel.Value,
+                    new Rectangle(0, 0, targetWidth, targetHeight),
+                    Color.White
+                );
+            }
+            sb.End();
+
+            Main.instance.GraphicsDevice.SetRenderTargets(oldRts);
+            Main.instance.GraphicsDevice.ScissorRectangle = scissor;
+
+            sb.Begin(
+                SpriteSortMode.Immediate,
+                BlendState.NonPremultiplied,
+                SamplerState.PointClamp,
+                DepthStencilState.None,
+                ss.RasterizerState,
+                null,
+                Main.UIScaleMatrix
+            );
+            {
+                Debug.Assert(panelShaderDataSampler is not null);
+                panelShaderDataSampler.Parameters.uSource = Transform(new Vector4(dims.Width, dims.Height, dims.X, dims.Y));
+
+                Main.instance.GraphicsDevice.Textures[1] = panelTargetToBeUpscaled;
+                Main.instance.GraphicsDevice.SamplerStates[1] = SamplerState.PointClamp;
+
+                panelShaderDataSampler.Apply();
                 Debug.Assert(element._backgroundTexture is not null);
                 element.DrawPanel(sb, element._backgroundTexture.Value, element.BackgroundColor);
             }
-            sb.Restart(ss);
+            sb.Restart(in ss);
         }
 
         Debug.Assert(element._borderTexture is not null);
@@ -210,9 +282,16 @@ internal sealed class DaybreakPanelStyle : ModPanelStyleExt
 
         return false;
     }
-    
+
     public override Color ModifyEnabledTextColor(bool enabled, Color color)
     {
         return enabled ? color_2 : color_1;
+    }
+
+    private static Vector4 Transform(Vector4 vector)
+    {
+        var vec1 = Vector2.Transform(new Vector2(vector.X, vector.Y), Main.UIScaleMatrix);
+        var vec2 = Vector2.Transform(new Vector2(vector.Z, vector.W), Main.UIScaleMatrix);
+        return new Vector4(vec1, vec2.X, vec2.Y);
     }
 }

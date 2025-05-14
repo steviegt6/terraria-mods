@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 
 using Daybreak.Core.Hooks;
 
@@ -14,7 +15,9 @@ using MonoMod.Cil;
 
 using Terraria;
 using Terraria.GameContent.UI.Elements;
+using Terraria.Localization;
 using Terraria.ModLoader;
+using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
 
@@ -23,6 +26,109 @@ namespace Daybreak.Common.Features.ModPanel;
 [Autoload(Side = ModSide.Client)]
 internal sealed class CustomModPanelImpl : ILoad, IUnload
 {
+    private sealed class DumbWorkaround : UIModItem
+    {
+        public DumbWorkaround(LocalMod mod) : base(mod) { }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            if (!ModLoader.TryGetMod(_mod.Name, out var mod) || !TryGetPanelStyle(mod, out var style))
+            {
+                base.Draw(spriteBatch);
+                return;
+            }
+
+            using (style.OverrideTextures())
+            {
+                currentMod = mod;
+                if (style.PreDraw(this, spriteBatch))
+                {
+                    base.Draw(spriteBatch);
+                }
+                style.PostDraw(this, spriteBatch);
+                currentMod = null;
+            }
+        }
+
+        protected override void DrawSelf(SpriteBatch spriteBatch)
+        {
+            var ptr = typeof(UIPanel).GetMethod("DrawSelf", BindingFlags.NonPublic | BindingFlags.Instance)!.MethodHandle.GetFunctionPointer();
+            var baseDrawSelf = (Action<SpriteBatch>)Activator.CreateInstance(typeof(Action<SpriteBatch>), this, ptr)!;
+
+            if (!TryGetPanelStyle(currentMod, out var style))
+            {
+                baseDrawSelf(spriteBatch);
+            }
+            else
+            {
+                if (style.PreDrawPanel(this, spriteBatch))
+                {
+                    baseDrawSelf(spriteBatch);
+                }
+                style.PostDrawPanel(this, spriteBatch);
+            }
+
+            var innerDimensions = GetInnerDimensions();
+            var drawPos = new Vector2(innerDimensions.X + 5f + _modIconAdjust, innerDimensions.Y + 30f);
+            spriteBatch.Draw(UICommon.DividerTexture.Value, drawPos, null, Color.White, 0f, Vector2.Zero, new Vector2((innerDimensions.Width - 10f - _modIconAdjust) / 8f, 1f), SpriteEffects.None, 0f);
+            drawPos = new Vector2(innerDimensions.X + 10f + _modIconAdjust, innerDimensions.Y + 45f);
+
+            // TODO: These should just be UITexts
+            if (_mod.properties.side != ModSide.Server && (_mod.Enabled != _loaded || _configChangesRequireReload))
+            {
+                drawPos += new Vector2(_uiModStateText.Width.Pixels + left2ndLine, 0f);
+                Utils.DrawBorderString(spriteBatch, _configChangesRequireReload ? Language.GetTextValue("tModLoader.ModReloadForced") : Language.GetTextValue("tModLoader.ModReloadRequired"), drawPos, Color.White, 1f, 0f, 0f, -1);
+            }
+            if (_mod.properties.side == ModSide.Server)
+            {
+                drawPos += new Vector2(90f, -2f);
+                spriteBatch.Draw(UICommon.ModBrowserIconsTexture.Value, drawPos, new Rectangle(5 * 34, 3 * 34, 32, 32), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                if (new Rectangle((int)drawPos.X, (int)drawPos.Y, 32, 32).Contains(Main.MouseScreen.ToPoint()))
+                {
+                    UICommon.DrawHoverStringInBounds(spriteBatch, Language.GetTextValue("tModLoader.ModIsServerSide"));
+                }
+            }
+
+            if (_moreInfoButton?.IsMouseHovering == true)
+            {
+                _tooltip = Language.GetTextValue("tModLoader.ModsMoreInfo");
+            }
+            else if (_deleteModButton?.IsMouseHovering == true)
+            {
+                _tooltip = Language.GetTextValue("UI.Delete");
+            }
+            else if (_modName?.IsMouseHovering == true && _mod?.properties.author.Length > 0)
+            {
+                _tooltip = Language.GetTextValue("tModLoader.ModsByline", _mod.properties.author);
+            }
+            else if (_uiModStateText?.IsMouseHovering == true)
+            {
+                _tooltip = ToggleModStateText;
+            }
+            else if (_configButton?.IsMouseHovering == true)
+            {
+                _tooltip = Language.GetTextValue("tModLoader.ModsOpenConfig");
+            }
+            else if (updatedModDot?.IsMouseHovering == true)
+            {
+                _tooltip = previousVersionHint == null ? Language.GetTextValue("tModLoader.ModAddedSinceLastLaunchMessage") : Language.GetTextValue("tModLoader.ModUpdatedSinceLastLaunchMessage", previousVersionHint);
+            }
+            else if (tMLUpdateRequired?.IsMouseHovering == true)
+            {
+                _tooltip = Language.GetTextValue("tModLoader.SwitchVersionInfoButton");
+            }
+            else if (_modReferenceIcon?.IsMouseHovering == true)
+            {
+                _tooltip = _modRequiresTooltip;
+            }
+            else if (_translationModIcon?.IsMouseHovering == true)
+            {
+                var refs = string.Join(", ", _mod!.properties.RefNames(true)); // Translation mods can be strong or weak references.
+                _tooltip = Language.GetTextValue("tModLoader.TranslationModTooltip", refs);
+            }
+        }
+    }
+
     // The current mod whose panel style to use.
     private static Mod? currentMod;
 
@@ -63,50 +169,42 @@ internal sealed class CustomModPanelImpl : ILoad, IUnload
         return false;
     }
 
-    /*private static bool TryGetPanelStyle(string modName, [NotNullWhen(returnValue: true)] out ModPanelStyle? style)
-    {
-        if (!ModLoader.TryGetMod(modName, out var mod))
-        {
-            style = null;
-            return false;
-        }
-
-        return TryGetPanelStyle(mod, out style);
-    }*/
-
     void ILoad.Load()
     {
-        MonoModHooks.Add(
-            GetMethod(nameof(UIModItem.OnInitialize)),
-            OnInitialize
-        );
+        if (!ConciseModListCompat())
+        {
+            MonoModHooks.Add(
+                typeof(UIMods).GetMethod(nameof(UIMods.Populate), BindingFlags.NonPublic | BindingFlags.Instance)!,
+                (UIMods self) =>
+                {
+                    self.modItemsTask = Task.Run(() =>
+                        {
+                            return ModOrganizer.FindMods(logDuplicates: true).Select(mod => new DumbWorkaround(mod)).Cast<UIModItem>().ToList();
+                        }
+                    );
+                }
+            );
 
-        MonoModHooks.Modify(
-            GetMethod(nameof(UIModItem.OnInitialize)),
-            ModifyAppendedFields
-        );
+            MonoModHooks.Add(
+                GetMethod(nameof(UIModItem.OnInitialize)),
+                OnInitialize
+            );
+
+            MonoModHooks.Modify(
+                GetMethod(nameof(UIModItem.OnInitialize)),
+                ModifyAppendedFields
+            );
+        }
 
         MonoModHooks.Add(
             GetMethod(nameof(UIModItem.SetHoverColors)),
             SetHoverColors
         );
 
-        MonoModHooks.Add(
-            GetMethod(nameof(UIModItem.Draw)),
-            Draw
-        );
-
-        MonoModHooks.Add(
-            typeof(UIPanel).GetMethod(nameof(UIPanel.DrawSelf), BindingFlags.NonPublic | BindingFlags.Instance),
-            OverrideRegularPanelDrawing
-        );
-
         MonoModHooks.Modify(
             typeof(UIModStateText).GetMethod(nameof(UIModStateText.DrawEnabledText), BindingFlags.NonPublic | BindingFlags.Instance),
             DrawCustomColoredEnabledText
         );
-
-        ConciseModListCompat();
 
         return;
 
@@ -115,11 +213,11 @@ internal sealed class CustomModPanelImpl : ILoad, IUnload
             return typeof(UIModItem).GetMethod(name, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance)!;
         }
 
-        static void ConciseModListCompat()
+        static bool ConciseModListCompat()
         {
             if (!ModLoader.TryGetMod("ConciseModList", out var conciseModList))
             {
-                return;
+                return false;
             }
 
             var asm = conciseModList.Code;
@@ -127,7 +225,7 @@ internal sealed class CustomModPanelImpl : ILoad, IUnload
             var type = asm.GetType("ConciseModList.ConciseUIModItem");
             if (type is null)
             {
-                return;
+                return false;
             }
 
             MonoModHooks.Add(
@@ -136,7 +234,7 @@ internal sealed class CustomModPanelImpl : ILoad, IUnload
             );
 
             MonoModHooks.Add(
-                type.GetMethod(nameof(UIModItem.DrawSelf), BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance),
+                type.GetMethod("DrawSelf", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance),
                 Draw
             );
 
@@ -192,6 +290,8 @@ internal sealed class CustomModPanelImpl : ILoad, IUnload
                     c.EmitPop();
                 }
             );
+
+            return true;
         }
     }
 

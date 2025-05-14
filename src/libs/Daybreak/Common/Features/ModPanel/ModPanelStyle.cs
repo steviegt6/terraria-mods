@@ -139,12 +139,12 @@ public abstract class ModPanelStyle : ModType
     /// </summary>
     public virtual Dictionary<TextureKind, Asset<Texture2D>> TextureOverrides { get; } = [];
 
-    public sealed override void Register()
+    protected sealed override void Register()
     {
         CustomModPanelImpl.AddPanelStyle(Mod, this);
     }
 
-    public sealed override void InitTemplateInstance() { }
+    protected sealed override void InitTemplateInstance() { }
 
     // I guess if someone was really crazy, they could do all the initialization
     // themselves.

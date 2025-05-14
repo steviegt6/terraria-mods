@@ -40,7 +40,7 @@ internal sealed class NightshadePanelStyle : ModPanelStyleExt
             originalText = text;
         }
 
-        public override void DrawSelf(SpriteBatch spriteBatch)
+        protected override void DrawSelf(SpriteBatch spriteBatch)
         {
             var formattedText = GetPulsatingText(originalText, Main.GlobalTimeWrappedHourly);
             SetText(formattedText);
@@ -88,7 +88,7 @@ internal sealed class NightshadePanelStyle : ModPanelStyleExt
             SetImage(icon);
         }
 
-        public override void DrawSelf(SpriteBatch spriteBatch)
+        protected override void DrawSelf(SpriteBatch spriteBatch)
         {
             // const int offset = (80 - 46) / 2;
             const int offset = 40;
@@ -301,7 +301,7 @@ internal sealed class NightshadePanelStyle : ModPanelStyleExt
                 panelShaderData.Parameters.uGrayness = 1f;
                 panelShaderData.Parameters.uInColor = new Vector3(1f, 0f, 1f);
                 panelShaderData.Parameters.uSpeed = 0.2f;
-                panelShaderData.Parameters.uSource = new Vector4(dims.Width, dims.Height - 2f, dims.X, dims.Y);
+                panelShaderData.Parameters.uSource = Transform(new Vector4(dims.Width, dims.Height - 2f, dims.X, dims.Y));
                 panelShaderData.Parameters.uHoverIntensity = hoverIntensity;
                 panelShaderData.Parameters.uPixel = 2f;
                 panelShaderData.Parameters.uColorResolution = 10f;
@@ -325,7 +325,7 @@ internal sealed class NightshadePanelStyle : ModPanelStyleExt
                 dims.X += 40f; // 80 / 2
 
                 Debug.Assert(flowerShaderData is not null);
-                flowerShaderData.Parameters.uSource = new Vector4(dims.Width, dims.Height - 2f, dims.X, dims.Y);
+                flowerShaderData.Parameters.uSource = Transform(new Vector4(dims.Width, dims.Height - 2f, dims.X, dims.Y));
                 flowerShaderData.Parameters.uPixel = 2f;
                 flowerShaderData.Apply();
                 element.DrawPanel(sb, element._backgroundTexture.Value, element.BackgroundColor);
@@ -342,5 +342,12 @@ internal sealed class NightshadePanelStyle : ModPanelStyleExt
     public override Color ModifyEnabledTextColor(bool enabled, Color color)
     {
         return enabled ? light_pink : dark_pink;
+    }
+    
+    private static Vector4 Transform(Vector4 vector)
+    {
+        var vec1 = Vector2.Transform(new Vector2(vector.X, vector.Y), Main.UIScaleMatrix);
+        var vec2 = Vector2.Transform(new Vector2(vector.Z, vector.W), Main.UIScaleMatrix);
+        return new Vector4(vec1, vec2.X, vec2.Y);
     }
 }
