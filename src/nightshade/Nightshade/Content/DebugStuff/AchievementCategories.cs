@@ -1,0 +1,74 @@
+using System.Collections.Generic;
+
+using Daybreak.Common.Features.Achievements;
+using Daybreak.Common.IDs;
+
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+
+using ReLogic.Content;
+
+using Terraria;
+using Terraria.ModLoader;
+
+namespace Nightshade.Content.DebugStuff;
+
+internal abstract class AbstractCategory(int key) : AchievementCategory
+{
+    public override Asset<Texture2D> GetIcon(out Rectangle frame)
+    {
+        Assets.Images.Categories.Asset.Wait();
+        frame = Assets.Images.Categories.Asset.Frame(3, 2, key);
+        return Assets.Images.Categories.Asset;
+    }
+}
+
+internal sealed class Category1() : AbstractCategory(0);
+
+internal sealed class Category2() : AbstractCategory(1);
+
+internal sealed class Category3() : AbstractCategory(2);
+
+internal abstract class AbstractAchievement : Achievement
+{
+    protected abstract Asset<Texture2D> Icon { get; }
+
+    public override Asset<Texture2D> GetIcon(out Rectangle frame, out int lockedOffset)
+    {
+        frame = new Rectangle(0, 0, 0, 0);
+        lockedOffset = 66;
+        return Icon;
+    }
+}
+
+internal sealed class Achievement1 : AbstractAchievement
+{
+    protected override Asset<Texture2D> Icon => Assets.Images.Achievement1.Asset;
+
+    public override IEnumerable<AchievementCategory> GetCategories()
+    {
+        yield return VanillaAchievements.Categories.Challenger;
+    }
+}
+
+internal sealed class Achievement2 : AbstractAchievement
+{
+    protected override Asset<Texture2D> Icon => Assets.Images.Achievement2.Asset;
+
+    public override IEnumerable<AchievementCategory> GetCategories()
+    {
+        yield return VanillaAchievements.Categories.Explorer;
+        yield return ModContent.GetInstance<Category1>();
+        yield return ModContent.GetInstance<Category2>();
+    }
+}
+
+internal sealed class Achievement3 : AbstractAchievement
+{
+    protected override Asset<Texture2D> Icon => Assets.Images.Achievement3.Asset;
+
+    public override IEnumerable<AchievementCategory> GetCategories()
+    {
+        yield return ModContent.GetInstance<Category3>();
+    }
+}

@@ -117,14 +117,17 @@ internal sealed class AchievementListItem : UIPanel
         vector3.X += 4f;
         spriteBatch.Draw(category_texture.Value, vector3, category_texture.Frame(4, 2, (int)category), IsMouseHovering ? Color.White : Color.Silver, 0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0f);*/
 
+        vector3.Y += 2f;
+        vector3.X += 4f;
+        var lastCategoryWidth = 0f;
         foreach (var category in Achievement.GetCategories())
         {
             var categoryTexture = category.GetIcon(out var categoryFrame);
-
-            vector3.Y += 2f;
-            vector3.X += 4f;
             spriteBatch.Draw(categoryTexture.Value, vector3, categoryFrame, IsMouseHovering ? Color.White : Color.Silver, 0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0f);
+            
+            vector3.X += lastCategoryWidth = categoryFrame.Width * 0.5f + 2f;
         }
+        vector3.X -= lastCategoryWidth;
 
         vector3.X += 4f;
         vector3.X += 17f;
