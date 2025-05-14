@@ -63,7 +63,12 @@ internal sealed class VanillaAchievements : ModSystem
 
         public override IEnumerable<AchievementCategory> GetCategories()
         {
-            yield return categories[key] switch
+            if (!categories.TryGetValue(key, out var category))
+            {
+                yield break;
+            }
+
+            yield return category switch
             {
                 Terraria.Achievements.AchievementCategory.None => throw new InvalidOperationException("Vanilla category '" + key + "' is none."),
                 Terraria.Achievements.AchievementCategory.Slayer => IDs.VanillaAchievements.Categories.Slayer,
@@ -116,7 +121,7 @@ internal sealed class VanillaAchievements : ModSystem
 
     private static readonly string[] category_keys =
     [
-        "Achievements.SlayerCategory", 
+        "Achievements.SlayerCategory",
         "Achievements.CollectorCategory",
         "Achievements.ExplorerCategory",
         "Achievements.ChallengerCategory",

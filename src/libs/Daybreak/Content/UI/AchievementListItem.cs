@@ -18,7 +18,7 @@ internal sealed class AchievementListItem : UIPanel
 {
     public Achievement Achievement { get; }
 
-    private readonly UIImageFramed achievementIcon;
+    private readonly UIImageFramed? achievementIcon;
     private readonly UIImage achievementIconBorders;
 
     private Rectangle iconFrame;
@@ -162,7 +162,7 @@ internal sealed class AchievementListItem : UIPanel
     private void UpdateIconFrame()
     {
         iconFrame = locked ? iconFrameLocked : iconFrameUnlocked;
-        achievementIcon.SetFrame(iconFrame);
+        achievementIcon?.SetFrame(iconFrame);
     }
 
     private void DrawPanelTop(
