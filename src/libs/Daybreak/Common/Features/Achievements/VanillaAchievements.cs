@@ -23,7 +23,7 @@ internal sealed class VanillaAchievements : ModSystem
 
         private readonly int key;
 
-        private static readonly Asset<Texture2D> category_texture = Main.Assets.Request<Texture2D>("Images/UI/Achievement_Categories");
+        private static readonly Asset<Texture2D> category_texture = Main.Assets.Request<Texture2D>("Images/UI/Achievement_Categories", AssetRequestMode.ImmediateLoad);
 
         public VanillaCategory(string name, Terraria.Achievements.AchievementCategory vanillaCategory)
         {
