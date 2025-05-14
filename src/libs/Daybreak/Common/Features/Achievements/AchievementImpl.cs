@@ -545,6 +545,13 @@ internal sealed class AchievementImpl : ModSystem
 
     public static bool GetCompletedStatus(Achievement achievement)
     {
+        ModContent.SplitName(achievement.FullName, out var modName, out var achievementName);
+
+        if (modName is "Daybreak" or "Terraria" && VanillaAchievements.VANILLA_ACHIEVEMENTS_BY_NAME.ContainsKey(achievementName) && Main.Achievements.GetAchievement(achievementName).IsCompleted)
+        {
+            return true;
+        }
+
         return knownCompletedAchievements.Contains(achievement.FullName);
     }
 
@@ -568,9 +575,9 @@ internal sealed class AchievementImpl : ModSystem
         {
             return;
         }
-        
+
         Main.NewText(Language.GetTextValue("Achievements.Completed", "[a:" + achievement.FullName + "]"));
-        
+
         if (SoundEngine.FindActiveSound(SoundID.AchievementComplete) == null)
         {
             SoundEngine.PlayTrackedSound(SoundID.AchievementComplete);

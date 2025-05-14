@@ -27,7 +27,7 @@ internal sealed class VanillaAchievements : ModSystem
 
         public VanillaCategory(string name, Terraria.Achievements.AchievementCategory vanillaCategory)
         {
-            Name = "Terraria/" + name;
+            Name = name;
             key = (int)vanillaCategory;
             VANILLA_CATEGORIES_BY_NAME[name] = this;
         }
@@ -57,7 +57,7 @@ internal sealed class VanillaAchievements : ModSystem
 
         public VanillaAchievement(string name)
         {
-            Name = "Terraria/" + name;
+            Name = name;
             VANILLA_ACHIEVEMENTS_BY_NAME[key = name] = this;
         }
 
