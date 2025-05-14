@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using Microsoft.Xna.Framework;
 using Nightshade.Common.Utilities;
+using Nightshade.Content.Items;
 using Nightshade.Content.Tiles;
 
 using Terraria;
@@ -563,8 +564,15 @@ internal sealed class LivingCactusBiome : MicroBiome
 			TryPlacePlatform(x, y, -1, width / 2 + 1);
 		}
 
-		WorldGen.PlaceChest(x - 1 + WorldGen.genRand.Next(-width / 2 + 1, width / 2), y - 1, style: 10);
-    }
+		int index = WorldGen.PlaceChest(x - 1 + WorldGen.genRand.Next(-width / 2 + 1, width / 2), y - 1, style: 10);
+        if (index < 0)
+            return;
+
+        NightshadeGenUtil.AddLootToChest(ref Main.chest[index], [
+            new Item(ModContent.ItemType<PreDigester>()),
+            new Item(ModContent.ItemType<CactusSplashJug>(), WorldGen.genRand.Next(30, 80)),
+            ]);
+	}
 
     private static void PlacePotsEverywhere(int x, int y, int radius)
     {

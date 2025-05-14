@@ -77,4 +77,15 @@ internal static class NightshadeGenUtil
 
 		return dy / (halfWidth * 2);
 	}
+
+	public static void AddLootToChest(ref Chest chest, params Item[] items)
+	{
+		for (int i = 0; i < chest.item.Length; i++)
+		{
+			if (i < items.Length)
+				chest.item[i] = items[i];
+			else
+				chest.item[i].TurnToAir(true);
+		}
+	}
 }

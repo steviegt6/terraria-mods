@@ -140,8 +140,8 @@ Items: {
 		DisplayName: Succulent Splash
 		Tooltip:
 			'''
-			Restores some life
-			Right click to splash yourself
+			Filled with a life restoring beverage
+			Right click to splash yourself with it
 			'''
 	}
 }

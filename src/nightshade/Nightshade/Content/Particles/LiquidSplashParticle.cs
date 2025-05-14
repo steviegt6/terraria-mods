@@ -48,9 +48,9 @@ public class LiquidSplashParticle : BaseParticle
 	public override void Update(ref ParticleRendererSettings settings)
 	{
 		Position += Velocity;
-		Velocity.X *= 0.93f;
+		Velocity.X *= 0.94f;
 		Velocity.Y *= 0.9f;
-		Velocity.Y += 0.1f;
+		Velocity.Y += 0.175f;
 
 		if (Collision.SolidTiles(Position - new Vector2(4), 8, 8))
 			LifeTime++;
@@ -64,7 +64,7 @@ public class LiquidSplashParticle : BaseParticle
 		float progress = (float)LifeTime / MaxLifeTime;
 
 		Texture2D texture = Assets.Images.Particles.LiquidSplashParticle.Asset.Value;
-		Rectangle frame = texture.Frame(7, 5, (int)MathF.Floor(MathF.Sin(progress * MathHelper.PiOver2) * 7f), Variant % 5);
+		Rectangle frame = texture.Frame(7, 5, (int)MathF.Floor(MathF.Sin(progress * MathHelper.PiOver2 * 0.95f) * 7f), Variant % 5);
 		SpriteEffects spriteEffects = 0;
 		if (Variant > 1)
 			spriteEffects = SpriteEffects.FlipHorizontally;
