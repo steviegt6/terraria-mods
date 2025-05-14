@@ -15,7 +15,7 @@ namespace Daybreak.Common.Features.Achievements;
 public abstract class AchievementCategory : ModType, ILocalizedModType
 {
     /// <inheritdoc cref="ILocalizedModType.LocalizationCategory"/>
-    public virtual string LocalizationCategory => "Achievements.Categories";
+    public virtual string LocalizationCategory => "AchievementCategories";
 
     /// <summary>
     ///     The display name (friendly name) of this achievement category.

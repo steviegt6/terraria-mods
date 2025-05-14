@@ -35,7 +35,7 @@ internal abstract class AbstractAchievement : Achievement
 
     public override Asset<Texture2D> GetIcon(out Rectangle frame, out int lockedOffset)
     {
-        frame = new Rectangle(0, 0, 0, 0);
+        frame = new Rectangle(0, 0, 64, 64);
         lockedOffset = 66;
         return Icon;
     }

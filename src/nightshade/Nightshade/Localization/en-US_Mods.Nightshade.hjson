@@ -150,3 +150,20 @@ Projectiles: {
 }
 
 Configs.DummyConfig.DisplayName: Dummy Config
+
+Achievements: {
+	Achievement1: {
+		DisplayName: Dummy Achievement
+		Description: Dummy Achievement Description
+	}
+
+	Achievement2: {
+		DisplayName: Dummy Achievement 2
+		Description: Dummy Achievement 2 Description Dummy Achievement 2 Description Dummy Achievement 2 Description Dummy Achievement 2 Description Dummy Achievement 2 Description Dummy Achievement 2 Description Dummy Achievement 2 Description Dummy Achievement 2 Description Dummy Achievement 2 Description Dummy Achievement 2 Description
+	}
+
+	Achievement3: {
+		DisplayName: Dummy Achievement 3
+		Description: Dummy Achievement 3 Description Dummy Achievement 3 Description Dummy Achievement 3 Description Dummy Achievement 3 Description Dummy Achievement 3 Description Dummy Achievement 3 Description
+	}
+}
