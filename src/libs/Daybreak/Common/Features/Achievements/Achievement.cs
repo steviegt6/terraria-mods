@@ -41,6 +41,8 @@ public abstract class Achievement : ModType, ILocalizedModType
     // TODO
     public virtual bool IsCompleted => GetCategories().All(x => x.IsCompleted);
 
+    internal int Id { get; set; }
+
     protected sealed override void Register()
     {
         AchievementImpl.Register(this);

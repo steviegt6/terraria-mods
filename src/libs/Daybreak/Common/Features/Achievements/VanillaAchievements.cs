@@ -19,10 +19,23 @@ internal sealed class VanillaAchievements : ModSystem
     {
         public override string Name { get; }
 
-        public VanillaCategory(string name)
+        public override LocalizedText DisplayName => Language.GetText(category_keys[key]);
+
+        private readonly int key;
+
+        private static readonly Asset<Texture2D> category_texture = Main.Assets.Request<Texture2D>("Images/UI/Achievement_Categories");
+
+        public VanillaCategory(string name, Terraria.Achievements.AchievementCategory vanillaCategory)
         {
             Name = "Terraria/" + name;
+            key = (int)vanillaCategory;
             VANILLA_CATEGORIES_BY_NAME[name] = this;
+        }
+
+        public override Asset<Texture2D> GetIcon(out Rectangle frame)
+        {
+            frame = category_texture.Frame(4, 2, key);
+            return category_texture;
         }
     }
 
@@ -93,18 +106,29 @@ internal sealed class VanillaAchievements : ModSystem
     private static readonly Dictionary<string, float> orders = [];
     private static readonly Dictionary<string, Terraria.Achievements.AchievementCategory> categories = [];
 
-    private static readonly string[] vanilla_categories =
+    private static readonly Dictionary<string, Terraria.Achievements.AchievementCategory> vanilla_categories = new()
+    {
+        { "Slayer", Terraria.Achievements.AchievementCategory.Slayer },
+        { "Collector", Terraria.Achievements.AchievementCategory.Collector },
+        { "Explorer", Terraria.Achievements.AchievementCategory.Explorer },
+        { "Challenger", Terraria.Achievements.AchievementCategory.Challenger },
+    };
+
+    private static readonly string[] category_keys =
     [
-        "Slayer", "Collector", "Explorer", "Challenger",
+        "Achievements.SlayerCategory", 
+        "Achievements.CollectorCategory",
+        "Achievements.ExplorerCategory",
+        "Achievements.ChallengerCategory",
     ];
 
     public override void Load()
     {
         base.Load();
 
-        foreach (var category in vanilla_categories)
+        foreach (var (name, category) in vanilla_categories)
         {
-            Mod.AddContent(new VanillaCategory(category));
+            Mod.AddContent(new VanillaCategory(name, category));
         }
 
         var num = 0;

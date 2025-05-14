@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 using Daybreak.Content.Config;
+using Daybreak.Content.UI;
 using Daybreak.Core.Hooks;
 
 using Microsoft.Xna.Framework;
@@ -41,7 +42,7 @@ internal sealed class AchievementImpl : ModSystem
             base.OnClick();
 
             IngameOptions.Close();
-            // TODO: IngameFancyUI.OpenAchievementsAndGoto(achievement);
+            OpenAchievementsAndGoto(achievement);
         }
     }
 
@@ -83,6 +84,7 @@ internal sealed class AchievementImpl : ModSystem
 
         private int timeLeft;
 
+        private readonly Achievement achievement;
         private readonly string title;
         private readonly Rectangle frame;
         private readonly Asset<Texture2D> texture;
@@ -91,6 +93,7 @@ internal sealed class AchievementImpl : ModSystem
 
         public CompatibleAchievementUnlockedPopup(Achievement achievement)
         {
+            this.achievement = achievement;
             timeLeft = 300;
             title = achievement.DisplayName.Value;
             texture = achievement.GetIcon(out frame, out _);
@@ -158,7 +161,7 @@ internal sealed class AchievementImpl : ModSystem
             }
 
             Main.mouseLeftRelease = false;
-            // TODO: IngameFancyUI.OpenAchievementsAndGoto(achievement);
+            OpenAchievementsAndGoto(achievement);
             timeLeft = 0;
             ShouldBeRemoved = true;
         }
@@ -232,7 +235,7 @@ internal sealed class AchievementImpl : ModSystem
             if (Main.mouseLeft && Main.mouseLeftRelease)
             {
                 Main.ingameOptionsWindow = false;
-                // TODO: IngameFancyUI.OpenAchievementsAndGoto(hoveredCard);
+                OpenAchievementsAndGoto(hoveredCard);
             }
         }
 
@@ -289,7 +292,7 @@ internal sealed class AchievementImpl : ModSystem
                 }
 
                 Main.ingameOptionsWindow = false;
-                // TODO: IngameFancyUI.OpenAchievementsAndGoto(hoveredCard);
+                OpenAchievementsAndGoto(hoveredCard);
             }
         }
 
@@ -393,6 +396,8 @@ internal sealed class AchievementImpl : ModSystem
 
         On_AchievementTagHandler.Terraria_UI_Chat_ITagHandler_Parse += UseCompatibleTextSnippetForAchievementTag;
         On_InGameNotificationsTracker.AddCompleted += AddModdedAchievementsAsCompletedInPlaceOfVanilla;
+        On_IngameFancyUI.OpenAchievements += OpenOurAchievementsMenu;
+        On_IngameFancyUI.OpenAchievementsAndGoto += OpenAchievementsAndGotoOurMenu;
     }
 
     public override void PostSetupContent()
@@ -468,13 +473,44 @@ internal sealed class AchievementImpl : ModSystem
         InGameNotificationsTracker.AddNotification(new CompatibleAchievementUnlockedPopup(ach));
     }
 
+    private static void OpenOurAchievementsMenu(On_IngameFancyUI.orig_OpenAchievements orig)
+    {
+        IngameFancyUI.CoverNextFrame();
+        Main.playerInventory = false;
+        Main.editChest = false;
+        Main.npcChatText = "";
+        Main.inFancyUI = true;
+        IngameFancyUI.ClearChat();
+        Main.InGameUI.SetState(ModContent.GetInstance<AchievementsMenu>());
+    }
+
+    private static void OpenAchievementsAndGotoOurMenu(On_IngameFancyUI.orig_OpenAchievementsAndGoto orig, Terraria.Achievements.Achievement achievement)
+    {
+        if (!VanillaAchievements.VANILLA_ACHIEVEMENTS_BY_NAME.TryGetValue(achievement.Name, out var ach))
+        {
+            // TODO: Throw exception?
+            return;
+        }
+
+        IngameFancyUI.OpenAchievements();
+        ModContent.GetInstance<AchievementsMenu>().GotoAchievement(ach);
+    }
+
+    private static void OpenAchievementsAndGoto(Achievement achievement)
+    {
+        IngameFancyUI.OpenAchievements();
+        ModContent.GetInstance<AchievementsMenu>().GotoAchievement(achievement);
+    }
+
     public static void Register(Achievement achievement)
     {
+        achievement.Id = ACHIEVEMENTS.Count;
         ACHIEVEMENTS.Add(achievement);
     }
 
     public static void RegisterCategory(AchievementCategory category)
     {
+        category.Id = CATEGORIES.Count;
         CATEGORIES.Add(category);
     }
 }
