@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Linq;
 
 using Daybreak.Content.Config;
@@ -11,13 +13,17 @@ using Microsoft.Xna.Framework.Graphics;
 
 using MonoMod.Cil;
 
+using Newtonsoft.Json;
+
 using ReLogic.Content;
 
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Chat;
 using Terraria.GameInput;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.UI;
 using Terraria.UI.Chat;
@@ -29,6 +35,7 @@ namespace Daybreak.Common.Features.Achievements;
 /// </summary>
 internal sealed class AchievementImpl : ModSystem
 {
+#region Re-impls
     private sealed class CompatibleAchievementSnippet : TextSnippet
     {
         private Achievement achievement;
@@ -315,9 +322,9 @@ internal sealed class AchievementImpl : ModSystem
                 item.SetDefaults(0, noMatCheck: true);
                 item.SetNameOverride(hoveredCard.DisplayName.Value);
                 item.ToolTip = ItemTooltip.FromLanguageKey(hoveredCard.Description.Key);
-                item.type = 1;
+                item.type = ItemID.IronPickaxe;
                 item.scale = 0f;
-                item.rare = 10;
+                item.rare = ItemRarityID.Red;
                 item.value = -1;
             }
 
@@ -383,9 +390,14 @@ internal sealed class AchievementImpl : ModSystem
             }
         }
     }
+#endregion
 
     public static readonly List<Achievement> ACHIEVEMENTS = [];
     public static readonly List<AchievementCategory> CATEGORIES = [];
+
+    private static HashSet<string> knownCompletedAchievements = [];
+
+    private static string SavePath => Path.Combine(Main.SavePath, "daybreak", "achievements.json");
 
     public override void Load()
     {
@@ -395,6 +407,8 @@ internal sealed class AchievementImpl : ModSystem
         {
             return;
         }
+
+        ReadCompletedAchievements();
 
         On_AchievementTagHandler.Terraria_UI_Chat_ITagHandler_Parse += UseCompatibleTextSnippetForAchievementTag;
         On_InGameNotificationsTracker.AddCompleted += AddModdedAchievementsAsCompletedInPlaceOfVanilla;
@@ -527,5 +541,83 @@ internal sealed class AchievementImpl : ModSystem
     {
         category.Id = CATEGORIES.Count;
         CATEGORIES.Add(category);
+    }
+
+    public static bool GetCompletedStatus(Achievement achievement)
+    {
+        return knownCompletedAchievements.Contains(achievement.FullName);
+    }
+
+    public static void Complete(Achievement achievement)
+    {
+        if (achievement.IsCompleted)
+        {
+            return;
+        }
+
+        knownCompletedAchievements.Add(achievement.FullName);
+        SaveCompletedAchievements();
+
+        // TODO: OnAchievementComplete?
+        DoCompleteEvents(achievement);
+    }
+
+    private static void DoCompleteEvents(Achievement achievement)
+    {
+        if (Main.netMode == NetmodeID.Server)
+        {
+            return;
+        }
+        
+        Main.NewText(Language.GetTextValue("Achievements.Completed", "[a:" + achievement.Name + "]"));
+        
+        if (SoundEngine.FindActiveSound(SoundID.AchievementComplete) == null)
+        {
+            SoundEngine.PlayTrackedSound(SoundID.AchievementComplete);
+        }
+
+        InGameNotificationsTracker.AddNotification(new CompatibleAchievementUnlockedPopup(achievement));
+    }
+
+    private static void ReadCompletedAchievements()
+    {
+        if (!File.Exists(SavePath))
+        {
+            return;
+        }
+
+        try
+        {
+            var json = File.ReadAllText(SavePath);
+            var loaded = JsonConvert.DeserializeObject<List<string>>(json);
+            if (loaded is null)
+            {
+                return;
+            }
+
+            foreach (var ach in loaded.Where(ach => !string.IsNullOrEmpty(ach)))
+            {
+                knownCompletedAchievements.Add(ach);
+            }
+        }
+        catch (Exception e)
+        {
+            Main.NewText($"Failed to read achievements: {e}");
+        }
+    }
+
+    private static void SaveCompletedAchievements()
+    {
+        Directory.CreateDirectory(Path.GetDirectoryName(SavePath)!);
+
+        try
+        {
+            var json = JsonConvert.SerializeObject(knownCompletedAchievements.ToList());
+            File.WriteAllText(SavePath, json);
+        }
+        catch (Exception e)
+        {
+            Main.NewText($"Failed to save achievements: {e}");
+        }
     }
 }

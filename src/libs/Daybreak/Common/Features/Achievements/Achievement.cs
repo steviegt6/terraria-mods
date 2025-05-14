@@ -38,8 +38,10 @@ public abstract class Achievement : ModType, ILocalizedModType
     /// </summary>
     public virtual float AdvisorOrder { get; } = -1f;
 
-    // TODO
-    public virtual bool IsCompleted => GetCategories().All(x => x.IsCompleted);
+    /// <summary>
+    ///     Whether this achievement has been completed.
+    /// </summary>
+    public bool IsCompleted => AchievementImpl.GetCompletedStatus(this);
 
     internal int Id { get; set; }
 
@@ -49,6 +51,11 @@ public abstract class Achievement : ModType, ILocalizedModType
     }
 
     protected sealed override void InitTemplateInstance() { }
+
+    public void Complete()
+    {
+        AchievementImpl.Complete(this);
+    }
 
     /// <summary>
     ///     Gets the categories this achievement is in.  Achievements must
