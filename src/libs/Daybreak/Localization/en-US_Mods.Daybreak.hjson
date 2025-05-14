@@ -24,8 +24,23 @@ Configs: {
 				Always Enable: Always use DAYBREAK's achievement system, even if no modded achievements are present.
 				Always Disable: Never use DAYBREAK's achievement system, even if modded achievements are present.
 
-				Players may want to set this to Always Enable to benefit from DAYBREAK's rewritten achievement handling, associating achievements with players and worlds.
+				Players may want to set this to Always Enable to benefit from DAYBREAK's rewritten achievement handling,
+				associating achievements with players and worlds.
 				Players may want to set this to Always Disable if they don't want to interact with modded achievements.
+				'''
+		}
+
+		PersistenceMode: {
+			Label: Achievement Persistence Mode
+			Tooltip:
+				'''
+				If enabled, all achievements will be treated as just "Persistent" instead of potentially "Per-Player" or
+				"Per-World".
+				Persistent achievements are closer to vanilla's achievement behavior, where once an achievement is
+				earned it's permanently unlocked and can't be earned again.
+				Per-Player and Per-World achievements will still be saved to players and worlds respectively, but
+				Persistence Mode makes it so once they're earned once, menus will always display them as unlocked and
+				you won't earn them again in-game.
 				'''
 		}
 	}
