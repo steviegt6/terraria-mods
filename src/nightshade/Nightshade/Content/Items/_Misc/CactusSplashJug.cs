@@ -15,7 +15,7 @@ public class CactusSplashJug : ModItem
 	{
 		Item.width = 24;
 		Item.height = 24;
-		Item.useAnimation = Item.useTime = 28;
+		Item.useAnimation = Item.useTime = 24;
 		Item.useStyle = ItemUseStyleID.Swing;
 		Item.useTurn = true;
 		Item.rare = ItemRarityID.Blue;

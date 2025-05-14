@@ -137,10 +137,10 @@ Items: {
 	}
 
 	CactusSplashJug: {
-		DisplayName: Cactus Splash Jug
+		DisplayName: Succulent Splash
 		Tooltip:
 			'''
-			Restores some health
+			Restores some life
 			Right click to splash yourself
 			'''
 	}
