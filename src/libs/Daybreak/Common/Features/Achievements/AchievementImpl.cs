@@ -176,7 +176,7 @@ internal sealed class AchievementImpl : ModSystem
         }
     }
 
-    private sealed class CustomAchievementAdvisor : ILoad
+    private sealed class CustomAchievementAdvisor : ModSystem
     {
         private static readonly Asset<Texture2D> achievements_border_texture = Main.Assets.Request<Texture2D>("Images/UI/Achievement_Borders");
         private static readonly Asset<Texture2D> achievements_border_mouse_hover_fat_texture = Main.Assets.Request<Texture2D>("Images/UI/Achievement_Borders_MouseHover");
@@ -186,8 +186,10 @@ internal sealed class AchievementImpl : ModSystem
 
         private static Achievement? hoveredCard;
 
-        void ILoad.Load()
+        public override void PostSetupContent()
         {
+            base.PostSetupContent();
+
             if (!AchievementConfig.AreAchievementsEnabled())
             {
                 return;
@@ -214,7 +216,7 @@ internal sealed class AchievementImpl : ModSystem
             };
         }
 
-        private void DrawOneAchievement(SpriteBatch spriteBatch, Vector2 position, bool large)
+        private static void DrawOneAchievement(SpriteBatch spriteBatch, Vector2 position, bool large)
         {
             var bestCard = GetBestCards(cardsAmount: 1).FirstOrDefault();
             if (bestCard is null)
@@ -248,12 +250,12 @@ internal sealed class AchievementImpl : ModSystem
             }
         }
 
-        private void Update()
+        private static void Update()
         {
             hoveredCard = null;
         }
 
-        private void DrawOptionsPanel(SpriteBatch spriteBatch, Vector2 leftPosition, Vector2 rightPosition)
+        private static void DrawOptionsPanel(SpriteBatch spriteBatch, Vector2 leftPosition, Vector2 rightPosition)
         {
             var bestCards = GetBestCards().ToArray();
             hoveredCard = null;
@@ -305,7 +307,7 @@ internal sealed class AchievementImpl : ModSystem
             }
         }
 
-        private void DrawMouseHover()
+        private static void DrawMouseHover()
         {
             if (hoveredCard is null)
             {
@@ -333,7 +335,7 @@ internal sealed class AchievementImpl : ModSystem
             Main.mouseText = true;
         }
 
-        private void DrawCard(Achievement card, SpriteBatch spriteBatch, Vector2 position, float scale, out bool hovered)
+        private static void DrawCard(Achievement card, SpriteBatch spriteBatch, Vector2 position, float scale, out bool hovered)
         {
             hovered = false;
 
@@ -370,7 +372,7 @@ internal sealed class AchievementImpl : ModSystem
             }
         }
 
-        private IEnumerable<Achievement> GetBestCards(int cardsAmount = 10)
+        private static IEnumerable<Achievement> GetBestCards(int cardsAmount = 10)
         {
             var added = 0;
             foreach (var card in Cards)
@@ -395,7 +397,7 @@ internal sealed class AchievementImpl : ModSystem
     public static readonly List<Achievement> ACHIEVEMENTS = [];
     public static readonly List<AchievementCategory> CATEGORIES = [];
 
-    private static HashSet<string> knownCompletedAchievements = [];
+    private static readonly HashSet<string> known_completed_achievements = [];
 
     private static string SavePath => Path.Combine(Main.SavePath, "daybreak", "achievements.json");
 
@@ -403,12 +405,19 @@ internal sealed class AchievementImpl : ModSystem
     {
         base.Load();
 
+        ReadCompletedAchievements();
+    }
+
+    public override void PostSetupContent()
+    {
+        base.PostSetupContent();
+
         if (!AchievementConfig.AreAchievementsEnabled())
         {
             return;
         }
 
-        ReadCompletedAchievements();
+        CustomAchievementAdvisor.Cards = ACHIEVEMENTS.Where(x => x.AdvisorOrder >= 0f).OrderBy(x => x.AdvisorOrder).ToArray();
 
         On_AchievementTagHandler.Terraria_UI_Chat_ITagHandler_Parse += UseCompatibleTextSnippetForAchievementTag;
         On_InGameNotificationsTracker.AddCompleted += AddModdedAchievementsAsCompletedInPlaceOfVanilla;
@@ -427,13 +436,6 @@ internal sealed class AchievementImpl : ModSystem
 
         c.EmitPop();
         c.EmitDelegate(ModContent.GetInstance<AchievementsMenu>);
-    }
-
-    public override void PostSetupContent()
-    {
-        base.PostSetupContent();
-
-        CustomAchievementAdvisor.Cards = ACHIEVEMENTS.Where(x => x.AdvisorOrder >= 0f).OrderBy(x => x.AdvisorOrder).ToArray();
     }
 
     private static TextSnippet UseCompatibleTextSnippetForAchievementTag(
@@ -552,7 +554,7 @@ internal sealed class AchievementImpl : ModSystem
             return true;
         }
 
-        return knownCompletedAchievements.Contains(achievement.FullName);
+        return known_completed_achievements.Contains(achievement.FullName);
     }
 
     public static void Complete(Achievement achievement)
@@ -562,7 +564,7 @@ internal sealed class AchievementImpl : ModSystem
             return;
         }
 
-        knownCompletedAchievements.Add(achievement.FullName);
+        known_completed_achievements.Add(achievement.FullName);
         SaveCompletedAchievements();
 
         // TODO: OnAchievementComplete?
@@ -602,9 +604,11 @@ internal sealed class AchievementImpl : ModSystem
                 return;
             }
 
+            known_completed_achievements.Clear();
+
             foreach (var ach in loaded.Where(ach => !string.IsNullOrEmpty(ach)))
             {
-                knownCompletedAchievements.Add(ach);
+                known_completed_achievements.Add(ach);
             }
         }
         catch (Exception e)
@@ -619,7 +623,7 @@ internal sealed class AchievementImpl : ModSystem
 
         try
         {
-            var json = JsonConvert.SerializeObject(knownCompletedAchievements.ToList());
+            var json = JsonConvert.SerializeObject(known_completed_achievements.ToList());
             File.WriteAllText(SavePath, json);
         }
         catch (Exception e)
