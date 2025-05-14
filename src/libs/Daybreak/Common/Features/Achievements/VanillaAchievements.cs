@@ -65,6 +65,7 @@ internal sealed class VanillaAchievements : ModSystem
         {
             if (!categories.TryGetValue(key, out var category))
             {
+                yield return IDs.VanillaAchievements.Categories.Slayer;
                 yield break;
             }
 
