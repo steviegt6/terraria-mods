@@ -32,11 +32,6 @@ public abstract class Achievement : ModType, ILocalizedModType
     public virtual LocalizedText Description => this.GetLocalization(nameof(Description), static () => "");
 
     /// <summary>
-    ///     The achievement kind.
-    /// </summary>
-    public abstract AchievementKind Kind { get; }
-
-    /// <summary>
     ///     The order of this achievement in the context of the achievement
     ///     advisor cards.  Return a value below <c>0f</c> to omit it from the
     ///     advisor card system.
