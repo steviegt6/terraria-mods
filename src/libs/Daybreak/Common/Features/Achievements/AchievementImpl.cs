@@ -9,6 +9,8 @@ using Daybreak.Core.Hooks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
+using MonoMod.Cil;
+
 using ReLogic.Content;
 
 using Terraria;
@@ -398,6 +400,19 @@ internal sealed class AchievementImpl : ModSystem
         On_InGameNotificationsTracker.AddCompleted += AddModdedAchievementsAsCompletedInPlaceOfVanilla;
         On_IngameFancyUI.OpenAchievements += OpenOurAchievementsMenu;
         On_IngameFancyUI.OpenAchievementsAndGoto += OpenAchievementsAndGotoOurMenu;
+
+        IL_Main.DrawMenu += IL_ReplaceAchievementsMenuReference;
+        IL_Main.CanPauseGame += IL_ReplaceAchievementsMenuReference;
+    }
+
+    private static void IL_ReplaceAchievementsMenuReference(ILContext il)
+    {
+        var c = new ILCursor(il);
+
+        c.GotoNext(MoveType.After, x => x.MatchLdsfld<Main>("AchievementsMenu"));
+
+        c.EmitPop();
+        c.EmitDelegate(ModContent.GetInstance<AchievementsMenu>);
     }
 
     public override void PostSetupContent()
