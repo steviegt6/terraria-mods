@@ -569,7 +569,7 @@ internal sealed class AchievementImpl : ModSystem
             return;
         }
         
-        Main.NewText(Language.GetTextValue("Achievements.Completed", "[a:" + achievement.Name + "]"));
+        Main.NewText(Language.GetTextValue("Achievements.Completed", "[a:" + achievement.FullName + "]"));
         
         if (SoundEngine.FindActiveSound(SoundID.AchievementComplete) == null)
         {

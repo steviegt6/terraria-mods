@@ -72,3 +72,13 @@ internal sealed class Achievement3 : AbstractAchievement
         yield return ModContent.GetInstance<Category3>();
     }
 }
+
+internal sealed class Test : ModPlayer
+{
+    public override void OnEnterWorld()
+    {
+        base.OnEnterWorld();
+
+        ModContent.GetInstance<Achievement1>().Complete();
+    }
+}

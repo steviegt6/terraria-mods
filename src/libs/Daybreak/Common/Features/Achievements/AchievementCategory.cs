@@ -30,6 +30,7 @@ public abstract class AchievementCategory : ModType, ILocalizedModType
     protected sealed override void Register()
     {
         AchievementImpl.RegisterCategory(this);
+        ModTypeLookup<AchievementCategory>.Register(this);
     }
 
     protected sealed override void InitTemplateInstance() { }

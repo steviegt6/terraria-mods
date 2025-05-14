@@ -48,6 +48,7 @@ public abstract class Achievement : ModType, ILocalizedModType
     protected sealed override void Register()
     {
         AchievementImpl.Register(this);
+        ModTypeLookup<Achievement>.Register(this);
     }
 
     protected sealed override void InitTemplateInstance() { }
