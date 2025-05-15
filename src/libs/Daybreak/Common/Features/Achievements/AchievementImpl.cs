@@ -214,6 +214,9 @@ internal sealed class AchievementImpl : ModSystem
             {
                 DrawMouseHover();
             };
+
+            // Trigger a re-JIT of this method to ensure Update runs.
+            IL_Main.DoUpdate += _ => { };
         }
 
         private static void DrawOneAchievement(SpriteBatch spriteBatch, Vector2 position, bool large)
