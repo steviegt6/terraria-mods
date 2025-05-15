@@ -16,6 +16,8 @@ internal sealed class LivingCactusPot : AbstractPot
 
     public override void SetStaticDefaults()
     {
+        base.SetStaticDefaults();
+
         AddMapEntry(new Color(47, 79, 79), Language.GetText("MapObject.Pot")); // dark slate gray
         DustType = 29;
     }
@@ -28,7 +30,7 @@ internal sealed class LivingCactusPot : AbstractPot
         {
             return;
         }
-        
+
         var goreAmt = Main.rand.Next(1, 2 + 1);
         for (var k = 0; k < goreAmt; k++)
         {
