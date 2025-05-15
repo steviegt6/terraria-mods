@@ -29,21 +29,9 @@ internal sealed class Category2() : AbstractCategory(1);
 
 internal sealed class Category3() : AbstractCategory(2);
 
-internal abstract class AbstractAchievement : Achievement
+internal sealed class Achievement1 : Achievement
 {
-    protected abstract Asset<Texture2D> Icon { get; }
-
-    public override Asset<Texture2D> GetIcon(out Rectangle frame, out int lockedOffset)
-    {
-        frame = new Rectangle(0, 0, 64, 64);
-        lockedOffset = 66;
-        return Icon;
-    }
-}
-
-internal sealed class Achievement1 : AbstractAchievement
-{
-    protected override Asset<Texture2D> Icon => Assets.Images.Achievement1.Asset;
+    public override string Texture => Assets.Images.Achievement1.KEY;
 
     public override IEnumerable<AchievementCategory> GetCategories()
     {
@@ -51,9 +39,9 @@ internal sealed class Achievement1 : AbstractAchievement
     }
 }
 
-internal sealed class Achievement2 : AbstractAchievement
+internal sealed class Achievement2 : Achievement
 {
-    protected override Asset<Texture2D> Icon => Assets.Images.Achievement2.Asset;
+    public override string Texture => Assets.Images.Achievement2.KEY;
 
     public override IEnumerable<AchievementCategory> GetCategories()
     {
@@ -63,9 +51,9 @@ internal sealed class Achievement2 : AbstractAchievement
     }
 }
 
-internal sealed class Achievement3 : AbstractAchievement
+internal sealed class Achievement3 : Achievement
 {
-    protected override Asset<Texture2D> Icon => Assets.Images.Achievement3.Asset;
+    public override string Texture => Assets.Images.Achievement3.KEY;
 
     public override IEnumerable<AchievementCategory> GetCategories()
     {

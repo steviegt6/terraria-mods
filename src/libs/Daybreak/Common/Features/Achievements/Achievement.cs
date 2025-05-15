@@ -16,7 +16,7 @@ namespace Daybreak.Common.Features.Achievements;
 ///     <see cref="Terraria.Achievements.Achievement"/> type, which this
 ///     implementation wholly replaces.
 /// </summary>
-public abstract class Achievement : ModType, ILocalizedModType
+public abstract class Achievement : ModTexturedType, ILocalizedModType
 {
     /// <inheritdoc cref="ILocalizedModType.LocalizationCategory"/>
     public virtual string LocalizationCategory => "Achievements";
@@ -77,5 +77,10 @@ public abstract class Achievement : ModType, ILocalizedModType
     /// <summary>
     ///     Gets the texture and frame used for the advisor card icon.
     /// </summary>
-    public abstract Asset<Texture2D> GetIcon(out Rectangle frame, out int lockedOffset);
+    public virtual Asset<Texture2D> GetIcon(out Rectangle frame, out int lockedOffset)
+    {
+        frame = new Rectangle(0, 0, 64, 64);
+        lockedOffset = 66;
+        return ModContent.Request<Texture2D>(Texture, AssetRequestMode.ImmediateLoad);
+    }
 }
