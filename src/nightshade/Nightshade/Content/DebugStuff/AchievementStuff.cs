@@ -43,6 +43,8 @@ internal sealed class Achievement2 : Achievement
 {
     public override string Texture => Assets.Images.Achievement2.KEY;
 
+    public override float AdvisorOrder => 0.5f; // before Timber!!
+
     public override IEnumerable<AchievementCategory> GetCategories()
     {
         yield return VanillaAchievements.Categories.Explorer;
@@ -58,6 +60,12 @@ internal sealed class Achievement3 : Achievement
     public override IEnumerable<AchievementCategory> GetCategories()
     {
         yield return ModContent.GetInstance<Category3>();
+    }
+
+    public override float? GetProgress(out string progressText)
+    {
+        progressText = "hi mom I'm progressing";
+        return Main.GlobalTimeWrappedHourly % 60f / 60f;
     }
 }
 

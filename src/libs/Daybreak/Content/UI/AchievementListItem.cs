@@ -80,12 +80,6 @@ internal sealed class AchievementListItem : UIPanel
         var num2 = dimensions.X + dimensions.Width;
         var vector2 = new Vector2(num2 + 7f, innerDimensions.Y);
 
-        // TODO: trackers
-        /*Tuple<decimal, decimal> trackerValues = GetTrackerValues();
-        bool flag = false;
-        if ((!(trackerValues.Item1 == 0m) || !(trackerValues.Item2 == 0m)) && _locked)
-            flag = true;*/
-
         var maxDescriptionLineWidth = innerDimensions.Width - dimensions.Width + 1f - num * 2;
 
         var displayNameScale = new Vector2(0.85f);
@@ -112,11 +106,6 @@ internal sealed class AchievementListItem : UIPanel
         var vector3 = vector2 - Vector2.UnitY * 2f + vector;
         DrawPanelTop(spriteBatch, vector3, maxDescriptionLineWidth, color);
 
-        /*AchievementCategory category = Achievement.Category;
-        vector3.Y += 2f;
-        vector3.X += 4f;
-        spriteBatch.Draw(category_texture.Value, vector3, category_texture.Frame(4, 2, (int)category), IsMouseHovering ? Color.White : Color.Silver, 0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0f);*/
-
         vector3.Y += 2f;
         vector3.X += 4f;
         var lastCategoryWidth = 0f;
@@ -124,7 +113,7 @@ internal sealed class AchievementListItem : UIPanel
         {
             var categoryTexture = category.GetIcon(out var categoryFrame);
             spriteBatch.Draw(categoryTexture.Value, vector3, categoryFrame, IsMouseHovering ? Color.White : Color.Silver, 0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0f);
-            
+
             vector3.X += lastCategoryWidth = categoryFrame.Width * 0.5f + 2f;
         }
         vector3.X -= lastCategoryWidth;
@@ -139,27 +128,31 @@ internal sealed class AchievementListItem : UIPanel
         position.Y += 4f;
         ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, descriptionText, position, value2, 0f, Vector2.Zero, descriptionTextScale);
 
-        // TODO: trackers
-        /*if (flag)
-            {
-                Vector2 vector4 = vector3 + Vector2.UnitX * num3 + Vector2.UnitY;
-                string text2 = (int)trackerValues.Item1 + "/" + (int)trackerValues.Item2;
-                Vector2 baseScale3 = new Vector2(0.75f);
-                Vector2 stringSize2 = ChatManager.GetStringSize(FontAssets.ItemStack.Value, text2, baseScale3);
-                float progress = (float)(trackerValues.Item1 / trackerValues.Item2);
-                float num5 = 80f;
-                Color color2 = new Color(100, 255, 100);
-                if (!base.IsMouseHovering)
-                    color2 = Color.Lerp(color2, Color.Black, 0.25f);
+        var progress = Achievement.GetProgress(out var progressText);
+        if (!progress.HasValue)
+        {
+            return;
+        }
 
-                Color color3 = new Color(255, 255, 255);
-                if (!base.IsMouseHovering)
-                    color3 = Color.Lerp(color3, Color.Black, 0.25f);
+        var vector4 = vector3 + Vector2.UnitX * maxDescriptionLineWidth + Vector2.UnitY;
+        var baseScale3 = new Vector2(0.75f);
+        var stringSize2 = ChatManager.GetStringSize(FontAssets.ItemStack.Value, progressText, baseScale3);
 
-                DrawProgressBar(spriteBatch, progress, vector4 - Vector2.UnitX * num5 * 0.7f, num5, color3, color2, color2.MultiplyRGBA(new Color(new Vector4(1f, 1f, 1f, 0.5f))));
-                vector4.X -= num5 * 1.4f + stringSize2.X;
-                ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, text2, vector4, value, 0f, new Vector2(0f, 0f), baseScale3, 90f);
-            }*/
+        var color2 = new Color(100, 255, 100);
+        if (!IsMouseHovering)
+        {
+            color2 = Color.Lerp(color2, Color.Black, 0.25f);
+        }
+
+        var color3 = new Color(255, 255, 255);
+        if (!IsMouseHovering)
+        {
+            color3 = Color.Lerp(color3, Color.Black, 0.25f);
+        }
+
+        DrawProgressBar(spriteBatch, progress.Value, vector4 - Vector2.UnitX * 80f * 0.7f, 80f, color3, color2, color2.MultiplyRGBA(new Color(new Vector4(1f, 1f, 1f, 0.5f))));
+        vector4.X -= 80f * 1.4f + stringSize2.X;
+        ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, progressText, vector4, value, 0f, new Vector2(0f, 0f), baseScale3, 90f);
     }
 
     private void UpdateIconFrame()
@@ -248,29 +241,7 @@ internal sealed class AchievementListItem : UIPanel
         BorderColor = new Color(13, 20, 44) * 0.8f;
     }
 
-    // TODO: Trackers
-    /*
-     * 	private Tuple<decimal, decimal> GetTrackerValues()
-    {
-        if (!_achievement.HasTracker)
-            return Tuple.Create(0m, 0m);
-
-        IAchievementTracker tracker = _achievement.GetTracker();
-        if (tracker.GetTrackerType() == TrackerType.Int) {
-            AchievementTracker<int> achievementTracker = (AchievementTracker<int>)tracker;
-            return Tuple.Create((decimal)achievementTracker.Value, (decimal)achievementTracker.MaxValue);
-        }
-
-        if (tracker.GetTrackerType() == TrackerType.Float) {
-            AchievementTracker<float> achievementTracker2 = (AchievementTracker<float>)tracker;
-            return Tuple.Create((decimal)achievementTracker2.Value, (decimal)achievementTracker2.MaxValue);
-        }
-
-        return Tuple.Create(0m, 0m);
-    }
-     */
-
-    /*private void DrawProgressBar(
+    private void DrawProgressBar(
         SpriteBatch spriteBatch,
         float progress,
         Vector2 spot,
@@ -316,7 +287,7 @@ internal sealed class AchievementListItem : UIPanel
         }
 
         spriteBatch.Draw(magicPixel, position, new Rectangle(0, 0, 1, 1), Color.Black, 0f, new Vector2(0f, 0.5f), new Vector2(width * (1f - clampedProgress), 8f), SpriteEffects.None, 0f);
-    }*/
+    }
 
     public override int CompareTo(object? obj)
     {

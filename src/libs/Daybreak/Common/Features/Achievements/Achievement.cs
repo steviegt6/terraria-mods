@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 using Microsoft.Xna.Framework;
@@ -106,8 +107,9 @@ public abstract class Achievement : ModTexturedType, ILocalizedModType
     ///     completeness of this achievement.  Developers are expected to
     ///     manually invoke <see cref="Achievement.Complete()"/> still.
     /// </remarks>
-    public virtual float? GetProgress()
+    public virtual float? GetProgress(out string progressText)
     {
+        progressText = string.Empty;
         return null;
     }
 }
