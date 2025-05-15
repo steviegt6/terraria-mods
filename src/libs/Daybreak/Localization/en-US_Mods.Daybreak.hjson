@@ -20,13 +20,8 @@ Configs: {
 			Tooltip:
 				'''
 				Determines whether to use DAYBREAK's achievement system.
-				Default: Only use it when modded achievements are present.
-				Always Enable: Always use DAYBREAK's achievement system, even if no modded achievements are present.
-				Always Disable: Never use DAYBREAK's achievement system, even if modded achievements are present.
-
-				Players may want to set this to Always Enable to benefit from DAYBREAK's rewritten achievement handling,
-				associating achievements with players and worlds.
-				Players may want to set this to Always Disable if they don't want to interact with modded achievements.
+				DAYBREAK makes several changes to the game to replace Terraria's achievements handling with its own.
+				It should be relatively un-invasive. It is disabled by default unless a mod adds modded achievements.
 				'''
 		}
 	}
