@@ -497,7 +497,6 @@ internal sealed class AchievementImpl : ModSystem
 
         if (!VanillaAchievements.VANILLA_ACHIEVEMENTS_BY_NAME.TryGetValue(achievement.Name, out var ach))
         {
-            // TODO: Throw exception?
             return;
         }
 
@@ -519,7 +518,6 @@ internal sealed class AchievementImpl : ModSystem
     {
         if (!VanillaAchievements.VANILLA_ACHIEVEMENTS_BY_NAME.TryGetValue(achievement.Name, out var ach))
         {
-            // TODO: Throw exception?
             return;
         }
 

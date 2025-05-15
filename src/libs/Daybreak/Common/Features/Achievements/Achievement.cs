@@ -83,4 +83,20 @@ public abstract class Achievement : ModTexturedType, ILocalizedModType
         lockedOffset = 66;
         return ModContent.Request<Texture2D>(Texture, AssetRequestMode.ImmediateLoad);
     }
+
+    /// <summary>
+    ///     Gets a normalized (0f to 1f) value representing the current progress
+    ///     of this achievement to display as a progress bar in the achievement
+    ///     menu.  If this achievement does not track progress, or you do not
+    ///     want to display a progress bar, return <c>null</c>.
+    /// </summary>
+    /// <returns>
+    ///     A normalized value representing the current progress of this
+    ///     achievement, or <c>null</c> if this achievement does not track
+    ///     progress.
+    /// </returns>
+    public virtual float? GetProgress()
+    {
+        return null;
+    }
 }
