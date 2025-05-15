@@ -28,9 +28,6 @@ internal sealed class AchievementConfig : ModConfig
     [DefaultValue(AchievementOverride.Default)]
     public AchievementOverride UseAchievements { get; set; } = AchievementOverride.Default;
 
-    [DefaultValue(false)]
-    public bool PersistenceMode { get; set; } = false;
-
     public static bool AreAchievementsEnabled()
     {
         return ModContent.GetInstance<AchievementConfig>().UseAchievements switch
