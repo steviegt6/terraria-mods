@@ -53,6 +53,12 @@ public abstract class Achievement : ModTexturedType, ILocalizedModType
 
     protected sealed override void InitTemplateInstance() { }
 
+    /// <summary>
+    ///     Marks this achievement as completed, which will additionally put a
+    ///     message in chat, display an in-game popup notification, and award
+    ///     the achievement to the user.  If the achievement is already
+    ///     completed, this will do nothing.
+    /// </summary>
     public void Complete()
     {
         AchievementImpl.Complete(this);
@@ -95,6 +101,11 @@ public abstract class Achievement : ModTexturedType, ILocalizedModType
     ///     achievement, or <c>null</c> if this achievement does not track
     ///     progress.
     /// </returns>
+    /// <remarks>
+    ///     Fulfillment of this value (<c>&gt;= 1f</c>) has no bearing on the
+    ///     completeness of this achievement.  Developers are expected to
+    ///     manually invoke <see cref="Achievement.Complete()"/> still.
+    /// </remarks>
     public virtual float? GetProgress()
     {
         return null;
