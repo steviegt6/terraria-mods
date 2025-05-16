@@ -145,6 +145,16 @@ Items: {
 		DisplayName: Rainbow Horseshoe
 		Tooltip: ""
 	}
+
+	HallowedCharm: {
+		DisplayName: Hallowed Charm
+		Tooltip: ""
+	}
+
+	RabbitsFoot: {
+		DisplayName: Rabbits Foot
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
