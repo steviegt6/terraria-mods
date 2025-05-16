@@ -6,9 +6,9 @@ using Terraria.ModLoader;
 
 namespace Nightshade.Content.Items.Accessories;
 
-internal sealed class DriftersBoots : ModItem
+internal sealed class Godspeed : ModItem
 {
-    private sealed class DriftersBootsJump : ExtraJump
+    private sealed class GodspeedJump : ExtraJump
     {
         public override Position GetDefaultPosition()
         {
@@ -23,6 +23,8 @@ internal sealed class DriftersBoots : ModItem
         public override void OnStarted(Player player, ref bool playSound)
         {
             base.OnStarted(player, ref playSound);
+
+            // TODO: Unique effect?
 
             // Show dust visuals.
             {
@@ -61,7 +63,7 @@ internal sealed class DriftersBoots : ModItem
             }
 
             // So long as there are jumps left, let this jump remain usable.
-            if (--player.GetModPlayer<DbPlayer>().JumpCount > 0)
+            if (--player.GetModPlayer<GodspeedPlayer>().JumpCount > 0)
             {
                 player.GetJumpState(this).Available = true;
             }
@@ -71,17 +73,15 @@ internal sealed class DriftersBoots : ModItem
         {
             base.OnRefreshed(player);
 
-            // lmao thank god example mod basically had an example that exactly
-            // matched everything we wanted
-            player.GetModPlayer<DbPlayer>().JumpCount = 3;
+            player.GetModPlayer<GodspeedPlayer>().JumpCount = 6;
         }
     }
 
-    public sealed class DbPlayer : ModPlayer
+    public sealed class GodspeedPlayer : ModPlayer
     {
         public int JumpCount { get; set; }
     }
-
+    
     public override string Texture => "ModLoader/UnloadedItem";
 
     public override void SetDefaults()
@@ -90,16 +90,26 @@ internal sealed class DriftersBoots : ModItem
 
         Item.accessory = true;
     }
-
+    
     public override void UpdateAccessory(Player player, bool hideVisual)
     {
         base.UpdateAccessory(player, hideVisual);
 
         // TODO: other effects
-        player.accRunSpeed = 6f;
+        player.accRunSpeed = 12f;
         player.desertBoots = true;
 
-        player.GetJumpState<DriftersBootsJump>().Enable();
+        player.GetJumpState<GodspeedJump>().Enable();
+        
+        player.jumpBoost = true;
+        player.noFallDmg = true;
+        player.hasLuck_LuckyHorseshoe = true;
+        player.GetModPlayer<FourLeafClover.FlcPlayer>().HasLuck = true;
+        
+        player.GetModPlayer<RabbitsFoot.RfPlayer>().HasLuck = true;
+        player.moveSpeed += 0.05f; // Same as Aglet.
+
+        player.jumpSpeedBoost += 1.6f;
 
         // Purposefully no Rocket Boots at this level.
         // player.rocketBoots = player.vanityRocketBoots = 2;
@@ -109,7 +119,7 @@ internal sealed class DriftersBoots : ModItem
             DoVanity(player);
         }
     }
-
+    
     public override void UpdateVanity(Player player)
     {
         base.UpdateVanity(player);
@@ -122,15 +132,15 @@ internal sealed class DriftersBoots : ModItem
         player.CancelAllBootRunVisualEffects();
         player.desertDash = true;
     }
-
+    
     public override void AddRecipes()
     {
         base.AddRecipes();
 
         CreateRecipe()
-           .AddIngredient(ItemID.RocketBoots)
-           .AddIngredient(ItemID.SandBoots)
-           .AddIngredient<TemporalVestige>()
+           .AddIngredient<RaBoots>()
+           .AddIngredient<HallowedCharm>()
+           .AddIngredient<RabbitsFoot>()
            .AddTile(TileID.TinkerersWorkbench)
            .Register();
     }

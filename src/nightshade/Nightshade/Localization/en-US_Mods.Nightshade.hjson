@@ -170,6 +170,16 @@ Items: {
 		DisplayName: Sun God Eye
 		Tooltip: ""
 	}
+
+	Godspeed: {
+		DisplayName: Godspeed
+		Tooltip: ""
+	}
+
+	RaBoots: {
+		DisplayName: Ra Boots
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
