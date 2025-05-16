@@ -135,6 +135,11 @@ Items: {
 		DisplayName: Coconut Chest
 		Tooltip: ""
 	}
+
+	FourLeafClover: {
+		DisplayName: Four Leaf Clover
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
