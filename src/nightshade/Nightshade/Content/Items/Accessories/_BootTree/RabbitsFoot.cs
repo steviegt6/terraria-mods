@@ -91,6 +91,8 @@ internal sealed class RabbitsFoot : ModItem
     public override void SetDefaults()
     {
         base.SetDefaults();
+        
+        (Item.width, Item.height) = (32, 28);
 
         Item.accessory = true;
     }

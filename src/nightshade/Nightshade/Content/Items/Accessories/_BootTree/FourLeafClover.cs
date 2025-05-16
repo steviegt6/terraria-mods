@@ -72,6 +72,8 @@ internal sealed class FourLeafClover : ModItem
     {
         base.SetDefaults();
 
+        (Item.width, Item.height) = (20, 26);
+        
         Item.accessory = true;
     }
 

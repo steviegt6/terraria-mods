@@ -11,6 +11,8 @@ internal sealed class HallowedCharm : ModItem
     public override void SetDefaults()
     {
         base.SetDefaults();
+        
+        (Item.width, Item.height) = (32, 32);
 
         Item.accessory = true;
     }

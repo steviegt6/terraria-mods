@@ -12,6 +12,8 @@ internal sealed class TemporalVestige : ModItem
     {
         base.SetDefaults();
 
+        (Item.width, Item.height) = (26, 36);
+
         Item.accessory = true;
     }
 

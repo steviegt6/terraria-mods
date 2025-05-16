@@ -88,6 +88,8 @@ internal sealed class DriftersBoots : ModItem
     {
         base.SetDefaults();
 
+        (Item.width, Item.height) = (34, 32);
+
         Item.accessory = true;
     }
 

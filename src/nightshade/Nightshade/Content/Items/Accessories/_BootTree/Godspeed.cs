@@ -114,6 +114,8 @@ internal sealed class Godspeed : ModItem
     {
         base.SetDefaults();
 
+        (Item.width, Item.height) = (58, 48);
+
         Item.accessory = true;
     }
 

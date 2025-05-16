@@ -88,6 +88,8 @@ internal sealed class RaBoots : ModItem
     {
         base.SetDefaults();
 
+        (Item.width, Item.height) = (40, 38);
+        
         Item.accessory = true;
     }
     

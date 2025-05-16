@@ -12,6 +12,8 @@ internal sealed class RainbowHorseshoe : ModItem
     {
         base.SetDefaults();
 
+        (Item.width, Item.height) = (26, 26);
+
         Item.accessory = true;
     }
 

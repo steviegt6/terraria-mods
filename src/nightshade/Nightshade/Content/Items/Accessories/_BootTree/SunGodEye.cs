@@ -12,6 +12,8 @@ internal sealed class SunGodEye : ModItem
     {
         base.SetDefaults();
 
+        (Item.width, Item.height) = (42, 36);
+
         Item.accessory = true;
     }
 
