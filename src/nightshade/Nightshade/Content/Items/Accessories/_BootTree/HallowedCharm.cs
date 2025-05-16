@@ -20,6 +20,7 @@ internal sealed class HallowedCharm : ModItem
         base.UpdateEquip(player);
 
         player.jumpBoost = true;
+        player.moveSpeed += 0.04f;
         player.noFallDmg = true;
         player.hasLuck_LuckyHorseshoe = true;
         player.GetModPlayer<FourLeafClover.FlcPlayer>().HasLuck = true;

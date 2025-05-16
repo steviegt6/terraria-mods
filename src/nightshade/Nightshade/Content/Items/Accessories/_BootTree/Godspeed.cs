@@ -107,7 +107,7 @@ internal sealed class Godspeed : ModItem
         player.GetModPlayer<FourLeafClover.FlcPlayer>().HasLuck = true;
         
         player.GetModPlayer<RabbitsFoot.RfPlayer>().HasLuck = true;
-        player.moveSpeed += 0.05f; // Same as Aglet.
+        player.moveSpeed += 0.09f; // Same as Aglet.
 
         player.jumpSpeedBoost += 1.6f;
 
