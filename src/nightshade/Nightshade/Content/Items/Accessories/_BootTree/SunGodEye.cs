@@ -1,4 +1,5 @@
 using Terraria;
+using Terraria.Enums;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -15,6 +16,11 @@ internal sealed class SunGodEye : ModItem
         (Item.width, Item.height) = (42, 36);
 
         Item.accessory = true;
+        
+        Item.SetShopValues(
+            ItemRarityColor.LightRed4,
+            Item.sellPrice(gold: 5, silver: 29)
+        );
     }
 
     public override void UpdateEquip(Player player)

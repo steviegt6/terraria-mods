@@ -1,4 +1,5 @@
 using Terraria;
+using Terraria.Enums;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -15,6 +16,11 @@ internal sealed class HallowedCharm : ModItem
         (Item.width, Item.height) = (32, 32);
 
         Item.accessory = true;
+        
+        Item.SetShopValues(
+            ItemRarityColor.LightRed4,
+            Item.sellPrice(gold: 3, silver: 50)
+        );
     }
 
     public override void UpdateEquip(Player player)

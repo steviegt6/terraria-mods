@@ -1,4 +1,5 @@
 using Terraria;
+using Terraria.Enums;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -51,7 +52,7 @@ internal sealed class FourLeafClover : ModItem
         public override void RefreshInfoAccessoriesFromTeamPlayers(Player otherPlayer)
         {
             base.RefreshInfoAccessoriesFromTeamPlayers(otherPlayer);
-            
+
             if (otherPlayer.GetModPlayer<FlcPlayer>().HasLuck)
             {
                 HasLuck = true;
@@ -73,8 +74,13 @@ internal sealed class FourLeafClover : ModItem
         base.SetDefaults();
 
         (Item.width, Item.height) = (20, 26);
-        
+
         Item.accessory = true;
+
+        Item.SetShopValues(
+            ItemRarityColor.Blue1,
+            Item.sellPrice(silver: 4, copper: 44)
+        );
     }
 
     public override void UpdateEquip(Player player)

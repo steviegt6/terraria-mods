@@ -1,4 +1,5 @@
 using Terraria;
+using Terraria.Enums;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -15,6 +16,11 @@ internal sealed class RainbowHorseshoe : ModItem
         (Item.width, Item.height) = (26, 26);
 
         Item.accessory = true;
+
+        Item.SetShopValues(
+            ItemRarityColor.Green2,
+            Item.sellPrice(gold: 2, silver: 8)
+        );
     }
 
     public override void UpdateEquip(Player player)

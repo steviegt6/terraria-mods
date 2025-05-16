@@ -1,6 +1,7 @@
 using System.Linq;
 
 using Terraria;
+using Terraria.Enums;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -95,6 +96,13 @@ internal sealed class RabbitsFoot : ModItem
         (Item.width, Item.height) = (32, 28);
 
         Item.accessory = true;
+        
+        // Obtainable quite early (immediately), so it should be Blue, but it's
+        // rare enough.
+        Item.SetShopValues(
+            ItemRarityColor.Green2,
+            Item.sellPrice(gold: 1, silver: 25)
+        );
     }
 
     public override void UpdateEquip(Player player)
