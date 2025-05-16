@@ -155,6 +155,11 @@ Items: {
 		DisplayName: Rabbits Foot
 		Tooltip: ""
 	}
+
+	TemporalVestige: {
+		DisplayName: Temporal Vestige
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
