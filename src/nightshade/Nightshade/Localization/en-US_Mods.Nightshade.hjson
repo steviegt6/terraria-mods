@@ -165,6 +165,11 @@ Items: {
 		DisplayName: Drifters Boots
 		Tooltip: ""
 	}
+
+	SunGodEye: {
+		DisplayName: Sun God Eye
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
