@@ -140,6 +140,11 @@ Items: {
 		DisplayName: Four Leaf Clover
 		Tooltip: ""
 	}
+
+	RainbowHorseshoe: {
+		DisplayName: Rainbow Horseshoe
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
