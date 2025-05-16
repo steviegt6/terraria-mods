@@ -137,48 +137,85 @@ Items: {
 	}
 
 	FourLeafClover: {
-		DisplayName: Four Leaf Clover
-		Tooltip: ""
+		DisplayName: Four-Leaf Clover
+		Tooltip: Increases luck
 	}
 
 	RainbowHorseshoe: {
 		DisplayName: Rainbow Horseshoe
-		Tooltip: ""
+		Tooltip:
+		    '''
+		    Increases jump height
+		    Increases luck
+		    Negates fall damage
+		    'Magically delicious!'
+		    '''
 	}
 
 	HallowedCharm: {
 		DisplayName: Hallowed Charm
-		Tooltip: ""
+		Tooltip:
+		    '''
+		    Increases jump height and movement speed
+		    Increases luck
+		    Negates fall damage
+		    Charge at full speed
+		    'It's called clopping, dad'
+		    '''
 	}
 
 	RabbitsFoot: {
-		DisplayName: Rabbits Foot
-		Tooltip: ""
+		DisplayName: Rabbit's Foot
+		Tooltip: Increases luck
 	}
 
 	TemporalVestige: {
 		DisplayName: Temporal Vestige
-		Tooltip: ""
+		Tooltip:
+		    '''
+		    Allows the holder to do an improved double jump
+		    Buffs last longer
+		    '''
 	}
 
 	DriftersBoots: {
-		DisplayName: Drifters Boots
-		Tooltip: ""
+		DisplayName: Drifter's Boots
+		Tooltip:
+		    '''
+		    The wearer can run super fast, and even faster on sand
+		    Allows the wearer to quadruple jump
+		    Buffs last longer
+		    '''
 	}
 
 	SunGodEye: {
-		DisplayName: Sun God Eye
-		Tooltip: ""
-	}
-
-	Godspeed: {
-		DisplayName: Godspeed
-		Tooltip: ""
+		DisplayName: Eye of a Sun God
+		Tooltip: Inflicted debuffs deal more damage
 	}
 
 	RaBoots: {
 		DisplayName: Ra Boots
-		Tooltip: ""
+		Tooltip:
+		    '''
+		    The wearer can run super fast, and even faster on sand
+            Allows the wearer to sextuple jump
+            Inflicted debuffs deal more damage
+            Buffs last longer
+		    '''
+	}
+
+	Godspeed: {
+		DisplayName: Godspeed
+		Tooltip:
+		    '''
+		    The wearer can run super fast, and even faster on sand
+            Allows the wearer to septuple jump
+            Inflicted debuffs deal more damage
+            Buffs last longer
+		    Increases jump height and movement speed
+		    Increases luck
+		    Allows flight and slow fall
+		    '''
 	}
 }
 
