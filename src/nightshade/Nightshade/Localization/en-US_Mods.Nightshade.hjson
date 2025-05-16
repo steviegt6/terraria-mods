@@ -160,6 +160,11 @@ Items: {
 		DisplayName: Temporal Vestige
 		Tooltip: ""
 	}
+
+	DriftersBoots: {
+		DisplayName: Drifters Boots
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
