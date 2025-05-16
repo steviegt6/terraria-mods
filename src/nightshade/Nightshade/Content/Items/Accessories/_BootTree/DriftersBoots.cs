@@ -1,86 +1,106 @@
 using Microsoft.Xna.Framework;
-
+using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Nightshade.Content.Items.Accessories;
 
-internal sealed class DriftersBoots : ModItem
+public sealed class DriftersBoots : ModItem
 {
-    private sealed class DriftersBootsJump : ExtraJump
-    {
-        public override Position GetDefaultPosition()
-        {
-            return BeforeBottleJumps;
-        }
+	public sealed class DrifterBootsJump : ExtraJump
+	{
+        public override Position GetDefaultPosition() => BeforeBottleJumps;
 
-        public override float GetDurationMultiplier(Player player)
-        {
-            return 1f;
-        }
+        public override float GetDurationMultiplier(Player player) => 1f;
 
-        public override void OnStarted(Player player, ref bool playSound)
-        {
-            base.OnStarted(player, ref playSound);
+		public override void OnStarted(Player player, ref bool playSound)
+		{
+			base.OnStarted(player, ref playSound);
 
-            // Show dust visuals.
-            {
-                var heightOffset = player.height;
-                if (player.gravDir <= -1f)
-                {
-                    heightOffset = -6;
-                }
+            player.velocity.X += Math.Sign(player.velocity.X);
+            player.runAcceleration *= 5f;
 
-                var intensity = (player.jump / 75f + 1f) / 2f;
-                for (var i = 0; i < 12; i++)
-                {
-                    var dust = Dust.NewDustDirect(
-                        new Vector2(player.position.X, player.position.Y + heightOffset / 2f),
-                        player.width,
-                        32,
-                        DustID.SandstormInABottle,
-                        player.velocity.X * 0.3f,
-                        player.velocity.Y * 0.3f,
-                        150,
-                        default(Color),
-                        1f * intensity
-                    );
-                    dust.velocity *= 0.5f * intensity;
-                    dust.fadeIn = 1.5f * intensity;
-                }
+			if (--player.GetModPlayer<DrifterBootsPlayer>().JumpCount > 0)
+			{
+				player.GetJumpState(this).Available = true;
+			}
+		}
 
-                var gore = Gore.NewGoreDirect(
-                    new Vector2(player.position.X + player.width / 2f - 18f, player.position.Y + heightOffset / 2f),
-                    new Vector2(0f - player.velocity.X, 0f - player.velocity.Y),
-                    Main.rand.Next(220, 223),
-                    intensity
-                );
-                gore.velocity = player.velocity * 0.3f * intensity;
-                gore.alpha = 100;
-            }
+		public override void OnRefreshed(Player player)
+		{
+			base.OnRefreshed(player);
 
-            // So long as there are jumps left, let this jump remain usable.
-            if (--player.GetModPlayer<DbPlayer>().JumpCount > 0)
-            {
-                player.GetJumpState(this).Available = true;
-            }
-        }
+			// lmao thank god example mod basically had an example that exactly
+			// matched everything we wanted
+			player.GetModPlayer<DrifterBootsPlayer>().JumpCount = 4;
+		}
 
-        public override void OnRefreshed(Player player)
-        {
-            base.OnRefreshed(player);
+		public override void ShowVisuals(Player player)
+		{
+			base.ShowVisuals(player);
+		}
 
-            // lmao thank god example mod basically had an example that exactly
-            // matched everything we wanted
-            player.GetModPlayer<DbPlayer>().JumpCount = 3;
-        }
-    }
+		public override void UpdateHorizontalSpeeds(Player player)
+		{
+            base.UpdateHorizontalSpeeds(player);
 
-    public sealed class DbPlayer : ModPlayer
+            player.maxRunSpeed *= 2f;
+            player.runAcceleration *= 2f;
+		}
+	}
+
+	public sealed class DrifterBootsPlayer : ModPlayer
     {
         public int JumpCount { get; set; }
-    }
+
+		public override void Load()
+		{
+			On_Player.JumpMovement += CustomDrifterBootsJump;
+		}
+
+        // Run our custom motion after jump code
+		private void CustomDrifterBootsJump(On_Player.orig_JumpMovement orig, Player self)
+		{
+			if (self.GetJumpState<DrifterBootsJump>().Active && self.controlJump)
+			{
+				self.gravity = 0.1f;
+
+                if (self.TouchedTiles.Count > 0)
+                {
+					self.jump = 0;
+                    return;
+				}
+
+				float maxJump = Player.jumpHeight * ModContent.GetInstance<DrifterBootsJump>().GetDurationMultiplier(self);
+
+				if (self.controlUp)
+				{
+					self.velocity.Y -= 0.4f;
+				}
+				else if (self.controlDown)
+                {
+					if (self.jump >= maxJump - 1)
+					{
+						self.velocity.Y = 0f;
+					}
+					self.velocity.Y += 0.7f;
+                }
+
+				self.jump--;
+				self.velocity.Y = MathHelper.Lerp(self.velocity.Y, -4f, 0.05f);
+
+				for (int i = 0; i < 12; i++)
+				{
+					Vector2 dustPos = self.RotatedRelativePoint(self.Bottom + Main.rand.NextVector2Circular(16, 8));
+					Dust d = Dust.NewDustPerfect(dustPos, DustID.SandstormInABottle, self.velocity * Main.rand.NextFloat(), Scale: Main.rand.NextFloat(0.5f, 1f));
+					d.noGravity = true;
+				}
+			}
+			else
+				orig(self);
+		}
+	}
 
     public override string Texture => Assets.Images.Items.Accessories.DriftersBoots.KEY;
 
@@ -100,8 +120,7 @@ internal sealed class DriftersBoots : ModItem
         // TODO: other effects
         player.accRunSpeed = 6f;
         player.desertBoots = true;
-
-        player.GetJumpState<DriftersBootsJump>().Enable();
+        player.GetJumpState<DrifterBootsJump>().Enable();
 
         // Purposefully no Rocket Boots at this level.
         // player.rocketBoots = player.vanityRocketBoots = 2;
