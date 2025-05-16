@@ -66,7 +66,7 @@ internal sealed class FourLeafClover : ModItem
         }
     }
 
-    public override string Texture => "ModLoader/UnloadedItem";
+    public override string Texture => Assets.Images.Items.Accessories.FourLeafClover.KEY;
 
     public override void SetDefaults()
     {

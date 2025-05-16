@@ -6,7 +6,7 @@ namespace Nightshade.Content.Items.Accessories;
 
 internal sealed class HallowedCharm : ModItem
 {
-    public override string Texture => "ModLoader/UnloadedItem";
+    public override string Texture => Assets.Images.Items.Accessories.HallowedCharm.KEY;
 
     public override void SetDefaults()
     {

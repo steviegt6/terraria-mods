@@ -6,7 +6,7 @@ namespace Nightshade.Content.Items.Accessories;
 
 internal sealed class SunGodEye : ModItem
 {
-    public override string Texture => "ModLoader/UnloadedItem";
+    public override string Texture => Assets.Images.Items.Accessories.SunGodEye.KEY;
 
     public override void SetDefaults()
     {

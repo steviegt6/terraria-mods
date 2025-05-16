@@ -81,8 +81,8 @@ internal sealed class RaBoots : ModItem
     {
         public int JumpCount { get; set; }
     }
-    
-    public override string Texture => "ModLoader/UnloadedItem";
+
+    public override string Texture => Assets.Images.Items.Accessories.RaBoots.KEY;
 
     public override void SetDefaults()
     {

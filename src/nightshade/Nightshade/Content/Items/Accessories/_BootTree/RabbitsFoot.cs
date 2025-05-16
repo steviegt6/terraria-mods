@@ -86,7 +86,7 @@ internal sealed class RabbitsFoot : ModItem
         }
     }
 
-    public override string Texture => "ModLoader/UnloadedItem";
+    public override string Texture => Assets.Images.Items.Accessories.RabbitsFoot.KEY;
 
     public override void SetDefaults()
     {

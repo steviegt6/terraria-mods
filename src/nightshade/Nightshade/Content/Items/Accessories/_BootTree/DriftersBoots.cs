@@ -82,7 +82,7 @@ internal sealed class DriftersBoots : ModItem
         public int JumpCount { get; set; }
     }
 
-    public override string Texture => "ModLoader/UnloadedItem";
+    public override string Texture => Assets.Images.Items.Accessories.DriftersBoots.KEY;
 
     public override void SetDefaults()
     {

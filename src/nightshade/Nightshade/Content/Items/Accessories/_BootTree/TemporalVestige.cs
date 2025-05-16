@@ -6,7 +6,7 @@ namespace Nightshade.Content.Items.Accessories;
 
 internal sealed class TemporalVestige : ModItem
 {
-    public override string Texture => "ModLoader/UnloadedItem";
+    public override string Texture => Assets.Images.Items.Accessories.TemporalVestige.KEY;
 
     public override void SetDefaults()
     {
@@ -18,7 +18,7 @@ internal sealed class TemporalVestige : ModItem
     public override void UpdateEquip(Player player)
     {
         base.UpdateEquip(player);
-        
+
         // TODO: other effects
         player.GetJumpState<SandstormInABottleJump>().Enable();
     }
