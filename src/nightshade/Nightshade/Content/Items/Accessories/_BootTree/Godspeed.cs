@@ -80,6 +80,32 @@ internal sealed class Godspeed : ModItem
     public sealed class GodspeedPlayer : ModPlayer
     {
         public int JumpCount { get; set; }
+
+        public bool HasLuck { get; set; }
+
+        public override void ResetEffects()
+        {
+            base.ResetEffects();
+
+            HasLuck = false;
+        }
+
+        public override void RefreshInfoAccessoriesFromTeamPlayers(Player otherPlayer)
+        {
+            base.RefreshInfoAccessoriesFromTeamPlayers(otherPlayer);
+
+            if (otherPlayer.GetModPlayer<GodspeedPlayer>().HasLuck)
+            {
+                HasLuck = true;
+            }
+
+            // Because this code is normally ran right after
+            // RefreshInfoAccsFromTeamPlayers.
+            if (HasLuck)
+            {
+                Player.equipmentBasedLuckBonus += 0.5f;
+            }
+        }
     }
 
     public override string Texture => Assets.Images.Items.Accessories.Godspeed.KEY;
@@ -90,7 +116,7 @@ internal sealed class Godspeed : ModItem
 
         Item.accessory = true;
     }
-    
+
     public override void UpdateAccessory(Player player, bool hideVisual)
     {
         base.UpdateAccessory(player, hideVisual);
@@ -100,15 +126,12 @@ internal sealed class Godspeed : ModItem
         player.desertBoots = true;
 
         player.GetJumpState<GodspeedJump>().Enable();
-        
+
         player.jumpBoost = true;
         player.noFallDmg = true;
         player.hasLuck_LuckyHorseshoe = true;
-        player.GetModPlayer<FourLeafClover.FlcPlayer>().HasLuck = true;
-        
-        player.GetModPlayer<RabbitsFoot.RfPlayer>().HasLuck = true;
-        player.moveSpeed += 0.09f; // Same as Aglet.
 
+        player.moveSpeed += 0.09f;
         player.jumpSpeedBoost += 1.6f;
 
         // Purposefully no Rocket Boots at this level.
@@ -119,7 +142,7 @@ internal sealed class Godspeed : ModItem
             DoVanity(player);
         }
     }
-    
+
     public override void UpdateVanity(Player player)
     {
         base.UpdateVanity(player);
@@ -132,7 +155,7 @@ internal sealed class Godspeed : ModItem
         player.CancelAllBootRunVisualEffects();
         player.desertDash = true;
     }
-    
+
     public override void AddRecipes()
     {
         base.AddRecipes();
