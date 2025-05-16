@@ -91,9 +91,9 @@ internal sealed class DriftersBoots : ModItem
         Item.accessory = true;
     }
 
-    public override void UpdateEquip(Player player)
+    public override void UpdateAccessory(Player player, bool hideVisual)
     {
-        base.UpdateEquip(player);
+        base.UpdateAccessory(player, hideVisual);
 
         // TODO: other effects
         player.accRunSpeed = 6f;
@@ -103,6 +103,24 @@ internal sealed class DriftersBoots : ModItem
 
         // Purposefully no Rocket Boots at this level.
         // player.rocketBoots = player.vanityRocketBoots = 2;
+
+        if (!hideVisual)
+        {
+            DoVanity(player);
+        }
+    }
+
+    public override void UpdateVanity(Player player)
+    {
+        base.UpdateVanity(player);
+
+        DoVanity(player);
+    }
+
+    private static void DoVanity(Player player)
+    {
+        player.CancelAllBootRunVisualEffects();
+        player.desertDash = true;
     }
 
     public override void AddRecipes()
