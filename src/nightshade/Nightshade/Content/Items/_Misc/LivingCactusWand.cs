@@ -1,5 +1,6 @@
 using Nightshade.Content.Tiles;
 
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -15,7 +16,7 @@ internal sealed class LivingCactusWand : ModItem
 
         (Item.width, Item.height) = (28, 30);
 
-        Item.value = 100;
+        Item.value = Item.buyPrice(silver: 1);
         Item.rare = ItemRarityID.Green;
 
         Item.tileWand = ItemID.Cactus;

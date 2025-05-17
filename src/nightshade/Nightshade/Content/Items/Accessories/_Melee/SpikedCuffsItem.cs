@@ -24,7 +24,7 @@ internal sealed class SpikedCuffsItem : ModItem
 
         Item.SetShopValues(
             ItemRarityColor.Blue1,
-            Item.sellPrice(gold: 1, silver: 30)
+            Item.buyPrice(gold: 1, silver: 30)
         );
     }
 

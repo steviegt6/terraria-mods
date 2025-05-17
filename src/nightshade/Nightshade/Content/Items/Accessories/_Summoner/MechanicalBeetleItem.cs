@@ -57,7 +57,7 @@ internal sealed class MechanicalBeetleItem : ModItem
         Item.accessory = true;
 
         Item.rare  = ItemRarityID.Lime;
-        Item.value = Item.sellPrice(gold: 15);
+        Item.value = Item.buyPrice(gold: 15);
     }
 
     public override void UpdateAccessory(Player player, bool hideVisual)
