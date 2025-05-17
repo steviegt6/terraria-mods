@@ -2,18 +2,14 @@
 using Microsoft.Xna.Framework.Graphics;
 using Nightshade.Common.Features;
 using Nightshade.Content.Dusts;
-using Nightshade.Content.Gores;
 using Nightshade.Content.Particles;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.Localization.NetworkText;
 
 namespace Nightshade.Content.Projectiles._Friendly;
 
@@ -120,7 +116,7 @@ public class CactusSplashJugThrown : ModProjectile
 
 		for (int i = 0; i < Main.rand.Next(18, 25); i++)
 		{
-			Vector2 dropletVel = splashVelocity * Main.rand.NextFloat(1.5f) + Main.rand.NextVector2Circular(12, 12);
+			Vector2 dropletVel = splashVelocity * Main.rand.NextFloat(1.5f) + Main.rand.NextVector2Circular(8, 8);
 			LiquidSplashParticle splash = LiquidSplashParticle.pool.RequestParticle();
 			splash.Prepare(Projectile.Center, dropletVel, JuiceColor() * 1.1f, Main.rand.NextFloat(1f, 2f), Main.rand.Next(15, 35));
 			splash.Lighted = true;
@@ -142,14 +138,14 @@ public class CactusSplashJugThrown : ModProjectile
 		npc.netUpdate = true;
 	}
 
-	private Color JuiceColor() => Color.Lerp(Color.White, Color.White, Main.rand.NextFloat());
+	private Color JuiceColor() => Color.Lerp(Color.DeepSkyBlue * 0.8f, Color.LightSkyBlue, Main.rand.NextFloat()) with { A = 170 };
 
 	public override bool PreDraw(ref Color lightColor)
 	{
 		Texture2D texture = TextureAssets.Projectile[Type].Value;
 
 		SpriteEffects spriteEffect = Projectile.spriteDirection < 0 ? SpriteEffects.FlipHorizontally : 0;
-		Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, texture.Frame(), lightColor, Projectile.rotation, texture.Size() / 2, Projectile.scale, spriteEffect, 0);
+		Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, texture.Frame(), lightColor, Projectile.rotation + MathHelper.PiOver4, texture.Size() / 2, Projectile.scale, spriteEffect, 0);
 
 		return false;
 	}

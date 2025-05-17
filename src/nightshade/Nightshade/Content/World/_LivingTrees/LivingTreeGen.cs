@@ -116,7 +116,7 @@ internal sealed class LivingTreeGen : ModSystem
     private static bool PlaceBallCactus(int x, int y)
     {
         // Let's not spawn too many.
-        if (!WorldGen.genRand.NextBool(3))
+        if (!WorldGen.genRand.NextBool(3) || y > GenVars.desertHiveHigh + 50)
         {
             return false;
         }

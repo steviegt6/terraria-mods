@@ -48,12 +48,12 @@ public class LiquidSplashParticle : BaseParticle
 	public override void Update(ref ParticleRendererSettings settings)
 	{
 		Position += Velocity;
-		Velocity.X *= 0.94f;
-		Velocity.Y *= 0.9f;
-		Velocity.Y += 0.175f;
+		Velocity.X *= 0.95f;
+		Velocity.Y *= 0.93f;
+		Velocity.Y += 0.4f;
 
 		if (Collision.SolidTiles(Position - new Vector2(4), 8, 8))
-			LifeTime++;
+			LifeTime += 2;
 
 		if (++LifeTime >= MaxLifeTime)
 			ShouldBeRemovedFromRenderer = true;
