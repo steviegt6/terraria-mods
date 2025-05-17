@@ -68,13 +68,11 @@ internal sealed class PreDigester : ModItem
 
         Item.useStyle = ItemUseStyleID.Thrust;
 
-        Item.SetShopValues(
-            rarity: ItemRarityColor.Blue1,
-            coinValue: Item.sellPrice(gold: 1, silver: 50)
-        );
-    }
+		Item.rare = ItemRarityID.Blue;
+        Item.value = Item.buyPrice(gold: 1, silver: 50);
+	}
 
-    public override void Load()
+	public override void Load()
     {
         base.Load();
 

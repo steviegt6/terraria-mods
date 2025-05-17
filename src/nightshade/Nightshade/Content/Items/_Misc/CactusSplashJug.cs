@@ -18,12 +18,13 @@ public class CactusSplashJug : ModItem
 		Item.useAnimation = Item.useTime = 24;
 		Item.useStyle = ItemUseStyleID.Swing;
 		Item.useTurn = true;
-		Item.rare = ItemRarityID.Blue;
 		Item.maxStack = Item.CommonMaxStack;
 		Item.consumable = true;
-		Item.value = Item.buyPrice(0, 0, 20);
 		Item.UseSound = SoundID.Item1 with { Pitch = 0.9f, PitchVariance = 0.1f };
 		Item.noUseGraphic = true;
+
+		Item.rare = ItemRarityID.Blue;
+		Item.value = Item.buyPrice(silver: 20);
 
 		Item.shoot = ModContent.ProjectileType<CactusSplashJugThrown>();
 		Item.shootSpeed = 12f;
