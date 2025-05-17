@@ -17,4 +17,8 @@
         <Publicize Include="ReLogic" IncludeCompilerGeneratedMembers="false" IncludeVirtualMembers="false"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Common\Features\Hooks\_TML\" />
+    </ItemGroup>
+
 </Project>
