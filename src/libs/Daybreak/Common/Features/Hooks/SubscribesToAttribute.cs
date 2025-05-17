@@ -22,4 +22,4 @@ namespace Daybreak.Common.Features.Hooks;
 /// </summary>
 /// <typeparam name="T">The hook type to subscribe the method to.</typeparam>
 [AttributeUsage(AttributeTargets.Method)]
-public sealed class HookAttribute<T> : Attribute;
+public sealed class SubscribesToAttribute<T> : Attribute;
