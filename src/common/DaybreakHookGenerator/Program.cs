@@ -51,17 +51,6 @@ internal static class Program
 
         var modDef = ModuleDefinition.ReadModule(typeof(ModLoader).Assembly.Location);
 
-        Console.WriteLine("Requested generation for the following hook definitions:");
-        foreach (var definition in definitions)
-        {
-            Console.WriteLine($"    {definition.Type.Name}");
-
-            foreach (var exclusion in definition.ExcludedHooks)
-            {
-                Console.WriteLine("        excluded: " + exclusion);
-            }
-        }
-
         foreach (var definition in definitions)
         {
             GenerateHookDefinition(path, definition, modDef);
@@ -76,49 +65,11 @@ internal static class Program
         var fileName = Path.Combine(path, className + ".cs");
 
         Console.WriteLine($"    {className} @ {fileName}");
-        var contents = BuildType(definition, className, modDef);
-
-        File.WriteAllText(fileName, contents);
-    }
-
-    private static string BuildType(TypeHookDefinition definition, string className, ModuleDefinition modDef)
-    {
-        var sb = new StringBuilder();
 
         var typeDef = modDef.GetType(definition.Type.FullName);
+        var generator = new Generator(modDef, typeDef);
+        var contents = generator.BuildType(the_namespace, className, definition.ExcludedHooks);
 
-        var hooks = ResolveHooksFromType(typeDef, definition.ExcludedHooks);
-
-        sb.AppendLine($"namespace {the_namespace};");
-        sb.AppendLine();
-        sb.AppendLine($"// Hooks to generate for '{typeDef.FullName}':");
-        foreach (var hook in hooks)
-        {
-            sb.AppendLine($"//     {hook}");
-        }
-        sb.AppendLine($"public static partial class {className}");
-        sb.AppendLine("{");
-        sb.AppendLine("}");
-
-        return sb.ToString();
-    }
-
-    private static string BuildHook()
-    {
-        return "";
-    }
-
-    private static MethodDefinition[] ResolveHooksFromType(TypeDefinition typeDef, string[] excludedHooks)
-    {
-        var methods = typeDef.GetMethods().Where(
-            x => x is
-            {
-                IsPublic: true, // Is accessible (ignore protected, too)
-                IsVirtual: true, // Is overridable
-                IsFinal: false, // Is not sealed
-            } && !excludedHooks.Contains(x.Name)
-        );
-
-        return methods.ToArray();
+        File.WriteAllText(fileName, contents);
     }
 }

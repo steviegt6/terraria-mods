@@ -85,4 +85,701 @@ namespace Daybreak.Common.Features.Hooks;
 //     System.Void Terraria.ModLoader.GlobalNPC::EmoteBubblePosition(Terraria.NPC,Microsoft.Xna.Framework.Vector2&,Microsoft.Xna.Framework.Graphics.SpriteEffects&)
 public static partial class GlobalNPCHooks
 {
+    public static partial class SetDefaultsFromNetId
+    {
+        public delegate void Definition(
+            Terraria.NPC npc
+        );
+    }
+
+    public static partial class OnSpawn
+    {
+        public delegate void Definition(
+            Terraria.NPC npc,
+            Terraria.DataStructures.IEntitySource source
+        );
+    }
+
+    public static partial class ApplyDifficultyAndPlayerScaling
+    {
+        public delegate void Definition(
+            Terraria.NPC npc,
+            int numPlayers,
+            float balance,
+            float bossAdjustment
+        );
+    }
+
+    public static partial class SetBestiary
+    {
+        public delegate void Definition(
+            Terraria.NPC npc,
+            Terraria.GameContent.Bestiary.BestiaryDatabase database,
+            Terraria.GameContent.Bestiary.BestiaryEntry bestiaryEntry
+        );
+    }
+
+    public static partial class ModifyTypeName
+    {
+        public delegate void Definition(
+            Terraria.NPC npc,
+            ref string typeName
+        );
+    }
+
+    public static partial class ModifyHoverBoundingBox
+    {
+        public delegate void Definition(
+            Terraria.NPC npc,
+            ref Microsoft.Xna.Framework.Rectangle boundingBox
+        );
+    }
+
+    public static partial class ModifyTownNPCProfile
+    {
+        public delegate Terraria.GameContent.ITownNPCProfile Definition(
+            Terraria.NPC npc
+        );
+    }
+
+    public static partial class ModifyNPCNameList
+    {
+        public delegate void Definition(
+            Terraria.NPC npc,
+            System.Collections.Generic.List<string> nameList
+        );
+    }
+
+    public static partial class ResetEffects
+    {
+        public delegate void Definition(
+            Terraria.NPC npc
+        );
+    }
+
+    public static partial class PreAI
+    {
+        public delegate bool Definition(
+            Terraria.NPC npc
+        );
+    }
+
+    public static partial class AI
+    {
+        public delegate void Definition(
+            Terraria.NPC npc
+        );
+    }
+
+    public static partial class PostAI
+    {
+        public delegate void Definition(
+            Terraria.NPC npc
+        );
+    }
+
+    public static partial class SendExtraAI
+    {
+        public delegate void Definition(
+            Terraria.NPC npc,
+            Terraria.ModLoader.IO.BitWriter bitWriter,
+            System.IO.BinaryWriter binaryWriter
+        );
+    }
+
+    public static partial class ReceiveExtraAI
+    {
+        public delegate void Definition(
+            Terraria.NPC npc,
+            Terraria.ModLoader.IO.BitReader bitReader,
+            System.IO.BinaryReader binaryReader
+        );
+    }
+
+    public static partial class FindFrame
+    {
+        public delegate void Definition(
+            Terraria.NPC npc,
+            int frameHeight
+        );
+    }
+
+    public static partial class HitEffect
+    {
+        public delegate void Definition(
+            Terraria.NPC npc,
+            Terraria.NPC.HitInfo hit
+        );
+    }
+
+    public static partial class UpdateLifeRegen
+    {
+        public delegate void Definition(
+            Terraria.NPC npc,
+            ref int damage
+        );
+    }
+
+    public static partial class CheckActive
+    {
+        public delegate bool Definition(
+            Terraria.NPC npc
+        );
+    }
+
+    public static partial class CheckDead
+    {
+        public delegate bool Definition(
+            Terraria.NPC npc
+        );
+    }
+
+    public static partial class SpecialOnKill
+    {
+        public delegate bool Definition(
+            Terraria.NPC npc
+        );
+    }
+
+    public static partial class PreKill
+    {
+        public delegate bool Definition(
+            Terraria.NPC npc
+        );
+    }
+
+    public static partial class OnKill
+    {
+        public delegate void Definition(
+            Terraria.NPC npc
+        );
+    }
+
+    public static partial class CanFallThroughPlatforms
+    {
+        public delegate bool? Definition(
+            Terraria.NPC npc
+        );
+    }
+
+    public static partial class CanBeCaughtBy
+    {
+        public delegate bool? Definition(
+            Terraria.NPC npc,
+            Terraria.Item item,
+            Terraria.Player player
+        );
+    }
+
+    public static partial class OnCaughtBy
+    {
+        public delegate void Definition(
+            Terraria.NPC npc,
+            Terraria.Player player,
+            Terraria.Item item,
+            bool failed
+        );
+    }
+
+    public static partial class ModifyNPCLoot
+    {
+        public delegate void Definition(
+            Terraria.NPC npc,
+            Terraria.ModLoader.NPCLoot npcLoot
+        );
+    }
+
+    public static partial class ModifyGlobalLoot
+    {
+        public delegate void Definition(
+            Terraria.ModLoader.GlobalLoot globalLoot
+        );
+    }
+
+    public static partial class CanHitPlayer
+    {
+        public delegate bool Definition(
+            Terraria.NPC npc,
+            Terraria.Player target,
+            ref int cooldownSlot
+        );
+    }
+
+    public static partial class ModifyHitPlayer
+    {
+        public delegate void Definition(
+            Terraria.NPC npc,
+            Terraria.Player target,
+            ref Terraria.Player.HurtModifiers modifiers
+        );
+    }
+
+    public static partial class OnHitPlayer
+    {
+        public delegate void Definition(
+            Terraria.NPC npc,
+            Terraria.Player target,
+            Terraria.Player.HurtInfo hurtInfo
+        );
+    }
+
+    public static partial class CanHitNPC
+    {
+        public delegate bool Definition(
+            Terraria.NPC npc,
+            Terraria.NPC target
+        );
+    }
+
+    public static partial class CanBeHitByNPC
+    {
+        public delegate bool Definition(
+            Terraria.NPC npc,
+            Terraria.NPC attacker
+        );
+    }
+
+    public static partial class ModifyHitNPC
+    {
+        public delegate void Definition(
+            Terraria.NPC npc,
+            Terraria.NPC target,
+            ref Terraria.NPC.HitModifiers modifiers
+        );
+    }
+
+    public static partial class OnHitNPC
+    {
+        public delegate void Definition(
+            Terraria.NPC npc,
+            Terraria.NPC target,
+            Terraria.NPC.HitInfo hit
+        );
+    }
+
+    public static partial class CanBeHitByItem
+    {
+        public delegate bool? Definition(
+            Terraria.NPC npc,
+            Terraria.Player player,
+            Terraria.Item item
+        );
+    }
+
+    public static partial class CanCollideWithPlayerMeleeAttack
+    {
+        public delegate bool? Definition(
+            Terraria.NPC npc,
+            Terraria.Player player,
+            Terraria.Item item,
+            Microsoft.Xna.Framework.Rectangle meleeAttackHitbox
+        );
+    }
+
+    public static partial class ModifyHitByItem
+    {
+        public delegate void Definition(
+            Terraria.NPC npc,
+            Terraria.Player player,
+            Terraria.Item item,
+            ref Terraria.NPC.HitModifiers modifiers
+        );
+    }
+
+    public static partial class OnHitByItem
+    {
+        public delegate void Definition(
+            Terraria.NPC npc,
+            Terraria.Player player,
+            Terraria.Item item,
+            Terraria.NPC.HitInfo hit,
+            int damageDone
+        );
+    }
+
+    public static partial class CanBeHitByProjectile
+    {
+        public delegate bool? Definition(
+            Terraria.NPC npc,
+            Terraria.Projectile projectile
+        );
+    }
+
+    public static partial class ModifyHitByProjectile
+    {
+        public delegate void Definition(
+            Terraria.NPC npc,
+            Terraria.Projectile projectile,
+            ref Terraria.NPC.HitModifiers modifiers
+        );
+    }
+
+    public static partial class OnHitByProjectile
+    {
+        public delegate void Definition(
+            Terraria.NPC npc,
+            Terraria.Projectile projectile,
+            Terraria.NPC.HitInfo hit,
+            int damageDone
+        );
+    }
+
+    public static partial class ModifyIncomingHit
+    {
+        public delegate void Definition(
+            Terraria.NPC npc,
+            ref Terraria.NPC.HitModifiers modifiers
+        );
+    }
+
+    public static partial class BossHeadSlot
+    {
+        public delegate void Definition(
+            Terraria.NPC npc,
+            ref int index
+        );
+    }
+
+    public static partial class BossHeadRotation
+    {
+        public delegate void Definition(
+            Terraria.NPC npc,
+            ref float rotation
+        );
+    }
+
+    public static partial class BossHeadSpriteEffects
+    {
+        public delegate void Definition(
+            Terraria.NPC npc,
+            ref Microsoft.Xna.Framework.Graphics.SpriteEffects spriteEffects
+        );
+    }
+
+    public static partial class GetAlpha
+    {
+        public delegate Microsoft.Xna.Framework.Color? Definition(
+            Terraria.NPC npc,
+            Microsoft.Xna.Framework.Color drawColor
+        );
+    }
+
+    public static partial class DrawEffects
+    {
+        public delegate void Definition(
+            Terraria.NPC npc,
+            ref Microsoft.Xna.Framework.Color drawColor
+        );
+    }
+
+    public static partial class PreDraw
+    {
+        public delegate bool Definition(
+            Terraria.NPC npc,
+            Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch,
+            Microsoft.Xna.Framework.Vector2 screenPos,
+            Microsoft.Xna.Framework.Color drawColor
+        );
+    }
+
+    public static partial class PostDraw
+    {
+        public delegate void Definition(
+            Terraria.NPC npc,
+            Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch,
+            Microsoft.Xna.Framework.Vector2 screenPos,
+            Microsoft.Xna.Framework.Color drawColor
+        );
+    }
+
+    public static partial class DrawBehind
+    {
+        public delegate void Definition(
+            Terraria.NPC npc,
+            int index
+        );
+    }
+
+    public static partial class DrawHealthBar
+    {
+        public delegate bool? Definition(
+            Terraria.NPC npc,
+            byte hbPosition,
+            ref float scale,
+            ref Microsoft.Xna.Framework.Vector2 position
+        );
+    }
+
+    public static partial class EditSpawnRate
+    {
+        public delegate void Definition(
+            Terraria.Player player,
+            ref int spawnRate,
+            ref int maxSpawns
+        );
+    }
+
+    public static partial class EditSpawnRange
+    {
+        public delegate void Definition(
+            Terraria.Player player,
+            ref int spawnRangeX,
+            ref int spawnRangeY,
+            ref int safeRangeX,
+            ref int safeRangeY
+        );
+    }
+
+    public static partial class EditSpawnPool
+    {
+        public delegate void Definition(
+            System.Collections.Generic.IDictionary<int, float> pool,
+            Terraria.ModLoader.NPCSpawnInfo spawnInfo
+        );
+    }
+
+    public static partial class SpawnNPC
+    {
+        public delegate void Definition(
+            int npc,
+            int tileX,
+            int tileY
+        );
+    }
+
+    public static partial class CanChat
+    {
+        public delegate bool? Definition(
+            Terraria.NPC npc
+        );
+    }
+
+    public static partial class GetChat
+    {
+        public delegate void Definition(
+            Terraria.NPC npc,
+            ref string chat
+        );
+    }
+
+    public static partial class PreChatButtonClicked
+    {
+        public delegate bool Definition(
+            Terraria.NPC npc,
+            bool firstButton
+        );
+    }
+
+    public static partial class OnChatButtonClicked
+    {
+        public delegate void Definition(
+            Terraria.NPC npc,
+            bool firstButton
+        );
+    }
+
+    public static partial class ModifyShop
+    {
+        public delegate void Definition(
+            Terraria.ModLoader.NPCShop shop
+        );
+    }
+
+    public static partial class ModifyActiveShop
+    {
+        public delegate void Definition(
+            Terraria.NPC npc,
+            string shopName,
+            Terraria.Item[] items
+        );
+    }
+
+    public static partial class SetupTravelShop
+    {
+        public delegate void Definition(
+            System.Int32[] shop,
+            ref int nextSlot
+        );
+    }
+
+    public static partial class CanGoToStatue
+    {
+        public delegate bool? Definition(
+            Terraria.NPC npc,
+            bool toKingStatue
+        );
+    }
+
+    public static partial class OnGoToStatue
+    {
+        public delegate void Definition(
+            Terraria.NPC npc,
+            bool toKingStatue
+        );
+    }
+
+    public static partial class BuffTownNPC
+    {
+        public delegate void Definition(
+            ref float damageMult,
+            ref int defense
+        );
+    }
+
+    public static partial class TownNPCAttackStrength
+    {
+        public delegate void Definition(
+            Terraria.NPC npc,
+            ref int damage,
+            ref float knockback
+        );
+    }
+
+    public static partial class TownNPCAttackCooldown
+    {
+        public delegate void Definition(
+            Terraria.NPC npc,
+            ref int cooldown,
+            ref int randExtraCooldown
+        );
+    }
+
+    public static partial class TownNPCAttackProj
+    {
+        public delegate void Definition(
+            Terraria.NPC npc,
+            ref int projType,
+            ref int attackDelay
+        );
+    }
+
+    public static partial class TownNPCAttackProjSpeed
+    {
+        public delegate void Definition(
+            Terraria.NPC npc,
+            ref float multiplier,
+            ref float gravityCorrection,
+            ref float randomOffset
+        );
+    }
+
+    public static partial class TownNPCAttackShoot
+    {
+        public delegate void Definition(
+            Terraria.NPC npc,
+            ref bool inBetweenShots
+        );
+    }
+
+    public static partial class TownNPCAttackMagic
+    {
+        public delegate void Definition(
+            Terraria.NPC npc,
+            ref float auraLightMultiplier
+        );
+    }
+
+    public static partial class TownNPCAttackSwing
+    {
+        public delegate void Definition(
+            Terraria.NPC npc,
+            ref int itemWidth,
+            ref int itemHeight
+        );
+    }
+
+    public static partial class DrawTownAttackGun
+    {
+        public delegate void Definition(
+            Terraria.NPC npc,
+            ref Microsoft.Xna.Framework.Graphics.Texture2D item,
+            ref Microsoft.Xna.Framework.Rectangle itemFrame,
+            ref float scale,
+            ref int horizontalHoldoutOffset
+        );
+    }
+
+    public static partial class DrawTownAttackSwing
+    {
+        public delegate void Definition(
+            Terraria.NPC npc,
+            ref Microsoft.Xna.Framework.Graphics.Texture2D item,
+            ref Microsoft.Xna.Framework.Rectangle itemFrame,
+            ref int itemSize,
+            ref float scale,
+            ref Microsoft.Xna.Framework.Vector2 offset
+        );
+    }
+
+    public static partial class ModifyCollisionData
+    {
+        public delegate bool Definition(
+            Terraria.NPC npc,
+            Microsoft.Xna.Framework.Rectangle victimHitbox,
+            ref int immunityCooldownSlot,
+            ref Terraria.ModLoader.MultipliableFloat damageMultiplier,
+            ref Microsoft.Xna.Framework.Rectangle npcHitbox
+        );
+    }
+
+    public static partial class NeedSaving
+    {
+        public delegate bool Definition(
+            Terraria.NPC npc
+        );
+    }
+
+    public static partial class SaveData
+    {
+        public delegate void Definition(
+            Terraria.NPC npc,
+            Terraria.ModLoader.IO.TagCompound tag
+        );
+    }
+
+    public static partial class LoadData
+    {
+        public delegate void Definition(
+            Terraria.NPC npc,
+            Terraria.ModLoader.IO.TagCompound tag
+        );
+    }
+
+    public static partial class PickEmote
+    {
+        public delegate int? Definition(
+            Terraria.NPC npc,
+            Terraria.Player closestPlayer,
+            System.Collections.Generic.List<int> emoteList,
+            Terraria.GameContent.UI.WorldUIAnchor otherAnchor
+        );
+    }
+
+    public static partial class ChatBubblePosition
+    {
+        public delegate void Definition(
+            Terraria.NPC npc,
+            ref Microsoft.Xna.Framework.Vector2 position,
+            ref Microsoft.Xna.Framework.Graphics.SpriteEffects spriteEffects
+        );
+    }
+
+    public static partial class PartyHatPosition
+    {
+        public delegate void Definition(
+            Terraria.NPC npc,
+            ref Microsoft.Xna.Framework.Vector2 position,
+            ref Microsoft.Xna.Framework.Graphics.SpriteEffects spriteEffects
+        );
+    }
+
+    public static partial class EmoteBubblePosition
+    {
+        public delegate void Definition(
+            Terraria.NPC npc,
+            ref Microsoft.Xna.Framework.Vector2 position,
+            ref Microsoft.Xna.Framework.Graphics.SpriteEffects spriteEffects
+        );
+    }
+
 }

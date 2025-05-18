@@ -9,4 +9,61 @@ namespace Daybreak.Common.Features.Hooks;
 //     System.Void Terraria.ModLoader.GlobalPylon::PostValidTeleportCheck(Terraria.GameContent.TeleportPylonInfo,Terraria.GameContent.TeleportPylonInfo,System.Boolean&,System.Boolean&,System.String&)
 public static partial class GlobalPylonHooks
 {
+    public static partial class PreDrawMapIcon
+    {
+        public delegate bool Definition(
+            ref Terraria.Map.MapOverlayDrawContext context,
+            ref string mouseOverText,
+            ref Terraria.GameContent.TeleportPylonInfo pylonInfo,
+            ref bool isNearPylon,
+            ref Microsoft.Xna.Framework.Color drawColor,
+            ref float deselectedScale,
+            ref float selectedScale
+        );
+    }
+
+    public static partial class PreCanPlacePylon
+    {
+        public delegate bool? Definition(
+            int x,
+            int y,
+            int tileType,
+            Terraria.GameContent.TeleportPylonType pylonType
+        );
+    }
+
+    public static partial class ValidTeleportCheck_PreNPCCount
+    {
+        public delegate bool? Definition(
+            Terraria.GameContent.TeleportPylonInfo pylonInfo,
+            ref int defaultNecessaryNPCCount
+        );
+    }
+
+    public static partial class ValidTeleportCheck_PreAnyDanger
+    {
+        public delegate bool? Definition(
+            Terraria.GameContent.TeleportPylonInfo pylonInfo
+        );
+    }
+
+    public static partial class ValidTeleportCheck_PreBiomeRequirements
+    {
+        public delegate bool? Definition(
+            Terraria.GameContent.TeleportPylonInfo pylonInfo,
+            Terraria.SceneMetrics sceneData
+        );
+    }
+
+    public static partial class PostValidTeleportCheck
+    {
+        public delegate void Definition(
+            Terraria.GameContent.TeleportPylonInfo destinationPylonInfo,
+            Terraria.GameContent.TeleportPylonInfo nearbyPylonInfo,
+            ref bool destinationPylonValid,
+            ref bool validNearbyPylonFound,
+            ref string errorKey
+        );
+    }
+
 }

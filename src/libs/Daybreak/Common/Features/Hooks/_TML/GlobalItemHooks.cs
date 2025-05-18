@@ -116,4 +116,1011 @@ namespace Daybreak.Common.Features.Hooks;
 //     System.Void Terraria.ModLoader.GlobalItem::NetReceive(Terraria.Item,System.IO.BinaryReader)
 public static partial class GlobalItemHooks
 {
+    public static partial class OnCreated
+    {
+        public delegate void Definition(
+            Terraria.Item item,
+            Terraria.DataStructures.ItemCreationContext context
+        );
+    }
+
+    public static partial class OnSpawn
+    {
+        public delegate void Definition(
+            Terraria.Item item,
+            Terraria.DataStructures.IEntitySource source
+        );
+    }
+
+    public static partial class ChoosePrefix
+    {
+        public delegate int Definition(
+            Terraria.Item item,
+            Terraria.Utilities.UnifiedRandom rand
+        );
+    }
+
+    public static partial class PrefixChance
+    {
+        public delegate bool? Definition(
+            Terraria.Item item,
+            int pre,
+            Terraria.Utilities.UnifiedRandom rand
+        );
+    }
+
+    public static partial class AllowPrefix
+    {
+        public delegate bool Definition(
+            Terraria.Item item,
+            int pre
+        );
+    }
+
+    public static partial class CanUseItem
+    {
+        public delegate bool Definition(
+            Terraria.Item item,
+            Terraria.Player player
+        );
+    }
+
+    public static partial class CanAutoReuseItem
+    {
+        public delegate bool? Definition(
+            Terraria.Item item,
+            Terraria.Player player
+        );
+    }
+
+    public static partial class UseStyle
+    {
+        public delegate void Definition(
+            Terraria.Item item,
+            Terraria.Player player,
+            Microsoft.Xna.Framework.Rectangle heldItemFrame
+        );
+    }
+
+    public static partial class HoldStyle
+    {
+        public delegate void Definition(
+            Terraria.Item item,
+            Terraria.Player player,
+            Microsoft.Xna.Framework.Rectangle heldItemFrame
+        );
+    }
+
+    public static partial class HoldItem
+    {
+        public delegate void Definition(
+            Terraria.Item item,
+            Terraria.Player player
+        );
+    }
+
+    public static partial class UseTimeMultiplier
+    {
+        public delegate float Definition(
+            Terraria.Item item,
+            Terraria.Player player
+        );
+    }
+
+    public static partial class UseAnimationMultiplier
+    {
+        public delegate float Definition(
+            Terraria.Item item,
+            Terraria.Player player
+        );
+    }
+
+    public static partial class UseSpeedMultiplier
+    {
+        public delegate float Definition(
+            Terraria.Item item,
+            Terraria.Player player
+        );
+    }
+
+    public static partial class GetHealLife
+    {
+        public delegate void Definition(
+            Terraria.Item item,
+            Terraria.Player player,
+            bool quickHeal,
+            ref int healValue
+        );
+    }
+
+    public static partial class GetHealMana
+    {
+        public delegate void Definition(
+            Terraria.Item item,
+            Terraria.Player player,
+            bool quickHeal,
+            ref int healValue
+        );
+    }
+
+    public static partial class ModifyManaCost
+    {
+        public delegate void Definition(
+            Terraria.Item item,
+            Terraria.Player player,
+            ref float reduce,
+            ref float mult
+        );
+    }
+
+    public static partial class OnMissingMana
+    {
+        public delegate void Definition(
+            Terraria.Item item,
+            Terraria.Player player,
+            int neededMana
+        );
+    }
+
+    public static partial class OnConsumeMana
+    {
+        public delegate void Definition(
+            Terraria.Item item,
+            Terraria.Player player,
+            int manaConsumed
+        );
+    }
+
+    public static partial class ModifyWeaponDamage
+    {
+        public delegate void Definition(
+            Terraria.Item item,
+            Terraria.Player player,
+            ref Terraria.ModLoader.StatModifier damage
+        );
+    }
+
+    public static partial class ModifyResearchSorting
+    {
+        public delegate void Definition(
+            Terraria.Item item,
+            ref Terraria.ID.ContentSamples.CreativeHelper.ItemGroup itemGroup
+        );
+    }
+
+    public static partial class CanConsumeBait
+    {
+        public delegate bool? Definition(
+            Terraria.Player player,
+            Terraria.Item bait
+        );
+    }
+
+    public static partial class CanResearch
+    {
+        public delegate bool Definition(
+            Terraria.Item item
+        );
+    }
+
+    public static partial class OnResearched
+    {
+        public delegate void Definition(
+            Terraria.Item item,
+            bool fullyResearched
+        );
+    }
+
+    public static partial class ModifyWeaponKnockback
+    {
+        public delegate void Definition(
+            Terraria.Item item,
+            Terraria.Player player,
+            ref Terraria.ModLoader.StatModifier knockback
+        );
+    }
+
+    public static partial class ModifyWeaponCrit
+    {
+        public delegate void Definition(
+            Terraria.Item item,
+            Terraria.Player player,
+            ref float crit
+        );
+    }
+
+    public static partial class NeedsAmmo
+    {
+        public delegate bool Definition(
+            Terraria.Item item,
+            Terraria.Player player
+        );
+    }
+
+    public static partial class PickAmmo
+    {
+        public delegate void Definition(
+            Terraria.Item weapon,
+            Terraria.Item ammo,
+            Terraria.Player player,
+            ref int type,
+            ref float speed,
+            ref Terraria.ModLoader.StatModifier damage,
+            ref float knockback
+        );
+    }
+
+    public static partial class CanChooseAmmo
+    {
+        public delegate bool? Definition(
+            Terraria.Item weapon,
+            Terraria.Item ammo,
+            Terraria.Player player
+        );
+    }
+
+    public static partial class CanBeChosenAsAmmo
+    {
+        public delegate bool? Definition(
+            Terraria.Item ammo,
+            Terraria.Item weapon,
+            Terraria.Player player
+        );
+    }
+
+    public static partial class CanConsumeAmmo
+    {
+        public delegate bool Definition(
+            Terraria.Item weapon,
+            Terraria.Item ammo,
+            Terraria.Player player
+        );
+    }
+
+    public static partial class CanBeConsumedAsAmmo
+    {
+        public delegate bool Definition(
+            Terraria.Item ammo,
+            Terraria.Item weapon,
+            Terraria.Player player
+        );
+    }
+
+    public static partial class OnConsumeAmmo
+    {
+        public delegate void Definition(
+            Terraria.Item weapon,
+            Terraria.Item ammo,
+            Terraria.Player player
+        );
+    }
+
+    public static partial class OnConsumedAsAmmo
+    {
+        public delegate void Definition(
+            Terraria.Item ammo,
+            Terraria.Item weapon,
+            Terraria.Player player
+        );
+    }
+
+    public static partial class CanShoot
+    {
+        public delegate bool Definition(
+            Terraria.Item item,
+            Terraria.Player player
+        );
+    }
+
+    public static partial class ModifyShootStats
+    {
+        public delegate void Definition(
+            Terraria.Item item,
+            Terraria.Player player,
+            ref Microsoft.Xna.Framework.Vector2 position,
+            ref Microsoft.Xna.Framework.Vector2 velocity,
+            ref int type,
+            ref int damage,
+            ref float knockback
+        );
+    }
+
+    public static partial class Shoot
+    {
+        public delegate bool Definition(
+            Terraria.Item item,
+            Terraria.Player player,
+            Terraria.DataStructures.EntitySource_ItemUse_WithAmmo source,
+            Microsoft.Xna.Framework.Vector2 position,
+            Microsoft.Xna.Framework.Vector2 velocity,
+            int type,
+            int damage,
+            float knockback
+        );
+    }
+
+    public static partial class UseItemHitbox
+    {
+        public delegate void Definition(
+            Terraria.Item item,
+            Terraria.Player player,
+            ref Microsoft.Xna.Framework.Rectangle hitbox,
+            ref bool noHitbox
+        );
+    }
+
+    public static partial class MeleeEffects
+    {
+        public delegate void Definition(
+            Terraria.Item item,
+            Terraria.Player player,
+            Microsoft.Xna.Framework.Rectangle hitbox
+        );
+    }
+
+    public static partial class CanCatchNPC
+    {
+        public delegate bool? Definition(
+            Terraria.Item item,
+            Terraria.NPC target,
+            Terraria.Player player
+        );
+    }
+
+    public static partial class OnCatchNPC
+    {
+        public delegate void Definition(
+            Terraria.Item item,
+            Terraria.NPC npc,
+            Terraria.Player player,
+            bool failed
+        );
+    }
+
+    public static partial class ModifyItemScale
+    {
+        public delegate void Definition(
+            Terraria.Item item,
+            Terraria.Player player,
+            ref float scale
+        );
+    }
+
+    public static partial class CanHitNPC
+    {
+        public delegate bool? Definition(
+            Terraria.Item item,
+            Terraria.Player player,
+            Terraria.NPC target
+        );
+    }
+
+    public static partial class CanMeleeAttackCollideWithNPC
+    {
+        public delegate bool? Definition(
+            Terraria.Item item,
+            Microsoft.Xna.Framework.Rectangle meleeAttackHitbox,
+            Terraria.Player player,
+            Terraria.NPC target
+        );
+    }
+
+    public static partial class ModifyHitNPC
+    {
+        public delegate void Definition(
+            Terraria.Item item,
+            Terraria.Player player,
+            Terraria.NPC target,
+            ref Terraria.NPC.HitModifiers modifiers
+        );
+    }
+
+    public static partial class OnHitNPC
+    {
+        public delegate void Definition(
+            Terraria.Item item,
+            Terraria.Player player,
+            Terraria.NPC target,
+            Terraria.NPC.HitInfo hit,
+            int damageDone
+        );
+    }
+
+    public static partial class CanHitPvp
+    {
+        public delegate bool Definition(
+            Terraria.Item item,
+            Terraria.Player player,
+            Terraria.Player target
+        );
+    }
+
+    public static partial class ModifyHitPvp
+    {
+        public delegate void Definition(
+            Terraria.Item item,
+            Terraria.Player player,
+            Terraria.Player target,
+            ref Terraria.Player.HurtModifiers modifiers
+        );
+    }
+
+    public static partial class OnHitPvp
+    {
+        public delegate void Definition(
+            Terraria.Item item,
+            Terraria.Player player,
+            Terraria.Player target,
+            Terraria.Player.HurtInfo hurtInfo
+        );
+    }
+
+    public static partial class UseItem
+    {
+        public delegate bool? Definition(
+            Terraria.Item item,
+            Terraria.Player player
+        );
+    }
+
+    public static partial class UseAnimation
+    {
+        public delegate void Definition(
+            Terraria.Item item,
+            Terraria.Player player
+        );
+    }
+
+    public static partial class ConsumeItem
+    {
+        public delegate bool Definition(
+            Terraria.Item item,
+            Terraria.Player player
+        );
+    }
+
+    public static partial class OnConsumeItem
+    {
+        public delegate void Definition(
+            Terraria.Item item,
+            Terraria.Player player
+        );
+    }
+
+    public static partial class UseItemFrame
+    {
+        public delegate void Definition(
+            Terraria.Item item,
+            Terraria.Player player
+        );
+    }
+
+    public static partial class HoldItemFrame
+    {
+        public delegate void Definition(
+            Terraria.Item item,
+            Terraria.Player player
+        );
+    }
+
+    public static partial class AltFunctionUse
+    {
+        public delegate bool Definition(
+            Terraria.Item item,
+            Terraria.Player player
+        );
+    }
+
+    public static partial class UpdateInventory
+    {
+        public delegate void Definition(
+            Terraria.Item item,
+            Terraria.Player player
+        );
+    }
+
+    public static partial class UpdateInfoAccessory
+    {
+        public delegate void Definition(
+            Terraria.Item item,
+            Terraria.Player player
+        );
+    }
+
+    public static partial class UpdateEquip
+    {
+        public delegate void Definition(
+            Terraria.Item item,
+            Terraria.Player player
+        );
+    }
+
+    public static partial class UpdateAccessory
+    {
+        public delegate void Definition(
+            Terraria.Item item,
+            Terraria.Player player,
+            bool hideVisual
+        );
+    }
+
+    public static partial class UpdateVanity
+    {
+        public delegate void Definition(
+            Terraria.Item item,
+            Terraria.Player player
+        );
+    }
+
+    public static partial class IsArmorSet
+    {
+        public delegate string Definition(
+            Terraria.Item head,
+            Terraria.Item body,
+            Terraria.Item legs
+        );
+    }
+
+    public static partial class UpdateArmorSet
+    {
+        public delegate void Definition(
+            Terraria.Player player,
+            string set
+        );
+    }
+
+    public static partial class IsVanitySet
+    {
+        public delegate string Definition(
+            int head,
+            int body,
+            int legs
+        );
+    }
+
+    public static partial class PreUpdateVanitySet
+    {
+        public delegate void Definition(
+            Terraria.Player player,
+            string set
+        );
+    }
+
+    public static partial class UpdateVanitySet
+    {
+        public delegate void Definition(
+            Terraria.Player player,
+            string set
+        );
+    }
+
+    public static partial class ArmorSetShadows
+    {
+        public delegate void Definition(
+            Terraria.Player player,
+            string set
+        );
+    }
+
+    public static partial class SetMatch
+    {
+        public delegate void Definition(
+            int armorSlot,
+            int type,
+            bool male,
+            ref int equipSlot,
+            ref bool robes
+        );
+    }
+
+    public static partial class CanRightClick
+    {
+        public delegate bool Definition(
+            Terraria.Item item
+        );
+    }
+
+    public static partial class RightClick
+    {
+        public delegate void Definition(
+            Terraria.Item item,
+            Terraria.Player player
+        );
+    }
+
+    public static partial class ModifyItemLoot
+    {
+        public delegate void Definition(
+            Terraria.Item item,
+            Terraria.ModLoader.ItemLoot itemLoot
+        );
+    }
+
+    public static partial class CanStack
+    {
+        public delegate bool Definition(
+            Terraria.Item destination,
+            Terraria.Item source
+        );
+    }
+
+    public static partial class CanStackInWorld
+    {
+        public delegate bool Definition(
+            Terraria.Item destination,
+            Terraria.Item source
+        );
+    }
+
+    public static partial class OnStack
+    {
+        public delegate void Definition(
+            Terraria.Item destination,
+            Terraria.Item source,
+            int numToTransfer
+        );
+    }
+
+    public static partial class SplitStack
+    {
+        public delegate void Definition(
+            Terraria.Item destination,
+            Terraria.Item source,
+            int numToTransfer
+        );
+    }
+
+    public static partial class ReforgePrice
+    {
+        public delegate bool Definition(
+            Terraria.Item item,
+            ref int reforgePrice,
+            ref bool canApplyDiscount
+        );
+    }
+
+    public static partial class CanReforge
+    {
+        public delegate bool Definition(
+            Terraria.Item item
+        );
+    }
+
+    public static partial class PreReforge
+    {
+        public delegate void Definition(
+            Terraria.Item item
+        );
+    }
+
+    public static partial class PostReforge
+    {
+        public delegate void Definition(
+            Terraria.Item item
+        );
+    }
+
+    public static partial class DrawArmorColor
+    {
+        public delegate void Definition(
+            Terraria.ModLoader.EquipType type,
+            int slot,
+            Terraria.Player drawPlayer,
+            float shadow,
+            ref Microsoft.Xna.Framework.Color color,
+            ref int glowMask,
+            ref Microsoft.Xna.Framework.Color glowMaskColor
+        );
+    }
+
+    public static partial class ArmorArmGlowMask
+    {
+        public delegate void Definition(
+            int slot,
+            Terraria.Player drawPlayer,
+            float shadow,
+            ref int glowMask,
+            ref Microsoft.Xna.Framework.Color color
+        );
+    }
+
+    public static partial class VerticalWingSpeeds
+    {
+        public delegate void Definition(
+            Terraria.Item item,
+            Terraria.Player player,
+            ref float ascentWhenFalling,
+            ref float ascentWhenRising,
+            ref float maxCanAscendMultiplier,
+            ref float maxAscentMultiplier,
+            ref float constantAscend
+        );
+    }
+
+    public static partial class HorizontalWingSpeeds
+    {
+        public delegate void Definition(
+            Terraria.Item item,
+            Terraria.Player player,
+            ref float speed,
+            ref float acceleration
+        );
+    }
+
+    public static partial class WingUpdate
+    {
+        public delegate bool Definition(
+            int wings,
+            Terraria.Player player,
+            bool inUse
+        );
+    }
+
+    public static partial class Update
+    {
+        public delegate void Definition(
+            Terraria.Item item,
+            ref float gravity,
+            ref float maxFallSpeed
+        );
+    }
+
+    public static partial class PostUpdate
+    {
+        public delegate void Definition(
+            Terraria.Item item
+        );
+    }
+
+    public static partial class GrabRange
+    {
+        public delegate void Definition(
+            Terraria.Item item,
+            Terraria.Player player,
+            ref int grabRange
+        );
+    }
+
+    public static partial class GrabStyle
+    {
+        public delegate bool Definition(
+            Terraria.Item item,
+            Terraria.Player player
+        );
+    }
+
+    public static partial class CanPickup
+    {
+        public delegate bool Definition(
+            Terraria.Item item,
+            Terraria.Player player
+        );
+    }
+
+    public static partial class OnPickup
+    {
+        public delegate bool Definition(
+            Terraria.Item item,
+            Terraria.Player player
+        );
+    }
+
+    public static partial class ItemSpace
+    {
+        public delegate bool Definition(
+            Terraria.Item item,
+            Terraria.Player player
+        );
+    }
+
+    public static partial class GetAlpha
+    {
+        public delegate Microsoft.Xna.Framework.Color? Definition(
+            Terraria.Item item,
+            Microsoft.Xna.Framework.Color lightColor
+        );
+    }
+
+    public static partial class PreDrawInWorld
+    {
+        public delegate bool Definition(
+            Terraria.Item item,
+            Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch,
+            Microsoft.Xna.Framework.Color lightColor,
+            Microsoft.Xna.Framework.Color alphaColor,
+            ref float rotation,
+            ref float scale,
+            int whoAmI
+        );
+    }
+
+    public static partial class PostDrawInWorld
+    {
+        public delegate void Definition(
+            Terraria.Item item,
+            Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch,
+            Microsoft.Xna.Framework.Color lightColor,
+            Microsoft.Xna.Framework.Color alphaColor,
+            float rotation,
+            float scale,
+            int whoAmI
+        );
+    }
+
+    public static partial class PreDrawInInventory
+    {
+        public delegate bool Definition(
+            Terraria.Item item,
+            Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch,
+            Microsoft.Xna.Framework.Vector2 position,
+            Microsoft.Xna.Framework.Rectangle frame,
+            Microsoft.Xna.Framework.Color drawColor,
+            Microsoft.Xna.Framework.Color itemColor,
+            Microsoft.Xna.Framework.Vector2 origin,
+            float scale
+        );
+    }
+
+    public static partial class PostDrawInInventory
+    {
+        public delegate void Definition(
+            Terraria.Item item,
+            Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch,
+            Microsoft.Xna.Framework.Vector2 position,
+            Microsoft.Xna.Framework.Rectangle frame,
+            Microsoft.Xna.Framework.Color drawColor,
+            Microsoft.Xna.Framework.Color itemColor,
+            Microsoft.Xna.Framework.Vector2 origin,
+            float scale
+        );
+    }
+
+    public static partial class HoldoutOffset
+    {
+        public delegate Microsoft.Xna.Framework.Vector2? Definition(
+            int type
+        );
+    }
+
+    public static partial class HoldoutOrigin
+    {
+        public delegate Microsoft.Xna.Framework.Vector2? Definition(
+            int type
+        );
+    }
+
+    public static partial class CanEquipAccessory
+    {
+        public delegate bool Definition(
+            Terraria.Item item,
+            Terraria.Player player,
+            int slot,
+            bool modded
+        );
+    }
+
+    public static partial class CanAccessoryBeEquippedWith
+    {
+        public delegate bool Definition(
+            Terraria.Item equippedItem,
+            Terraria.Item incomingItem,
+            Terraria.Player player
+        );
+    }
+
+    public static partial class ExtractinatorUse
+    {
+        public delegate void Definition(
+            int extractType,
+            int extractinatorBlockType,
+            ref int resultType,
+            ref int resultStack
+        );
+    }
+
+    public static partial class CaughtFishStack
+    {
+        public delegate void Definition(
+            int type,
+            ref int stack
+        );
+    }
+
+    public static partial class IsAnglerQuestAvailable
+    {
+        public delegate bool Definition(
+            int type
+        );
+    }
+
+    public static partial class AnglerChat
+    {
+        public delegate void Definition(
+            int type,
+            ref string chat,
+            ref string catchLocation
+        );
+    }
+
+    public static partial class AddRecipes
+    {
+        public delegate void Definition(
+        );
+    }
+
+    public static partial class PreDrawTooltip
+    {
+        public delegate bool Definition(
+            Terraria.Item item,
+            System.Collections.ObjectModel.ReadOnlyCollection<Terraria.ModLoader.TooltipLine> lines,
+            ref int x,
+            ref int y
+        );
+    }
+
+    public static partial class PostDrawTooltip
+    {
+        public delegate void Definition(
+            Terraria.Item item,
+            System.Collections.ObjectModel.ReadOnlyCollection<Terraria.ModLoader.DrawableTooltipLine> lines
+        );
+    }
+
+    public static partial class PreDrawTooltipLine
+    {
+        public delegate bool Definition(
+            Terraria.Item item,
+            Terraria.ModLoader.DrawableTooltipLine line,
+            ref int yOffset
+        );
+    }
+
+    public static partial class PostDrawTooltipLine
+    {
+        public delegate void Definition(
+            Terraria.Item item,
+            Terraria.ModLoader.DrawableTooltipLine line
+        );
+    }
+
+    public static partial class ModifyTooltips
+    {
+        public delegate void Definition(
+            Terraria.Item item,
+            System.Collections.Generic.List<Terraria.ModLoader.TooltipLine> tooltips
+        );
+    }
+
+    public static partial class SaveData
+    {
+        public delegate void Definition(
+            Terraria.Item item,
+            Terraria.ModLoader.IO.TagCompound tag
+        );
+    }
+
+    public static partial class LoadData
+    {
+        public delegate void Definition(
+            Terraria.Item item,
+            Terraria.ModLoader.IO.TagCompound tag
+        );
+    }
+
+    public static partial class NetSend
+    {
+        public delegate void Definition(
+            Terraria.Item item,
+            System.IO.BinaryWriter writer
+        );
+    }
+
+    public static partial class NetReceive
+    {
+        public delegate void Definition(
+            Terraria.Item item,
+            System.IO.BinaryReader reader
+        );
+    }
+
 }

@@ -5,4 +5,22 @@ namespace Daybreak.Common.Features.Hooks;
 //     System.Void Terraria.ModLoader.GlobalBossBar::PostDraw(Microsoft.Xna.Framework.Graphics.SpriteBatch,Terraria.NPC,Terraria.DataStructures.BossBarDrawParams)
 public static partial class GlobalBossBarHooks
 {
+    public static partial class PreDraw
+    {
+        public delegate bool Definition(
+            Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch,
+            Terraria.NPC npc,
+            ref Terraria.DataStructures.BossBarDrawParams drawParams
+        );
+    }
+
+    public static partial class PostDraw
+    {
+        public delegate void Definition(
+            Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch,
+            Terraria.NPC npc,
+            Terraria.DataStructures.BossBarDrawParams drawParams
+        );
+    }
+
 }

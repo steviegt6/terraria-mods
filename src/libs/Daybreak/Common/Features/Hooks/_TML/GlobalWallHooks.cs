@@ -6,4 +6,36 @@ namespace Daybreak.Common.Features.Hooks;
 //     System.Boolean Terraria.ModLoader.GlobalWall::WallFrame(System.Int32,System.Int32,System.Int32,System.Boolean,System.Int32&,System.Int32&)
 public static partial class GlobalWallHooks
 {
+    public static partial class Drop
+    {
+        public delegate bool Definition(
+            int i,
+            int j,
+            int type,
+            ref int dropType
+        );
+    }
+
+    public static partial class KillWall
+    {
+        public delegate void Definition(
+            int i,
+            int j,
+            int type,
+            ref bool fail
+        );
+    }
+
+    public static partial class WallFrame
+    {
+        public delegate bool Definition(
+            int i,
+            int j,
+            int type,
+            bool randomizeFrame,
+            ref int style,
+            ref int frameNumber
+        );
+    }
+
 }

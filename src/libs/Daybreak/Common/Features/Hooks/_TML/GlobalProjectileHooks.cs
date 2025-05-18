@@ -42,4 +42,331 @@ namespace Daybreak.Common.Features.Hooks;
 //     System.Void Terraria.ModLoader.GlobalProjectile::EmitEnchantmentVisualsAt(Terraria.Projectile,Microsoft.Xna.Framework.Vector2,System.Int32,System.Int32)
 public static partial class GlobalProjectileHooks
 {
+    public static partial class OnSpawn
+    {
+        public delegate void Definition(
+            Terraria.Projectile projectile,
+            Terraria.DataStructures.IEntitySource source
+        );
+    }
+
+    public static partial class PreAI
+    {
+        public delegate bool Definition(
+            Terraria.Projectile projectile
+        );
+    }
+
+    public static partial class AI
+    {
+        public delegate void Definition(
+            Terraria.Projectile projectile
+        );
+    }
+
+    public static partial class PostAI
+    {
+        public delegate void Definition(
+            Terraria.Projectile projectile
+        );
+    }
+
+    public static partial class SendExtraAI
+    {
+        public delegate void Definition(
+            Terraria.Projectile projectile,
+            Terraria.ModLoader.IO.BitWriter bitWriter,
+            System.IO.BinaryWriter binaryWriter
+        );
+    }
+
+    public static partial class ReceiveExtraAI
+    {
+        public delegate void Definition(
+            Terraria.Projectile projectile,
+            Terraria.ModLoader.IO.BitReader bitReader,
+            System.IO.BinaryReader binaryReader
+        );
+    }
+
+    public static partial class ShouldUpdatePosition
+    {
+        public delegate bool Definition(
+            Terraria.Projectile projectile
+        );
+    }
+
+    public static partial class TileCollideStyle
+    {
+        public delegate bool Definition(
+            Terraria.Projectile projectile,
+            ref int width,
+            ref int height,
+            ref bool fallThrough,
+            ref Microsoft.Xna.Framework.Vector2 hitboxCenterFrac
+        );
+    }
+
+    public static partial class OnTileCollide
+    {
+        public delegate bool Definition(
+            Terraria.Projectile projectile,
+            Microsoft.Xna.Framework.Vector2 oldVelocity
+        );
+    }
+
+    public static partial class PreKill
+    {
+        public delegate bool Definition(
+            Terraria.Projectile projectile,
+            int timeLeft
+        );
+    }
+
+    public static partial class OnKill
+    {
+        public delegate void Definition(
+            Terraria.Projectile projectile,
+            int timeLeft
+        );
+    }
+
+    public static partial class Kill
+    {
+        public delegate void Definition(
+            Terraria.Projectile projectile,
+            int timeLeft
+        );
+    }
+
+    public static partial class CanCutTiles
+    {
+        public delegate bool? Definition(
+            Terraria.Projectile projectile
+        );
+    }
+
+    public static partial class CutTiles
+    {
+        public delegate void Definition(
+            Terraria.Projectile projectile
+        );
+    }
+
+    public static partial class CanDamage
+    {
+        public delegate bool? Definition(
+            Terraria.Projectile projectile
+        );
+    }
+
+    public static partial class MinionContactDamage
+    {
+        public delegate bool Definition(
+            Terraria.Projectile projectile
+        );
+    }
+
+    public static partial class ModifyDamageHitbox
+    {
+        public delegate void Definition(
+            Terraria.Projectile projectile,
+            ref Microsoft.Xna.Framework.Rectangle hitbox
+        );
+    }
+
+    public static partial class CanHitNPC
+    {
+        public delegate bool? Definition(
+            Terraria.Projectile projectile,
+            Terraria.NPC target
+        );
+    }
+
+    public static partial class ModifyHitNPC
+    {
+        public delegate void Definition(
+            Terraria.Projectile projectile,
+            Terraria.NPC target,
+            ref Terraria.NPC.HitModifiers modifiers
+        );
+    }
+
+    public static partial class OnHitNPC
+    {
+        public delegate void Definition(
+            Terraria.Projectile projectile,
+            Terraria.NPC target,
+            Terraria.NPC.HitInfo hit,
+            int damageDone
+        );
+    }
+
+    public static partial class CanHitPvp
+    {
+        public delegate bool Definition(
+            Terraria.Projectile projectile,
+            Terraria.Player target
+        );
+    }
+
+    public static partial class CanHitPlayer
+    {
+        public delegate bool Definition(
+            Terraria.Projectile projectile,
+            Terraria.Player target
+        );
+    }
+
+    public static partial class ModifyHitPlayer
+    {
+        public delegate void Definition(
+            Terraria.Projectile projectile,
+            Terraria.Player target,
+            ref Terraria.Player.HurtModifiers modifiers
+        );
+    }
+
+    public static partial class OnHitPlayer
+    {
+        public delegate void Definition(
+            Terraria.Projectile projectile,
+            Terraria.Player target,
+            Terraria.Player.HurtInfo info
+        );
+    }
+
+    public static partial class Colliding
+    {
+        public delegate bool? Definition(
+            Terraria.Projectile projectile,
+            Microsoft.Xna.Framework.Rectangle projHitbox,
+            Microsoft.Xna.Framework.Rectangle targetHitbox
+        );
+    }
+
+    public static partial class GetAlpha
+    {
+        public delegate Microsoft.Xna.Framework.Color? Definition(
+            Terraria.Projectile projectile,
+            Microsoft.Xna.Framework.Color lightColor
+        );
+    }
+
+    public static partial class PreDrawExtras
+    {
+        public delegate bool Definition(
+            Terraria.Projectile projectile
+        );
+    }
+
+    public static partial class PreDraw
+    {
+        public delegate bool Definition(
+            Terraria.Projectile projectile,
+            ref Microsoft.Xna.Framework.Color lightColor
+        );
+    }
+
+    public static partial class PostDraw
+    {
+        public delegate void Definition(
+            Terraria.Projectile projectile,
+            Microsoft.Xna.Framework.Color lightColor
+        );
+    }
+
+    public static partial class DrawBehind
+    {
+        public delegate void Definition(
+            Terraria.Projectile projectile,
+            int index,
+            System.Collections.Generic.List<int> behindNPCsAndTiles,
+            System.Collections.Generic.List<int> behindNPCs,
+            System.Collections.Generic.List<int> behindProjectiles,
+            System.Collections.Generic.List<int> overPlayers,
+            System.Collections.Generic.List<int> overWiresUI
+        );
+    }
+
+    public static partial class CanUseGrapple
+    {
+        public delegate bool? Definition(
+            int type,
+            Terraria.Player player
+        );
+    }
+
+    public static partial class UseGrapple
+    {
+        public delegate void Definition(
+            Terraria.Player player,
+            ref int type
+        );
+    }
+
+    public static partial class NumGrappleHooks
+    {
+        public delegate void Definition(
+            Terraria.Projectile projectile,
+            Terraria.Player player,
+            ref int numHooks
+        );
+    }
+
+    public static partial class GrappleRetreatSpeed
+    {
+        public delegate void Definition(
+            Terraria.Projectile projectile,
+            Terraria.Player player,
+            ref float speed
+        );
+    }
+
+    public static partial class GrapplePullSpeed
+    {
+        public delegate void Definition(
+            Terraria.Projectile projectile,
+            Terraria.Player player,
+            ref float speed
+        );
+    }
+
+    public static partial class GrappleTargetPoint
+    {
+        public delegate void Definition(
+            Terraria.Projectile projectile,
+            Terraria.Player player,
+            ref float grappleX,
+            ref float grappleY
+        );
+    }
+
+    public static partial class GrappleCanLatchOnTo
+    {
+        public delegate bool? Definition(
+            Terraria.Projectile projectile,
+            Terraria.Player player,
+            int x,
+            int y
+        );
+    }
+
+    public static partial class PrepareBombToBlow
+    {
+        public delegate void Definition(
+            Terraria.Projectile projectile
+        );
+    }
+
+    public static partial class EmitEnchantmentVisualsAt
+    {
+        public delegate void Definition(
+            Terraria.Projectile projectile,
+            Microsoft.Xna.Framework.Vector2 boxPosition,
+            int boxWidth,
+            int boxHeight
+        );
+    }
+
 }
