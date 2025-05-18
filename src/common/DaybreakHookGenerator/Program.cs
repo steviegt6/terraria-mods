@@ -55,7 +55,13 @@ internal static class Program
                .WithInvokeStrategy("ReApply_int_NPC_int_int", new EarlyReturnOnTrueStrategy())
                .WithInvokeStrategy(nameof(GlobalBuff.PreDraw), new BoolCombinerStrategy(true, "&="))
                .WithInvokeStrategy(nameof(GlobalBuff.RightClick), new BoolCombinerStrategy(true, "&=")),
-            new TypeHookDefinition(typeof(GlobalEmoteBubble)),
+            new TypeHookDefinition(typeof(GlobalEmoteBubble))
+               .WithInvokeStrategy(nameof(GlobalEmoteBubble.UpdateFrame), new BoolCombinerStrategy(true, "&="))
+               .WithInvokeStrategy(nameof(GlobalEmoteBubble.UpdateFrameInEmoteMenu), new BoolCombinerStrategy(true, "&="))
+               .WithInvokeStrategy(nameof(GlobalEmoteBubble.PreDraw), new BoolCombinerStrategy(true, "&="))
+               .WithInvokeStrategy(nameof(GlobalEmoteBubble.PreDrawInEmoteMenu), new BoolCombinerStrategy(true, "&="))
+               .WithInvokeStrategy(nameof(GlobalEmoteBubble.GetFrame), new NullableValueMayBeOverriddenStrategy("Microsoft.Xna.Framework.Rectangle"))
+               .WithInvokeStrategy(nameof(GlobalEmoteBubble.GetFrameInEmoteMenu), new NullableValueMayBeOverriddenStrategy("Microsoft.Xna.Framework.Rectangle")),
             new TypeHookDefinition(typeof(GlobalInfoDisplay)),
             new TypeHookDefinition(typeof(GlobalItem)),
             new TypeHookDefinition(typeof(GlobalNPC)),

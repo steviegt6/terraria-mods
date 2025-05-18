@@ -76,3 +76,30 @@ internal sealed class EarlyReturnOnTrueStrategy : InvokeStrategy
         return sb.ToString();
     }
 }
+
+internal sealed class NullableValueMayBeOverriddenStrategy(string typeName) : InvokeStrategy
+{
+    public override string GenerateMethodBody(MethodDefinition method)
+    {
+        var sb = new StringBuilder();
+
+        sb.AppendLine($"{INDENT}var result = default({typeName}?);");
+        sb.AppendLine($"{INDENT}if (Event == null)");
+        sb.AppendLine($"{INDENT}{{");
+        sb.AppendLine($"{INDENT}    return result;");
+        sb.AppendLine($"{INDENT}}}");
+        sb.AppendLine();
+        sb.AppendLine($"{INDENT}foreach (var handler in GetInvocationList())");
+        sb.AppendLine($"{INDENT}{{");
+        sb.AppendLine($"{INDENT}    var newValue = {Invoke(method, "handler")};");
+        sb.AppendLine($"{INDENT}    if (newValue != null)");
+        sb.AppendLine($"{INDENT}    {{");
+        sb.AppendLine($"{INDENT}        result = newValue;");
+        sb.AppendLine($"{INDENT}    }}");
+        sb.AppendLine($"{INDENT}}}");
+        sb.AppendLine();
+        sb.AppendLine($"{INDENT}return result;");
+
+        return sb.ToString();
+    }
+}

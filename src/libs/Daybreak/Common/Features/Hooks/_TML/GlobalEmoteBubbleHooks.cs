@@ -61,7 +61,18 @@ public static partial class GlobalEmoteBubbleHooks
             Terraria.GameContent.UI.EmoteBubble emoteBubble
         )
         {
-            Event?.Invoke(self, emoteBubble);
+            var result = true;
+            if (Event == null)
+            {
+                return result;
+            }
+
+            foreach (var handler in GetInvocationList())
+            {
+                result &= handler.Invoke(self, emoteBubble);
+            }
+
+            return result;
         }
     }
 
@@ -86,7 +97,18 @@ public static partial class GlobalEmoteBubbleHooks
             ref int frameCounter
         )
         {
-            Event?.Invoke(self, emoteType, ref frameCounter);
+            var result = true;
+            if (Event == null)
+            {
+                return result;
+            }
+
+            foreach (var handler in GetInvocationList())
+            {
+                result &= handler.Invoke(self, emoteType, ref frameCounter);
+            }
+
+            return result;
         }
     }
 
@@ -121,7 +143,18 @@ public static partial class GlobalEmoteBubbleHooks
             Microsoft.Xna.Framework.Graphics.SpriteEffects spriteEffects
         )
         {
-            Event?.Invoke(self, emoteBubble, spriteBatch, texture, position, frame, origin, spriteEffects);
+            var result = true;
+            if (Event == null)
+            {
+                return result;
+            }
+
+            foreach (var handler in GetInvocationList())
+            {
+                result &= handler.Invoke(self, emoteBubble, spriteBatch, texture, position, frame, origin, spriteEffects);
+            }
+
+            return result;
         }
     }
 
@@ -189,7 +222,18 @@ public static partial class GlobalEmoteBubbleHooks
             Microsoft.Xna.Framework.Vector2 origin
         )
         {
-            Event?.Invoke(self, emoteType, spriteBatch, uiEmoteButton, position, frame, origin);
+            var result = true;
+            if (Event == null)
+            {
+                return result;
+            }
+
+            foreach (var handler in GetInvocationList())
+            {
+                result &= handler.Invoke(self, emoteType, spriteBatch, uiEmoteButton, position, frame, origin);
+            }
+
+            return result;
         }
     }
 
@@ -245,7 +289,22 @@ public static partial class GlobalEmoteBubbleHooks
             Terraria.GameContent.UI.EmoteBubble emoteBubble
         )
         {
-            Event?.Invoke(self, emoteBubble);
+            var result = default(Microsoft.Xna.Framework.Rectangle?);
+            if (Event == null)
+            {
+                return result;
+            }
+
+            foreach (var handler in GetInvocationList())
+            {
+                var newValue = handler.Invoke(self, emoteBubble);
+                if (newValue != null)
+                {
+                    result = newValue;
+                }
+            }
+
+            return result;
         }
     }
 
@@ -272,7 +331,22 @@ public static partial class GlobalEmoteBubbleHooks
             int frameCounter
         )
         {
-            Event?.Invoke(self, emoteType, frame, frameCounter);
+            var result = default(Microsoft.Xna.Framework.Rectangle?);
+            if (Event == null)
+            {
+                return result;
+            }
+
+            foreach (var handler in GetInvocationList())
+            {
+                var newValue = handler.Invoke(self, emoteType, frame, frameCounter);
+                if (newValue != null)
+                {
+                    result = newValue;
+                }
+            }
+
+            return result;
         }
     }
 }
