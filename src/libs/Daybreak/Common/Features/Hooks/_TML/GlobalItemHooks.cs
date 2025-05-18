@@ -1256,7 +1256,6 @@ public static partial class GlobalItemHooks
     {
         public delegate void Definition();
 
-
         public static event Definition Event;
     }
 
@@ -1352,5 +1351,4 @@ public static partial class GlobalItemHooks
 
         public static event Definition Event;
     }
-
 }

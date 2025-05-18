@@ -30,5 +30,4 @@ public static partial class GlobalBossBarHooks
 
         public static event Definition Event;
     }
-
 }

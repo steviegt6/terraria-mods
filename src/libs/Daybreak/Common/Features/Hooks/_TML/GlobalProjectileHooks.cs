@@ -439,5 +439,4 @@ public static partial class GlobalProjectileHooks
 
         public static event Definition Event;
     }
-
 }

@@ -121,5 +121,4 @@ public static partial class GlobalEmoteBubbleHooks
 
         public static event Definition Event;
     }
-
 }

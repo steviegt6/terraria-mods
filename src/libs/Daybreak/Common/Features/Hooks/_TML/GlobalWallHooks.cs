@@ -47,5 +47,4 @@ public static partial class GlobalWallHooks
 
         public static event Definition Event;
     }
-
 }

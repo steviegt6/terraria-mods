@@ -949,5 +949,4 @@ public static partial class GlobalNPCHooks
 
         public static event Definition Event;
     }
-
 }

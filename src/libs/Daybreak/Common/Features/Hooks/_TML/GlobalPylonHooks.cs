@@ -81,5 +81,4 @@ public static partial class GlobalPylonHooks
 
         public static event Definition Event;
     }
-
 }

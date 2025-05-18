@@ -70,14 +70,12 @@ public static partial class ModSystemHooks
     {
         public delegate void Definition();
 
-
         public static event Definition Event;
     }
 
     public static partial class OnLocalizationsLoaded
     {
         public delegate void Definition();
-
 
         public static event Definition Event;
     }
@@ -86,14 +84,12 @@ public static partial class ModSystemHooks
     {
         public delegate void Definition();
 
-
         public static event Definition Event;
     }
 
     public static partial class PostAddRecipes
     {
         public delegate void Definition();
-
 
         public static event Definition Event;
     }
@@ -102,14 +98,12 @@ public static partial class ModSystemHooks
     {
         public delegate void Definition();
 
-
         public static event Definition Event;
     }
 
     public static partial class AddRecipeGroups
     {
         public delegate void Definition();
-
 
         public static event Definition Event;
     }
@@ -118,14 +112,12 @@ public static partial class ModSystemHooks
     {
         public delegate void Definition();
 
-
         public static event Definition Event;
     }
 
     public static partial class OnWorldUnload
     {
         public delegate void Definition();
-
 
         public static event Definition Event;
     }
@@ -134,14 +126,12 @@ public static partial class ModSystemHooks
     {
         public delegate void Definition();
 
-
         public static event Definition Event;
     }
 
     public static partial class ModifyScreenPosition
     {
         public delegate void Definition();
-
 
         public static event Definition Event;
     }
@@ -168,14 +158,12 @@ public static partial class ModSystemHooks
     {
         public delegate void Definition();
 
-
         public static event Definition Event;
     }
 
     public static partial class PreUpdatePlayers
     {
         public delegate void Definition();
-
 
         public static event Definition Event;
     }
@@ -184,14 +172,12 @@ public static partial class ModSystemHooks
     {
         public delegate void Definition();
 
-
         public static event Definition Event;
     }
 
     public static partial class PreUpdateNPCs
     {
         public delegate void Definition();
-
 
         public static event Definition Event;
     }
@@ -200,14 +186,12 @@ public static partial class ModSystemHooks
     {
         public delegate void Definition();
 
-
         public static event Definition Event;
     }
 
     public static partial class PreUpdateGores
     {
         public delegate void Definition();
-
 
         public static event Definition Event;
     }
@@ -216,14 +200,12 @@ public static partial class ModSystemHooks
     {
         public delegate void Definition();
 
-
         public static event Definition Event;
     }
 
     public static partial class PreUpdateProjectiles
     {
         public delegate void Definition();
-
 
         public static event Definition Event;
     }
@@ -232,14 +214,12 @@ public static partial class ModSystemHooks
     {
         public delegate void Definition();
 
-
         public static event Definition Event;
     }
 
     public static partial class PreUpdateItems
     {
         public delegate void Definition();
-
 
         public static event Definition Event;
     }
@@ -248,14 +228,12 @@ public static partial class ModSystemHooks
     {
         public delegate void Definition();
 
-
         public static event Definition Event;
     }
 
     public static partial class PreUpdateDusts
     {
         public delegate void Definition();
-
 
         public static event Definition Event;
     }
@@ -264,14 +242,12 @@ public static partial class ModSystemHooks
     {
         public delegate void Definition();
 
-
         public static event Definition Event;
     }
 
     public static partial class PreUpdateTime
     {
         public delegate void Definition();
-
 
         public static event Definition Event;
     }
@@ -280,14 +256,12 @@ public static partial class ModSystemHooks
     {
         public delegate void Definition();
 
-
         public static event Definition Event;
     }
 
     public static partial class PreUpdateWorld
     {
         public delegate void Definition();
-
 
         public static event Definition Event;
     }
@@ -296,14 +270,12 @@ public static partial class ModSystemHooks
     {
         public delegate void Definition();
 
-
         public static event Definition Event;
     }
 
     public static partial class PreUpdateInvasions
     {
         public delegate void Definition();
-
 
         public static event Definition Event;
     }
@@ -312,14 +284,12 @@ public static partial class ModSystemHooks
     {
         public delegate void Definition();
 
-
         public static event Definition Event;
     }
 
     public static partial class PostUpdateEverything
     {
         public delegate void Definition();
-
 
         public static event Definition Event;
     }
@@ -374,7 +344,6 @@ public static partial class ModSystemHooks
     {
         public delegate void Definition();
 
-
         public static event Definition Event;
     }
 
@@ -382,14 +351,12 @@ public static partial class ModSystemHooks
     {
         public delegate void Definition();
 
-
         public static event Definition Event;
     }
 
     public static partial class PostDrawTiles
     {
         public delegate void Definition();
-
 
         public static event Definition Event;
     }
@@ -505,7 +472,6 @@ public static partial class ModSystemHooks
     {
         public delegate void Definition();
 
-
         public static event Definition Event;
     }
 
@@ -523,14 +489,12 @@ public static partial class ModSystemHooks
     {
         public delegate void Definition();
 
-
         public static event Definition Event;
     }
 
     public static partial class ResetNearbyTileEffects
     {
         public delegate void Definition();
-
 
         public static event Definition Event;
     }
@@ -576,8 +540,6 @@ public static partial class ModSystemHooks
     {
         public delegate void Definition();
 
-
         public static event Definition Event;
     }
-
 }

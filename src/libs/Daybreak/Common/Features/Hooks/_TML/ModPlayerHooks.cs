@@ -148,7 +148,6 @@ public static partial class ModPlayerHooks
     {
         public delegate void Definition();
 
-
         public static event Definition Event;
     }
 
@@ -156,14 +155,12 @@ public static partial class ModPlayerHooks
     {
         public delegate void Definition();
 
-
         public static event Definition Event;
     }
 
     public static partial class ResetInfoAccessories
     {
         public delegate void Definition();
-
 
         public static event Definition Event;
     }
@@ -191,14 +188,12 @@ public static partial class ModPlayerHooks
     {
         public delegate void Definition();
 
-
         public static event Definition Event;
     }
 
     public static partial class PreSaveCustomData
     {
         public delegate void Definition();
-
 
         public static event Definition Event;
     }
@@ -225,14 +220,12 @@ public static partial class ModPlayerHooks
     {
         public delegate void Definition();
 
-
         public static event Definition Event;
     }
 
     public static partial class PostSavePlayer
     {
         public delegate void Definition();
-
 
         public static event Definition Event;
     }
@@ -270,14 +263,12 @@ public static partial class ModPlayerHooks
     {
         public delegate void Definition();
 
-
         public static event Definition Event;
     }
 
     public static partial class UpdateLifeRegen
     {
         public delegate void Definition();
-
 
         public static event Definition Event;
     }
@@ -295,14 +286,12 @@ public static partial class ModPlayerHooks
     {
         public delegate void Definition();
 
-
         public static event Definition Event;
     }
 
     public static partial class PreUpdate
     {
         public delegate void Definition();
-
 
         public static event Definition Event;
     }
@@ -320,7 +309,6 @@ public static partial class ModPlayerHooks
     {
         public delegate void Definition();
 
-
         public static event Definition Event;
     }
 
@@ -337,14 +325,12 @@ public static partial class ModPlayerHooks
     {
         public delegate void Definition();
 
-
         public static event Definition Event;
     }
 
     public static partial class PreUpdateBuffs
     {
         public delegate void Definition();
-
 
         public static event Definition Event;
     }
@@ -353,14 +339,12 @@ public static partial class ModPlayerHooks
     {
         public delegate void Definition();
 
-
         public static event Definition Event;
     }
 
     public static partial class UpdateEquips
     {
         public delegate void Definition();
-
 
         public static event Definition Event;
     }
@@ -369,14 +353,12 @@ public static partial class ModPlayerHooks
     {
         public delegate void Definition();
 
-
         public static event Definition Event;
     }
 
     public static partial class UpdateVisibleAccessories
     {
         public delegate void Definition();
-
 
         public static event Definition Event;
     }
@@ -385,14 +367,12 @@ public static partial class ModPlayerHooks
     {
         public delegate void Definition();
 
-
         public static event Definition Event;
     }
 
     public static partial class UpdateDyes
     {
         public delegate void Definition();
-
 
         public static event Definition Event;
     }
@@ -401,14 +381,12 @@ public static partial class ModPlayerHooks
     {
         public delegate void Definition();
 
-
         public static event Definition Event;
     }
 
     public static partial class PostUpdateRunSpeeds
     {
         public delegate void Definition();
-
 
         public static event Definition Event;
     }
@@ -417,14 +395,12 @@ public static partial class ModPlayerHooks
     {
         public delegate void Definition();
 
-
         public static event Definition Event;
     }
 
     public static partial class PostUpdate
     {
         public delegate void Definition();
-
 
         public static event Definition Event;
     }
@@ -506,7 +482,6 @@ public static partial class ModPlayerHooks
     public static partial class FrameEffects
     {
         public delegate void Definition();
-
 
         public static event Definition Event;
     }
@@ -615,14 +590,12 @@ public static partial class ModPlayerHooks
     {
         public delegate bool Definition();
 
-
         public static event Definition Event;
     }
 
     public static partial class PostItemCheck
     {
         public delegate void Definition();
-
 
         public static event Definition Event;
     }
@@ -1160,7 +1133,6 @@ public static partial class ModPlayerHooks
     {
         public delegate void Definition();
 
-
         public static event Definition Event;
     }
 
@@ -1177,14 +1149,12 @@ public static partial class ModPlayerHooks
     {
         public delegate void Definition();
 
-
         public static event Definition Event;
     }
 
     public static partial class PlayerDisconnect
     {
         public delegate void Definition();
-
 
         public static event Definition Event;
     }
@@ -1193,14 +1163,12 @@ public static partial class ModPlayerHooks
     {
         public delegate void Definition();
 
-
         public static event Definition Event;
     }
 
     public static partial class OnRespawn
     {
         public delegate void Definition();
-
 
         public static event Definition Event;
     }
@@ -1361,5 +1329,4 @@ public static partial class ModPlayerHooks
 
         public static event Definition Event;
     }
-
 }

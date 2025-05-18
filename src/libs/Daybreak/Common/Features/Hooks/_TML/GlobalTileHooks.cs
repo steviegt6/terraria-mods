@@ -161,7 +161,6 @@ public static partial class GlobalTileHooks
     {
         public delegate void Definition();
 
-
         public static event Definition Event;
     }
 
@@ -342,7 +341,6 @@ public static partial class GlobalTileHooks
     {
         public delegate void Definition();
 
-
         public static event Definition Event;
     }
 
@@ -367,5 +365,4 @@ public static partial class GlobalTileHooks
 
         public static event Definition Event;
     }
-
 }

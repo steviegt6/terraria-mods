@@ -130,5 +130,4 @@ public static partial class GlobalBuffHooks
 
         public static event Definition Event;
     }
-
 }

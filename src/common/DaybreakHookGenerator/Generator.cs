@@ -53,9 +53,16 @@ public sealed class Generator(ModuleDefinition module, TypeDefinition type)
         }
         sb.AppendLine($"public static partial class {typeName}");
         sb.AppendLine("{");
+        var ranOnce = false;
         foreach (var hook in hooks)
         {
-            sb.AppendLine(BuildHook(hook, hasOverloads: type.GetMethods().Count(x => x.Name == hook.Name) > 1));
+            if (ranOnce)
+            {
+                sb.AppendLine();
+            }
+            ranOnce = true;
+
+            sb.Append(BuildHook(hook, hasOverloads: type.GetMethods().Count(x => x.Name == hook.Name) > 1));
         }
         sb.AppendLine("}");
 
@@ -137,7 +144,7 @@ public sealed class Generator(ModuleDefinition module, TypeDefinition type)
         }
         else
         {
-            sb.AppendLine(");");
+            sb.Append(");");
         }
 
         return sb.ToString();

@@ -30,5 +30,4 @@ public static partial class GlobalInfoDisplayHooks
 
         public static event Definition Event;
     }
-
 }
