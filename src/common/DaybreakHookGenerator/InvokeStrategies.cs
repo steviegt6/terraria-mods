@@ -7,23 +7,46 @@ namespace DaybreakHookGenerator;
 
 public abstract class InvokeStrategy
 {
+    public const string INDENT = "            ";
+
     public abstract string GenerateMethodBody(MethodDefinition method);
+
+    public static string Invoke(MethodDefinition method, string member)
+    {
+        var invokeExpr = method.Parameters.Count > 0
+            ? "Invoke(self, " + string.Join(", ", method.Parameters.Select(Generator.GetParameterReference)) + ")"
+            : "Invoke(self)";
+
+        return $"{member}.{invokeExpr}";
+    }
 }
 
 internal sealed class SimpleVoidInvokeStrategy : InvokeStrategy
 {
     public override string GenerateMethodBody(MethodDefinition method)
     {
+        return $"{INDENT}{Invoke(method, "Event?")};\n";
+    }
+}
+
+internal sealed class BoolCombinerStrategy(bool defaultValue, string combiner) : InvokeStrategy
+{
+    public override string GenerateMethodBody(MethodDefinition method)
+    {
         var sb = new StringBuilder();
 
-        if (method.Parameters.Count > 0)
-        {
-            sb.AppendLine("            Event?.Invoke(self, " + string.Join(", ", method.Parameters.Select(Generator.GetParameterReference)) + ");");
-        }
-        else
-        {
-            sb.AppendLine("            Event?.Invoke(self);");
-        }
+        sb.AppendLine($"{INDENT}var result = {defaultValue.ToString().ToLowerInvariant()};");
+        sb.AppendLine($"{INDENT}if (Event == null)");
+        sb.AppendLine($"{INDENT}{{");
+        sb.AppendLine($"{INDENT}    return result;");
+        sb.AppendLine($"{INDENT}}}");
+        sb.AppendLine();
+        sb.AppendLine($"{INDENT}foreach (var handler in GetInvocationList())");
+        sb.AppendLine($"{INDENT}{{");
+        sb.AppendLine($"{INDENT}    result {combiner} {Invoke(method, "handler")};");
+        sb.AppendLine($"{INDENT}}}");
+        sb.AppendLine();
+        sb.AppendLine($"{INDENT}return result;");
 
         return sb.ToString();
     }

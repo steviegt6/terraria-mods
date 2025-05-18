@@ -48,7 +48,8 @@ internal static class Program
         // TODO: Mod hooks?
         var definitions = new[]
         {
-            new TypeHookDefinition(typeof(GlobalBossBar)),
+            new TypeHookDefinition(typeof(GlobalBossBar))
+               .WithInvokeStrategy(nameof(GlobalBossBar.PreDraw), new BoolCombinerStrategy(true, "&=")),
             new TypeHookDefinition(typeof(GlobalBuff)),
             new TypeHookDefinition(typeof(GlobalEmoteBubble)),
             new TypeHookDefinition(typeof(GlobalInfoDisplay)),

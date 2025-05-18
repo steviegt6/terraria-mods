@@ -35,7 +35,18 @@ public static partial class GlobalBossBarHooks
             ref Terraria.DataStructures.BossBarDrawParams drawParams
         )
         {
-            Event?.Invoke(self, spriteBatch, npc, ref drawParams);
+            var result = true;
+            if (Event == null)
+            {
+                return result;
+            }
+
+            foreach (var handler in GetInvocationList())
+            {
+                result &= handler.Invoke(self, spriteBatch, npc, ref drawParams);
+            }
+
+            return result;
         }
     }
 
