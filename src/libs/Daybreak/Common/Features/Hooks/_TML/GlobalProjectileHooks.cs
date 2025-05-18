@@ -4,6 +4,7 @@ using System.Linq;
 
 // ReSharper disable PartialTypeWithSinglePart
 // ReSharper disable UnusedType.Global
+// ReSharper disable InconsistentNaming
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 // Hooks to generate for 'Terraria.ModLoader.GlobalProjectile':
@@ -50,6 +51,7 @@ public static partial class GlobalProjectileHooks
     public static partial class OnSpawn
     {
         public delegate void Definition(
+            Terraria.ModLoader.GlobalProjectile self,
             Terraria.Projectile projectile,
             Terraria.DataStructures.IEntitySource source
         );
@@ -65,6 +67,7 @@ public static partial class GlobalProjectileHooks
     public static partial class PreAI
     {
         public delegate bool Definition(
+            Terraria.ModLoader.GlobalProjectile self,
             Terraria.Projectile projectile
         );
 
@@ -79,6 +82,7 @@ public static partial class GlobalProjectileHooks
     public static partial class AI
     {
         public delegate void Definition(
+            Terraria.ModLoader.GlobalProjectile self,
             Terraria.Projectile projectile
         );
 
@@ -93,6 +97,7 @@ public static partial class GlobalProjectileHooks
     public static partial class PostAI
     {
         public delegate void Definition(
+            Terraria.ModLoader.GlobalProjectile self,
             Terraria.Projectile projectile
         );
 
@@ -107,6 +112,7 @@ public static partial class GlobalProjectileHooks
     public static partial class SendExtraAI
     {
         public delegate void Definition(
+            Terraria.ModLoader.GlobalProjectile self,
             Terraria.Projectile projectile,
             Terraria.ModLoader.IO.BitWriter bitWriter,
             System.IO.BinaryWriter binaryWriter
@@ -123,6 +129,7 @@ public static partial class GlobalProjectileHooks
     public static partial class ReceiveExtraAI
     {
         public delegate void Definition(
+            Terraria.ModLoader.GlobalProjectile self,
             Terraria.Projectile projectile,
             Terraria.ModLoader.IO.BitReader bitReader,
             System.IO.BinaryReader binaryReader
@@ -139,6 +146,7 @@ public static partial class GlobalProjectileHooks
     public static partial class ShouldUpdatePosition
     {
         public delegate bool Definition(
+            Terraria.ModLoader.GlobalProjectile self,
             Terraria.Projectile projectile
         );
 
@@ -153,6 +161,7 @@ public static partial class GlobalProjectileHooks
     public static partial class TileCollideStyle
     {
         public delegate bool Definition(
+            Terraria.ModLoader.GlobalProjectile self,
             Terraria.Projectile projectile,
             ref int width,
             ref int height,
@@ -171,6 +180,7 @@ public static partial class GlobalProjectileHooks
     public static partial class OnTileCollide
     {
         public delegate bool Definition(
+            Terraria.ModLoader.GlobalProjectile self,
             Terraria.Projectile projectile,
             Microsoft.Xna.Framework.Vector2 oldVelocity
         );
@@ -186,6 +196,7 @@ public static partial class GlobalProjectileHooks
     public static partial class PreKill
     {
         public delegate bool Definition(
+            Terraria.ModLoader.GlobalProjectile self,
             Terraria.Projectile projectile,
             int timeLeft
         );
@@ -201,6 +212,7 @@ public static partial class GlobalProjectileHooks
     public static partial class OnKill
     {
         public delegate void Definition(
+            Terraria.ModLoader.GlobalProjectile self,
             Terraria.Projectile projectile,
             int timeLeft
         );
@@ -216,6 +228,7 @@ public static partial class GlobalProjectileHooks
     public static partial class CanCutTiles
     {
         public delegate bool? Definition(
+            Terraria.ModLoader.GlobalProjectile self,
             Terraria.Projectile projectile
         );
 
@@ -230,6 +243,7 @@ public static partial class GlobalProjectileHooks
     public static partial class CutTiles
     {
         public delegate void Definition(
+            Terraria.ModLoader.GlobalProjectile self,
             Terraria.Projectile projectile
         );
 
@@ -244,6 +258,7 @@ public static partial class GlobalProjectileHooks
     public static partial class CanDamage
     {
         public delegate bool? Definition(
+            Terraria.ModLoader.GlobalProjectile self,
             Terraria.Projectile projectile
         );
 
@@ -258,6 +273,7 @@ public static partial class GlobalProjectileHooks
     public static partial class MinionContactDamage
     {
         public delegate bool Definition(
+            Terraria.ModLoader.GlobalProjectile self,
             Terraria.Projectile projectile
         );
 
@@ -272,6 +288,7 @@ public static partial class GlobalProjectileHooks
     public static partial class ModifyDamageHitbox
     {
         public delegate void Definition(
+            Terraria.ModLoader.GlobalProjectile self,
             Terraria.Projectile projectile,
             ref Microsoft.Xna.Framework.Rectangle hitbox
         );
@@ -287,6 +304,7 @@ public static partial class GlobalProjectileHooks
     public static partial class CanHitNPC
     {
         public delegate bool? Definition(
+            Terraria.ModLoader.GlobalProjectile self,
             Terraria.Projectile projectile,
             Terraria.NPC target
         );
@@ -302,6 +320,7 @@ public static partial class GlobalProjectileHooks
     public static partial class ModifyHitNPC
     {
         public delegate void Definition(
+            Terraria.ModLoader.GlobalProjectile self,
             Terraria.Projectile projectile,
             Terraria.NPC target,
             ref Terraria.NPC.HitModifiers modifiers
@@ -318,6 +337,7 @@ public static partial class GlobalProjectileHooks
     public static partial class OnHitNPC
     {
         public delegate void Definition(
+            Terraria.ModLoader.GlobalProjectile self,
             Terraria.Projectile projectile,
             Terraria.NPC target,
             Terraria.NPC.HitInfo hit,
@@ -335,6 +355,7 @@ public static partial class GlobalProjectileHooks
     public static partial class CanHitPvp
     {
         public delegate bool Definition(
+            Terraria.ModLoader.GlobalProjectile self,
             Terraria.Projectile projectile,
             Terraria.Player target
         );
@@ -350,6 +371,7 @@ public static partial class GlobalProjectileHooks
     public static partial class CanHitPlayer
     {
         public delegate bool Definition(
+            Terraria.ModLoader.GlobalProjectile self,
             Terraria.Projectile projectile,
             Terraria.Player target
         );
@@ -365,6 +387,7 @@ public static partial class GlobalProjectileHooks
     public static partial class ModifyHitPlayer
     {
         public delegate void Definition(
+            Terraria.ModLoader.GlobalProjectile self,
             Terraria.Projectile projectile,
             Terraria.Player target,
             ref Terraria.Player.HurtModifiers modifiers
@@ -381,6 +404,7 @@ public static partial class GlobalProjectileHooks
     public static partial class OnHitPlayer
     {
         public delegate void Definition(
+            Terraria.ModLoader.GlobalProjectile self,
             Terraria.Projectile projectile,
             Terraria.Player target,
             Terraria.Player.HurtInfo info
@@ -397,6 +421,7 @@ public static partial class GlobalProjectileHooks
     public static partial class Colliding
     {
         public delegate bool? Definition(
+            Terraria.ModLoader.GlobalProjectile self,
             Terraria.Projectile projectile,
             Microsoft.Xna.Framework.Rectangle projHitbox,
             Microsoft.Xna.Framework.Rectangle targetHitbox
@@ -413,6 +438,7 @@ public static partial class GlobalProjectileHooks
     public static partial class GetAlpha
     {
         public delegate Microsoft.Xna.Framework.Color? Definition(
+            Terraria.ModLoader.GlobalProjectile self,
             Terraria.Projectile projectile,
             Microsoft.Xna.Framework.Color lightColor
         );
@@ -428,6 +454,7 @@ public static partial class GlobalProjectileHooks
     public static partial class PreDrawExtras
     {
         public delegate bool Definition(
+            Terraria.ModLoader.GlobalProjectile self,
             Terraria.Projectile projectile
         );
 
@@ -442,6 +469,7 @@ public static partial class GlobalProjectileHooks
     public static partial class PreDraw
     {
         public delegate bool Definition(
+            Terraria.ModLoader.GlobalProjectile self,
             Terraria.Projectile projectile,
             ref Microsoft.Xna.Framework.Color lightColor
         );
@@ -457,6 +485,7 @@ public static partial class GlobalProjectileHooks
     public static partial class PostDraw
     {
         public delegate void Definition(
+            Terraria.ModLoader.GlobalProjectile self,
             Terraria.Projectile projectile,
             Microsoft.Xna.Framework.Color lightColor
         );
@@ -472,6 +501,7 @@ public static partial class GlobalProjectileHooks
     public static partial class DrawBehind
     {
         public delegate void Definition(
+            Terraria.ModLoader.GlobalProjectile self,
             Terraria.Projectile projectile,
             int index,
             System.Collections.Generic.List<int> behindNPCsAndTiles,
@@ -492,6 +522,7 @@ public static partial class GlobalProjectileHooks
     public static partial class CanUseGrapple
     {
         public delegate bool? Definition(
+            Terraria.ModLoader.GlobalProjectile self,
             int type,
             Terraria.Player player
         );
@@ -507,6 +538,7 @@ public static partial class GlobalProjectileHooks
     public static partial class UseGrapple
     {
         public delegate void Definition(
+            Terraria.ModLoader.GlobalProjectile self,
             Terraria.Player player,
             ref int type
         );
@@ -522,6 +554,7 @@ public static partial class GlobalProjectileHooks
     public static partial class NumGrappleHooks
     {
         public delegate void Definition(
+            Terraria.ModLoader.GlobalProjectile self,
             Terraria.Projectile projectile,
             Terraria.Player player,
             ref int numHooks
@@ -538,6 +571,7 @@ public static partial class GlobalProjectileHooks
     public static partial class GrappleRetreatSpeed
     {
         public delegate void Definition(
+            Terraria.ModLoader.GlobalProjectile self,
             Terraria.Projectile projectile,
             Terraria.Player player,
             ref float speed
@@ -554,6 +588,7 @@ public static partial class GlobalProjectileHooks
     public static partial class GrapplePullSpeed
     {
         public delegate void Definition(
+            Terraria.ModLoader.GlobalProjectile self,
             Terraria.Projectile projectile,
             Terraria.Player player,
             ref float speed
@@ -570,6 +605,7 @@ public static partial class GlobalProjectileHooks
     public static partial class GrappleTargetPoint
     {
         public delegate void Definition(
+            Terraria.ModLoader.GlobalProjectile self,
             Terraria.Projectile projectile,
             Terraria.Player player,
             ref float grappleX,
@@ -587,6 +623,7 @@ public static partial class GlobalProjectileHooks
     public static partial class GrappleCanLatchOnTo
     {
         public delegate bool? Definition(
+            Terraria.ModLoader.GlobalProjectile self,
             Terraria.Projectile projectile,
             Terraria.Player player,
             int x,
@@ -604,6 +641,7 @@ public static partial class GlobalProjectileHooks
     public static partial class PrepareBombToBlow
     {
         public delegate void Definition(
+            Terraria.ModLoader.GlobalProjectile self,
             Terraria.Projectile projectile
         );
 
@@ -618,6 +656,7 @@ public static partial class GlobalProjectileHooks
     public static partial class EmitEnchantmentVisualsAt
     {
         public delegate void Definition(
+            Terraria.ModLoader.GlobalProjectile self,
             Terraria.Projectile projectile,
             Microsoft.Xna.Framework.Vector2 boxPosition,
             int boxWidth,

@@ -4,6 +4,7 @@ using System.Linq;
 
 // ReSharper disable PartialTypeWithSinglePart
 // ReSharper disable UnusedType.Global
+// ReSharper disable InconsistentNaming
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 // Hooks to generate for 'Terraria.ModLoader.GlobalTile':
@@ -41,6 +42,7 @@ public static partial class GlobalTileHooks
     public static partial class DropCritterChance
     {
         public delegate void Definition(
+            Terraria.ModLoader.GlobalTile self,
             int i,
             int j,
             int type,
@@ -60,6 +62,7 @@ public static partial class GlobalTileHooks
     public static partial class CanDrop
     {
         public delegate bool Definition(
+            Terraria.ModLoader.GlobalTile self,
             int i,
             int j,
             int type
@@ -76,6 +79,7 @@ public static partial class GlobalTileHooks
     public static partial class Drop
     {
         public delegate void Definition(
+            Terraria.ModLoader.GlobalTile self,
             int i,
             int j,
             int type
@@ -92,6 +96,7 @@ public static partial class GlobalTileHooks
     public static partial class CanKillTile
     {
         public delegate bool Definition(
+            Terraria.ModLoader.GlobalTile self,
             int i,
             int j,
             int type,
@@ -109,6 +114,7 @@ public static partial class GlobalTileHooks
     public static partial class KillTile
     {
         public delegate void Definition(
+            Terraria.ModLoader.GlobalTile self,
             int i,
             int j,
             int type,
@@ -128,6 +134,7 @@ public static partial class GlobalTileHooks
     public static partial class NearbyEffects
     {
         public delegate void Definition(
+            Terraria.ModLoader.GlobalTile self,
             int i,
             int j,
             int type,
@@ -145,6 +152,7 @@ public static partial class GlobalTileHooks
     public static partial class IsTileDangerous
     {
         public delegate bool? Definition(
+            Terraria.ModLoader.GlobalTile self,
             int i,
             int j,
             int type,
@@ -162,6 +170,7 @@ public static partial class GlobalTileHooks
     public static partial class IsTileBiomeSightable
     {
         public delegate bool? Definition(
+            Terraria.ModLoader.GlobalTile self,
             int i,
             int j,
             int type,
@@ -179,6 +188,7 @@ public static partial class GlobalTileHooks
     public static partial class IsTileSpelunkable
     {
         public delegate bool? Definition(
+            Terraria.ModLoader.GlobalTile self,
             int i,
             int j,
             int type
@@ -195,6 +205,7 @@ public static partial class GlobalTileHooks
     public static partial class SetSpriteEffects
     {
         public delegate void Definition(
+            Terraria.ModLoader.GlobalTile self,
             int i,
             int j,
             int type,
@@ -211,7 +222,9 @@ public static partial class GlobalTileHooks
 
     public static partial class AnimateTile
     {
-        public delegate void Definition();
+        public delegate void Definition(
+            Terraria.ModLoader.GlobalTile self
+        );
 
         public static event Definition? Event;
 
@@ -224,6 +237,7 @@ public static partial class GlobalTileHooks
     public static partial class DrawEffects
     {
         public delegate void Definition(
+            Terraria.ModLoader.GlobalTile self,
             int i,
             int j,
             int type,
@@ -242,6 +256,7 @@ public static partial class GlobalTileHooks
     public static partial class EmitParticles
     {
         public delegate void Definition(
+            Terraria.ModLoader.GlobalTile self,
             int i,
             int j,
             Terraria.Tile tileCache,
@@ -263,6 +278,7 @@ public static partial class GlobalTileHooks
     public static partial class SpecialDraw
     {
         public delegate void Definition(
+            Terraria.ModLoader.GlobalTile self,
             int i,
             int j,
             int type,
@@ -280,6 +296,7 @@ public static partial class GlobalTileHooks
     public static partial class TileFrame
     {
         public delegate bool Definition(
+            Terraria.ModLoader.GlobalTile self,
             int i,
             int j,
             int type,
@@ -298,6 +315,7 @@ public static partial class GlobalTileHooks
     public static partial class AdjTiles
     {
         public delegate System.Int32[] Definition(
+            Terraria.ModLoader.GlobalTile self,
             int type
         );
 
@@ -312,6 +330,7 @@ public static partial class GlobalTileHooks
     public static partial class RightClick
     {
         public delegate void Definition(
+            Terraria.ModLoader.GlobalTile self,
             int i,
             int j,
             int type
@@ -328,6 +347,7 @@ public static partial class GlobalTileHooks
     public static partial class MouseOver
     {
         public delegate void Definition(
+            Terraria.ModLoader.GlobalTile self,
             int i,
             int j,
             int type
@@ -344,6 +364,7 @@ public static partial class GlobalTileHooks
     public static partial class MouseOverFar
     {
         public delegate void Definition(
+            Terraria.ModLoader.GlobalTile self,
             int i,
             int j,
             int type
@@ -360,6 +381,7 @@ public static partial class GlobalTileHooks
     public static partial class AutoSelect
     {
         public delegate bool Definition(
+            Terraria.ModLoader.GlobalTile self,
             int i,
             int j,
             int type,
@@ -377,6 +399,7 @@ public static partial class GlobalTileHooks
     public static partial class PreHitWire
     {
         public delegate bool Definition(
+            Terraria.ModLoader.GlobalTile self,
             int i,
             int j,
             int type
@@ -393,6 +416,7 @@ public static partial class GlobalTileHooks
     public static partial class HitWire
     {
         public delegate void Definition(
+            Terraria.ModLoader.GlobalTile self,
             int i,
             int j,
             int type
@@ -409,6 +433,7 @@ public static partial class GlobalTileHooks
     public static partial class Slope
     {
         public delegate bool Definition(
+            Terraria.ModLoader.GlobalTile self,
             int i,
             int j,
             int type
@@ -425,6 +450,7 @@ public static partial class GlobalTileHooks
     public static partial class FloorVisuals
     {
         public delegate void Definition(
+            Terraria.ModLoader.GlobalTile self,
             int type,
             Terraria.Player player
         );
@@ -440,6 +466,7 @@ public static partial class GlobalTileHooks
     public static partial class ChangeWaterfallStyle
     {
         public delegate void Definition(
+            Terraria.ModLoader.GlobalTile self,
             int type,
             ref int style
         );
@@ -455,6 +482,7 @@ public static partial class GlobalTileHooks
     public static partial class CanReplace
     {
         public delegate bool Definition(
+            Terraria.ModLoader.GlobalTile self,
             int i,
             int j,
             int type,
@@ -471,7 +499,9 @@ public static partial class GlobalTileHooks
 
     public static partial class PostSetupTileMerge
     {
-        public delegate void Definition();
+        public delegate void Definition(
+            Terraria.ModLoader.GlobalTile self
+        );
 
         public static event Definition? Event;
 
@@ -484,6 +514,7 @@ public static partial class GlobalTileHooks
     public static partial class PreShakeTree
     {
         public delegate void Definition(
+            Terraria.ModLoader.GlobalTile self,
             int x,
             int y,
             Terraria.Enums.TreeTypes treeType
@@ -500,6 +531,7 @@ public static partial class GlobalTileHooks
     public static partial class ShakeTree
     {
         public delegate bool Definition(
+            Terraria.ModLoader.GlobalTile self,
             int x,
             int y,
             Terraria.Enums.TreeTypes treeType

@@ -4,6 +4,7 @@ using System.Linq;
 
 // ReSharper disable PartialTypeWithSinglePart
 // ReSharper disable UnusedType.Global
+// ReSharper disable InconsistentNaming
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 // Hooks to generate for 'Terraria.ModLoader.GlobalWall':
@@ -15,6 +16,7 @@ public static partial class GlobalWallHooks
     public static partial class Drop
     {
         public delegate bool Definition(
+            Terraria.ModLoader.GlobalWall self,
             int i,
             int j,
             int type,
@@ -32,6 +34,7 @@ public static partial class GlobalWallHooks
     public static partial class KillWall
     {
         public delegate void Definition(
+            Terraria.ModLoader.GlobalWall self,
             int i,
             int j,
             int type,
@@ -49,6 +52,7 @@ public static partial class GlobalWallHooks
     public static partial class WallFrame
     {
         public delegate bool Definition(
+            Terraria.ModLoader.GlobalWall self,
             int i,
             int j,
             int type,

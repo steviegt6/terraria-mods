@@ -4,6 +4,7 @@ using System.Linq;
 
 // ReSharper disable PartialTypeWithSinglePart
 // ReSharper disable UnusedType.Global
+// ReSharper disable InconsistentNaming
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 // Hooks to generate for 'Terraria.ModLoader.ModSystem':
@@ -70,7 +71,9 @@ public static partial class ModSystemHooks
 {
     public static partial class PostSetupContent
     {
-        public delegate void Definition();
+        public delegate void Definition(
+            Terraria.ModLoader.ModSystem self
+        );
 
         public static event Definition? Event;
 
@@ -82,7 +85,9 @@ public static partial class ModSystemHooks
 
     public static partial class OnLocalizationsLoaded
     {
-        public delegate void Definition();
+        public delegate void Definition(
+            Terraria.ModLoader.ModSystem self
+        );
 
         public static event Definition? Event;
 
@@ -94,7 +99,9 @@ public static partial class ModSystemHooks
 
     public static partial class AddRecipes
     {
-        public delegate void Definition();
+        public delegate void Definition(
+            Terraria.ModLoader.ModSystem self
+        );
 
         public static event Definition? Event;
 
@@ -106,7 +113,9 @@ public static partial class ModSystemHooks
 
     public static partial class PostAddRecipes
     {
-        public delegate void Definition();
+        public delegate void Definition(
+            Terraria.ModLoader.ModSystem self
+        );
 
         public static event Definition? Event;
 
@@ -118,7 +127,9 @@ public static partial class ModSystemHooks
 
     public static partial class PostSetupRecipes
     {
-        public delegate void Definition();
+        public delegate void Definition(
+            Terraria.ModLoader.ModSystem self
+        );
 
         public static event Definition? Event;
 
@@ -130,7 +141,9 @@ public static partial class ModSystemHooks
 
     public static partial class AddRecipeGroups
     {
-        public delegate void Definition();
+        public delegate void Definition(
+            Terraria.ModLoader.ModSystem self
+        );
 
         public static event Definition? Event;
 
@@ -142,7 +155,9 @@ public static partial class ModSystemHooks
 
     public static partial class OnWorldLoad
     {
-        public delegate void Definition();
+        public delegate void Definition(
+            Terraria.ModLoader.ModSystem self
+        );
 
         public static event Definition? Event;
 
@@ -154,7 +169,9 @@ public static partial class ModSystemHooks
 
     public static partial class OnWorldUnload
     {
-        public delegate void Definition();
+        public delegate void Definition(
+            Terraria.ModLoader.ModSystem self
+        );
 
         public static event Definition? Event;
 
@@ -166,7 +183,9 @@ public static partial class ModSystemHooks
 
     public static partial class ClearWorld
     {
-        public delegate void Definition();
+        public delegate void Definition(
+            Terraria.ModLoader.ModSystem self
+        );
 
         public static event Definition? Event;
 
@@ -178,7 +197,9 @@ public static partial class ModSystemHooks
 
     public static partial class ModifyScreenPosition
     {
-        public delegate void Definition();
+        public delegate void Definition(
+            Terraria.ModLoader.ModSystem self
+        );
 
         public static event Definition? Event;
 
@@ -191,6 +212,7 @@ public static partial class ModSystemHooks
     public static partial class ModifyTransformMatrix
     {
         public delegate void Definition(
+            Terraria.ModLoader.ModSystem self,
             ref Terraria.Graphics.SpriteViewMatrix Transform
         );
 
@@ -205,6 +227,7 @@ public static partial class ModSystemHooks
     public static partial class UpdateUI
     {
         public delegate void Definition(
+            Terraria.ModLoader.ModSystem self,
             Microsoft.Xna.Framework.GameTime gameTime
         );
 
@@ -218,7 +241,9 @@ public static partial class ModSystemHooks
 
     public static partial class PreUpdateEntities
     {
-        public delegate void Definition();
+        public delegate void Definition(
+            Terraria.ModLoader.ModSystem self
+        );
 
         public static event Definition? Event;
 
@@ -230,7 +255,9 @@ public static partial class ModSystemHooks
 
     public static partial class PreUpdatePlayers
     {
-        public delegate void Definition();
+        public delegate void Definition(
+            Terraria.ModLoader.ModSystem self
+        );
 
         public static event Definition? Event;
 
@@ -242,7 +269,9 @@ public static partial class ModSystemHooks
 
     public static partial class PostUpdatePlayers
     {
-        public delegate void Definition();
+        public delegate void Definition(
+            Terraria.ModLoader.ModSystem self
+        );
 
         public static event Definition? Event;
 
@@ -254,7 +283,9 @@ public static partial class ModSystemHooks
 
     public static partial class PreUpdateNPCs
     {
-        public delegate void Definition();
+        public delegate void Definition(
+            Terraria.ModLoader.ModSystem self
+        );
 
         public static event Definition? Event;
 
@@ -266,7 +297,9 @@ public static partial class ModSystemHooks
 
     public static partial class PostUpdateNPCs
     {
-        public delegate void Definition();
+        public delegate void Definition(
+            Terraria.ModLoader.ModSystem self
+        );
 
         public static event Definition? Event;
 
@@ -278,7 +311,9 @@ public static partial class ModSystemHooks
 
     public static partial class PreUpdateGores
     {
-        public delegate void Definition();
+        public delegate void Definition(
+            Terraria.ModLoader.ModSystem self
+        );
 
         public static event Definition? Event;
 
@@ -290,7 +325,9 @@ public static partial class ModSystemHooks
 
     public static partial class PostUpdateGores
     {
-        public delegate void Definition();
+        public delegate void Definition(
+            Terraria.ModLoader.ModSystem self
+        );
 
         public static event Definition? Event;
 
@@ -302,7 +339,9 @@ public static partial class ModSystemHooks
 
     public static partial class PreUpdateProjectiles
     {
-        public delegate void Definition();
+        public delegate void Definition(
+            Terraria.ModLoader.ModSystem self
+        );
 
         public static event Definition? Event;
 
@@ -314,7 +353,9 @@ public static partial class ModSystemHooks
 
     public static partial class PostUpdateProjectiles
     {
-        public delegate void Definition();
+        public delegate void Definition(
+            Terraria.ModLoader.ModSystem self
+        );
 
         public static event Definition? Event;
 
@@ -326,7 +367,9 @@ public static partial class ModSystemHooks
 
     public static partial class PreUpdateItems
     {
-        public delegate void Definition();
+        public delegate void Definition(
+            Terraria.ModLoader.ModSystem self
+        );
 
         public static event Definition? Event;
 
@@ -338,7 +381,9 @@ public static partial class ModSystemHooks
 
     public static partial class PostUpdateItems
     {
-        public delegate void Definition();
+        public delegate void Definition(
+            Terraria.ModLoader.ModSystem self
+        );
 
         public static event Definition? Event;
 
@@ -350,7 +395,9 @@ public static partial class ModSystemHooks
 
     public static partial class PreUpdateDusts
     {
-        public delegate void Definition();
+        public delegate void Definition(
+            Terraria.ModLoader.ModSystem self
+        );
 
         public static event Definition? Event;
 
@@ -362,7 +409,9 @@ public static partial class ModSystemHooks
 
     public static partial class PostUpdateDusts
     {
-        public delegate void Definition();
+        public delegate void Definition(
+            Terraria.ModLoader.ModSystem self
+        );
 
         public static event Definition? Event;
 
@@ -374,7 +423,9 @@ public static partial class ModSystemHooks
 
     public static partial class PreUpdateTime
     {
-        public delegate void Definition();
+        public delegate void Definition(
+            Terraria.ModLoader.ModSystem self
+        );
 
         public static event Definition? Event;
 
@@ -386,7 +437,9 @@ public static partial class ModSystemHooks
 
     public static partial class PostUpdateTime
     {
-        public delegate void Definition();
+        public delegate void Definition(
+            Terraria.ModLoader.ModSystem self
+        );
 
         public static event Definition? Event;
 
@@ -398,7 +451,9 @@ public static partial class ModSystemHooks
 
     public static partial class PreUpdateWorld
     {
-        public delegate void Definition();
+        public delegate void Definition(
+            Terraria.ModLoader.ModSystem self
+        );
 
         public static event Definition? Event;
 
@@ -410,7 +465,9 @@ public static partial class ModSystemHooks
 
     public static partial class PostUpdateWorld
     {
-        public delegate void Definition();
+        public delegate void Definition(
+            Terraria.ModLoader.ModSystem self
+        );
 
         public static event Definition? Event;
 
@@ -422,7 +479,9 @@ public static partial class ModSystemHooks
 
     public static partial class PreUpdateInvasions
     {
-        public delegate void Definition();
+        public delegate void Definition(
+            Terraria.ModLoader.ModSystem self
+        );
 
         public static event Definition? Event;
 
@@ -434,7 +493,9 @@ public static partial class ModSystemHooks
 
     public static partial class PostUpdateInvasions
     {
-        public delegate void Definition();
+        public delegate void Definition(
+            Terraria.ModLoader.ModSystem self
+        );
 
         public static event Definition? Event;
 
@@ -446,7 +507,9 @@ public static partial class ModSystemHooks
 
     public static partial class PostUpdateEverything
     {
-        public delegate void Definition();
+        public delegate void Definition(
+            Terraria.ModLoader.ModSystem self
+        );
 
         public static event Definition? Event;
 
@@ -459,6 +522,7 @@ public static partial class ModSystemHooks
     public static partial class ModifyInterfaceLayers
     {
         public delegate void Definition(
+            Terraria.ModLoader.ModSystem self,
             System.Collections.Generic.List<Terraria.UI.GameInterfaceLayer> layers
         );
 
@@ -473,6 +537,7 @@ public static partial class ModSystemHooks
     public static partial class ModifyGameTipVisibility
     {
         public delegate void Definition(
+            Terraria.ModLoader.ModSystem self,
             System.Collections.Generic.IReadOnlyList<Terraria.ModLoader.GameTipData> gameTips
         );
 
@@ -487,6 +552,7 @@ public static partial class ModSystemHooks
     public static partial class PostDrawInterface
     {
         public delegate void Definition(
+            Terraria.ModLoader.ModSystem self,
             Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch
         );
 
@@ -501,6 +567,7 @@ public static partial class ModSystemHooks
     public static partial class PreDrawMapIconOverlay
     {
         public delegate void Definition(
+            Terraria.ModLoader.ModSystem self,
             System.Collections.Generic.IReadOnlyList<Terraria.Map.IMapLayer> layers,
             Terraria.Map.MapOverlayDrawContext mapOverlayDrawContext
         );
@@ -516,6 +583,7 @@ public static partial class ModSystemHooks
     public static partial class PostDrawFullscreenMap
     {
         public delegate void Definition(
+            Terraria.ModLoader.ModSystem self,
             ref string mouseText
         );
 
@@ -529,7 +597,9 @@ public static partial class ModSystemHooks
 
     public static partial class PostUpdateInput
     {
-        public delegate void Definition();
+        public delegate void Definition(
+            Terraria.ModLoader.ModSystem self
+        );
 
         public static event Definition? Event;
 
@@ -541,7 +611,9 @@ public static partial class ModSystemHooks
 
     public static partial class PreSaveAndQuit
     {
-        public delegate void Definition();
+        public delegate void Definition(
+            Terraria.ModLoader.ModSystem self
+        );
 
         public static event Definition? Event;
 
@@ -553,7 +625,9 @@ public static partial class ModSystemHooks
 
     public static partial class PostDrawTiles
     {
-        public delegate void Definition();
+        public delegate void Definition(
+            Terraria.ModLoader.ModSystem self
+        );
 
         public static event Definition? Event;
 
@@ -566,6 +640,7 @@ public static partial class ModSystemHooks
     public static partial class ModifyTimeRate
     {
         public delegate void Definition(
+            Terraria.ModLoader.ModSystem self,
             ref double timeRate,
             ref double tileUpdateRate,
             ref double eventUpdateRate
@@ -582,6 +657,7 @@ public static partial class ModSystemHooks
     public static partial class SaveWorldData
     {
         public delegate void Definition(
+            Terraria.ModLoader.ModSystem self,
             Terraria.ModLoader.IO.TagCompound tag
         );
 
@@ -596,6 +672,7 @@ public static partial class ModSystemHooks
     public static partial class LoadWorldData
     {
         public delegate void Definition(
+            Terraria.ModLoader.ModSystem self,
             Terraria.ModLoader.IO.TagCompound tag
         );
 
@@ -610,6 +687,7 @@ public static partial class ModSystemHooks
     public static partial class SaveWorldHeader
     {
         public delegate void Definition(
+            Terraria.ModLoader.ModSystem self,
             Terraria.ModLoader.IO.TagCompound tag
         );
 
@@ -624,6 +702,7 @@ public static partial class ModSystemHooks
     public static partial class CanWorldBePlayed
     {
         public delegate bool Definition(
+            Terraria.ModLoader.ModSystem self,
             Terraria.IO.PlayerFileData playerData,
             Terraria.IO.WorldFileData worldFileData
         );
@@ -639,6 +718,7 @@ public static partial class ModSystemHooks
     public static partial class WorldCanBePlayedRejectionMessage
     {
         public delegate string Definition(
+            Terraria.ModLoader.ModSystem self,
             Terraria.IO.PlayerFileData playerData,
             Terraria.IO.WorldFileData worldData
         );
@@ -654,6 +734,7 @@ public static partial class ModSystemHooks
     public static partial class NetSend
     {
         public delegate void Definition(
+            Terraria.ModLoader.ModSystem self,
             System.IO.BinaryWriter writer
         );
 
@@ -668,6 +749,7 @@ public static partial class ModSystemHooks
     public static partial class NetReceive
     {
         public delegate void Definition(
+            Terraria.ModLoader.ModSystem self,
             System.IO.BinaryReader reader
         );
 
@@ -682,6 +764,7 @@ public static partial class ModSystemHooks
     public static partial class HijackGetData
     {
         public delegate bool Definition(
+            Terraria.ModLoader.ModSystem self,
             ref byte messageType,
             ref System.IO.BinaryReader reader,
             int playerNumber
@@ -698,6 +781,7 @@ public static partial class ModSystemHooks
     public static partial class HijackSendData
     {
         public delegate bool Definition(
+            Terraria.ModLoader.ModSystem self,
             int whoAmI,
             int msgType,
             int remoteClient,
@@ -722,7 +806,9 @@ public static partial class ModSystemHooks
 
     public static partial class PreWorldGen
     {
-        public delegate void Definition();
+        public delegate void Definition(
+            Terraria.ModLoader.ModSystem self
+        );
 
         public static event Definition? Event;
 
@@ -735,6 +821,7 @@ public static partial class ModSystemHooks
     public static partial class ModifyWorldGenTasks
     {
         public delegate void Definition(
+            Terraria.ModLoader.ModSystem self,
             System.Collections.Generic.List<Terraria.WorldBuilding.GenPass> tasks,
             ref double totalWeight
         );
@@ -749,7 +836,9 @@ public static partial class ModSystemHooks
 
     public static partial class PostWorldGen
     {
-        public delegate void Definition();
+        public delegate void Definition(
+            Terraria.ModLoader.ModSystem self
+        );
 
         public static event Definition? Event;
 
@@ -761,7 +850,9 @@ public static partial class ModSystemHooks
 
     public static partial class ResetNearbyTileEffects
     {
-        public delegate void Definition();
+        public delegate void Definition(
+            Terraria.ModLoader.ModSystem self
+        );
 
         public static event Definition? Event;
 
@@ -774,6 +865,7 @@ public static partial class ModSystemHooks
     public static partial class ModifyHardmodeTasks
     {
         public delegate void Definition(
+            Terraria.ModLoader.ModSystem self,
             System.Collections.Generic.List<Terraria.WorldBuilding.GenPass> list
         );
 
@@ -788,6 +880,7 @@ public static partial class ModSystemHooks
     public static partial class ModifySunLightColor
     {
         public delegate void Definition(
+            Terraria.ModLoader.ModSystem self,
             ref Microsoft.Xna.Framework.Color tileColor,
             ref Microsoft.Xna.Framework.Color backgroundColor
         );
@@ -803,6 +896,7 @@ public static partial class ModSystemHooks
     public static partial class ModifyLightingBrightness
     {
         public delegate void Definition(
+            Terraria.ModLoader.ModSystem self,
             ref float scale
         );
 
@@ -817,6 +911,7 @@ public static partial class ModSystemHooks
     public static partial class TileCountsAvailable
     {
         public delegate void Definition(
+            Terraria.ModLoader.ModSystem self,
             System.ReadOnlySpan<int> tileCounts
         );
 
@@ -830,7 +925,9 @@ public static partial class ModSystemHooks
 
     public static partial class ResizeArrays
     {
-        public delegate void Definition();
+        public delegate void Definition(
+            Terraria.ModLoader.ModSystem self
+        );
 
         public static event Definition? Event;
 

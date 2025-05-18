@@ -4,6 +4,7 @@ using System.Linq;
 
 // ReSharper disable PartialTypeWithSinglePart
 // ReSharper disable UnusedType.Global
+// ReSharper disable InconsistentNaming
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 // Hooks to generate for 'Terraria.ModLoader.GlobalPylon':
@@ -18,6 +19,7 @@ public static partial class GlobalPylonHooks
     public static partial class PreDrawMapIcon
     {
         public delegate bool Definition(
+            Terraria.ModLoader.GlobalPylon self,
             ref Terraria.Map.MapOverlayDrawContext context,
             ref string mouseOverText,
             ref Terraria.GameContent.TeleportPylonInfo pylonInfo,
@@ -38,6 +40,7 @@ public static partial class GlobalPylonHooks
     public static partial class PreCanPlacePylon
     {
         public delegate bool? Definition(
+            Terraria.ModLoader.GlobalPylon self,
             int x,
             int y,
             int tileType,
@@ -55,6 +58,7 @@ public static partial class GlobalPylonHooks
     public static partial class ValidTeleportCheck_PreNPCCount
     {
         public delegate bool? Definition(
+            Terraria.ModLoader.GlobalPylon self,
             Terraria.GameContent.TeleportPylonInfo pylonInfo,
             ref int defaultNecessaryNPCCount
         );
@@ -70,6 +74,7 @@ public static partial class GlobalPylonHooks
     public static partial class ValidTeleportCheck_PreAnyDanger
     {
         public delegate bool? Definition(
+            Terraria.ModLoader.GlobalPylon self,
             Terraria.GameContent.TeleportPylonInfo pylonInfo
         );
 
@@ -84,6 +89,7 @@ public static partial class GlobalPylonHooks
     public static partial class ValidTeleportCheck_PreBiomeRequirements
     {
         public delegate bool? Definition(
+            Terraria.ModLoader.GlobalPylon self,
             Terraria.GameContent.TeleportPylonInfo pylonInfo,
             Terraria.SceneMetrics sceneData
         );
@@ -99,6 +105,7 @@ public static partial class GlobalPylonHooks
     public static partial class PostValidTeleportCheck
     {
         public delegate void Definition(
+            Terraria.ModLoader.GlobalPylon self,
             Terraria.GameContent.TeleportPylonInfo destinationPylonInfo,
             Terraria.GameContent.TeleportPylonInfo nearbyPylonInfo,
             ref bool destinationPylonValid,

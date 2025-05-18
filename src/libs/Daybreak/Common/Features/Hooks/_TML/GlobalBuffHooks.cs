@@ -4,6 +4,7 @@ using System.Linq;
 
 // ReSharper disable PartialTypeWithSinglePart
 // ReSharper disable UnusedType.Global
+// ReSharper disable InconsistentNaming
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 // Hooks to generate for 'Terraria.ModLoader.GlobalBuff':
@@ -22,6 +23,7 @@ public static partial class GlobalBuffHooks
     public static partial class Update_int_Player_int
     {
         public delegate void Definition(
+            Terraria.ModLoader.GlobalBuff self,
             int type,
             Terraria.Player player,
             ref int buffIndex
@@ -38,6 +40,7 @@ public static partial class GlobalBuffHooks
     public static partial class Update_int_NPC_int
     {
         public delegate void Definition(
+            Terraria.ModLoader.GlobalBuff self,
             int type,
             Terraria.NPC npc,
             ref int buffIndex
@@ -54,6 +57,7 @@ public static partial class GlobalBuffHooks
     public static partial class ReApply_int_Player_int_int
     {
         public delegate bool Definition(
+            Terraria.ModLoader.GlobalBuff self,
             int type,
             Terraria.Player player,
             int time,
@@ -71,6 +75,7 @@ public static partial class GlobalBuffHooks
     public static partial class ReApply_int_NPC_int_int
     {
         public delegate bool Definition(
+            Terraria.ModLoader.GlobalBuff self,
             int type,
             Terraria.NPC npc,
             int time,
@@ -88,6 +93,7 @@ public static partial class GlobalBuffHooks
     public static partial class ModifyBuffText
     {
         public delegate void Definition(
+            Terraria.ModLoader.GlobalBuff self,
             int type,
             ref string buffName,
             ref string tip,
@@ -105,6 +111,7 @@ public static partial class GlobalBuffHooks
     public static partial class CustomBuffTipSize
     {
         public delegate void Definition(
+            Terraria.ModLoader.GlobalBuff self,
             string buffTip,
             System.Collections.Generic.List<Microsoft.Xna.Framework.Vector2> sizes
         );
@@ -120,6 +127,7 @@ public static partial class GlobalBuffHooks
     public static partial class DrawCustomBuffTip
     {
         public delegate void Definition(
+            Terraria.ModLoader.GlobalBuff self,
             string buffTip,
             Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch,
             int originX,
@@ -137,6 +145,7 @@ public static partial class GlobalBuffHooks
     public static partial class PreDraw
     {
         public delegate bool Definition(
+            Terraria.ModLoader.GlobalBuff self,
             Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch,
             int type,
             int buffIndex,
@@ -154,6 +163,7 @@ public static partial class GlobalBuffHooks
     public static partial class PostDraw
     {
         public delegate void Definition(
+            Terraria.ModLoader.GlobalBuff self,
             Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch,
             int type,
             int buffIndex,
@@ -171,6 +181,7 @@ public static partial class GlobalBuffHooks
     public static partial class RightClick
     {
         public delegate bool Definition(
+            Terraria.ModLoader.GlobalBuff self,
             int type,
             int buffIndex
         );

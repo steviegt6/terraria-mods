@@ -46,6 +46,7 @@ public sealed class Generator(ModuleDefinition module, TypeDefinition type)
         sb.AppendLine();
         sb.AppendLine("// ReSharper disable PartialTypeWithSinglePart");
         sb.AppendLine("// ReSharper disable UnusedType.Global");
+        sb.AppendLine("// ReSharper disable InconsistentNaming");
         sb.AppendLine("#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member");
         sb.AppendLine();
         sb.AppendLine($"// Hooks to generate for '{type.FullName}':");
@@ -121,17 +122,16 @@ public sealed class Generator(ModuleDefinition module, TypeDefinition type)
 
     private static string GetDescriptionForMethod(MethodDefinition method)
     {
-        // generate public delegate <return type> Description(<parameters>), acccount
-        // for ref, in, out, etc.
-
         var sb = new StringBuilder();
 
-        sb.Append($"        public delegate {GetFullTypeNameOrCSharpKeyword(method.ReturnType, includeRefPrefix: true)} Definition(");
+        sb.AppendLine($"        public delegate {GetFullTypeNameOrCSharpKeyword(method.ReturnType, includeRefPrefix: true)} Definition(");
 
         var parameters = method.Parameters;
-        if (parameters.Count != 0)
+
+        sb.Append($"            {GetFullTypeNameOrCSharpKeyword(method.DeclaringType, includeRefPrefix: false)} self");
+        if (parameters.Count > 0)
         {
-            sb.AppendLine();
+            sb.AppendLine(",");
 
             for (var i = 0; i < parameters.Count; i++)
             {
@@ -146,13 +146,13 @@ public sealed class Generator(ModuleDefinition module, TypeDefinition type)
                     sb.AppendLine();
                 }
             }
-
-            sb.Append("        );");
         }
         else
         {
-            sb.Append(");");
+            sb.AppendLine();
         }
+
+        sb.Append("        );");
 
         return sb.ToString();
     }

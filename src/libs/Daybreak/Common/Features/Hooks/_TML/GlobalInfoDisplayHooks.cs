@@ -4,6 +4,7 @@ using System.Linq;
 
 // ReSharper disable PartialTypeWithSinglePart
 // ReSharper disable UnusedType.Global
+// ReSharper disable InconsistentNaming
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 // Hooks to generate for 'Terraria.ModLoader.GlobalInfoDisplay':
@@ -14,6 +15,7 @@ public static partial class GlobalInfoDisplayHooks
     public static partial class Active
     {
         public delegate bool? Definition(
+            Terraria.ModLoader.GlobalInfoDisplay self,
             Terraria.ModLoader.InfoDisplay currentDisplay
         );
 
@@ -28,6 +30,7 @@ public static partial class GlobalInfoDisplayHooks
     public static partial class ModifyDisplayParameters
     {
         public delegate void Definition(
+            Terraria.ModLoader.GlobalInfoDisplay self,
             Terraria.ModLoader.InfoDisplay currentDisplay,
             ref string displayValue,
             ref string displayName,

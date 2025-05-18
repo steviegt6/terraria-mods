@@ -4,6 +4,7 @@ using System.Linq;
 
 // ReSharper disable PartialTypeWithSinglePart
 // ReSharper disable UnusedType.Global
+// ReSharper disable InconsistentNaming
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 // Hooks to generate for 'Terraria.ModLoader.GlobalEmoteBubble':
@@ -21,6 +22,7 @@ public static partial class GlobalEmoteBubbleHooks
     public static partial class OnSpawn
     {
         public delegate void Definition(
+            Terraria.ModLoader.GlobalEmoteBubble self,
             Terraria.GameContent.UI.EmoteBubble emoteBubble
         );
 
@@ -35,6 +37,7 @@ public static partial class GlobalEmoteBubbleHooks
     public static partial class UpdateFrame
     {
         public delegate bool Definition(
+            Terraria.ModLoader.GlobalEmoteBubble self,
             Terraria.GameContent.UI.EmoteBubble emoteBubble
         );
 
@@ -49,6 +52,7 @@ public static partial class GlobalEmoteBubbleHooks
     public static partial class UpdateFrameInEmoteMenu
     {
         public delegate bool Definition(
+            Terraria.ModLoader.GlobalEmoteBubble self,
             int emoteType,
             ref int frameCounter
         );
@@ -64,6 +68,7 @@ public static partial class GlobalEmoteBubbleHooks
     public static partial class PreDraw
     {
         public delegate bool Definition(
+            Terraria.ModLoader.GlobalEmoteBubble self,
             Terraria.GameContent.UI.EmoteBubble emoteBubble,
             Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch,
             Microsoft.Xna.Framework.Graphics.Texture2D texture,
@@ -84,6 +89,7 @@ public static partial class GlobalEmoteBubbleHooks
     public static partial class PostDraw
     {
         public delegate void Definition(
+            Terraria.ModLoader.GlobalEmoteBubble self,
             Terraria.GameContent.UI.EmoteBubble emoteBubble,
             Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch,
             Microsoft.Xna.Framework.Graphics.Texture2D texture,
@@ -104,6 +110,7 @@ public static partial class GlobalEmoteBubbleHooks
     public static partial class PreDrawInEmoteMenu
     {
         public delegate bool Definition(
+            Terraria.ModLoader.GlobalEmoteBubble self,
             int emoteType,
             Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch,
             Terraria.GameContent.UI.Elements.EmoteButton uiEmoteButton,
@@ -123,6 +130,7 @@ public static partial class GlobalEmoteBubbleHooks
     public static partial class PostDrawInEmoteMenu
     {
         public delegate void Definition(
+            Terraria.ModLoader.GlobalEmoteBubble self,
             int emoteType,
             Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch,
             Terraria.GameContent.UI.Elements.EmoteButton uiEmoteButton,
@@ -142,6 +150,7 @@ public static partial class GlobalEmoteBubbleHooks
     public static partial class GetFrame
     {
         public delegate Microsoft.Xna.Framework.Rectangle? Definition(
+            Terraria.ModLoader.GlobalEmoteBubble self,
             Terraria.GameContent.UI.EmoteBubble emoteBubble
         );
 
@@ -156,6 +165,7 @@ public static partial class GlobalEmoteBubbleHooks
     public static partial class GetFrameInEmoteMenu
     {
         public delegate Microsoft.Xna.Framework.Rectangle? Definition(
+            Terraria.ModLoader.GlobalEmoteBubble self,
             int emoteType,
             int frame,
             int frameCounter

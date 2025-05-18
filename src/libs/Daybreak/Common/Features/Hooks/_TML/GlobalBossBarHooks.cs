@@ -4,6 +4,7 @@ using System.Linq;
 
 // ReSharper disable PartialTypeWithSinglePart
 // ReSharper disable UnusedType.Global
+// ReSharper disable InconsistentNaming
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 // Hooks to generate for 'Terraria.ModLoader.GlobalBossBar':
@@ -14,6 +15,7 @@ public static partial class GlobalBossBarHooks
     public static partial class PreDraw
     {
         public delegate bool Definition(
+            Terraria.ModLoader.GlobalBossBar self,
             Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch,
             Terraria.NPC npc,
             ref Terraria.DataStructures.BossBarDrawParams drawParams
@@ -30,6 +32,7 @@ public static partial class GlobalBossBarHooks
     public static partial class PostDraw
     {
         public delegate void Definition(
+            Terraria.ModLoader.GlobalBossBar self,
             Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch,
             Terraria.NPC npc,
             Terraria.DataStructures.BossBarDrawParams drawParams
