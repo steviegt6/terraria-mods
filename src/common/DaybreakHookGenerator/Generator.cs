@@ -55,18 +55,31 @@ public sealed class Generator(ModuleDefinition module, TypeDefinition type)
         sb.AppendLine("{");
         foreach (var hook in hooks)
         {
-            sb.AppendLine(BuildHook(hook));
+            sb.AppendLine(BuildHook(hook, hasOverloads: type.GetMethods().Count(x => x.Name == hook.Name) > 1));
         }
         sb.AppendLine("}");
 
         return sb.ToString();
     }
 
-    private string BuildHook(MethodDefinition method)
+    private static string BuildHook(MethodDefinition method, bool hasOverloads)
     {
         var sb = new StringBuilder();
 
-        sb.AppendLine($"    public static partial class {method.Name}");
+        // TODO: This logic for resolving overloads is *very* naive.  For a more
+        //       reliable approach, see how MonoMod does it:
+        // https://github.com/MonoMod/MonoMod/blob/reorganize/src/MonoMod.RuntimeDetour.HookGen/HookGenerator.cs#L234
+
+        var name = method.Name;
+        if (hasOverloads)
+        {
+            foreach (var param in method.Parameters)
+            {
+                name += "_" + GetFullTypeNameOrCSharpKeyword(param.ParameterType, includeRefPrefix: false).Split('.').Last();
+            }
+        }
+
+        sb.AppendLine($"    public static partial class {name}");
         sb.AppendLine("    {");
         sb.AppendLine(GetDescriptionForMethod(method));
         sb.AppendLine();

@@ -17,7 +17,7 @@ namespace Daybreak.Common.Features.Hooks;
 //     System.Boolean Terraria.ModLoader.GlobalBuff::RightClick(System.Int32,System.Int32)
 public static partial class GlobalBuffHooks
 {
-    public static partial class Update
+    public static partial class Update_int_Player_int
     {
         public delegate void Definition(
             int type,
@@ -28,7 +28,7 @@ public static partial class GlobalBuffHooks
         public static event Definition Event;
     }
 
-    public static partial class Update
+    public static partial class Update_int_NPC_int
     {
         public delegate void Definition(
             int type,
@@ -39,7 +39,7 @@ public static partial class GlobalBuffHooks
         public static event Definition Event;
     }
 
-    public static partial class ReApply
+    public static partial class ReApply_int_Player_int_int
     {
         public delegate bool Definition(
             int type,
@@ -51,7 +51,7 @@ public static partial class GlobalBuffHooks
         public static event Definition Event;
     }
 
-    public static partial class ReApply
+    public static partial class ReApply_int_NPC_int_int
     {
         public delegate bool Definition(
             int type,
