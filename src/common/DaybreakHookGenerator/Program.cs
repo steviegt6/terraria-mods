@@ -62,7 +62,8 @@ internal static class Program
                .WithInvokeStrategy(nameof(GlobalEmoteBubble.PreDrawInEmoteMenu), new BoolCombinerStrategy(true, "&="))
                .WithInvokeStrategy(nameof(GlobalEmoteBubble.GetFrame), new NullableValueMayBeOverriddenStrategy("Microsoft.Xna.Framework.Rectangle"))
                .WithInvokeStrategy(nameof(GlobalEmoteBubble.GetFrameInEmoteMenu), new NullableValueMayBeOverriddenStrategy("Microsoft.Xna.Framework.Rectangle")),
-            new TypeHookDefinition(typeof(GlobalInfoDisplay)),
+            new TypeHookDefinition(typeof(GlobalInfoDisplay))
+               .WithInvokeStrategy(nameof(GlobalInfoDisplay.Active), new NullableBooleanCombinerStrategy()),
             new TypeHookDefinition(typeof(GlobalItem)),
             new TypeHookDefinition(typeof(GlobalNPC)),
             new TypeHookDefinition(typeof(GlobalProjectile)),

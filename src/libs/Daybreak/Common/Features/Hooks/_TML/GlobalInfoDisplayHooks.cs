@@ -31,7 +31,22 @@ public static partial class GlobalInfoDisplayHooks
             Terraria.ModLoader.InfoDisplay currentDisplay
         )
         {
-            Event?.Invoke(self, currentDisplay);
+            var result = default(bool?);
+            if (Event == null)
+            {
+                return result;
+            }
+
+            foreach (var handler in GetInvocationList())
+            {
+                var newValue = handler.Invoke(self, currentDisplay);
+                if (newValue != null)
+                {
+                    result &= newValue;
+                }
+            }
+
+            return result;
         }
     }
 
