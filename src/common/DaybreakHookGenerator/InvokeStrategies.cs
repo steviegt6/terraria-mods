@@ -187,3 +187,30 @@ internal sealed class NullableBooleanEarlyReturnStrategy : InvokeStrategy
         return sb.ToString();
     }
 }
+
+internal sealed class ArrayCombinerStrategy(string typeName) : InvokeStrategy
+{
+    public override string GenerateMethodBody(MethodDefinition method)
+    {
+        var sb = new StringBuilder();
+        
+        sb.AppendLine($"{INDENT}var result = new System.Collections.Generic.List<{typeName}>();");
+        sb.AppendLine($"{INDENT}if (Event == null)");
+        sb.AppendLine($"{INDENT}{{");
+        sb.AppendLine($"{INDENT}    return result.ToArray();");
+        sb.AppendLine($"{INDENT}}}");
+        sb.AppendLine();
+        sb.AppendLine($"{INDENT}foreach (var handler in GetInvocationList())");
+        sb.AppendLine($"{INDENT}{{");
+        sb.AppendLine($"{INDENT}    var newValue = {Invoke(method, "handler")};");
+        sb.AppendLine($"{INDENT}    if (newValue != null)");
+        sb.AppendLine($"{INDENT}    {{");
+        sb.AppendLine($"{INDENT}        result.AddRange(newValue);");
+        sb.AppendLine($"{INDENT}    }}");
+        sb.AppendLine($"{INDENT}}}");
+        sb.AppendLine();
+        sb.AppendLine($"{INDENT}return result.ToArray();");
+        
+        return sb.ToString();
+    }
+}

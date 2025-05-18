@@ -27,10 +27,8 @@ using System.Linq;
 //     System.Void Terraria.ModLoader.GlobalTile::RightClick(System.Int32,System.Int32,System.Int32)
 //     System.Void Terraria.ModLoader.GlobalTile::MouseOver(System.Int32,System.Int32,System.Int32)
 //     System.Void Terraria.ModLoader.GlobalTile::MouseOverFar(System.Int32,System.Int32,System.Int32)
-//     System.Boolean Terraria.ModLoader.GlobalTile::AutoSelect(System.Int32,System.Int32,System.Int32,Terraria.Item)
 //     System.Boolean Terraria.ModLoader.GlobalTile::PreHitWire(System.Int32,System.Int32,System.Int32)
 //     System.Void Terraria.ModLoader.GlobalTile::HitWire(System.Int32,System.Int32,System.Int32)
-//     System.Boolean Terraria.ModLoader.GlobalTile::Slope(System.Int32,System.Int32,System.Int32)
 //     System.Void Terraria.ModLoader.GlobalTile::FloorVisuals(System.Int32,Terraria.Player)
 //     System.Void Terraria.ModLoader.GlobalTile::ChangeWaterfallStyle(System.Int32,System.Int32&)
 //     System.Boolean Terraria.ModLoader.GlobalTile::CanReplace(System.Int32,System.Int32,System.Int32,System.Int32)
@@ -95,7 +93,18 @@ public static partial class GlobalTileHooks
             int type
         )
         {
-            Event?.Invoke(self, i, j, type);
+            var result = true;
+            if (Event == null)
+            {
+                return result;
+            }
+
+            foreach (var handler in GetInvocationList())
+            {
+                result &= handler.Invoke(self, i, j, type);
+            }
+
+            return result;
         }
     }
 
@@ -151,7 +160,20 @@ public static partial class GlobalTileHooks
             ref bool blockDamaged
         )
         {
-            Event?.Invoke(self, i, j, type, ref blockDamaged);
+            if (Event == null)
+            {
+                return true;
+            }
+
+            foreach (var handler in GetInvocationList())
+            {
+                if (!handler.Invoke(self, i, j, type, ref blockDamaged))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 
@@ -242,7 +264,22 @@ public static partial class GlobalTileHooks
             Terraria.Player player
         )
         {
-            Event?.Invoke(self, i, j, type, player);
+            var result = default(bool?);
+            if (Event == null)
+            {
+                return result;
+            }
+
+            foreach (var handler in GetInvocationList())
+            {
+                var newValue = handler.Invoke(self, i, j, type, player);
+                if (newValue.HasValue)
+                {
+                    result &= newValue;
+                }
+            }
+
+            return result;
         }
     }
 
@@ -271,7 +308,22 @@ public static partial class GlobalTileHooks
             ref Microsoft.Xna.Framework.Color sightColor
         )
         {
-            Event?.Invoke(self, i, j, type, ref sightColor);
+            var result = default(bool?);
+            if (Event == null)
+            {
+                return result;
+            }
+
+            foreach (var handler in GetInvocationList())
+            {
+                var newValue = handler.Invoke(self, i, j, type, ref sightColor);
+                if (newValue.HasValue)
+                {
+                    result &= newValue;
+                }
+            }
+
+            return result;
         }
     }
 
@@ -298,7 +350,22 @@ public static partial class GlobalTileHooks
             int type
         )
         {
-            Event?.Invoke(self, i, j, type);
+            var result = default(bool?);
+            if (Event == null)
+            {
+                return result;
+            }
+
+            foreach (var handler in GetInvocationList())
+            {
+                var newValue = handler.Invoke(self, i, j, type);
+                if (newValue.HasValue)
+                {
+                    result &= newValue;
+                }
+            }
+
+            return result;
         }
     }
 
@@ -476,7 +543,18 @@ public static partial class GlobalTileHooks
             ref bool noBreak
         )
         {
-            Event?.Invoke(self, i, j, type, ref resetFrame, ref noBreak);
+            var result = true;
+            if (Event == null)
+            {
+                return result;
+            }
+
+            foreach (var handler in GetInvocationList())
+            {
+                result &= handler.Invoke(self, i, j, type, ref resetFrame, ref noBreak);
+            }
+
+            return result;
         }
     }
 
@@ -499,7 +577,22 @@ public static partial class GlobalTileHooks
             int type
         )
         {
-            Event?.Invoke(self, type);
+            var result = new System.Collections.Generic.List<int>();
+            if (Event == null)
+            {
+                return result.ToArray();
+            }
+
+            foreach (var handler in GetInvocationList())
+            {
+                var newValue = handler.Invoke(self, type);
+                if (newValue != null)
+                {
+                    result.AddRange(newValue);
+                }
+            }
+
+            return result.ToArray();
         }
     }
 
@@ -584,35 +677,6 @@ public static partial class GlobalTileHooks
         }
     }
 
-    public static partial class AutoSelect
-    {
-        public delegate bool Definition(
-            Terraria.ModLoader.GlobalTile self,
-            int i,
-            int j,
-            int type,
-            Terraria.Item item
-        );
-
-        public static event Definition? Event;
-
-        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
-        {
-            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
-        }
-
-        public static bool Invoke(
-            Terraria.ModLoader.GlobalTile self,
-            int i,
-            int j,
-            int type,
-            Terraria.Item item
-        )
-        {
-            Event?.Invoke(self, i, j, type, item);
-        }
-    }
-
     public static partial class PreHitWire
     {
         public delegate bool Definition(
@@ -636,7 +700,20 @@ public static partial class GlobalTileHooks
             int type
         )
         {
-            Event?.Invoke(self, i, j, type);
+            if (Event == null)
+            {
+                return true;
+            }
+
+            foreach (var handler in GetInvocationList())
+            {
+                if (!handler.Invoke(self, i, j, type))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 
@@ -657,33 +734,6 @@ public static partial class GlobalTileHooks
         }
 
         public static void Invoke(
-            Terraria.ModLoader.GlobalTile self,
-            int i,
-            int j,
-            int type
-        )
-        {
-            Event?.Invoke(self, i, j, type);
-        }
-    }
-
-    public static partial class Slope
-    {
-        public delegate bool Definition(
-            Terraria.ModLoader.GlobalTile self,
-            int i,
-            int j,
-            int type
-        );
-
-        public static event Definition? Event;
-
-        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
-        {
-            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
-        }
-
-        public static bool Invoke(
             Terraria.ModLoader.GlobalTile self,
             int i,
             int j,
@@ -769,7 +819,20 @@ public static partial class GlobalTileHooks
             int tileTypeBeingPlaced
         )
         {
-            Event?.Invoke(self, i, j, type, tileTypeBeingPlaced);
+            if (Event == null)
+            {
+                return true;
+            }
+
+            foreach (var handler in GetInvocationList())
+            {
+                if (!handler.Invoke(self, i, j, type, tileTypeBeingPlaced))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 
@@ -844,7 +907,20 @@ public static partial class GlobalTileHooks
             Terraria.Enums.TreeTypes treeType
         )
         {
-            Event?.Invoke(self, x, y, treeType);
+            if (Event == null)
+            {
+                return false;
+            }
+
+            foreach (var handler in GetInvocationList())
+            {
+                if (handler.Invoke(self, x, y, treeType))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

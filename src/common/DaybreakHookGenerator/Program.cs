@@ -66,14 +66,44 @@ internal static class Program
                .WithInvokeStrategy(nameof(GlobalInfoDisplay.Active), new NullableBooleanCombinerStrategy()),
             new TypeHookDefinition(typeof(GlobalItem)),
             new TypeHookDefinition(typeof(GlobalNPC)),
-            new TypeHookDefinition(typeof(GlobalProjectile)),
+            new TypeHookDefinition(typeof(GlobalProjectile))
+               .WithExclusions(
+                    nameof(GlobalProjectile.CanCutTiles),
+                    nameof(GlobalProjectile.CanDamage),
+                    nameof(GlobalProjectile.CanHitNPC),
+                    nameof(GlobalProjectile.CanHitPvp),
+                    nameof(GlobalProjectile.CanHitPlayer),
+                    nameof(GlobalProjectile.Colliding),
+                    nameof(GlobalProjectile.GetAlpha),
+                    nameof(GlobalProjectile.CanUseGrapple),
+                    nameof(GlobalProjectile.GrappleCanLatchOnTo)
+                ) // lazy
+               .WithInvokeStrategy(nameof(GlobalProjectile.PreAI), new BoolCombinerStrategy(true, "&="))
+               .WithInvokeStrategy(nameof(GlobalProjectile.ShouldUpdatePosition), new EarlyReturnOnFalseStrategy())
+               .WithInvokeStrategy(nameof(GlobalProjectile.TileCollideStyle), new EarlyReturnOnFalseStrategy())
+               .WithInvokeStrategy(nameof(GlobalProjectile.OnTileCollide), new BoolCombinerStrategy(true, "&="))
+               .WithInvokeStrategy(nameof(GlobalProjectile.PreKill), new BoolCombinerStrategy(true, "&="))
+               .WithInvokeStrategy(nameof(GlobalProjectile.MinionContactDamage), new EarlyReturnOnTrueStrategy())
+               .WithInvokeStrategy(nameof(GlobalProjectile.PreDrawExtras), new BoolCombinerStrategy(true, "&="))
+               .WithInvokeStrategy(nameof(GlobalProjectile.PreDraw), new BoolCombinerStrategy(true, "&=")),
             new TypeHookDefinition(typeof(GlobalPylon))
                .WithInvokeStrategy(nameof(GlobalPylon.PreDrawMapIcon), new BoolCombinerStrategy(true, "&="))
                .WithInvokeStrategy(nameof(GlobalPylon.PreCanPlacePylon), new NullableBooleanEarlyReturnStrategy())
                .WithInvokeStrategy(nameof(GlobalPylon.ValidTeleportCheck_PreNPCCount), new NullableBooleanEarlyReturnStrategy())
                .WithInvokeStrategy(nameof(GlobalPylon.ValidTeleportCheck_PreAnyDanger), new NullableBooleanEarlyReturnStrategy())
                .WithInvokeStrategy(nameof(GlobalPylon.ValidTeleportCheck_PreBiomeRequirements), new NullableBooleanEarlyReturnStrategy()),
-            new TypeHookDefinition(typeof(GlobalTile)),
+            new TypeHookDefinition(typeof(GlobalTile))
+               .WithExclusions(nameof(GlobalTile.AutoSelect), nameof(GlobalTile.Slope)) // lazy
+               .WithInvokeStrategy(nameof(GlobalTile.CanDrop), new BoolCombinerStrategy(true, "&="))
+               .WithInvokeStrategy(nameof(GlobalTile.CanKillTile), new EarlyReturnOnFalseStrategy())
+               .WithInvokeStrategy(nameof(GlobalTile.IsTileDangerous), new NullableBooleanCombinerStrategy())
+               .WithInvokeStrategy(nameof(GlobalTile.IsTileBiomeSightable), new NullableBooleanCombinerStrategy())
+               .WithInvokeStrategy(nameof(GlobalTile.IsTileSpelunkable), new NullableBooleanCombinerStrategy())
+               .WithInvokeStrategy(nameof(GlobalTile.TileFrame), new BoolCombinerStrategy(true, "&="))
+               .WithInvokeStrategy(nameof(GlobalTile.AdjTiles), new ArrayCombinerStrategy("int"))
+               .WithInvokeStrategy(nameof(GlobalTile.PreHitWire), new EarlyReturnOnFalseStrategy())
+               .WithInvokeStrategy(nameof(GlobalTile.CanReplace), new EarlyReturnOnFalseStrategy())
+               .WithInvokeStrategy(nameof(GlobalTile.ShakeTree), new EarlyReturnOnTrueStrategy()),
             new TypeHookDefinition(typeof(GlobalWall))
                .WithInvokeStrategy(nameof(GlobalWall.Drop), new EarlyReturnOnFalseStrategy())
                .WithInvokeStrategy(nameof(GlobalWall.WallFrame), new EarlyReturnOnFalseStrategy()),
