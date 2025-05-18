@@ -140,24 +140,32 @@ public static partial class ModPlayerHooks
         public delegate Terraria.ModLoader.ModPlayer Definition(
             Terraria.Player entity
         );
+
+        public static event Definition Event;
     }
 
     public static partial class Initialize
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class ResetEffects
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class ResetInfoAccessories
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class RefreshInfoAccessoriesFromTeamPlayers
@@ -165,6 +173,8 @@ public static partial class ModPlayerHooks
         public delegate void Definition(
             Terraria.Player otherPlayer
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyMaxStats
@@ -173,18 +183,24 @@ public static partial class ModPlayerHooks
             out Terraria.ModLoader.StatModifier health,
             out Terraria.ModLoader.StatModifier mana
         );
+
+        public static event Definition Event;
     }
 
     public static partial class UpdateDead
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class PreSaveCustomData
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class SaveData
@@ -192,6 +208,8 @@ public static partial class ModPlayerHooks
         public delegate void Definition(
             Terraria.ModLoader.IO.TagCompound tag
         );
+
+        public static event Definition Event;
     }
 
     public static partial class LoadData
@@ -199,18 +217,24 @@ public static partial class ModPlayerHooks
         public delegate void Definition(
             Terraria.ModLoader.IO.TagCompound tag
         );
+
+        public static event Definition Event;
     }
 
     public static partial class PreSavePlayer
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class PostSavePlayer
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class CopyClientState
@@ -218,6 +242,8 @@ public static partial class ModPlayerHooks
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer targetCopy
         );
+
+        public static event Definition Event;
     }
 
     public static partial class SyncPlayer
@@ -227,6 +253,8 @@ public static partial class ModPlayerHooks
             int fromWho,
             bool newPlayer
         );
+
+        public static event Definition Event;
     }
 
     public static partial class SendClientChanges
@@ -234,18 +262,24 @@ public static partial class ModPlayerHooks
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer clientPlayer
         );
+
+        public static event Definition Event;
     }
 
     public static partial class UpdateBadLifeRegen
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class UpdateLifeRegen
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class NaturalLifeRegen
@@ -253,18 +287,24 @@ public static partial class ModPlayerHooks
         public delegate void Definition(
             ref float regen
         );
+
+        public static event Definition Event;
     }
 
     public static partial class UpdateAutopause
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class PreUpdate
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class ProcessTriggers
@@ -272,12 +312,16 @@ public static partial class ModPlayerHooks
         public delegate void Definition(
             Terraria.GameInput.TriggersSet triggersSet
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ArmorSetBonusActivated
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class ArmorSetBonusHeld
@@ -285,78 +329,104 @@ public static partial class ModPlayerHooks
         public delegate void Definition(
             int holdTime
         );
+
+        public static event Definition Event;
     }
 
     public static partial class SetControls
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class PreUpdateBuffs
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class PostUpdateBuffs
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class UpdateEquips
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class PostUpdateEquips
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class UpdateVisibleAccessories
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class UpdateVisibleVanityAccessories
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class UpdateDyes
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class PostUpdateMiscEffects
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class PostUpdateRunSpeeds
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class PreUpdateMovement
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class PostUpdate
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyExtraJumpDurationMultiplier
@@ -365,6 +435,8 @@ public static partial class ModPlayerHooks
             Terraria.ModLoader.ExtraJump jump,
             ref float duration
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CanStartExtraJump
@@ -372,6 +444,8 @@ public static partial class ModPlayerHooks
         public delegate bool Definition(
             Terraria.ModLoader.ExtraJump jump
         );
+
+        public static event Definition Event;
     }
 
     public static partial class OnExtraJumpStarted
@@ -380,6 +454,8 @@ public static partial class ModPlayerHooks
             Terraria.ModLoader.ExtraJump jump,
             ref bool playSound
         );
+
+        public static event Definition Event;
     }
 
     public static partial class OnExtraJumpEnded
@@ -387,6 +463,8 @@ public static partial class ModPlayerHooks
         public delegate void Definition(
             Terraria.ModLoader.ExtraJump jump
         );
+
+        public static event Definition Event;
     }
 
     public static partial class OnExtraJumpRefreshed
@@ -394,6 +472,8 @@ public static partial class ModPlayerHooks
         public delegate void Definition(
             Terraria.ModLoader.ExtraJump jump
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ExtraJumpVisuals
@@ -401,6 +481,8 @@ public static partial class ModPlayerHooks
         public delegate void Definition(
             Terraria.ModLoader.ExtraJump jump
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CanShowExtraJumpVisuals
@@ -408,6 +490,8 @@ public static partial class ModPlayerHooks
         public delegate bool Definition(
             Terraria.ModLoader.ExtraJump jump
         );
+
+        public static event Definition Event;
     }
 
     public static partial class OnExtraJumpCleared
@@ -415,12 +499,16 @@ public static partial class ModPlayerHooks
         public delegate void Definition(
             Terraria.ModLoader.ExtraJump jump
         );
+
+        public static event Definition Event;
     }
 
     public static partial class FrameEffects
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class ImmuneTo
@@ -430,6 +518,8 @@ public static partial class ModPlayerHooks
             int cooldownCounter,
             bool dodgeable
         );
+
+        public static event Definition Event;
     }
 
     public static partial class FreeDodge
@@ -437,6 +527,8 @@ public static partial class ModPlayerHooks
         public delegate bool Definition(
             Terraria.Player.HurtInfo info
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ConsumableDodge
@@ -444,6 +536,8 @@ public static partial class ModPlayerHooks
         public delegate bool Definition(
             Terraria.Player.HurtInfo info
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyHurt
@@ -451,6 +545,8 @@ public static partial class ModPlayerHooks
         public delegate void Definition(
             ref Terraria.Player.HurtModifiers modifiers
         );
+
+        public static event Definition Event;
     }
 
     public static partial class OnHurt
@@ -458,6 +554,8 @@ public static partial class ModPlayerHooks
         public delegate void Definition(
             Terraria.Player.HurtInfo info
         );
+
+        public static event Definition Event;
     }
 
     public static partial class PostHurt
@@ -465,6 +563,8 @@ public static partial class ModPlayerHooks
         public delegate void Definition(
             Terraria.Player.HurtInfo info
         );
+
+        public static event Definition Event;
     }
 
     public static partial class PreKill
@@ -477,6 +577,8 @@ public static partial class ModPlayerHooks
             ref bool genDust,
             ref Terraria.DataStructures.PlayerDeathReason damageSource
         );
+
+        public static event Definition Event;
     }
 
     public static partial class Kill
@@ -487,6 +589,8 @@ public static partial class ModPlayerHooks
             bool pvp,
             Terraria.DataStructures.PlayerDeathReason damageSource
         );
+
+        public static event Definition Event;
     }
 
     public static partial class PreModifyLuck
@@ -494,6 +598,8 @@ public static partial class ModPlayerHooks
         public delegate bool Definition(
             ref float luck
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyLuck
@@ -501,18 +607,24 @@ public static partial class ModPlayerHooks
         public delegate void Definition(
             ref float luck
         );
+
+        public static event Definition Event;
     }
 
     public static partial class PreItemCheck
     {
         public delegate bool Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class PostItemCheck
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class UseTimeMultiplier
@@ -520,6 +632,8 @@ public static partial class ModPlayerHooks
         public delegate float Definition(
             Terraria.Item item
         );
+
+        public static event Definition Event;
     }
 
     public static partial class UseAnimationMultiplier
@@ -527,6 +641,8 @@ public static partial class ModPlayerHooks
         public delegate float Definition(
             Terraria.Item item
         );
+
+        public static event Definition Event;
     }
 
     public static partial class UseSpeedMultiplier
@@ -534,6 +650,8 @@ public static partial class ModPlayerHooks
         public delegate float Definition(
             Terraria.Item item
         );
+
+        public static event Definition Event;
     }
 
     public static partial class GetHealLife
@@ -543,6 +661,8 @@ public static partial class ModPlayerHooks
             bool quickHeal,
             ref int healValue
         );
+
+        public static event Definition Event;
     }
 
     public static partial class GetHealMana
@@ -552,6 +672,8 @@ public static partial class ModPlayerHooks
             bool quickHeal,
             ref int healValue
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyManaCost
@@ -561,6 +683,8 @@ public static partial class ModPlayerHooks
             ref float reduce,
             ref float mult
         );
+
+        public static event Definition Event;
     }
 
     public static partial class OnMissingMana
@@ -569,6 +693,8 @@ public static partial class ModPlayerHooks
             Terraria.Item item,
             int neededMana
         );
+
+        public static event Definition Event;
     }
 
     public static partial class OnConsumeMana
@@ -577,6 +703,8 @@ public static partial class ModPlayerHooks
             Terraria.Item item,
             int manaConsumed
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyWeaponDamage
@@ -585,6 +713,8 @@ public static partial class ModPlayerHooks
             Terraria.Item item,
             ref Terraria.ModLoader.StatModifier damage
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyWeaponKnockback
@@ -593,6 +723,8 @@ public static partial class ModPlayerHooks
             Terraria.Item item,
             ref Terraria.ModLoader.StatModifier knockback
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyWeaponCrit
@@ -601,6 +733,8 @@ public static partial class ModPlayerHooks
             Terraria.Item item,
             ref float crit
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CanConsumeAmmo
@@ -609,6 +743,8 @@ public static partial class ModPlayerHooks
             Terraria.Item weapon,
             Terraria.Item ammo
         );
+
+        public static event Definition Event;
     }
 
     public static partial class OnConsumeAmmo
@@ -617,6 +753,8 @@ public static partial class ModPlayerHooks
             Terraria.Item weapon,
             Terraria.Item ammo
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CanShoot
@@ -624,6 +762,8 @@ public static partial class ModPlayerHooks
         public delegate bool Definition(
             Terraria.Item item
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyShootStats
@@ -636,6 +776,8 @@ public static partial class ModPlayerHooks
             ref int damage,
             ref float knockback
         );
+
+        public static event Definition Event;
     }
 
     public static partial class Shoot
@@ -649,6 +791,8 @@ public static partial class ModPlayerHooks
             int damage,
             float knockback
         );
+
+        public static event Definition Event;
     }
 
     public static partial class MeleeEffects
@@ -657,6 +801,8 @@ public static partial class ModPlayerHooks
             Terraria.Item item,
             Microsoft.Xna.Framework.Rectangle hitbox
         );
+
+        public static event Definition Event;
     }
 
     public static partial class EmitEnchantmentVisualsAt
@@ -667,6 +813,8 @@ public static partial class ModPlayerHooks
             int boxWidth,
             int boxHeight
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CanCatchNPC
@@ -675,6 +823,8 @@ public static partial class ModPlayerHooks
             Terraria.NPC target,
             Terraria.Item item
         );
+
+        public static event Definition Event;
     }
 
     public static partial class OnCatchNPC
@@ -684,6 +834,8 @@ public static partial class ModPlayerHooks
             Terraria.Item item,
             bool failed
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyItemScale
@@ -692,6 +844,8 @@ public static partial class ModPlayerHooks
             Terraria.Item item,
             ref float scale
         );
+
+        public static event Definition Event;
     }
 
     public static partial class OnHitAnything
@@ -701,6 +855,8 @@ public static partial class ModPlayerHooks
             float y,
             Terraria.Entity victim
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CanHitNPC
@@ -708,6 +864,8 @@ public static partial class ModPlayerHooks
         public delegate bool Definition(
             Terraria.NPC target
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CanMeleeAttackCollideWithNPC
@@ -717,6 +875,8 @@ public static partial class ModPlayerHooks
             Microsoft.Xna.Framework.Rectangle meleeAttackHitbox,
             Terraria.NPC target
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyHitNPC
@@ -725,6 +885,8 @@ public static partial class ModPlayerHooks
             Terraria.NPC target,
             ref Terraria.NPC.HitModifiers modifiers
         );
+
+        public static event Definition Event;
     }
 
     public static partial class OnHitNPC
@@ -734,6 +896,8 @@ public static partial class ModPlayerHooks
             Terraria.NPC.HitInfo hit,
             int damageDone
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CanHitNPCWithItem
@@ -742,6 +906,8 @@ public static partial class ModPlayerHooks
             Terraria.Item item,
             Terraria.NPC target
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyHitNPCWithItem
@@ -751,6 +917,8 @@ public static partial class ModPlayerHooks
             Terraria.NPC target,
             ref Terraria.NPC.HitModifiers modifiers
         );
+
+        public static event Definition Event;
     }
 
     public static partial class OnHitNPCWithItem
@@ -761,6 +929,8 @@ public static partial class ModPlayerHooks
             Terraria.NPC.HitInfo hit,
             int damageDone
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CanHitNPCWithProj
@@ -769,6 +939,8 @@ public static partial class ModPlayerHooks
             Terraria.Projectile proj,
             Terraria.NPC target
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyHitNPCWithProj
@@ -778,6 +950,8 @@ public static partial class ModPlayerHooks
             Terraria.NPC target,
             ref Terraria.NPC.HitModifiers modifiers
         );
+
+        public static event Definition Event;
     }
 
     public static partial class OnHitNPCWithProj
@@ -788,6 +962,8 @@ public static partial class ModPlayerHooks
             Terraria.NPC.HitInfo hit,
             int damageDone
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CanHitPvp
@@ -796,6 +972,8 @@ public static partial class ModPlayerHooks
             Terraria.Item item,
             Terraria.Player target
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CanHitPvpWithProj
@@ -804,6 +982,8 @@ public static partial class ModPlayerHooks
             Terraria.Projectile proj,
             Terraria.Player target
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CanBeHitByNPC
@@ -812,6 +992,8 @@ public static partial class ModPlayerHooks
             Terraria.NPC npc,
             ref int cooldownSlot
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyHitByNPC
@@ -820,6 +1002,8 @@ public static partial class ModPlayerHooks
             Terraria.NPC npc,
             ref Terraria.Player.HurtModifiers modifiers
         );
+
+        public static event Definition Event;
     }
 
     public static partial class OnHitByNPC
@@ -828,6 +1012,8 @@ public static partial class ModPlayerHooks
             Terraria.NPC npc,
             Terraria.Player.HurtInfo hurtInfo
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CanBeHitByProjectile
@@ -835,6 +1021,8 @@ public static partial class ModPlayerHooks
         public delegate bool Definition(
             Terraria.Projectile proj
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyHitByProjectile
@@ -843,6 +1031,8 @@ public static partial class ModPlayerHooks
             Terraria.Projectile proj,
             ref Terraria.Player.HurtModifiers modifiers
         );
+
+        public static event Definition Event;
     }
 
     public static partial class OnHitByProjectile
@@ -851,6 +1041,8 @@ public static partial class ModPlayerHooks
             Terraria.Projectile proj,
             Terraria.Player.HurtInfo hurtInfo
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyFishingAttempt
@@ -858,6 +1050,8 @@ public static partial class ModPlayerHooks
         public delegate void Definition(
             ref Terraria.DataStructures.FishingAttempt attempt
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CatchFish
@@ -869,6 +1063,8 @@ public static partial class ModPlayerHooks
             ref Terraria.AdvancedPopupRequest sonar,
             ref Microsoft.Xna.Framework.Vector2 sonarPosition
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyCaughtFish
@@ -876,6 +1072,8 @@ public static partial class ModPlayerHooks
         public delegate void Definition(
             Terraria.Item fish
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CanConsumeBait
@@ -883,6 +1081,8 @@ public static partial class ModPlayerHooks
         public delegate bool? Definition(
             Terraria.Item bait
         );
+
+        public static event Definition Event;
     }
 
     public static partial class GetFishingLevel
@@ -892,6 +1092,8 @@ public static partial class ModPlayerHooks
             Terraria.Item bait,
             ref float fishingLevel
         );
+
+        public static event Definition Event;
     }
 
     public static partial class AnglerQuestReward
@@ -900,6 +1102,8 @@ public static partial class ModPlayerHooks
             float rareMultiplier,
             System.Collections.Generic.List<Terraria.Item> rewardItems
         );
+
+        public static event Definition Event;
     }
 
     public static partial class GetDyeTraderReward
@@ -907,6 +1111,8 @@ public static partial class ModPlayerHooks
         public delegate void Definition(
             System.Collections.Generic.List<int> rewardPool
         );
+
+        public static event Definition Event;
     }
 
     public static partial class DrawEffects
@@ -919,6 +1125,8 @@ public static partial class ModPlayerHooks
             ref float a,
             ref bool fullBright
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyDrawInfo
@@ -926,6 +1134,8 @@ public static partial class ModPlayerHooks
         public delegate void Definition(
             ref Terraria.DataStructures.PlayerDrawSet drawInfo
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyDrawLayerOrdering
@@ -933,6 +1143,8 @@ public static partial class ModPlayerHooks
         public delegate void Definition(
             System.Collections.Generic.IDictionary<Terraria.ModLoader.PlayerDrawLayer, Terraria.ModLoader.PlayerDrawLayer.Position> positions
         );
+
+        public static event Definition Event;
     }
 
     public static partial class HideDrawLayers
@@ -940,12 +1152,16 @@ public static partial class ModPlayerHooks
         public delegate void Definition(
             Terraria.DataStructures.PlayerDrawSet drawInfo
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyScreenPosition
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyZoom
@@ -953,30 +1169,40 @@ public static partial class ModPlayerHooks
         public delegate void Definition(
             ref float zoom
         );
+
+        public static event Definition Event;
     }
 
     public static partial class PlayerConnect
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class PlayerDisconnect
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class OnEnterWorld
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class OnRespawn
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class ShiftClickSlot
@@ -986,6 +1212,8 @@ public static partial class ModPlayerHooks
             int context,
             int slot
         );
+
+        public static event Definition Event;
     }
 
     public static partial class HoverSlot
@@ -995,6 +1223,8 @@ public static partial class ModPlayerHooks
             int context,
             int slot
         );
+
+        public static event Definition Event;
     }
 
     public static partial class PostSellItem
@@ -1004,6 +1234,8 @@ public static partial class ModPlayerHooks
             Terraria.Item[] shopInventory,
             Terraria.Item item
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CanSellItem
@@ -1013,6 +1245,8 @@ public static partial class ModPlayerHooks
             Terraria.Item[] shopInventory,
             Terraria.Item item
         );
+
+        public static event Definition Event;
     }
 
     public static partial class PostBuyItem
@@ -1022,6 +1256,8 @@ public static partial class ModPlayerHooks
             Terraria.Item[] shopInventory,
             Terraria.Item item
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CanBuyItem
@@ -1031,6 +1267,8 @@ public static partial class ModPlayerHooks
             Terraria.Item[] shopInventory,
             Terraria.Item item
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CanUseItem
@@ -1038,6 +1276,8 @@ public static partial class ModPlayerHooks
         public delegate bool Definition(
             Terraria.Item item
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CanAutoReuseItem
@@ -1045,6 +1285,8 @@ public static partial class ModPlayerHooks
         public delegate bool? Definition(
             Terraria.Item item
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyNurseHeal
@@ -1055,6 +1297,8 @@ public static partial class ModPlayerHooks
             ref bool removeDebuffs,
             ref string chatText
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyNursePrice
@@ -1065,6 +1309,8 @@ public static partial class ModPlayerHooks
             bool removeDebuffs,
             ref int price
         );
+
+        public static event Definition Event;
     }
 
     public static partial class PostNurseHeal
@@ -1075,6 +1321,8 @@ public static partial class ModPlayerHooks
             bool removeDebuffs,
             int price
         );
+
+        public static event Definition Event;
     }
 
     public static partial class AddStartingItems
@@ -1082,6 +1330,8 @@ public static partial class ModPlayerHooks
         public delegate System.Collections.Generic.IEnumerable<Terraria.Item> Definition(
             bool mediumCoreDeath
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyStartingInventory
@@ -1090,6 +1340,8 @@ public static partial class ModPlayerHooks
             System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.List<Terraria.Item>> itemsByMod,
             bool mediumCoreDeath
         );
+
+        public static event Definition Event;
     }
 
     public static partial class AddMaterialsForCrafting
@@ -1097,6 +1349,8 @@ public static partial class ModPlayerHooks
         public delegate System.Collections.Generic.IEnumerable<Terraria.Item> Definition(
             out Terraria.ModLoader.ModPlayer.ItemConsumedCallback itemConsumedCallback
         );
+
+        public static event Definition Event;
     }
 
     public static partial class OnPickup
@@ -1104,6 +1358,8 @@ public static partial class ModPlayerHooks
         public delegate bool Definition(
             Terraria.Item item
         );
+
+        public static event Definition Event;
     }
 
 }

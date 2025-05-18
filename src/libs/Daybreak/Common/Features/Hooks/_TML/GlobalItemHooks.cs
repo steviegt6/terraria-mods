@@ -126,6 +126,8 @@ public static partial class GlobalItemHooks
             Terraria.Item item,
             Terraria.DataStructures.ItemCreationContext context
         );
+
+        public static event Definition Event;
     }
 
     public static partial class OnSpawn
@@ -134,6 +136,8 @@ public static partial class GlobalItemHooks
             Terraria.Item item,
             Terraria.DataStructures.IEntitySource source
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ChoosePrefix
@@ -142,6 +146,8 @@ public static partial class GlobalItemHooks
             Terraria.Item item,
             Terraria.Utilities.UnifiedRandom rand
         );
+
+        public static event Definition Event;
     }
 
     public static partial class PrefixChance
@@ -151,6 +157,8 @@ public static partial class GlobalItemHooks
             int pre,
             Terraria.Utilities.UnifiedRandom rand
         );
+
+        public static event Definition Event;
     }
 
     public static partial class AllowPrefix
@@ -159,6 +167,8 @@ public static partial class GlobalItemHooks
             Terraria.Item item,
             int pre
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CanUseItem
@@ -167,6 +177,8 @@ public static partial class GlobalItemHooks
             Terraria.Item item,
             Terraria.Player player
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CanAutoReuseItem
@@ -175,6 +187,8 @@ public static partial class GlobalItemHooks
             Terraria.Item item,
             Terraria.Player player
         );
+
+        public static event Definition Event;
     }
 
     public static partial class UseStyle
@@ -184,6 +198,8 @@ public static partial class GlobalItemHooks
             Terraria.Player player,
             Microsoft.Xna.Framework.Rectangle heldItemFrame
         );
+
+        public static event Definition Event;
     }
 
     public static partial class HoldStyle
@@ -193,6 +209,8 @@ public static partial class GlobalItemHooks
             Terraria.Player player,
             Microsoft.Xna.Framework.Rectangle heldItemFrame
         );
+
+        public static event Definition Event;
     }
 
     public static partial class HoldItem
@@ -201,6 +219,8 @@ public static partial class GlobalItemHooks
             Terraria.Item item,
             Terraria.Player player
         );
+
+        public static event Definition Event;
     }
 
     public static partial class UseTimeMultiplier
@@ -209,6 +229,8 @@ public static partial class GlobalItemHooks
             Terraria.Item item,
             Terraria.Player player
         );
+
+        public static event Definition Event;
     }
 
     public static partial class UseAnimationMultiplier
@@ -217,6 +239,8 @@ public static partial class GlobalItemHooks
             Terraria.Item item,
             Terraria.Player player
         );
+
+        public static event Definition Event;
     }
 
     public static partial class UseSpeedMultiplier
@@ -225,6 +249,8 @@ public static partial class GlobalItemHooks
             Terraria.Item item,
             Terraria.Player player
         );
+
+        public static event Definition Event;
     }
 
     public static partial class GetHealLife
@@ -235,6 +261,8 @@ public static partial class GlobalItemHooks
             bool quickHeal,
             ref int healValue
         );
+
+        public static event Definition Event;
     }
 
     public static partial class GetHealMana
@@ -245,6 +273,8 @@ public static partial class GlobalItemHooks
             bool quickHeal,
             ref int healValue
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyManaCost
@@ -255,6 +285,8 @@ public static partial class GlobalItemHooks
             ref float reduce,
             ref float mult
         );
+
+        public static event Definition Event;
     }
 
     public static partial class OnMissingMana
@@ -264,6 +296,8 @@ public static partial class GlobalItemHooks
             Terraria.Player player,
             int neededMana
         );
+
+        public static event Definition Event;
     }
 
     public static partial class OnConsumeMana
@@ -273,6 +307,8 @@ public static partial class GlobalItemHooks
             Terraria.Player player,
             int manaConsumed
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyWeaponDamage
@@ -282,6 +318,8 @@ public static partial class GlobalItemHooks
             Terraria.Player player,
             ref Terraria.ModLoader.StatModifier damage
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyResearchSorting
@@ -290,6 +328,8 @@ public static partial class GlobalItemHooks
             Terraria.Item item,
             ref Terraria.ID.ContentSamples.CreativeHelper.ItemGroup itemGroup
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CanConsumeBait
@@ -298,6 +338,8 @@ public static partial class GlobalItemHooks
             Terraria.Player player,
             Terraria.Item bait
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CanResearch
@@ -305,6 +347,8 @@ public static partial class GlobalItemHooks
         public delegate bool Definition(
             Terraria.Item item
         );
+
+        public static event Definition Event;
     }
 
     public static partial class OnResearched
@@ -313,6 +357,8 @@ public static partial class GlobalItemHooks
             Terraria.Item item,
             bool fullyResearched
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyWeaponKnockback
@@ -322,6 +368,8 @@ public static partial class GlobalItemHooks
             Terraria.Player player,
             ref Terraria.ModLoader.StatModifier knockback
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyWeaponCrit
@@ -331,6 +379,8 @@ public static partial class GlobalItemHooks
             Terraria.Player player,
             ref float crit
         );
+
+        public static event Definition Event;
     }
 
     public static partial class NeedsAmmo
@@ -339,6 +389,8 @@ public static partial class GlobalItemHooks
             Terraria.Item item,
             Terraria.Player player
         );
+
+        public static event Definition Event;
     }
 
     public static partial class PickAmmo
@@ -352,6 +404,8 @@ public static partial class GlobalItemHooks
             ref Terraria.ModLoader.StatModifier damage,
             ref float knockback
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CanChooseAmmo
@@ -361,6 +415,8 @@ public static partial class GlobalItemHooks
             Terraria.Item ammo,
             Terraria.Player player
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CanBeChosenAsAmmo
@@ -370,6 +426,8 @@ public static partial class GlobalItemHooks
             Terraria.Item weapon,
             Terraria.Player player
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CanConsumeAmmo
@@ -379,6 +437,8 @@ public static partial class GlobalItemHooks
             Terraria.Item ammo,
             Terraria.Player player
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CanBeConsumedAsAmmo
@@ -388,6 +448,8 @@ public static partial class GlobalItemHooks
             Terraria.Item weapon,
             Terraria.Player player
         );
+
+        public static event Definition Event;
     }
 
     public static partial class OnConsumeAmmo
@@ -397,6 +459,8 @@ public static partial class GlobalItemHooks
             Terraria.Item ammo,
             Terraria.Player player
         );
+
+        public static event Definition Event;
     }
 
     public static partial class OnConsumedAsAmmo
@@ -406,6 +470,8 @@ public static partial class GlobalItemHooks
             Terraria.Item weapon,
             Terraria.Player player
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CanShoot
@@ -414,6 +480,8 @@ public static partial class GlobalItemHooks
             Terraria.Item item,
             Terraria.Player player
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyShootStats
@@ -427,6 +495,8 @@ public static partial class GlobalItemHooks
             ref int damage,
             ref float knockback
         );
+
+        public static event Definition Event;
     }
 
     public static partial class Shoot
@@ -441,6 +511,8 @@ public static partial class GlobalItemHooks
             int damage,
             float knockback
         );
+
+        public static event Definition Event;
     }
 
     public static partial class UseItemHitbox
@@ -451,6 +523,8 @@ public static partial class GlobalItemHooks
             ref Microsoft.Xna.Framework.Rectangle hitbox,
             ref bool noHitbox
         );
+
+        public static event Definition Event;
     }
 
     public static partial class MeleeEffects
@@ -460,6 +534,8 @@ public static partial class GlobalItemHooks
             Terraria.Player player,
             Microsoft.Xna.Framework.Rectangle hitbox
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CanCatchNPC
@@ -469,6 +545,8 @@ public static partial class GlobalItemHooks
             Terraria.NPC target,
             Terraria.Player player
         );
+
+        public static event Definition Event;
     }
 
     public static partial class OnCatchNPC
@@ -479,6 +557,8 @@ public static partial class GlobalItemHooks
             Terraria.Player player,
             bool failed
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyItemScale
@@ -488,6 +568,8 @@ public static partial class GlobalItemHooks
             Terraria.Player player,
             ref float scale
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CanHitNPC
@@ -497,6 +579,8 @@ public static partial class GlobalItemHooks
             Terraria.Player player,
             Terraria.NPC target
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CanMeleeAttackCollideWithNPC
@@ -507,6 +591,8 @@ public static partial class GlobalItemHooks
             Terraria.Player player,
             Terraria.NPC target
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyHitNPC
@@ -517,6 +603,8 @@ public static partial class GlobalItemHooks
             Terraria.NPC target,
             ref Terraria.NPC.HitModifiers modifiers
         );
+
+        public static event Definition Event;
     }
 
     public static partial class OnHitNPC
@@ -528,6 +616,8 @@ public static partial class GlobalItemHooks
             Terraria.NPC.HitInfo hit,
             int damageDone
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CanHitPvp
@@ -537,6 +627,8 @@ public static partial class GlobalItemHooks
             Terraria.Player player,
             Terraria.Player target
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyHitPvp
@@ -547,6 +639,8 @@ public static partial class GlobalItemHooks
             Terraria.Player target,
             ref Terraria.Player.HurtModifiers modifiers
         );
+
+        public static event Definition Event;
     }
 
     public static partial class OnHitPvp
@@ -557,6 +651,8 @@ public static partial class GlobalItemHooks
             Terraria.Player target,
             Terraria.Player.HurtInfo hurtInfo
         );
+
+        public static event Definition Event;
     }
 
     public static partial class UseItem
@@ -565,6 +661,8 @@ public static partial class GlobalItemHooks
             Terraria.Item item,
             Terraria.Player player
         );
+
+        public static event Definition Event;
     }
 
     public static partial class UseAnimation
@@ -573,6 +671,8 @@ public static partial class GlobalItemHooks
             Terraria.Item item,
             Terraria.Player player
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ConsumeItem
@@ -581,6 +681,8 @@ public static partial class GlobalItemHooks
             Terraria.Item item,
             Terraria.Player player
         );
+
+        public static event Definition Event;
     }
 
     public static partial class OnConsumeItem
@@ -589,6 +691,8 @@ public static partial class GlobalItemHooks
             Terraria.Item item,
             Terraria.Player player
         );
+
+        public static event Definition Event;
     }
 
     public static partial class UseItemFrame
@@ -597,6 +701,8 @@ public static partial class GlobalItemHooks
             Terraria.Item item,
             Terraria.Player player
         );
+
+        public static event Definition Event;
     }
 
     public static partial class HoldItemFrame
@@ -605,6 +711,8 @@ public static partial class GlobalItemHooks
             Terraria.Item item,
             Terraria.Player player
         );
+
+        public static event Definition Event;
     }
 
     public static partial class AltFunctionUse
@@ -613,6 +721,8 @@ public static partial class GlobalItemHooks
             Terraria.Item item,
             Terraria.Player player
         );
+
+        public static event Definition Event;
     }
 
     public static partial class UpdateInventory
@@ -621,6 +731,8 @@ public static partial class GlobalItemHooks
             Terraria.Item item,
             Terraria.Player player
         );
+
+        public static event Definition Event;
     }
 
     public static partial class UpdateInfoAccessory
@@ -629,6 +741,8 @@ public static partial class GlobalItemHooks
             Terraria.Item item,
             Terraria.Player player
         );
+
+        public static event Definition Event;
     }
 
     public static partial class UpdateEquip
@@ -637,6 +751,8 @@ public static partial class GlobalItemHooks
             Terraria.Item item,
             Terraria.Player player
         );
+
+        public static event Definition Event;
     }
 
     public static partial class UpdateAccessory
@@ -646,6 +762,8 @@ public static partial class GlobalItemHooks
             Terraria.Player player,
             bool hideVisual
         );
+
+        public static event Definition Event;
     }
 
     public static partial class UpdateVanity
@@ -654,6 +772,8 @@ public static partial class GlobalItemHooks
             Terraria.Item item,
             Terraria.Player player
         );
+
+        public static event Definition Event;
     }
 
     public static partial class IsArmorSet
@@ -663,6 +783,8 @@ public static partial class GlobalItemHooks
             Terraria.Item body,
             Terraria.Item legs
         );
+
+        public static event Definition Event;
     }
 
     public static partial class UpdateArmorSet
@@ -671,6 +793,8 @@ public static partial class GlobalItemHooks
             Terraria.Player player,
             string set
         );
+
+        public static event Definition Event;
     }
 
     public static partial class IsVanitySet
@@ -680,6 +804,8 @@ public static partial class GlobalItemHooks
             int body,
             int legs
         );
+
+        public static event Definition Event;
     }
 
     public static partial class PreUpdateVanitySet
@@ -688,6 +814,8 @@ public static partial class GlobalItemHooks
             Terraria.Player player,
             string set
         );
+
+        public static event Definition Event;
     }
 
     public static partial class UpdateVanitySet
@@ -696,6 +824,8 @@ public static partial class GlobalItemHooks
             Terraria.Player player,
             string set
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ArmorSetShadows
@@ -704,6 +834,8 @@ public static partial class GlobalItemHooks
             Terraria.Player player,
             string set
         );
+
+        public static event Definition Event;
     }
 
     public static partial class SetMatch
@@ -715,6 +847,8 @@ public static partial class GlobalItemHooks
             ref int equipSlot,
             ref bool robes
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CanRightClick
@@ -722,6 +856,8 @@ public static partial class GlobalItemHooks
         public delegate bool Definition(
             Terraria.Item item
         );
+
+        public static event Definition Event;
     }
 
     public static partial class RightClick
@@ -730,6 +866,8 @@ public static partial class GlobalItemHooks
             Terraria.Item item,
             Terraria.Player player
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyItemLoot
@@ -738,6 +876,8 @@ public static partial class GlobalItemHooks
             Terraria.Item item,
             Terraria.ModLoader.ItemLoot itemLoot
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CanStack
@@ -746,6 +886,8 @@ public static partial class GlobalItemHooks
             Terraria.Item destination,
             Terraria.Item source
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CanStackInWorld
@@ -754,6 +896,8 @@ public static partial class GlobalItemHooks
             Terraria.Item destination,
             Terraria.Item source
         );
+
+        public static event Definition Event;
     }
 
     public static partial class OnStack
@@ -763,6 +907,8 @@ public static partial class GlobalItemHooks
             Terraria.Item source,
             int numToTransfer
         );
+
+        public static event Definition Event;
     }
 
     public static partial class SplitStack
@@ -772,6 +918,8 @@ public static partial class GlobalItemHooks
             Terraria.Item source,
             int numToTransfer
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ReforgePrice
@@ -781,6 +929,8 @@ public static partial class GlobalItemHooks
             ref int reforgePrice,
             ref bool canApplyDiscount
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CanReforge
@@ -788,6 +938,8 @@ public static partial class GlobalItemHooks
         public delegate bool Definition(
             Terraria.Item item
         );
+
+        public static event Definition Event;
     }
 
     public static partial class PreReforge
@@ -795,6 +947,8 @@ public static partial class GlobalItemHooks
         public delegate void Definition(
             Terraria.Item item
         );
+
+        public static event Definition Event;
     }
 
     public static partial class PostReforge
@@ -802,6 +956,8 @@ public static partial class GlobalItemHooks
         public delegate void Definition(
             Terraria.Item item
         );
+
+        public static event Definition Event;
     }
 
     public static partial class DrawArmorColor
@@ -815,6 +971,8 @@ public static partial class GlobalItemHooks
             ref int glowMask,
             ref Microsoft.Xna.Framework.Color glowMaskColor
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ArmorArmGlowMask
@@ -826,6 +984,8 @@ public static partial class GlobalItemHooks
             ref int glowMask,
             ref Microsoft.Xna.Framework.Color color
         );
+
+        public static event Definition Event;
     }
 
     public static partial class VerticalWingSpeeds
@@ -839,6 +999,8 @@ public static partial class GlobalItemHooks
             ref float maxAscentMultiplier,
             ref float constantAscend
         );
+
+        public static event Definition Event;
     }
 
     public static partial class HorizontalWingSpeeds
@@ -849,6 +1011,8 @@ public static partial class GlobalItemHooks
             ref float speed,
             ref float acceleration
         );
+
+        public static event Definition Event;
     }
 
     public static partial class WingUpdate
@@ -858,6 +1022,8 @@ public static partial class GlobalItemHooks
             Terraria.Player player,
             bool inUse
         );
+
+        public static event Definition Event;
     }
 
     public static partial class Update
@@ -867,6 +1033,8 @@ public static partial class GlobalItemHooks
             ref float gravity,
             ref float maxFallSpeed
         );
+
+        public static event Definition Event;
     }
 
     public static partial class PostUpdate
@@ -874,6 +1042,8 @@ public static partial class GlobalItemHooks
         public delegate void Definition(
             Terraria.Item item
         );
+
+        public static event Definition Event;
     }
 
     public static partial class GrabRange
@@ -883,6 +1053,8 @@ public static partial class GlobalItemHooks
             Terraria.Player player,
             ref int grabRange
         );
+
+        public static event Definition Event;
     }
 
     public static partial class GrabStyle
@@ -891,6 +1063,8 @@ public static partial class GlobalItemHooks
             Terraria.Item item,
             Terraria.Player player
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CanPickup
@@ -899,6 +1073,8 @@ public static partial class GlobalItemHooks
             Terraria.Item item,
             Terraria.Player player
         );
+
+        public static event Definition Event;
     }
 
     public static partial class OnPickup
@@ -907,6 +1083,8 @@ public static partial class GlobalItemHooks
             Terraria.Item item,
             Terraria.Player player
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ItemSpace
@@ -915,6 +1093,8 @@ public static partial class GlobalItemHooks
             Terraria.Item item,
             Terraria.Player player
         );
+
+        public static event Definition Event;
     }
 
     public static partial class GetAlpha
@@ -923,6 +1103,8 @@ public static partial class GlobalItemHooks
             Terraria.Item item,
             Microsoft.Xna.Framework.Color lightColor
         );
+
+        public static event Definition Event;
     }
 
     public static partial class PreDrawInWorld
@@ -936,6 +1118,8 @@ public static partial class GlobalItemHooks
             ref float scale,
             int whoAmI
         );
+
+        public static event Definition Event;
     }
 
     public static partial class PostDrawInWorld
@@ -949,6 +1133,8 @@ public static partial class GlobalItemHooks
             float scale,
             int whoAmI
         );
+
+        public static event Definition Event;
     }
 
     public static partial class PreDrawInInventory
@@ -963,6 +1149,8 @@ public static partial class GlobalItemHooks
             Microsoft.Xna.Framework.Vector2 origin,
             float scale
         );
+
+        public static event Definition Event;
     }
 
     public static partial class PostDrawInInventory
@@ -977,6 +1165,8 @@ public static partial class GlobalItemHooks
             Microsoft.Xna.Framework.Vector2 origin,
             float scale
         );
+
+        public static event Definition Event;
     }
 
     public static partial class HoldoutOffset
@@ -984,6 +1174,8 @@ public static partial class GlobalItemHooks
         public delegate Microsoft.Xna.Framework.Vector2? Definition(
             int type
         );
+
+        public static event Definition Event;
     }
 
     public static partial class HoldoutOrigin
@@ -991,6 +1183,8 @@ public static partial class GlobalItemHooks
         public delegate Microsoft.Xna.Framework.Vector2? Definition(
             int type
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CanEquipAccessory
@@ -1001,6 +1195,8 @@ public static partial class GlobalItemHooks
             int slot,
             bool modded
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CanAccessoryBeEquippedWith
@@ -1010,6 +1206,8 @@ public static partial class GlobalItemHooks
             Terraria.Item incomingItem,
             Terraria.Player player
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ExtractinatorUse
@@ -1020,6 +1218,8 @@ public static partial class GlobalItemHooks
             ref int resultType,
             ref int resultStack
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CaughtFishStack
@@ -1028,6 +1228,8 @@ public static partial class GlobalItemHooks
             int type,
             ref int stack
         );
+
+        public static event Definition Event;
     }
 
     public static partial class IsAnglerQuestAvailable
@@ -1035,6 +1237,8 @@ public static partial class GlobalItemHooks
         public delegate bool Definition(
             int type
         );
+
+        public static event Definition Event;
     }
 
     public static partial class AnglerChat
@@ -1044,12 +1248,16 @@ public static partial class GlobalItemHooks
             ref string chat,
             ref string catchLocation
         );
+
+        public static event Definition Event;
     }
 
     public static partial class AddRecipes
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class PreDrawTooltip
@@ -1060,6 +1268,8 @@ public static partial class GlobalItemHooks
             ref int x,
             ref int y
         );
+
+        public static event Definition Event;
     }
 
     public static partial class PostDrawTooltip
@@ -1068,6 +1278,8 @@ public static partial class GlobalItemHooks
             Terraria.Item item,
             System.Collections.ObjectModel.ReadOnlyCollection<Terraria.ModLoader.DrawableTooltipLine> lines
         );
+
+        public static event Definition Event;
     }
 
     public static partial class PreDrawTooltipLine
@@ -1077,6 +1289,8 @@ public static partial class GlobalItemHooks
             Terraria.ModLoader.DrawableTooltipLine line,
             ref int yOffset
         );
+
+        public static event Definition Event;
     }
 
     public static partial class PostDrawTooltipLine
@@ -1085,6 +1299,8 @@ public static partial class GlobalItemHooks
             Terraria.Item item,
             Terraria.ModLoader.DrawableTooltipLine line
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyTooltips
@@ -1093,6 +1309,8 @@ public static partial class GlobalItemHooks
             Terraria.Item item,
             System.Collections.Generic.List<Terraria.ModLoader.TooltipLine> tooltips
         );
+
+        public static event Definition Event;
     }
 
     public static partial class SaveData
@@ -1101,6 +1319,8 @@ public static partial class GlobalItemHooks
             Terraria.Item item,
             Terraria.ModLoader.IO.TagCompound tag
         );
+
+        public static event Definition Event;
     }
 
     public static partial class LoadData
@@ -1109,6 +1329,8 @@ public static partial class GlobalItemHooks
             Terraria.Item item,
             Terraria.ModLoader.IO.TagCompound tag
         );
+
+        public static event Definition Event;
     }
 
     public static partial class NetSend
@@ -1117,6 +1339,8 @@ public static partial class GlobalItemHooks
             Terraria.Item item,
             System.IO.BinaryWriter writer
         );
+
+        public static event Definition Event;
     }
 
     public static partial class NetReceive
@@ -1125,6 +1349,8 @@ public static partial class GlobalItemHooks
             Terraria.Item item,
             System.IO.BinaryReader reader
         );
+
+        public static event Definition Event;
     }
 
 }

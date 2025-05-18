@@ -16,6 +16,8 @@ public static partial class GlobalBossBarHooks
             Terraria.NPC npc,
             ref Terraria.DataStructures.BossBarDrawParams drawParams
         );
+
+        public static event Definition Event;
     }
 
     public static partial class PostDraw
@@ -25,6 +27,8 @@ public static partial class GlobalBossBarHooks
             Terraria.NPC npc,
             Terraria.DataStructures.BossBarDrawParams drawParams
         );
+
+        public static event Definition Event;
     }
 
 }

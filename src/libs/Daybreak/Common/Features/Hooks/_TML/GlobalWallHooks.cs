@@ -18,6 +18,8 @@ public static partial class GlobalWallHooks
             int type,
             ref int dropType
         );
+
+        public static event Definition Event;
     }
 
     public static partial class KillWall
@@ -28,6 +30,8 @@ public static partial class GlobalWallHooks
             int type,
             ref bool fail
         );
+
+        public static event Definition Event;
     }
 
     public static partial class WallFrame
@@ -40,6 +44,8 @@ public static partial class GlobalWallHooks
             ref int style,
             ref int frameNumber
         );
+
+        public static event Definition Event;
     }
 
 }

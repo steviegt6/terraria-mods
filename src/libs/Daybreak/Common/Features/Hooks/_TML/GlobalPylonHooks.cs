@@ -24,6 +24,8 @@ public static partial class GlobalPylonHooks
             ref float deselectedScale,
             ref float selectedScale
         );
+
+        public static event Definition Event;
     }
 
     public static partial class PreCanPlacePylon
@@ -34,6 +36,8 @@ public static partial class GlobalPylonHooks
             int tileType,
             Terraria.GameContent.TeleportPylonType pylonType
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ValidTeleportCheck_PreNPCCount
@@ -42,6 +46,8 @@ public static partial class GlobalPylonHooks
             Terraria.GameContent.TeleportPylonInfo pylonInfo,
             ref int defaultNecessaryNPCCount
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ValidTeleportCheck_PreAnyDanger
@@ -49,6 +55,8 @@ public static partial class GlobalPylonHooks
         public delegate bool? Definition(
             Terraria.GameContent.TeleportPylonInfo pylonInfo
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ValidTeleportCheck_PreBiomeRequirements
@@ -57,6 +65,8 @@ public static partial class GlobalPylonHooks
             Terraria.GameContent.TeleportPylonInfo pylonInfo,
             Terraria.SceneMetrics sceneData
         );
+
+        public static event Definition Event;
     }
 
     public static partial class PostValidTeleportCheck
@@ -68,6 +78,8 @@ public static partial class GlobalPylonHooks
             ref bool validNearbyPylonFound,
             ref string errorKey
         );
+
+        public static event Definition Event;
     }
 
 }

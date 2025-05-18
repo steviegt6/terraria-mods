@@ -24,6 +24,8 @@ public static partial class GlobalBuffHooks
             Terraria.Player player,
             ref int buffIndex
         );
+
+        public static event Definition Event;
     }
 
     public static partial class Update
@@ -33,6 +35,8 @@ public static partial class GlobalBuffHooks
             Terraria.NPC npc,
             ref int buffIndex
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ReApply
@@ -43,6 +47,8 @@ public static partial class GlobalBuffHooks
             int time,
             int buffIndex
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ReApply
@@ -53,6 +59,8 @@ public static partial class GlobalBuffHooks
             int time,
             int buffIndex
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyBuffText
@@ -63,6 +71,8 @@ public static partial class GlobalBuffHooks
             ref string tip,
             ref int rare
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CustomBuffTipSize
@@ -71,6 +81,8 @@ public static partial class GlobalBuffHooks
             string buffTip,
             System.Collections.Generic.List<Microsoft.Xna.Framework.Vector2> sizes
         );
+
+        public static event Definition Event;
     }
 
     public static partial class DrawCustomBuffTip
@@ -81,6 +93,8 @@ public static partial class GlobalBuffHooks
             int originX,
             int originY
         );
+
+        public static event Definition Event;
     }
 
     public static partial class PreDraw
@@ -91,6 +105,8 @@ public static partial class GlobalBuffHooks
             int buffIndex,
             ref Terraria.DataStructures.BuffDrawParams drawParams
         );
+
+        public static event Definition Event;
     }
 
     public static partial class PostDraw
@@ -101,6 +117,8 @@ public static partial class GlobalBuffHooks
             int buffIndex,
             Terraria.DataStructures.BuffDrawParams drawParams
         );
+
+        public static event Definition Event;
     }
 
     public static partial class RightClick
@@ -109,6 +127,8 @@ public static partial class GlobalBuffHooks
             int type,
             int buffIndex
         );
+
+        public static event Definition Event;
     }
 
 }

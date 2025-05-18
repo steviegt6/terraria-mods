@@ -21,6 +21,8 @@ public static partial class GlobalEmoteBubbleHooks
         public delegate void Definition(
             Terraria.GameContent.UI.EmoteBubble emoteBubble
         );
+
+        public static event Definition Event;
     }
 
     public static partial class UpdateFrame
@@ -28,6 +30,8 @@ public static partial class GlobalEmoteBubbleHooks
         public delegate bool Definition(
             Terraria.GameContent.UI.EmoteBubble emoteBubble
         );
+
+        public static event Definition Event;
     }
 
     public static partial class UpdateFrameInEmoteMenu
@@ -36,6 +40,8 @@ public static partial class GlobalEmoteBubbleHooks
             int emoteType,
             ref int frameCounter
         );
+
+        public static event Definition Event;
     }
 
     public static partial class PreDraw
@@ -49,6 +55,8 @@ public static partial class GlobalEmoteBubbleHooks
             Microsoft.Xna.Framework.Vector2 origin,
             Microsoft.Xna.Framework.Graphics.SpriteEffects spriteEffects
         );
+
+        public static event Definition Event;
     }
 
     public static partial class PostDraw
@@ -62,6 +70,8 @@ public static partial class GlobalEmoteBubbleHooks
             Microsoft.Xna.Framework.Vector2 origin,
             Microsoft.Xna.Framework.Graphics.SpriteEffects spriteEffects
         );
+
+        public static event Definition Event;
     }
 
     public static partial class PreDrawInEmoteMenu
@@ -74,6 +84,8 @@ public static partial class GlobalEmoteBubbleHooks
             Microsoft.Xna.Framework.Rectangle frame,
             Microsoft.Xna.Framework.Vector2 origin
         );
+
+        public static event Definition Event;
     }
 
     public static partial class PostDrawInEmoteMenu
@@ -86,6 +98,8 @@ public static partial class GlobalEmoteBubbleHooks
             Microsoft.Xna.Framework.Rectangle frame,
             Microsoft.Xna.Framework.Vector2 origin
         );
+
+        public static event Definition Event;
     }
 
     public static partial class GetFrame
@@ -93,6 +107,8 @@ public static partial class GlobalEmoteBubbleHooks
         public delegate Microsoft.Xna.Framework.Rectangle? Definition(
             Terraria.GameContent.UI.EmoteBubble emoteBubble
         );
+
+        public static event Definition Event;
     }
 
     public static partial class GetFrameInEmoteMenu
@@ -102,6 +118,8 @@ public static partial class GlobalEmoteBubbleHooks
             int frame,
             int frameCounter
         );
+
+        public static event Definition Event;
     }
 
 }

@@ -14,6 +14,8 @@ public static partial class GlobalInfoDisplayHooks
         public delegate bool? Definition(
             Terraria.ModLoader.InfoDisplay currentDisplay
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyDisplayParameters
@@ -25,6 +27,8 @@ public static partial class GlobalInfoDisplayHooks
             ref Microsoft.Xna.Framework.Color displayColor,
             ref Microsoft.Xna.Framework.Color displayShadowColor
         );
+
+        public static event Definition Event;
     }
 
 }

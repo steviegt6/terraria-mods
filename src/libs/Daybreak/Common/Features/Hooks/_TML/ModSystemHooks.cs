@@ -70,60 +70,80 @@ public static partial class ModSystemHooks
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class OnLocalizationsLoaded
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class AddRecipes
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class PostAddRecipes
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class PostSetupRecipes
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class AddRecipeGroups
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class OnWorldLoad
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class OnWorldUnload
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class ClearWorld
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyScreenPosition
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyTransformMatrix
@@ -131,6 +151,8 @@ public static partial class ModSystemHooks
         public delegate void Definition(
             ref Terraria.Graphics.SpriteViewMatrix Transform
         );
+
+        public static event Definition Event;
     }
 
     public static partial class UpdateUI
@@ -138,126 +160,168 @@ public static partial class ModSystemHooks
         public delegate void Definition(
             Microsoft.Xna.Framework.GameTime gameTime
         );
+
+        public static event Definition Event;
     }
 
     public static partial class PreUpdateEntities
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class PreUpdatePlayers
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class PostUpdatePlayers
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class PreUpdateNPCs
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class PostUpdateNPCs
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class PreUpdateGores
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class PostUpdateGores
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class PreUpdateProjectiles
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class PostUpdateProjectiles
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class PreUpdateItems
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class PostUpdateItems
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class PreUpdateDusts
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class PostUpdateDusts
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class PreUpdateTime
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class PostUpdateTime
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class PreUpdateWorld
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class PostUpdateWorld
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class PreUpdateInvasions
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class PostUpdateInvasions
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class PostUpdateEverything
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyInterfaceLayers
@@ -265,6 +329,8 @@ public static partial class ModSystemHooks
         public delegate void Definition(
             System.Collections.Generic.List<Terraria.UI.GameInterfaceLayer> layers
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyGameTipVisibility
@@ -272,6 +338,8 @@ public static partial class ModSystemHooks
         public delegate void Definition(
             System.Collections.Generic.IReadOnlyList<Terraria.ModLoader.GameTipData> gameTips
         );
+
+        public static event Definition Event;
     }
 
     public static partial class PostDrawInterface
@@ -279,6 +347,8 @@ public static partial class ModSystemHooks
         public delegate void Definition(
             Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch
         );
+
+        public static event Definition Event;
     }
 
     public static partial class PreDrawMapIconOverlay
@@ -287,6 +357,8 @@ public static partial class ModSystemHooks
             System.Collections.Generic.IReadOnlyList<Terraria.Map.IMapLayer> layers,
             Terraria.Map.MapOverlayDrawContext mapOverlayDrawContext
         );
+
+        public static event Definition Event;
     }
 
     public static partial class PostDrawFullscreenMap
@@ -294,24 +366,32 @@ public static partial class ModSystemHooks
         public delegate void Definition(
             ref string mouseText
         );
+
+        public static event Definition Event;
     }
 
     public static partial class PostUpdateInput
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class PreSaveAndQuit
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class PostDrawTiles
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyTimeRate
@@ -321,6 +401,8 @@ public static partial class ModSystemHooks
             ref double tileUpdateRate,
             ref double eventUpdateRate
         );
+
+        public static event Definition Event;
     }
 
     public static partial class SaveWorldData
@@ -328,6 +410,8 @@ public static partial class ModSystemHooks
         public delegate void Definition(
             Terraria.ModLoader.IO.TagCompound tag
         );
+
+        public static event Definition Event;
     }
 
     public static partial class LoadWorldData
@@ -335,6 +419,8 @@ public static partial class ModSystemHooks
         public delegate void Definition(
             Terraria.ModLoader.IO.TagCompound tag
         );
+
+        public static event Definition Event;
     }
 
     public static partial class SaveWorldHeader
@@ -342,6 +428,8 @@ public static partial class ModSystemHooks
         public delegate void Definition(
             Terraria.ModLoader.IO.TagCompound tag
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CanWorldBePlayed
@@ -350,6 +438,8 @@ public static partial class ModSystemHooks
             Terraria.IO.PlayerFileData playerData,
             Terraria.IO.WorldFileData worldFileData
         );
+
+        public static event Definition Event;
     }
 
     public static partial class WorldCanBePlayedRejectionMessage
@@ -358,6 +448,8 @@ public static partial class ModSystemHooks
             Terraria.IO.PlayerFileData playerData,
             Terraria.IO.WorldFileData worldData
         );
+
+        public static event Definition Event;
     }
 
     public static partial class NetSend
@@ -365,6 +457,8 @@ public static partial class ModSystemHooks
         public delegate void Definition(
             System.IO.BinaryWriter writer
         );
+
+        public static event Definition Event;
     }
 
     public static partial class NetReceive
@@ -372,6 +466,8 @@ public static partial class ModSystemHooks
         public delegate void Definition(
             System.IO.BinaryReader reader
         );
+
+        public static event Definition Event;
     }
 
     public static partial class HijackGetData
@@ -381,6 +477,8 @@ public static partial class ModSystemHooks
             ref System.IO.BinaryReader reader,
             int playerNumber
         );
+
+        public static event Definition Event;
     }
 
     public static partial class HijackSendData
@@ -399,12 +497,16 @@ public static partial class ModSystemHooks
             int number6,
             int number7
         );
+
+        public static event Definition Event;
     }
 
     public static partial class PreWorldGen
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyWorldGenTasks
@@ -413,18 +515,24 @@ public static partial class ModSystemHooks
             System.Collections.Generic.List<Terraria.WorldBuilding.GenPass> tasks,
             ref double totalWeight
         );
+
+        public static event Definition Event;
     }
 
     public static partial class PostWorldGen
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class ResetNearbyTileEffects
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyHardmodeTasks
@@ -432,6 +540,8 @@ public static partial class ModSystemHooks
         public delegate void Definition(
             System.Collections.Generic.List<Terraria.WorldBuilding.GenPass> list
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ModifySunLightColor
@@ -440,6 +550,8 @@ public static partial class ModSystemHooks
             ref Microsoft.Xna.Framework.Color tileColor,
             ref Microsoft.Xna.Framework.Color backgroundColor
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyLightingBrightness
@@ -447,6 +559,8 @@ public static partial class ModSystemHooks
         public delegate void Definition(
             ref float scale
         );
+
+        public static event Definition Event;
     }
 
     public static partial class TileCountsAvailable
@@ -454,12 +568,16 @@ public static partial class ModSystemHooks
         public delegate void Definition(
             System.ReadOnlySpan<int> tileCounts
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ResizeArrays
     {
         public delegate void Definition();
 
+
+        public static event Definition Event;
     }
 
 }

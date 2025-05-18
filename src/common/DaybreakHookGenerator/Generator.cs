@@ -69,6 +69,8 @@ public sealed class Generator(ModuleDefinition module, TypeDefinition type)
         sb.AppendLine($"    public static partial class {method.Name}");
         sb.AppendLine("    {");
         sb.AppendLine(GetDescriptionForMethod(method));
+        sb.AppendLine();
+        sb.AppendLine("        public static event Definition Event;");
         sb.AppendLine("    }");
 
         return sb.ToString();

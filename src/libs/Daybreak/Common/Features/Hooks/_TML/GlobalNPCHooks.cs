@@ -94,6 +94,8 @@ public static partial class GlobalNPCHooks
         public delegate void Definition(
             Terraria.NPC npc
         );
+
+        public static event Definition Event;
     }
 
     public static partial class OnSpawn
@@ -102,6 +104,8 @@ public static partial class GlobalNPCHooks
             Terraria.NPC npc,
             Terraria.DataStructures.IEntitySource source
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ApplyDifficultyAndPlayerScaling
@@ -112,6 +116,8 @@ public static partial class GlobalNPCHooks
             float balance,
             float bossAdjustment
         );
+
+        public static event Definition Event;
     }
 
     public static partial class SetBestiary
@@ -121,6 +127,8 @@ public static partial class GlobalNPCHooks
             Terraria.GameContent.Bestiary.BestiaryDatabase database,
             Terraria.GameContent.Bestiary.BestiaryEntry bestiaryEntry
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyTypeName
@@ -129,6 +137,8 @@ public static partial class GlobalNPCHooks
             Terraria.NPC npc,
             ref string typeName
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyHoverBoundingBox
@@ -137,6 +147,8 @@ public static partial class GlobalNPCHooks
             Terraria.NPC npc,
             ref Microsoft.Xna.Framework.Rectangle boundingBox
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyTownNPCProfile
@@ -144,6 +156,8 @@ public static partial class GlobalNPCHooks
         public delegate Terraria.GameContent.ITownNPCProfile Definition(
             Terraria.NPC npc
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyNPCNameList
@@ -152,6 +166,8 @@ public static partial class GlobalNPCHooks
             Terraria.NPC npc,
             System.Collections.Generic.List<string> nameList
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ResetEffects
@@ -159,6 +175,8 @@ public static partial class GlobalNPCHooks
         public delegate void Definition(
             Terraria.NPC npc
         );
+
+        public static event Definition Event;
     }
 
     public static partial class PreAI
@@ -166,6 +184,8 @@ public static partial class GlobalNPCHooks
         public delegate bool Definition(
             Terraria.NPC npc
         );
+
+        public static event Definition Event;
     }
 
     public static partial class AI
@@ -173,6 +193,8 @@ public static partial class GlobalNPCHooks
         public delegate void Definition(
             Terraria.NPC npc
         );
+
+        public static event Definition Event;
     }
 
     public static partial class PostAI
@@ -180,6 +202,8 @@ public static partial class GlobalNPCHooks
         public delegate void Definition(
             Terraria.NPC npc
         );
+
+        public static event Definition Event;
     }
 
     public static partial class SendExtraAI
@@ -189,6 +213,8 @@ public static partial class GlobalNPCHooks
             Terraria.ModLoader.IO.BitWriter bitWriter,
             System.IO.BinaryWriter binaryWriter
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ReceiveExtraAI
@@ -198,6 +224,8 @@ public static partial class GlobalNPCHooks
             Terraria.ModLoader.IO.BitReader bitReader,
             System.IO.BinaryReader binaryReader
         );
+
+        public static event Definition Event;
     }
 
     public static partial class FindFrame
@@ -206,6 +234,8 @@ public static partial class GlobalNPCHooks
             Terraria.NPC npc,
             int frameHeight
         );
+
+        public static event Definition Event;
     }
 
     public static partial class HitEffect
@@ -214,6 +244,8 @@ public static partial class GlobalNPCHooks
             Terraria.NPC npc,
             Terraria.NPC.HitInfo hit
         );
+
+        public static event Definition Event;
     }
 
     public static partial class UpdateLifeRegen
@@ -222,6 +254,8 @@ public static partial class GlobalNPCHooks
             Terraria.NPC npc,
             ref int damage
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CheckActive
@@ -229,6 +263,8 @@ public static partial class GlobalNPCHooks
         public delegate bool Definition(
             Terraria.NPC npc
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CheckDead
@@ -236,6 +272,8 @@ public static partial class GlobalNPCHooks
         public delegate bool Definition(
             Terraria.NPC npc
         );
+
+        public static event Definition Event;
     }
 
     public static partial class SpecialOnKill
@@ -243,6 +281,8 @@ public static partial class GlobalNPCHooks
         public delegate bool Definition(
             Terraria.NPC npc
         );
+
+        public static event Definition Event;
     }
 
     public static partial class PreKill
@@ -250,6 +290,8 @@ public static partial class GlobalNPCHooks
         public delegate bool Definition(
             Terraria.NPC npc
         );
+
+        public static event Definition Event;
     }
 
     public static partial class OnKill
@@ -257,6 +299,8 @@ public static partial class GlobalNPCHooks
         public delegate void Definition(
             Terraria.NPC npc
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CanFallThroughPlatforms
@@ -264,6 +308,8 @@ public static partial class GlobalNPCHooks
         public delegate bool? Definition(
             Terraria.NPC npc
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CanBeCaughtBy
@@ -273,6 +319,8 @@ public static partial class GlobalNPCHooks
             Terraria.Item item,
             Terraria.Player player
         );
+
+        public static event Definition Event;
     }
 
     public static partial class OnCaughtBy
@@ -283,6 +331,8 @@ public static partial class GlobalNPCHooks
             Terraria.Item item,
             bool failed
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyNPCLoot
@@ -291,6 +341,8 @@ public static partial class GlobalNPCHooks
             Terraria.NPC npc,
             Terraria.ModLoader.NPCLoot npcLoot
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyGlobalLoot
@@ -298,6 +350,8 @@ public static partial class GlobalNPCHooks
         public delegate void Definition(
             Terraria.ModLoader.GlobalLoot globalLoot
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CanHitPlayer
@@ -307,6 +361,8 @@ public static partial class GlobalNPCHooks
             Terraria.Player target,
             ref int cooldownSlot
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyHitPlayer
@@ -316,6 +372,8 @@ public static partial class GlobalNPCHooks
             Terraria.Player target,
             ref Terraria.Player.HurtModifiers modifiers
         );
+
+        public static event Definition Event;
     }
 
     public static partial class OnHitPlayer
@@ -325,6 +383,8 @@ public static partial class GlobalNPCHooks
             Terraria.Player target,
             Terraria.Player.HurtInfo hurtInfo
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CanHitNPC
@@ -333,6 +393,8 @@ public static partial class GlobalNPCHooks
             Terraria.NPC npc,
             Terraria.NPC target
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CanBeHitByNPC
@@ -341,6 +403,8 @@ public static partial class GlobalNPCHooks
             Terraria.NPC npc,
             Terraria.NPC attacker
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyHitNPC
@@ -350,6 +414,8 @@ public static partial class GlobalNPCHooks
             Terraria.NPC target,
             ref Terraria.NPC.HitModifiers modifiers
         );
+
+        public static event Definition Event;
     }
 
     public static partial class OnHitNPC
@@ -359,6 +425,8 @@ public static partial class GlobalNPCHooks
             Terraria.NPC target,
             Terraria.NPC.HitInfo hit
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CanBeHitByItem
@@ -368,6 +436,8 @@ public static partial class GlobalNPCHooks
             Terraria.Player player,
             Terraria.Item item
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CanCollideWithPlayerMeleeAttack
@@ -378,6 +448,8 @@ public static partial class GlobalNPCHooks
             Terraria.Item item,
             Microsoft.Xna.Framework.Rectangle meleeAttackHitbox
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyHitByItem
@@ -388,6 +460,8 @@ public static partial class GlobalNPCHooks
             Terraria.Item item,
             ref Terraria.NPC.HitModifiers modifiers
         );
+
+        public static event Definition Event;
     }
 
     public static partial class OnHitByItem
@@ -399,6 +473,8 @@ public static partial class GlobalNPCHooks
             Terraria.NPC.HitInfo hit,
             int damageDone
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CanBeHitByProjectile
@@ -407,6 +483,8 @@ public static partial class GlobalNPCHooks
             Terraria.NPC npc,
             Terraria.Projectile projectile
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyHitByProjectile
@@ -416,6 +494,8 @@ public static partial class GlobalNPCHooks
             Terraria.Projectile projectile,
             ref Terraria.NPC.HitModifiers modifiers
         );
+
+        public static event Definition Event;
     }
 
     public static partial class OnHitByProjectile
@@ -426,6 +506,8 @@ public static partial class GlobalNPCHooks
             Terraria.NPC.HitInfo hit,
             int damageDone
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyIncomingHit
@@ -434,6 +516,8 @@ public static partial class GlobalNPCHooks
             Terraria.NPC npc,
             ref Terraria.NPC.HitModifiers modifiers
         );
+
+        public static event Definition Event;
     }
 
     public static partial class BossHeadSlot
@@ -442,6 +526,8 @@ public static partial class GlobalNPCHooks
             Terraria.NPC npc,
             ref int index
         );
+
+        public static event Definition Event;
     }
 
     public static partial class BossHeadRotation
@@ -450,6 +536,8 @@ public static partial class GlobalNPCHooks
             Terraria.NPC npc,
             ref float rotation
         );
+
+        public static event Definition Event;
     }
 
     public static partial class BossHeadSpriteEffects
@@ -458,6 +546,8 @@ public static partial class GlobalNPCHooks
             Terraria.NPC npc,
             ref Microsoft.Xna.Framework.Graphics.SpriteEffects spriteEffects
         );
+
+        public static event Definition Event;
     }
 
     public static partial class GetAlpha
@@ -466,6 +556,8 @@ public static partial class GlobalNPCHooks
             Terraria.NPC npc,
             Microsoft.Xna.Framework.Color drawColor
         );
+
+        public static event Definition Event;
     }
 
     public static partial class DrawEffects
@@ -474,6 +566,8 @@ public static partial class GlobalNPCHooks
             Terraria.NPC npc,
             ref Microsoft.Xna.Framework.Color drawColor
         );
+
+        public static event Definition Event;
     }
 
     public static partial class PreDraw
@@ -484,6 +578,8 @@ public static partial class GlobalNPCHooks
             Microsoft.Xna.Framework.Vector2 screenPos,
             Microsoft.Xna.Framework.Color drawColor
         );
+
+        public static event Definition Event;
     }
 
     public static partial class PostDraw
@@ -494,6 +590,8 @@ public static partial class GlobalNPCHooks
             Microsoft.Xna.Framework.Vector2 screenPos,
             Microsoft.Xna.Framework.Color drawColor
         );
+
+        public static event Definition Event;
     }
 
     public static partial class DrawBehind
@@ -502,6 +600,8 @@ public static partial class GlobalNPCHooks
             Terraria.NPC npc,
             int index
         );
+
+        public static event Definition Event;
     }
 
     public static partial class DrawHealthBar
@@ -512,6 +612,8 @@ public static partial class GlobalNPCHooks
             ref float scale,
             ref Microsoft.Xna.Framework.Vector2 position
         );
+
+        public static event Definition Event;
     }
 
     public static partial class EditSpawnRate
@@ -521,6 +623,8 @@ public static partial class GlobalNPCHooks
             ref int spawnRate,
             ref int maxSpawns
         );
+
+        public static event Definition Event;
     }
 
     public static partial class EditSpawnRange
@@ -532,6 +636,8 @@ public static partial class GlobalNPCHooks
             ref int safeRangeX,
             ref int safeRangeY
         );
+
+        public static event Definition Event;
     }
 
     public static partial class EditSpawnPool
@@ -540,6 +646,8 @@ public static partial class GlobalNPCHooks
             System.Collections.Generic.IDictionary<int, float> pool,
             Terraria.ModLoader.NPCSpawnInfo spawnInfo
         );
+
+        public static event Definition Event;
     }
 
     public static partial class SpawnNPC
@@ -549,6 +657,8 @@ public static partial class GlobalNPCHooks
             int tileX,
             int tileY
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CanChat
@@ -556,6 +666,8 @@ public static partial class GlobalNPCHooks
         public delegate bool? Definition(
             Terraria.NPC npc
         );
+
+        public static event Definition Event;
     }
 
     public static partial class GetChat
@@ -564,6 +676,8 @@ public static partial class GlobalNPCHooks
             Terraria.NPC npc,
             ref string chat
         );
+
+        public static event Definition Event;
     }
 
     public static partial class PreChatButtonClicked
@@ -572,6 +686,8 @@ public static partial class GlobalNPCHooks
             Terraria.NPC npc,
             bool firstButton
         );
+
+        public static event Definition Event;
     }
 
     public static partial class OnChatButtonClicked
@@ -580,6 +696,8 @@ public static partial class GlobalNPCHooks
             Terraria.NPC npc,
             bool firstButton
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyShop
@@ -587,6 +705,8 @@ public static partial class GlobalNPCHooks
         public delegate void Definition(
             Terraria.ModLoader.NPCShop shop
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyActiveShop
@@ -596,6 +716,8 @@ public static partial class GlobalNPCHooks
             string shopName,
             Terraria.Item[] items
         );
+
+        public static event Definition Event;
     }
 
     public static partial class SetupTravelShop
@@ -604,6 +726,8 @@ public static partial class GlobalNPCHooks
             System.Int32[] shop,
             ref int nextSlot
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CanGoToStatue
@@ -612,6 +736,8 @@ public static partial class GlobalNPCHooks
             Terraria.NPC npc,
             bool toKingStatue
         );
+
+        public static event Definition Event;
     }
 
     public static partial class OnGoToStatue
@@ -620,6 +746,8 @@ public static partial class GlobalNPCHooks
             Terraria.NPC npc,
             bool toKingStatue
         );
+
+        public static event Definition Event;
     }
 
     public static partial class BuffTownNPC
@@ -628,6 +756,8 @@ public static partial class GlobalNPCHooks
             ref float damageMult,
             ref int defense
         );
+
+        public static event Definition Event;
     }
 
     public static partial class TownNPCAttackStrength
@@ -637,6 +767,8 @@ public static partial class GlobalNPCHooks
             ref int damage,
             ref float knockback
         );
+
+        public static event Definition Event;
     }
 
     public static partial class TownNPCAttackCooldown
@@ -646,6 +778,8 @@ public static partial class GlobalNPCHooks
             ref int cooldown,
             ref int randExtraCooldown
         );
+
+        public static event Definition Event;
     }
 
     public static partial class TownNPCAttackProj
@@ -655,6 +789,8 @@ public static partial class GlobalNPCHooks
             ref int projType,
             ref int attackDelay
         );
+
+        public static event Definition Event;
     }
 
     public static partial class TownNPCAttackProjSpeed
@@ -665,6 +801,8 @@ public static partial class GlobalNPCHooks
             ref float gravityCorrection,
             ref float randomOffset
         );
+
+        public static event Definition Event;
     }
 
     public static partial class TownNPCAttackShoot
@@ -673,6 +811,8 @@ public static partial class GlobalNPCHooks
             Terraria.NPC npc,
             ref bool inBetweenShots
         );
+
+        public static event Definition Event;
     }
 
     public static partial class TownNPCAttackMagic
@@ -681,6 +821,8 @@ public static partial class GlobalNPCHooks
             Terraria.NPC npc,
             ref float auraLightMultiplier
         );
+
+        public static event Definition Event;
     }
 
     public static partial class TownNPCAttackSwing
@@ -690,6 +832,8 @@ public static partial class GlobalNPCHooks
             ref int itemWidth,
             ref int itemHeight
         );
+
+        public static event Definition Event;
     }
 
     public static partial class DrawTownAttackGun
@@ -701,6 +845,8 @@ public static partial class GlobalNPCHooks
             ref float scale,
             ref int horizontalHoldoutOffset
         );
+
+        public static event Definition Event;
     }
 
     public static partial class DrawTownAttackSwing
@@ -713,6 +859,8 @@ public static partial class GlobalNPCHooks
             ref float scale,
             ref Microsoft.Xna.Framework.Vector2 offset
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyCollisionData
@@ -724,6 +872,8 @@ public static partial class GlobalNPCHooks
             ref Terraria.ModLoader.MultipliableFloat damageMultiplier,
             ref Microsoft.Xna.Framework.Rectangle npcHitbox
         );
+
+        public static event Definition Event;
     }
 
     public static partial class NeedSaving
@@ -731,6 +881,8 @@ public static partial class GlobalNPCHooks
         public delegate bool Definition(
             Terraria.NPC npc
         );
+
+        public static event Definition Event;
     }
 
     public static partial class SaveData
@@ -739,6 +891,8 @@ public static partial class GlobalNPCHooks
             Terraria.NPC npc,
             Terraria.ModLoader.IO.TagCompound tag
         );
+
+        public static event Definition Event;
     }
 
     public static partial class LoadData
@@ -747,6 +901,8 @@ public static partial class GlobalNPCHooks
             Terraria.NPC npc,
             Terraria.ModLoader.IO.TagCompound tag
         );
+
+        public static event Definition Event;
     }
 
     public static partial class PickEmote
@@ -757,6 +913,8 @@ public static partial class GlobalNPCHooks
             System.Collections.Generic.List<int> emoteList,
             Terraria.GameContent.UI.WorldUIAnchor otherAnchor
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ChatBubblePosition
@@ -766,6 +924,8 @@ public static partial class GlobalNPCHooks
             ref Microsoft.Xna.Framework.Vector2 position,
             ref Microsoft.Xna.Framework.Graphics.SpriteEffects spriteEffects
         );
+
+        public static event Definition Event;
     }
 
     public static partial class PartyHatPosition
@@ -775,6 +935,8 @@ public static partial class GlobalNPCHooks
             ref Microsoft.Xna.Framework.Vector2 position,
             ref Microsoft.Xna.Framework.Graphics.SpriteEffects spriteEffects
         );
+
+        public static event Definition Event;
     }
 
     public static partial class EmoteBubblePosition
@@ -784,6 +946,8 @@ public static partial class GlobalNPCHooks
             ref Microsoft.Xna.Framework.Vector2 position,
             ref Microsoft.Xna.Framework.Graphics.SpriteEffects spriteEffects
         );
+
+        public static event Definition Event;
     }
 
 }

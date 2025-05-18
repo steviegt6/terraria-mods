@@ -51,6 +51,8 @@ public static partial class GlobalProjectileHooks
             Terraria.Projectile projectile,
             Terraria.DataStructures.IEntitySource source
         );
+
+        public static event Definition Event;
     }
 
     public static partial class PreAI
@@ -58,6 +60,8 @@ public static partial class GlobalProjectileHooks
         public delegate bool Definition(
             Terraria.Projectile projectile
         );
+
+        public static event Definition Event;
     }
 
     public static partial class AI
@@ -65,6 +69,8 @@ public static partial class GlobalProjectileHooks
         public delegate void Definition(
             Terraria.Projectile projectile
         );
+
+        public static event Definition Event;
     }
 
     public static partial class PostAI
@@ -72,6 +78,8 @@ public static partial class GlobalProjectileHooks
         public delegate void Definition(
             Terraria.Projectile projectile
         );
+
+        public static event Definition Event;
     }
 
     public static partial class SendExtraAI
@@ -81,6 +89,8 @@ public static partial class GlobalProjectileHooks
             Terraria.ModLoader.IO.BitWriter bitWriter,
             System.IO.BinaryWriter binaryWriter
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ReceiveExtraAI
@@ -90,6 +100,8 @@ public static partial class GlobalProjectileHooks
             Terraria.ModLoader.IO.BitReader bitReader,
             System.IO.BinaryReader binaryReader
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ShouldUpdatePosition
@@ -97,6 +109,8 @@ public static partial class GlobalProjectileHooks
         public delegate bool Definition(
             Terraria.Projectile projectile
         );
+
+        public static event Definition Event;
     }
 
     public static partial class TileCollideStyle
@@ -108,6 +122,8 @@ public static partial class GlobalProjectileHooks
             ref bool fallThrough,
             ref Microsoft.Xna.Framework.Vector2 hitboxCenterFrac
         );
+
+        public static event Definition Event;
     }
 
     public static partial class OnTileCollide
@@ -116,6 +132,8 @@ public static partial class GlobalProjectileHooks
             Terraria.Projectile projectile,
             Microsoft.Xna.Framework.Vector2 oldVelocity
         );
+
+        public static event Definition Event;
     }
 
     public static partial class PreKill
@@ -124,6 +142,8 @@ public static partial class GlobalProjectileHooks
             Terraria.Projectile projectile,
             int timeLeft
         );
+
+        public static event Definition Event;
     }
 
     public static partial class OnKill
@@ -132,6 +152,8 @@ public static partial class GlobalProjectileHooks
             Terraria.Projectile projectile,
             int timeLeft
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CanCutTiles
@@ -139,6 +161,8 @@ public static partial class GlobalProjectileHooks
         public delegate bool? Definition(
             Terraria.Projectile projectile
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CutTiles
@@ -146,6 +170,8 @@ public static partial class GlobalProjectileHooks
         public delegate void Definition(
             Terraria.Projectile projectile
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CanDamage
@@ -153,6 +179,8 @@ public static partial class GlobalProjectileHooks
         public delegate bool? Definition(
             Terraria.Projectile projectile
         );
+
+        public static event Definition Event;
     }
 
     public static partial class MinionContactDamage
@@ -160,6 +188,8 @@ public static partial class GlobalProjectileHooks
         public delegate bool Definition(
             Terraria.Projectile projectile
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyDamageHitbox
@@ -168,6 +198,8 @@ public static partial class GlobalProjectileHooks
             Terraria.Projectile projectile,
             ref Microsoft.Xna.Framework.Rectangle hitbox
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CanHitNPC
@@ -176,6 +208,8 @@ public static partial class GlobalProjectileHooks
             Terraria.Projectile projectile,
             Terraria.NPC target
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyHitNPC
@@ -185,6 +219,8 @@ public static partial class GlobalProjectileHooks
             Terraria.NPC target,
             ref Terraria.NPC.HitModifiers modifiers
         );
+
+        public static event Definition Event;
     }
 
     public static partial class OnHitNPC
@@ -195,6 +231,8 @@ public static partial class GlobalProjectileHooks
             Terraria.NPC.HitInfo hit,
             int damageDone
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CanHitPvp
@@ -203,6 +241,8 @@ public static partial class GlobalProjectileHooks
             Terraria.Projectile projectile,
             Terraria.Player target
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CanHitPlayer
@@ -211,6 +251,8 @@ public static partial class GlobalProjectileHooks
             Terraria.Projectile projectile,
             Terraria.Player target
         );
+
+        public static event Definition Event;
     }
 
     public static partial class ModifyHitPlayer
@@ -220,6 +262,8 @@ public static partial class GlobalProjectileHooks
             Terraria.Player target,
             ref Terraria.Player.HurtModifiers modifiers
         );
+
+        public static event Definition Event;
     }
 
     public static partial class OnHitPlayer
@@ -229,6 +273,8 @@ public static partial class GlobalProjectileHooks
             Terraria.Player target,
             Terraria.Player.HurtInfo info
         );
+
+        public static event Definition Event;
     }
 
     public static partial class Colliding
@@ -238,6 +284,8 @@ public static partial class GlobalProjectileHooks
             Microsoft.Xna.Framework.Rectangle projHitbox,
             Microsoft.Xna.Framework.Rectangle targetHitbox
         );
+
+        public static event Definition Event;
     }
 
     public static partial class GetAlpha
@@ -246,6 +294,8 @@ public static partial class GlobalProjectileHooks
             Terraria.Projectile projectile,
             Microsoft.Xna.Framework.Color lightColor
         );
+
+        public static event Definition Event;
     }
 
     public static partial class PreDrawExtras
@@ -253,6 +303,8 @@ public static partial class GlobalProjectileHooks
         public delegate bool Definition(
             Terraria.Projectile projectile
         );
+
+        public static event Definition Event;
     }
 
     public static partial class PreDraw
@@ -261,6 +313,8 @@ public static partial class GlobalProjectileHooks
             Terraria.Projectile projectile,
             ref Microsoft.Xna.Framework.Color lightColor
         );
+
+        public static event Definition Event;
     }
 
     public static partial class PostDraw
@@ -269,6 +323,8 @@ public static partial class GlobalProjectileHooks
             Terraria.Projectile projectile,
             Microsoft.Xna.Framework.Color lightColor
         );
+
+        public static event Definition Event;
     }
 
     public static partial class DrawBehind
@@ -282,6 +338,8 @@ public static partial class GlobalProjectileHooks
             System.Collections.Generic.List<int> overPlayers,
             System.Collections.Generic.List<int> overWiresUI
         );
+
+        public static event Definition Event;
     }
 
     public static partial class CanUseGrapple
@@ -290,6 +348,8 @@ public static partial class GlobalProjectileHooks
             int type,
             Terraria.Player player
         );
+
+        public static event Definition Event;
     }
 
     public static partial class UseGrapple
@@ -298,6 +358,8 @@ public static partial class GlobalProjectileHooks
             Terraria.Player player,
             ref int type
         );
+
+        public static event Definition Event;
     }
 
     public static partial class NumGrappleHooks
@@ -307,6 +369,8 @@ public static partial class GlobalProjectileHooks
             Terraria.Player player,
             ref int numHooks
         );
+
+        public static event Definition Event;
     }
 
     public static partial class GrappleRetreatSpeed
@@ -316,6 +380,8 @@ public static partial class GlobalProjectileHooks
             Terraria.Player player,
             ref float speed
         );
+
+        public static event Definition Event;
     }
 
     public static partial class GrapplePullSpeed
@@ -325,6 +391,8 @@ public static partial class GlobalProjectileHooks
             Terraria.Player player,
             ref float speed
         );
+
+        public static event Definition Event;
     }
 
     public static partial class GrappleTargetPoint
@@ -335,6 +403,8 @@ public static partial class GlobalProjectileHooks
             ref float grappleX,
             ref float grappleY
         );
+
+        public static event Definition Event;
     }
 
     public static partial class GrappleCanLatchOnTo
@@ -345,6 +415,8 @@ public static partial class GlobalProjectileHooks
             int x,
             int y
         );
+
+        public static event Definition Event;
     }
 
     public static partial class PrepareBombToBlow
@@ -352,6 +424,8 @@ public static partial class GlobalProjectileHooks
         public delegate void Definition(
             Terraria.Projectile projectile
         );
+
+        public static event Definition Event;
     }
 
     public static partial class EmitEnchantmentVisualsAt
@@ -362,6 +436,8 @@ public static partial class GlobalProjectileHooks
             int boxWidth,
             int boxHeight
         );
+
+        public static event Definition Event;
     }
 
 }
