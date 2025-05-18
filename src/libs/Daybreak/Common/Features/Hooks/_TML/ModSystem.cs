@@ -12,22 +12,13 @@ namespace Daybreak.Common.Features.Hooks;
 public static partial class ModSystemHooks
 {
     [HookDefinition]
-    public partial interface ISetupContent
+    public static partial class SetupContent
     {
         public delegate void Description();
     
         // Description.Type Action(Description.Parameters);
 
         // public static event Description Event;
-    }
-
-    public partial interface IPostSetupContent
-    {
-    }
-
-    public partial interface IOnLocalizationsLoaded
-    {
-    
     }
 
     private sealed class ModSystemImpl : ModSystem

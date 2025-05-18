@@ -1,5 +1,7 @@
 using System;
 
+using JetBrains.Annotations;
+
 namespace Daybreak.Common.Features.Hooks;
 
 /// <summary>
@@ -10,5 +12,6 @@ namespace Daybreak.Common.Features.Hooks;
 ///     The source generator expects a public delegate named <c>Definition</c>
 ///     to be defined.
 /// </summary>
-[AttributeUsage(AttributeTargets.Interface)]
+[AttributeUsage(AttributeTargets.Class)]
+[MeansImplicitUse(ImplicitUseTargetFlags.WithMembers)]
 public sealed class HookDefinitionAttribute : Attribute;
