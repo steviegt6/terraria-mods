@@ -16,7 +16,6 @@ namespace Daybreak.Common.Features.Hooks;
 //     System.Boolean Terraria.ModLoader.GlobalProjectile::OnTileCollide(Terraria.Projectile,Microsoft.Xna.Framework.Vector2)
 //     System.Boolean Terraria.ModLoader.GlobalProjectile::PreKill(Terraria.Projectile,System.Int32)
 //     System.Void Terraria.ModLoader.GlobalProjectile::OnKill(Terraria.Projectile,System.Int32)
-//     System.Void Terraria.ModLoader.GlobalProjectile::Kill(Terraria.Projectile,System.Int32)
 //     System.Nullable`1<System.Boolean> Terraria.ModLoader.GlobalProjectile::CanCutTiles(Terraria.Projectile)
 //     System.Void Terraria.ModLoader.GlobalProjectile::CutTiles(Terraria.Projectile)
 //     System.Nullable`1<System.Boolean> Terraria.ModLoader.GlobalProjectile::CanDamage(Terraria.Projectile)
@@ -128,14 +127,6 @@ public static partial class GlobalProjectileHooks
     }
 
     public static partial class OnKill
-    {
-        public delegate void Definition(
-            Terraria.Projectile projectile,
-            int timeLeft
-        );
-    }
-
-    public static partial class Kill
     {
         public delegate void Definition(
             Terraria.Projectile projectile,

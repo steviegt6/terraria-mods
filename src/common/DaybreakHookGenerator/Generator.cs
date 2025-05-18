@@ -6,6 +6,8 @@ using System.Text;
 using Mono.Cecil;
 using Mono.Cecil.Rocks;
 
+using MonoMod.Utils;
+
 namespace DaybreakHookGenerator;
 
 public sealed class Generator(ModuleDefinition module, TypeDefinition type)
@@ -76,11 +78,13 @@ public sealed class Generator(ModuleDefinition module, TypeDefinition type)
     {
         var methods = typeDef.GetMethods().Where(
             x => x is
-            {
-                IsPublic: true, // Is accessible (ignore protected, too)
-                IsVirtual: true, // Is overridable
-                IsFinal: false, // Is not sealed
-            } && !excludedHooks.Contains(x.Name)
+                 {
+                     IsPublic: true, // Is accessible (ignore protected, too)
+                     IsVirtual: true, // Is overridable
+                     IsFinal: false, // Is not sealed
+                 }
+              && !excludedHooks.Contains(x.Name)
+              && x.GetCustomAttribute(typeof(ObsoleteAttribute).FullName!) is null
         );
 
         return methods.ToArray();
