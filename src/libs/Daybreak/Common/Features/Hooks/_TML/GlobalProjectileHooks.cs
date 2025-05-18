@@ -87,10 +87,13 @@ public static partial class GlobalProjectileHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool Invoke(
+        public static bool Invoke(
             Terraria.ModLoader.GlobalProjectile self,
             Terraria.Projectile projectile
-        );
+        )
+        {
+            Event?.Invoke(self, projectile);
+        }
     }
 
     public static partial class AI
@@ -207,10 +210,13 @@ public static partial class GlobalProjectileHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool Invoke(
+        public static bool Invoke(
             Terraria.ModLoader.GlobalProjectile self,
             Terraria.Projectile projectile
-        );
+        )
+        {
+            Event?.Invoke(self, projectile);
+        }
     }
 
     public static partial class TileCollideStyle
@@ -231,14 +237,17 @@ public static partial class GlobalProjectileHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool Invoke(
+        public static bool Invoke(
             Terraria.ModLoader.GlobalProjectile self,
             Terraria.Projectile projectile,
             ref int width,
             ref int height,
             ref bool fallThrough,
             ref Microsoft.Xna.Framework.Vector2 hitboxCenterFrac
-        );
+        )
+        {
+            Event?.Invoke(self, projectile, ref width, ref height, ref fallThrough, ref hitboxCenterFrac);
+        }
     }
 
     public static partial class OnTileCollide
@@ -256,11 +265,14 @@ public static partial class GlobalProjectileHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool Invoke(
+        public static bool Invoke(
             Terraria.ModLoader.GlobalProjectile self,
             Terraria.Projectile projectile,
             Microsoft.Xna.Framework.Vector2 oldVelocity
-        );
+        )
+        {
+            Event?.Invoke(self, projectile, oldVelocity);
+        }
     }
 
     public static partial class PreKill
@@ -278,11 +290,14 @@ public static partial class GlobalProjectileHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool Invoke(
+        public static bool Invoke(
             Terraria.ModLoader.GlobalProjectile self,
             Terraria.Projectile projectile,
             int timeLeft
-        );
+        )
+        {
+            Event?.Invoke(self, projectile, timeLeft);
+        }
     }
 
     public static partial class OnKill
@@ -324,10 +339,13 @@ public static partial class GlobalProjectileHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool? Invoke(
+        public static bool? Invoke(
             Terraria.ModLoader.GlobalProjectile self,
             Terraria.Projectile projectile
-        );
+        )
+        {
+            Event?.Invoke(self, projectile);
+        }
     }
 
     public static partial class CutTiles
@@ -367,10 +385,13 @@ public static partial class GlobalProjectileHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool? Invoke(
+        public static bool? Invoke(
             Terraria.ModLoader.GlobalProjectile self,
             Terraria.Projectile projectile
-        );
+        )
+        {
+            Event?.Invoke(self, projectile);
+        }
     }
 
     public static partial class MinionContactDamage
@@ -387,10 +408,13 @@ public static partial class GlobalProjectileHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool Invoke(
+        public static bool Invoke(
             Terraria.ModLoader.GlobalProjectile self,
             Terraria.Projectile projectile
-        );
+        )
+        {
+            Event?.Invoke(self, projectile);
+        }
     }
 
     public static partial class ModifyDamageHitbox
@@ -433,11 +457,14 @@ public static partial class GlobalProjectileHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool? Invoke(
+        public static bool? Invoke(
             Terraria.ModLoader.GlobalProjectile self,
             Terraria.Projectile projectile,
             Terraria.NPC target
-        );
+        )
+        {
+            Event?.Invoke(self, projectile, target);
+        }
     }
 
     public static partial class ModifyHitNPC
@@ -511,11 +538,14 @@ public static partial class GlobalProjectileHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool Invoke(
+        public static bool Invoke(
             Terraria.ModLoader.GlobalProjectile self,
             Terraria.Projectile projectile,
             Terraria.Player target
-        );
+        )
+        {
+            Event?.Invoke(self, projectile, target);
+        }
     }
 
     public static partial class CanHitPlayer
@@ -533,11 +563,14 @@ public static partial class GlobalProjectileHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool Invoke(
+        public static bool Invoke(
             Terraria.ModLoader.GlobalProjectile self,
             Terraria.Projectile projectile,
             Terraria.Player target
-        );
+        )
+        {
+            Event?.Invoke(self, projectile, target);
+        }
     }
 
     public static partial class ModifyHitPlayer
@@ -610,12 +643,15 @@ public static partial class GlobalProjectileHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool? Invoke(
+        public static bool? Invoke(
             Terraria.ModLoader.GlobalProjectile self,
             Terraria.Projectile projectile,
             Microsoft.Xna.Framework.Rectangle projHitbox,
             Microsoft.Xna.Framework.Rectangle targetHitbox
-        );
+        )
+        {
+            Event?.Invoke(self, projectile, projHitbox, targetHitbox);
+        }
     }
 
     public static partial class GetAlpha
@@ -633,11 +669,14 @@ public static partial class GlobalProjectileHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial Microsoft.Xna.Framework.Color? Invoke(
+        public static Microsoft.Xna.Framework.Color? Invoke(
             Terraria.ModLoader.GlobalProjectile self,
             Terraria.Projectile projectile,
             Microsoft.Xna.Framework.Color lightColor
-        );
+        )
+        {
+            Event?.Invoke(self, projectile, lightColor);
+        }
     }
 
     public static partial class PreDrawExtras
@@ -654,10 +693,13 @@ public static partial class GlobalProjectileHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool Invoke(
+        public static bool Invoke(
             Terraria.ModLoader.GlobalProjectile self,
             Terraria.Projectile projectile
-        );
+        )
+        {
+            Event?.Invoke(self, projectile);
+        }
     }
 
     public static partial class PreDraw
@@ -675,11 +717,14 @@ public static partial class GlobalProjectileHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool Invoke(
+        public static bool Invoke(
             Terraria.ModLoader.GlobalProjectile self,
             Terraria.Projectile projectile,
             ref Microsoft.Xna.Framework.Color lightColor
-        );
+        )
+        {
+            Event?.Invoke(self, projectile, ref lightColor);
+        }
     }
 
     public static partial class PostDraw
@@ -757,11 +802,14 @@ public static partial class GlobalProjectileHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool? Invoke(
+        public static bool? Invoke(
             Terraria.ModLoader.GlobalProjectile self,
             int type,
             Terraria.Player player
-        );
+        )
+        {
+            Event?.Invoke(self, type, player);
+        }
     }
 
     public static partial class UseGrapple
@@ -916,13 +964,16 @@ public static partial class GlobalProjectileHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool? Invoke(
+        public static bool? Invoke(
             Terraria.ModLoader.GlobalProjectile self,
             Terraria.Projectile projectile,
             Terraria.Player player,
             int x,
             int y
-        );
+        )
+        {
+            Event?.Invoke(self, projectile, player, x, y);
+        }
     }
 
     public static partial class PrepareBombToBlow

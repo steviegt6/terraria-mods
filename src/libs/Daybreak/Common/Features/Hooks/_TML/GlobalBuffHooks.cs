@@ -91,13 +91,16 @@ public static partial class GlobalBuffHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool Invoke(
+        public static bool Invoke(
             Terraria.ModLoader.GlobalBuff self,
             int type,
             Terraria.Player player,
             int time,
             int buffIndex
-        );
+        )
+        {
+            Event?.Invoke(self, type, player, time, buffIndex);
+        }
     }
 
     public static partial class ReApply_int_NPC_int_int
@@ -117,13 +120,16 @@ public static partial class GlobalBuffHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool Invoke(
+        public static bool Invoke(
             Terraria.ModLoader.GlobalBuff self,
             int type,
             Terraria.NPC npc,
             int time,
             int buffIndex
-        );
+        )
+        {
+            Event?.Invoke(self, type, npc, time, buffIndex);
+        }
     }
 
     public static partial class ModifyBuffText
@@ -226,13 +232,16 @@ public static partial class GlobalBuffHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool Invoke(
+        public static bool Invoke(
             Terraria.ModLoader.GlobalBuff self,
             Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch,
             int type,
             int buffIndex,
             ref Terraria.DataStructures.BuffDrawParams drawParams
-        );
+        )
+        {
+            Event?.Invoke(self, spriteBatch, type, buffIndex, ref drawParams);
+        }
     }
 
     public static partial class PostDraw
@@ -279,10 +288,13 @@ public static partial class GlobalBuffHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool Invoke(
+        public static bool Invoke(
             Terraria.ModLoader.GlobalBuff self,
             int type,
             int buffIndex
-        );
+        )
+        {
+            Event?.Invoke(self, type, buffIndex);
+        }
     }
 }

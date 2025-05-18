@@ -30,13 +30,16 @@ public static partial class GlobalWallHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool Invoke(
+        public static bool Invoke(
             Terraria.ModLoader.GlobalWall self,
             int i,
             int j,
             int type,
             ref int dropType
-        );
+        )
+        {
+            Event?.Invoke(self, i, j, type, ref dropType);
+        }
     }
 
     public static partial class KillWall
@@ -87,7 +90,7 @@ public static partial class GlobalWallHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool Invoke(
+        public static bool Invoke(
             Terraria.ModLoader.GlobalWall self,
             int i,
             int j,
@@ -95,6 +98,9 @@ public static partial class GlobalWallHooks
             bool randomizeFrame,
             ref int style,
             ref int frameNumber
-        );
+        )
+        {
+            Event?.Invoke(self, i, j, type, randomizeFrame, ref style, ref frameNumber);
+        }
     }
 }

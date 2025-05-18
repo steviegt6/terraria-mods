@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -14,7 +15,26 @@ namespace DaybreakHookGenerator;
 
 internal static class Program
 {
-    private readonly record struct TypeHookDefinition(Type Type, string[] ExcludedHooks);
+    private class TypeHookDefinition(Type type)
+    {
+        public Type Type { get; } = type;
+
+        public List<string> Exclusions { get; } = [];
+
+        public Dictionary<string, InvokeStrategy> InvokeStrategies { get; } = [];
+
+        public TypeHookDefinition WithExclusions(params string[] exclusions)
+        {
+            Exclusions.AddRange(exclusions);
+            return this;
+        }
+
+        public TypeHookDefinition WithInvokeStrategy(string methodName, InvokeStrategy strategy)
+        {
+            InvokeStrategies[methodName] = strategy;
+            return this;
+        }
+    }
 
     private const string the_namespace = "Daybreak.Common.Features.Hooks";
 
@@ -28,25 +48,23 @@ internal static class Program
         // TODO: Mod hooks?
         var definitions = new[]
         {
-            new TypeHookDefinition(typeof(GlobalBossBar), []),
-            new TypeHookDefinition(typeof(GlobalBuff), []),
-            new TypeHookDefinition(typeof(GlobalEmoteBubble), []),
-            new TypeHookDefinition(typeof(GlobalInfoDisplay), []),
-            new TypeHookDefinition(typeof(GlobalItem), []),
-            new TypeHookDefinition(typeof(GlobalNPC), []),
-            new TypeHookDefinition(typeof(GlobalProjectile), []),
-            new TypeHookDefinition(typeof(GlobalPylon), []),
-            new TypeHookDefinition(typeof(GlobalTile), []),
-            new TypeHookDefinition(typeof(GlobalWall), []),
-            new TypeHookDefinition(
-                typeof(ModSystem),
-                [
+            new TypeHookDefinition(typeof(GlobalBossBar)),
+            new TypeHookDefinition(typeof(GlobalBuff)),
+            new TypeHookDefinition(typeof(GlobalEmoteBubble)),
+            new TypeHookDefinition(typeof(GlobalInfoDisplay)),
+            new TypeHookDefinition(typeof(GlobalItem)),
+            new TypeHookDefinition(typeof(GlobalNPC)),
+            new TypeHookDefinition(typeof(GlobalProjectile)),
+            new TypeHookDefinition(typeof(GlobalPylon)),
+            new TypeHookDefinition(typeof(GlobalTile)),
+            new TypeHookDefinition(typeof(GlobalWall)),
+            new TypeHookDefinition(typeof(ModSystem))
+               .WithExclusions(
                     nameof(ModSystem.OnModLoad),
                     nameof(ModSystem.OnModUnload),
-                    nameof(ModSystem.SetupContent),
-                ]
-            ),
-            new TypeHookDefinition(typeof(ModPlayer), []),
+                    nameof(ModSystem.SetupContent)
+                ),
+            new TypeHookDefinition(typeof(ModPlayer)),
         };
 
         var modDef = ModuleDefinition.ReadModule(typeof(ModLoader).Assembly.Location);
@@ -68,7 +86,7 @@ internal static class Program
 
         var typeDef = modDef.GetType(definition.Type.FullName);
         var generator = new Generator(modDef, typeDef);
-        var contents = generator.BuildType(the_namespace, className, definition.ExcludedHooks);
+        var contents = generator.BuildType(the_namespace, className, definition.Exclusions, definition.InvokeStrategies);
 
         File.WriteAllText(fileName, contents);
     }

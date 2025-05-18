@@ -26,10 +26,13 @@ public static partial class GlobalInfoDisplayHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool? Invoke(
+        public static bool? Invoke(
             Terraria.ModLoader.GlobalInfoDisplay self,
             Terraria.ModLoader.InfoDisplay currentDisplay
-        );
+        )
+        {
+            Event?.Invoke(self, currentDisplay);
+        }
     }
 
     public static partial class ModifyDisplayParameters

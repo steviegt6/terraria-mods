@@ -1036,11 +1036,14 @@ public static partial class ModSystemHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool Invoke(
+        public static bool Invoke(
             Terraria.ModLoader.ModSystem self,
             Terraria.IO.PlayerFileData playerData,
             Terraria.IO.WorldFileData worldFileData
-        );
+        )
+        {
+            Event?.Invoke(self, playerData, worldFileData);
+        }
     }
 
     public static partial class WorldCanBePlayedRejectionMessage
@@ -1058,11 +1061,14 @@ public static partial class ModSystemHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial string Invoke(
+        public static string Invoke(
             Terraria.ModLoader.ModSystem self,
             Terraria.IO.PlayerFileData playerData,
             Terraria.IO.WorldFileData worldData
-        );
+        )
+        {
+            Event?.Invoke(self, playerData, worldData);
+        }
     }
 
     public static partial class NetSend
@@ -1127,12 +1133,15 @@ public static partial class ModSystemHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool Invoke(
+        public static bool Invoke(
             Terraria.ModLoader.ModSystem self,
             ref byte messageType,
             ref System.IO.BinaryReader reader,
             int playerNumber
-        );
+        )
+        {
+            Event?.Invoke(self, ref messageType, ref reader, playerNumber);
+        }
     }
 
     public static partial class HijackSendData
@@ -1160,7 +1169,7 @@ public static partial class ModSystemHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool Invoke(
+        public static bool Invoke(
             Terraria.ModLoader.ModSystem self,
             int whoAmI,
             int msgType,
@@ -1174,7 +1183,10 @@ public static partial class ModSystemHooks
             int number5,
             int number6,
             int number7
-        );
+        )
+        {
+            Event?.Invoke(self, whoAmI, msgType, remoteClient, ignoreClient, text, number, number2, number3, number4, number5, number6, number7);
+        }
     }
 
     public static partial class PreWorldGen

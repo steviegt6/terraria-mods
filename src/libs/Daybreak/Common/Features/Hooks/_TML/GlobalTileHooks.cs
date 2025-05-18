@@ -88,12 +88,15 @@ public static partial class GlobalTileHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool Invoke(
+        public static bool Invoke(
             Terraria.ModLoader.GlobalTile self,
             int i,
             int j,
             int type
-        );
+        )
+        {
+            Event?.Invoke(self, i, j, type);
+        }
     }
 
     public static partial class Drop
@@ -140,13 +143,16 @@ public static partial class GlobalTileHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool Invoke(
+        public static bool Invoke(
             Terraria.ModLoader.GlobalTile self,
             int i,
             int j,
             int type,
             ref bool blockDamaged
-        );
+        )
+        {
+            Event?.Invoke(self, i, j, type, ref blockDamaged);
+        }
     }
 
     public static partial class KillTile
@@ -228,13 +234,16 @@ public static partial class GlobalTileHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool? Invoke(
+        public static bool? Invoke(
             Terraria.ModLoader.GlobalTile self,
             int i,
             int j,
             int type,
             Terraria.Player player
-        );
+        )
+        {
+            Event?.Invoke(self, i, j, type, player);
+        }
     }
 
     public static partial class IsTileBiomeSightable
@@ -254,13 +263,16 @@ public static partial class GlobalTileHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool? Invoke(
+        public static bool? Invoke(
             Terraria.ModLoader.GlobalTile self,
             int i,
             int j,
             int type,
             ref Microsoft.Xna.Framework.Color sightColor
-        );
+        )
+        {
+            Event?.Invoke(self, i, j, type, ref sightColor);
+        }
     }
 
     public static partial class IsTileSpelunkable
@@ -279,12 +291,15 @@ public static partial class GlobalTileHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool? Invoke(
+        public static bool? Invoke(
             Terraria.ModLoader.GlobalTile self,
             int i,
             int j,
             int type
-        );
+        )
+        {
+            Event?.Invoke(self, i, j, type);
+        }
     }
 
     public static partial class SetSpriteEffects
@@ -452,14 +467,17 @@ public static partial class GlobalTileHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool Invoke(
+        public static bool Invoke(
             Terraria.ModLoader.GlobalTile self,
             int i,
             int j,
             int type,
             ref bool resetFrame,
             ref bool noBreak
-        );
+        )
+        {
+            Event?.Invoke(self, i, j, type, ref resetFrame, ref noBreak);
+        }
     }
 
     public static partial class AdjTiles
@@ -476,10 +494,13 @@ public static partial class GlobalTileHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial int[] Invoke(
+        public static int[] Invoke(
             Terraria.ModLoader.GlobalTile self,
             int type
-        );
+        )
+        {
+            Event?.Invoke(self, type);
+        }
     }
 
     public static partial class RightClick
@@ -580,13 +601,16 @@ public static partial class GlobalTileHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool Invoke(
+        public static bool Invoke(
             Terraria.ModLoader.GlobalTile self,
             int i,
             int j,
             int type,
             Terraria.Item item
-        );
+        )
+        {
+            Event?.Invoke(self, i, j, type, item);
+        }
     }
 
     public static partial class PreHitWire
@@ -605,12 +629,15 @@ public static partial class GlobalTileHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool Invoke(
+        public static bool Invoke(
             Terraria.ModLoader.GlobalTile self,
             int i,
             int j,
             int type
-        );
+        )
+        {
+            Event?.Invoke(self, i, j, type);
+        }
     }
 
     public static partial class HitWire
@@ -656,12 +683,15 @@ public static partial class GlobalTileHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool Invoke(
+        public static bool Invoke(
             Terraria.ModLoader.GlobalTile self,
             int i,
             int j,
             int type
-        );
+        )
+        {
+            Event?.Invoke(self, i, j, type);
+        }
     }
 
     public static partial class FloorVisuals
@@ -731,13 +761,16 @@ public static partial class GlobalTileHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool Invoke(
+        public static bool Invoke(
             Terraria.ModLoader.GlobalTile self,
             int i,
             int j,
             int type,
             int tileTypeBeingPlaced
-        );
+        )
+        {
+            Event?.Invoke(self, i, j, type, tileTypeBeingPlaced);
+        }
     }
 
     public static partial class PostSetupTileMerge
@@ -804,11 +837,14 @@ public static partial class GlobalTileHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool Invoke(
+        public static bool Invoke(
             Terraria.ModLoader.GlobalTile self,
             int x,
             int y,
             Terraria.Enums.TreeTypes treeType
-        );
+        )
+        {
+            Event?.Invoke(self, x, y, treeType);
+        }
     }
 }

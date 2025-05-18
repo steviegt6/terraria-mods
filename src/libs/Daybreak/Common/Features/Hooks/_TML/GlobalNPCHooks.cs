@@ -260,10 +260,13 @@ public static partial class GlobalNPCHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial Terraria.GameContent.ITownNPCProfile Invoke(
+        public static Terraria.GameContent.ITownNPCProfile Invoke(
             Terraria.ModLoader.GlobalNPC self,
             Terraria.NPC npc
-        );
+        )
+        {
+            Event?.Invoke(self, npc);
+        }
     }
 
     public static partial class ModifyNPCNameList
@@ -328,10 +331,13 @@ public static partial class GlobalNPCHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool Invoke(
+        public static bool Invoke(
             Terraria.ModLoader.GlobalNPC self,
             Terraria.NPC npc
-        );
+        )
+        {
+            Event?.Invoke(self, npc);
+        }
     }
 
     public static partial class AI
@@ -523,10 +529,13 @@ public static partial class GlobalNPCHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool Invoke(
+        public static bool Invoke(
             Terraria.ModLoader.GlobalNPC self,
             Terraria.NPC npc
-        );
+        )
+        {
+            Event?.Invoke(self, npc);
+        }
     }
 
     public static partial class CheckDead
@@ -543,10 +552,13 @@ public static partial class GlobalNPCHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool Invoke(
+        public static bool Invoke(
             Terraria.ModLoader.GlobalNPC self,
             Terraria.NPC npc
-        );
+        )
+        {
+            Event?.Invoke(self, npc);
+        }
     }
 
     public static partial class SpecialOnKill
@@ -563,10 +575,13 @@ public static partial class GlobalNPCHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool Invoke(
+        public static bool Invoke(
             Terraria.ModLoader.GlobalNPC self,
             Terraria.NPC npc
-        );
+        )
+        {
+            Event?.Invoke(self, npc);
+        }
     }
 
     public static partial class PreKill
@@ -583,10 +598,13 @@ public static partial class GlobalNPCHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool Invoke(
+        public static bool Invoke(
             Terraria.ModLoader.GlobalNPC self,
             Terraria.NPC npc
-        );
+        )
+        {
+            Event?.Invoke(self, npc);
+        }
     }
 
     public static partial class OnKill
@@ -626,10 +644,13 @@ public static partial class GlobalNPCHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool? Invoke(
+        public static bool? Invoke(
             Terraria.ModLoader.GlobalNPC self,
             Terraria.NPC npc
-        );
+        )
+        {
+            Event?.Invoke(self, npc);
+        }
     }
 
     public static partial class CanBeCaughtBy
@@ -648,12 +669,15 @@ public static partial class GlobalNPCHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool? Invoke(
+        public static bool? Invoke(
             Terraria.ModLoader.GlobalNPC self,
             Terraria.NPC npc,
             Terraria.Item item,
             Terraria.Player player
-        );
+        )
+        {
+            Event?.Invoke(self, npc, item, player);
+        }
     }
 
     public static partial class OnCaughtBy
@@ -749,12 +773,15 @@ public static partial class GlobalNPCHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool Invoke(
+        public static bool Invoke(
             Terraria.ModLoader.GlobalNPC self,
             Terraria.NPC npc,
             Terraria.Player target,
             ref int cooldownSlot
-        );
+        )
+        {
+            Event?.Invoke(self, npc, target, ref cooldownSlot);
+        }
     }
 
     public static partial class ModifyHitPlayer
@@ -826,11 +853,14 @@ public static partial class GlobalNPCHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool Invoke(
+        public static bool Invoke(
             Terraria.ModLoader.GlobalNPC self,
             Terraria.NPC npc,
             Terraria.NPC target
-        );
+        )
+        {
+            Event?.Invoke(self, npc, target);
+        }
     }
 
     public static partial class CanBeHitByNPC
@@ -848,11 +878,14 @@ public static partial class GlobalNPCHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool Invoke(
+        public static bool Invoke(
             Terraria.ModLoader.GlobalNPC self,
             Terraria.NPC npc,
             Terraria.NPC attacker
-        );
+        )
+        {
+            Event?.Invoke(self, npc, attacker);
+        }
     }
 
     public static partial class ModifyHitNPC
@@ -925,12 +958,15 @@ public static partial class GlobalNPCHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool? Invoke(
+        public static bool? Invoke(
             Terraria.ModLoader.GlobalNPC self,
             Terraria.NPC npc,
             Terraria.Player player,
             Terraria.Item item
-        );
+        )
+        {
+            Event?.Invoke(self, npc, player, item);
+        }
     }
 
     public static partial class CanCollideWithPlayerMeleeAttack
@@ -950,13 +986,16 @@ public static partial class GlobalNPCHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool? Invoke(
+        public static bool? Invoke(
             Terraria.ModLoader.GlobalNPC self,
             Terraria.NPC npc,
             Terraria.Player player,
             Terraria.Item item,
             Microsoft.Xna.Framework.Rectangle meleeAttackHitbox
-        );
+        )
+        {
+            Event?.Invoke(self, npc, player, item, meleeAttackHitbox);
+        }
     }
 
     public static partial class ModifyHitByItem
@@ -1034,11 +1073,14 @@ public static partial class GlobalNPCHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool? Invoke(
+        public static bool? Invoke(
             Terraria.ModLoader.GlobalNPC self,
             Terraria.NPC npc,
             Terraria.Projectile projectile
-        );
+        )
+        {
+            Event?.Invoke(self, npc, projectile);
+        }
     }
 
     public static partial class ModifyHitByProjectile
@@ -1212,11 +1254,14 @@ public static partial class GlobalNPCHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial Microsoft.Xna.Framework.Color? Invoke(
+        public static Microsoft.Xna.Framework.Color? Invoke(
             Terraria.ModLoader.GlobalNPC self,
             Terraria.NPC npc,
             Microsoft.Xna.Framework.Color drawColor
-        );
+        )
+        {
+            Event?.Invoke(self, npc, drawColor);
+        }
     }
 
     public static partial class DrawEffects
@@ -1261,13 +1306,16 @@ public static partial class GlobalNPCHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool Invoke(
+        public static bool Invoke(
             Terraria.ModLoader.GlobalNPC self,
             Terraria.NPC npc,
             Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch,
             Microsoft.Xna.Framework.Vector2 screenPos,
             Microsoft.Xna.Framework.Color drawColor
-        );
+        )
+        {
+            Event?.Invoke(self, npc, spriteBatch, screenPos, drawColor);
+        }
     }
 
     public static partial class PostDraw
@@ -1341,13 +1389,16 @@ public static partial class GlobalNPCHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool? Invoke(
+        public static bool? Invoke(
             Terraria.ModLoader.GlobalNPC self,
             Terraria.NPC npc,
             byte hbPosition,
             ref float scale,
             ref Microsoft.Xna.Framework.Vector2 position
-        );
+        )
+        {
+            Event?.Invoke(self, npc, hbPosition, ref scale, ref position);
+        }
     }
 
     public static partial class EditSpawnRate
@@ -1474,10 +1525,13 @@ public static partial class GlobalNPCHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool? Invoke(
+        public static bool? Invoke(
             Terraria.ModLoader.GlobalNPC self,
             Terraria.NPC npc
-        );
+        )
+        {
+            Event?.Invoke(self, npc);
+        }
     }
 
     public static partial class GetChat
@@ -1520,11 +1574,14 @@ public static partial class GlobalNPCHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool Invoke(
+        public static bool Invoke(
             Terraria.ModLoader.GlobalNPC self,
             Terraria.NPC npc,
             bool firstButton
-        );
+        )
+        {
+            Event?.Invoke(self, npc, firstButton);
+        }
     }
 
     public static partial class OnChatButtonClicked
@@ -1642,11 +1699,14 @@ public static partial class GlobalNPCHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool? Invoke(
+        public static bool? Invoke(
             Terraria.ModLoader.GlobalNPC self,
             Terraria.NPC npc,
             bool toKingStatue
-        );
+        )
+        {
+            Event?.Invoke(self, npc, toKingStatue);
+        }
     }
 
     public static partial class OnGoToStatue
@@ -1968,14 +2028,17 @@ public static partial class GlobalNPCHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool Invoke(
+        public static bool Invoke(
             Terraria.ModLoader.GlobalNPC self,
             Terraria.NPC npc,
             Microsoft.Xna.Framework.Rectangle victimHitbox,
             ref int immunityCooldownSlot,
             ref Terraria.ModLoader.MultipliableFloat damageMultiplier,
             ref Microsoft.Xna.Framework.Rectangle npcHitbox
-        );
+        )
+        {
+            Event?.Invoke(self, npc, victimHitbox, ref immunityCooldownSlot, ref damageMultiplier, ref npcHitbox);
+        }
     }
 
     public static partial class NeedSaving
@@ -1992,10 +2055,13 @@ public static partial class GlobalNPCHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial bool Invoke(
+        public static bool Invoke(
             Terraria.ModLoader.GlobalNPC self,
             Terraria.NPC npc
-        );
+        )
+        {
+            Event?.Invoke(self, npc);
+        }
     }
 
     public static partial class SaveData
@@ -2065,13 +2131,16 @@ public static partial class GlobalNPCHooks
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
 
-        public static partial int? Invoke(
+        public static int? Invoke(
             Terraria.ModLoader.GlobalNPC self,
             Terraria.NPC npc,
             Terraria.Player closestPlayer,
             System.Collections.Generic.List<int> emoteList,
             Terraria.GameContent.UI.WorldUIAnchor otherAnchor
-        );
+        )
+        {
+            Event?.Invoke(self, npc, closestPlayer, emoteList, otherAnchor);
+        }
     }
 
     public static partial class ChatBubblePosition
