@@ -77,6 +77,31 @@ internal sealed class EarlyReturnOnTrueStrategy : InvokeStrategy
     }
 }
 
+internal sealed class EarlyReturnOnFalseStrategy : InvokeStrategy
+{
+    public override string GenerateMethodBody(MethodDefinition method)
+    {
+        var sb = new StringBuilder();
+
+        sb.AppendLine($"{INDENT}if (Event == null)");
+        sb.AppendLine($"{INDENT}{{");
+        sb.AppendLine($"{INDENT}    return true;");
+        sb.AppendLine($"{INDENT}}}");
+        sb.AppendLine();
+        sb.AppendLine($"{INDENT}foreach (var handler in GetInvocationList())");
+        sb.AppendLine($"{INDENT}{{");
+        sb.AppendLine($"{INDENT}    if (!{Invoke(method, "handler")})");
+        sb.AppendLine($"{INDENT}    {{");
+        sb.AppendLine($"{INDENT}        return false;");
+        sb.AppendLine($"{INDENT}    }}");
+        sb.AppendLine($"{INDENT}}}");
+        sb.AppendLine();
+        sb.AppendLine($"{INDENT}return true;");
+
+        return sb.ToString();
+    }
+}
+
 internal sealed class NullableValueMayBeOverriddenStrategy(string typeName) : InvokeStrategy
 {
     public override string GenerateMethodBody(MethodDefinition method)
@@ -119,9 +144,41 @@ internal sealed class NullableBooleanCombinerStrategy : InvokeStrategy
         sb.AppendLine($"{INDENT}foreach (var handler in GetInvocationList())");
         sb.AppendLine($"{INDENT}{{");
         sb.AppendLine($"{INDENT}    var newValue = {Invoke(method, "handler")};");
-        sb.AppendLine($"{INDENT}    if (newValue != null)");
+        sb.AppendLine($"{INDENT}    if (newValue.HasValue)");
         sb.AppendLine($"{INDENT}    {{");
         sb.AppendLine($"{INDENT}        result &= newValue;");
+        sb.AppendLine($"{INDENT}    }}");
+        sb.AppendLine($"{INDENT}}}");
+        sb.AppendLine();
+        sb.AppendLine($"{INDENT}return result;");
+
+        return sb.ToString();
+    }
+}
+
+internal sealed class NullableBooleanEarlyReturnStrategy : InvokeStrategy
+{
+    public override string GenerateMethodBody(MethodDefinition method)
+    {
+        var sb = new StringBuilder();
+
+        sb.AppendLine($"{INDENT}var result = default(bool?);");
+        sb.AppendLine($"{INDENT}if (Event == null)");
+        sb.AppendLine($"{INDENT}{{");
+        sb.AppendLine($"{INDENT}    return result;");
+        sb.AppendLine($"{INDENT}}}");
+        sb.AppendLine();
+        sb.AppendLine($"{INDENT}foreach (var handler in GetInvocationList())");
+        sb.AppendLine($"{INDENT}{{");
+        sb.AppendLine($"{INDENT}    var newValue = {Invoke(method, "handler")};");
+        sb.AppendLine($"{INDENT}    if (newValue.HasValue)");
+        sb.AppendLine($"{INDENT}    {{");
+        sb.AppendLine($"{INDENT}        if (!newValue.Value)");
+        sb.AppendLine($"{INDENT}        {{");
+        sb.AppendLine($"{INDENT}            return false;");
+        sb.AppendLine($"{INDENT}        }}");
+        sb.AppendLine();
+        sb.AppendLine($"{INDENT}        result = true;");
         sb.AppendLine($"{INDENT}    }}");
         sb.AppendLine($"{INDENT}}}");
         sb.AppendLine();

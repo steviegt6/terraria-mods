@@ -38,7 +38,20 @@ public static partial class GlobalWallHooks
             ref int dropType
         )
         {
-            Event?.Invoke(self, i, j, type, ref dropType);
+            if (Event == null)
+            {
+                return true;
+            }
+
+            foreach (var handler in GetInvocationList())
+            {
+                if (!handler.Invoke(self, i, j, type, ref dropType))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 
@@ -100,7 +113,20 @@ public static partial class GlobalWallHooks
             ref int frameNumber
         )
         {
-            Event?.Invoke(self, i, j, type, randomizeFrame, ref style, ref frameNumber);
+            if (Event == null)
+            {
+                return true;
+            }
+
+            foreach (var handler in GetInvocationList())
+            {
+                if (!handler.Invoke(self, i, j, type, randomizeFrame, ref style, ref frameNumber))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }

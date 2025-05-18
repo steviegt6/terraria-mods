@@ -67,15 +67,27 @@ internal static class Program
             new TypeHookDefinition(typeof(GlobalItem)),
             new TypeHookDefinition(typeof(GlobalNPC)),
             new TypeHookDefinition(typeof(GlobalProjectile)),
-            new TypeHookDefinition(typeof(GlobalPylon)),
+            new TypeHookDefinition(typeof(GlobalPylon))
+               .WithInvokeStrategy(nameof(GlobalPylon.PreDrawMapIcon), new BoolCombinerStrategy(true, "&="))
+               .WithInvokeStrategy(nameof(GlobalPylon.PreCanPlacePylon), new NullableBooleanEarlyReturnStrategy())
+               .WithInvokeStrategy(nameof(GlobalPylon.ValidTeleportCheck_PreNPCCount), new NullableBooleanEarlyReturnStrategy())
+               .WithInvokeStrategy(nameof(GlobalPylon.ValidTeleportCheck_PreAnyDanger), new NullableBooleanEarlyReturnStrategy())
+               .WithInvokeStrategy(nameof(GlobalPylon.ValidTeleportCheck_PreBiomeRequirements), new NullableBooleanEarlyReturnStrategy()),
             new TypeHookDefinition(typeof(GlobalTile)),
-            new TypeHookDefinition(typeof(GlobalWall)),
+            new TypeHookDefinition(typeof(GlobalWall))
+               .WithInvokeStrategy(nameof(GlobalWall.Drop), new EarlyReturnOnFalseStrategy())
+               .WithInvokeStrategy(nameof(GlobalWall.WallFrame), new EarlyReturnOnFalseStrategy()),
             new TypeHookDefinition(typeof(ModSystem))
                .WithExclusions(
                     nameof(ModSystem.OnModLoad),
                     nameof(ModSystem.OnModUnload),
-                    nameof(ModSystem.SetupContent)
-                ),
+                    nameof(ModSystem.SetupContent),
+                    nameof(ModSystem.CanWorldBePlayed),
+                    nameof(ModSystem.WorldCanBePlayedRejectionMessage),
+                    nameof(ModSystem.HijackGetData),
+                    nameof(ModSystem.HijackSendData)
+                )
+            /*.WithInvokeStrategy(nameof(ModSystem.CanWorldBePlayed), new EarlyReturnOnFalseStrategy())*/,
             new TypeHookDefinition(typeof(ModPlayer)),
         };
 

@@ -47,7 +47,18 @@ public static partial class GlobalPylonHooks
             ref float selectedScale
         )
         {
-            Event?.Invoke(self, ref context, ref mouseOverText, ref pylonInfo, ref isNearPylon, ref drawColor, ref deselectedScale, ref selectedScale);
+            var result = true;
+            if (Event == null)
+            {
+                return result;
+            }
+
+            foreach (var handler in GetInvocationList())
+            {
+                result &= handler.Invoke(self, ref context, ref mouseOverText, ref pylonInfo, ref isNearPylon, ref drawColor, ref deselectedScale, ref selectedScale);
+            }
+
+            return result;
         }
     }
 
@@ -76,7 +87,27 @@ public static partial class GlobalPylonHooks
             Terraria.GameContent.TeleportPylonType pylonType
         )
         {
-            Event?.Invoke(self, x, y, tileType, pylonType);
+            var result = default(bool?);
+            if (Event == null)
+            {
+                return result;
+            }
+
+            foreach (var handler in GetInvocationList())
+            {
+                var newValue = handler.Invoke(self, x, y, tileType, pylonType);
+                if (newValue.HasValue)
+                {
+                    if (!newValue.Value)
+                    {
+                        return false;
+                    }
+
+                    result = true;
+                }
+            }
+
+            return result;
         }
     }
 
@@ -101,7 +132,27 @@ public static partial class GlobalPylonHooks
             ref int defaultNecessaryNPCCount
         )
         {
-            Event?.Invoke(self, pylonInfo, ref defaultNecessaryNPCCount);
+            var result = default(bool?);
+            if (Event == null)
+            {
+                return result;
+            }
+
+            foreach (var handler in GetInvocationList())
+            {
+                var newValue = handler.Invoke(self, pylonInfo, ref defaultNecessaryNPCCount);
+                if (newValue.HasValue)
+                {
+                    if (!newValue.Value)
+                    {
+                        return false;
+                    }
+
+                    result = true;
+                }
+            }
+
+            return result;
         }
     }
 
@@ -124,7 +175,27 @@ public static partial class GlobalPylonHooks
             Terraria.GameContent.TeleportPylonInfo pylonInfo
         )
         {
-            Event?.Invoke(self, pylonInfo);
+            var result = default(bool?);
+            if (Event == null)
+            {
+                return result;
+            }
+
+            foreach (var handler in GetInvocationList())
+            {
+                var newValue = handler.Invoke(self, pylonInfo);
+                if (newValue.HasValue)
+                {
+                    if (!newValue.Value)
+                    {
+                        return false;
+                    }
+
+                    result = true;
+                }
+            }
+
+            return result;
         }
     }
 
@@ -149,7 +220,27 @@ public static partial class GlobalPylonHooks
             Terraria.SceneMetrics sceneData
         )
         {
-            Event?.Invoke(self, pylonInfo, sceneData);
+            var result = default(bool?);
+            if (Event == null)
+            {
+                return result;
+            }
+
+            foreach (var handler in GetInvocationList())
+            {
+                var newValue = handler.Invoke(self, pylonInfo, sceneData);
+                if (newValue.HasValue)
+                {
+                    if (!newValue.Value)
+                    {
+                        return false;
+                    }
+
+                    result = true;
+                }
+            }
+
+            return result;
         }
     }
 

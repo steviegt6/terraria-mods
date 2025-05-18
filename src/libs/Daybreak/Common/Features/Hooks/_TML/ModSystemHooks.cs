@@ -52,12 +52,8 @@ using System.Linq;
 //     System.Void Terraria.ModLoader.ModSystem::SaveWorldData(Terraria.ModLoader.IO.TagCompound)
 //     System.Void Terraria.ModLoader.ModSystem::LoadWorldData(Terraria.ModLoader.IO.TagCompound)
 //     System.Void Terraria.ModLoader.ModSystem::SaveWorldHeader(Terraria.ModLoader.IO.TagCompound)
-//     System.Boolean Terraria.ModLoader.ModSystem::CanWorldBePlayed(Terraria.IO.PlayerFileData,Terraria.IO.WorldFileData)
-//     System.String Terraria.ModLoader.ModSystem::WorldCanBePlayedRejectionMessage(Terraria.IO.PlayerFileData,Terraria.IO.WorldFileData)
 //     System.Void Terraria.ModLoader.ModSystem::NetSend(System.IO.BinaryWriter)
 //     System.Void Terraria.ModLoader.ModSystem::NetReceive(System.IO.BinaryReader)
-//     System.Boolean Terraria.ModLoader.ModSystem::HijackGetData(System.Byte&,System.IO.BinaryReader&,System.Int32)
-//     System.Boolean Terraria.ModLoader.ModSystem::HijackSendData(System.Int32,System.Int32,System.Int32,System.Int32,Terraria.Localization.NetworkText,System.Int32,System.Single,System.Single,System.Single,System.Int32,System.Int32,System.Int32)
 //     System.Void Terraria.ModLoader.ModSystem::PreWorldGen()
 //     System.Void Terraria.ModLoader.ModSystem::ModifyWorldGenTasks(System.Collections.Generic.List`1<Terraria.WorldBuilding.GenPass>,System.Double&)
 //     System.Void Terraria.ModLoader.ModSystem::PostWorldGen()
@@ -1021,56 +1017,6 @@ public static partial class ModSystemHooks
         }
     }
 
-    public static partial class CanWorldBePlayed
-    {
-        public delegate bool Definition(
-            Terraria.ModLoader.ModSystem self,
-            Terraria.IO.PlayerFileData playerData,
-            Terraria.IO.WorldFileData worldFileData
-        );
-
-        public static event Definition? Event;
-
-        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
-        {
-            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
-        }
-
-        public static bool Invoke(
-            Terraria.ModLoader.ModSystem self,
-            Terraria.IO.PlayerFileData playerData,
-            Terraria.IO.WorldFileData worldFileData
-        )
-        {
-            Event?.Invoke(self, playerData, worldFileData);
-        }
-    }
-
-    public static partial class WorldCanBePlayedRejectionMessage
-    {
-        public delegate string Definition(
-            Terraria.ModLoader.ModSystem self,
-            Terraria.IO.PlayerFileData playerData,
-            Terraria.IO.WorldFileData worldData
-        );
-
-        public static event Definition? Event;
-
-        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
-        {
-            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
-        }
-
-        public static string Invoke(
-            Terraria.ModLoader.ModSystem self,
-            Terraria.IO.PlayerFileData playerData,
-            Terraria.IO.WorldFileData worldData
-        )
-        {
-            Event?.Invoke(self, playerData, worldData);
-        }
-    }
-
     public static partial class NetSend
     {
         public delegate void Definition(
@@ -1114,78 +1060,6 @@ public static partial class ModSystemHooks
         )
         {
             Event?.Invoke(self, reader);
-        }
-    }
-
-    public static partial class HijackGetData
-    {
-        public delegate bool Definition(
-            Terraria.ModLoader.ModSystem self,
-            ref byte messageType,
-            ref System.IO.BinaryReader reader,
-            int playerNumber
-        );
-
-        public static event Definition? Event;
-
-        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
-        {
-            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
-        }
-
-        public static bool Invoke(
-            Terraria.ModLoader.ModSystem self,
-            ref byte messageType,
-            ref System.IO.BinaryReader reader,
-            int playerNumber
-        )
-        {
-            Event?.Invoke(self, ref messageType, ref reader, playerNumber);
-        }
-    }
-
-    public static partial class HijackSendData
-    {
-        public delegate bool Definition(
-            Terraria.ModLoader.ModSystem self,
-            int whoAmI,
-            int msgType,
-            int remoteClient,
-            int ignoreClient,
-            Terraria.Localization.NetworkText text,
-            int number,
-            float number2,
-            float number3,
-            float number4,
-            int number5,
-            int number6,
-            int number7
-        );
-
-        public static event Definition? Event;
-
-        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
-        {
-            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
-        }
-
-        public static bool Invoke(
-            Terraria.ModLoader.ModSystem self,
-            int whoAmI,
-            int msgType,
-            int remoteClient,
-            int ignoreClient,
-            Terraria.Localization.NetworkText text,
-            int number,
-            float number2,
-            float number3,
-            float number4,
-            int number5,
-            int number6,
-            int number7
-        )
-        {
-            Event?.Invoke(self, whoAmI, msgType, remoteClient, ignoreClient, text, number, number2, number3, number4, number5, number6, number7);
         }
     }
 

@@ -40,7 +40,7 @@ public static partial class GlobalInfoDisplayHooks
             foreach (var handler in GetInvocationList())
             {
                 var newValue = handler.Invoke(self, currentDisplay);
-                if (newValue != null)
+                if (newValue.HasValue)
                 {
                     result &= newValue;
                 }
