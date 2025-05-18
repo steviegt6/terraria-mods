@@ -50,7 +50,11 @@ internal static class Program
         {
             new TypeHookDefinition(typeof(GlobalBossBar))
                .WithInvokeStrategy(nameof(GlobalBossBar.PreDraw), new BoolCombinerStrategy(true, "&=")),
-            new TypeHookDefinition(typeof(GlobalBuff)),
+            new TypeHookDefinition(typeof(GlobalBuff))
+               .WithInvokeStrategy("ReApply_int_Player_int_int", new EarlyReturnOnTrueStrategy())
+               .WithInvokeStrategy("ReApply_int_NPC_int_int", new EarlyReturnOnTrueStrategy())
+               .WithInvokeStrategy(nameof(GlobalBuff.PreDraw), new BoolCombinerStrategy(true, "&="))
+               .WithInvokeStrategy(nameof(GlobalBuff.RightClick), new BoolCombinerStrategy(true, "&=")),
             new TypeHookDefinition(typeof(GlobalEmoteBubble)),
             new TypeHookDefinition(typeof(GlobalInfoDisplay)),
             new TypeHookDefinition(typeof(GlobalItem)),

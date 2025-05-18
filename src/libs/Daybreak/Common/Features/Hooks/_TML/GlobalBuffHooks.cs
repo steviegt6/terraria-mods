@@ -99,7 +99,20 @@ public static partial class GlobalBuffHooks
             int buffIndex
         )
         {
-            Event?.Invoke(self, type, player, time, buffIndex);
+            if (Event == null)
+            {
+                return false;
+            }
+
+            foreach (var handler in GetInvocationList())
+            {
+                if (handler.Invoke(self, type, player, time, buffIndex))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 
@@ -128,7 +141,20 @@ public static partial class GlobalBuffHooks
             int buffIndex
         )
         {
-            Event?.Invoke(self, type, npc, time, buffIndex);
+            if (Event == null)
+            {
+                return false;
+            }
+
+            foreach (var handler in GetInvocationList())
+            {
+                if (handler.Invoke(self, type, npc, time, buffIndex))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 
@@ -240,7 +266,18 @@ public static partial class GlobalBuffHooks
             ref Terraria.DataStructures.BuffDrawParams drawParams
         )
         {
-            Event?.Invoke(self, spriteBatch, type, buffIndex, ref drawParams);
+            var result = true;
+            if (Event == null)
+            {
+                return result;
+            }
+
+            foreach (var handler in GetInvocationList())
+            {
+                result &= handler.Invoke(self, spriteBatch, type, buffIndex, ref drawParams);
+            }
+
+            return result;
         }
     }
 
@@ -294,7 +331,18 @@ public static partial class GlobalBuffHooks
             int buffIndex
         )
         {
-            Event?.Invoke(self, type, buffIndex);
+            var result = true;
+            if (Event == null)
+            {
+                return result;
+            }
+
+            foreach (var handler in GetInvocationList())
+            {
+                result &= handler.Invoke(self, type, buffIndex);
+            }
+
+            return result;
         }
     }
 }

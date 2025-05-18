@@ -51,3 +51,28 @@ internal sealed class BoolCombinerStrategy(bool defaultValue, string combiner) :
         return sb.ToString();
     }
 }
+
+internal sealed class EarlyReturnOnTrueStrategy : InvokeStrategy
+{
+    public override string GenerateMethodBody(MethodDefinition method)
+    {
+        var sb = new StringBuilder();
+
+        sb.AppendLine($"{INDENT}if (Event == null)");
+        sb.AppendLine($"{INDENT}{{");
+        sb.AppendLine($"{INDENT}    return false;");
+        sb.AppendLine($"{INDENT}}}");
+        sb.AppendLine();
+        sb.AppendLine($"{INDENT}foreach (var handler in GetInvocationList())");
+        sb.AppendLine($"{INDENT}{{");
+        sb.AppendLine($"{INDENT}    if ({Invoke(method, "handler")})");
+        sb.AppendLine($"{INDENT}    {{");
+        sb.AppendLine($"{INDENT}        return true;");
+        sb.AppendLine($"{INDENT}    }}");
+        sb.AppendLine($"{INDENT}}}");
+        sb.AppendLine();
+        sb.AppendLine($"{INDENT}return false;");
+
+        return sb.ToString();
+    }
+}
