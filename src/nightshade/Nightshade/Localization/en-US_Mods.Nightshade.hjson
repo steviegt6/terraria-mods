@@ -144,6 +144,11 @@ Items: {
 			Right click to splash yourself with it
 			'''
 	}
+
+	LivingCactusWoodWallBlock: {
+		DisplayName: Living Cactus Wood Wall Block
+		Tooltip: ""
+	}
 }
 
 Projectiles: {

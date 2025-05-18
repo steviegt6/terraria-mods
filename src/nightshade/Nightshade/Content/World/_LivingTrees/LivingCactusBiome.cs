@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 using Nightshade.Common.Utilities;
 using Nightshade.Content.Items;
 using Nightshade.Content.Tiles;
-
+using Nightshade.Content.Walls;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -21,9 +21,9 @@ internal sealed class LivingCactusBiome : MicroBiome
 
     private static ushort PlatformType => (ushort)ModContent.TileType<CactusWoodPlatform>();
 
-    private static ushort WoodWallType => WallID.LivingWood;
+    private static ushort WoodWallType => (ushort)ModContent.WallType<LivingCactusWoodWall>();
 
-    private static ushort PotType => (ushort)ModContent.TileType<LivingCactusPot>();
+	private static ushort PotType => (ushort)ModContent.TileType<LivingCactusPot>();
 
     public bool Round { get; set; }
 
