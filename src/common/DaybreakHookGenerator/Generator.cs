@@ -99,6 +99,8 @@ public sealed class Generator(ModuleDefinition module, TypeDefinition type)
         sb.AppendLine("        {");
         sb.AppendLine("            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];");
         sb.AppendLine("        }");
+        sb.AppendLine();
+        sb.AppendLine(GenerateInvokeMethod(method));
         sb.AppendLine("    }");
 
         return sb.ToString();
@@ -157,6 +159,99 @@ public sealed class Generator(ModuleDefinition module, TypeDefinition type)
         return sb.ToString();
     }
 
+    private static string GenerateInvokeMethod(MethodDefinition method)
+    {
+        if (method.ReturnType.FullName == typeof(void).FullName)
+        {
+            return GenerateSimpleVoidReturnInvoke(method);
+        }
+
+        return GeneratePartialReturnDefinition(method);
+    }
+
+    private static string GenerateSimpleVoidReturnInvoke(MethodDefinition method)
+    {
+        var sb = new StringBuilder();
+
+        sb.AppendLine("        public static " + GetFullTypeNameOrCSharpKeyword(method.ReturnType, includeRefPrefix: true) + " Invoke(");
+        sb.Append($"            {GetFullTypeNameOrCSharpKeyword(method.DeclaringType, includeRefPrefix: false)} self");
+        if (method.Parameters.Count > 0)
+        {
+            sb.AppendLine(",");
+
+            for (var i = 0; i < method.Parameters.Count; i++)
+            {
+                var parameter = method.Parameters[i];
+                sb.Append($"            {GetParameterDefinition(parameter)}");
+                if (i < method.Parameters.Count - 1)
+                {
+                    sb.AppendLine(",");
+                }
+                else
+                {
+                    sb.AppendLine();
+                }
+            }
+        }
+        else
+        {
+            sb.AppendLine();
+        }
+
+        sb.AppendLine("        )");
+        sb.AppendLine("        {");
+        if (method.Parameters.Count > 0)
+        {
+            sb.AppendLine("            Event?.Invoke(self, " + string.Join(", ", method.Parameters.Select(GetParameterReference)) + ");");
+        }
+        else
+        {
+            sb.AppendLine("            Event?.Invoke(self);");
+        }
+        sb.Append("        }");
+
+        return sb.ToString();
+
+        static string GetParameterReference(ParameterDefinition parameter)
+        {
+            return GetReferencePrefix(parameter) + parameter.Name;
+        }
+    }
+
+    private static string GeneratePartialReturnDefinition(MethodDefinition method)
+    {
+        var sb = new StringBuilder();
+
+        sb.AppendLine("        public static partial " + GetFullTypeNameOrCSharpKeyword(method.ReturnType, includeRefPrefix: true) + " Invoke(");
+        sb.Append($"            {GetFullTypeNameOrCSharpKeyword(method.DeclaringType, includeRefPrefix: false)} self");
+        if (method.Parameters.Count > 0)
+        {
+            sb.AppendLine(",");
+
+            for (var i = 0; i < method.Parameters.Count; i++)
+            {
+                var parameter = method.Parameters[i];
+                sb.Append($"            {GetParameterDefinition(parameter)}");
+                if (i < method.Parameters.Count - 1)
+                {
+                    sb.AppendLine(",");
+                }
+                else
+                {
+                    sb.AppendLine();
+                }
+            }
+        }
+        else
+        {
+            sb.AppendLine();
+        }
+
+        sb.Append("        );");
+
+        return sb.ToString();
+    }
+
     private static string GetParameterDefinition(ParameterDefinition parameter)
     {
         var prefix = GetReferencePrefix(parameter);
@@ -181,6 +276,12 @@ public sealed class Generator(ModuleDefinition module, TypeDefinition type)
             var genericArgs = string.Join(", ", genericType.GenericArguments.Select(arg => GetFullTypeNameOrCSharpKeyword(arg, includeRefPrefix: false)));
             var baseTypeName = GetCSharpRepresentation(genericType.ElementType.FullName);
             return prefix + $"{baseTypeName}<{genericArgs}>";
+        }
+        else if (type is ArrayType arrayType)
+        {
+            var elementType = GetFullTypeNameOrCSharpKeyword(arrayType.ElementType, includeRefPrefix: false);
+            var rank = new string(',', arrayType.Rank - 1);
+            return prefix + $"{elementType}[{rank}]";
         }
 
         var csharpName = GetCSharpRepresentation(type.FullName);

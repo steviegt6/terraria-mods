@@ -32,6 +32,14 @@ public static partial class GlobalEmoteBubbleHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.GlobalEmoteBubble self,
+            Terraria.GameContent.UI.EmoteBubble emoteBubble
+        )
+        {
+            Event?.Invoke(self, emoteBubble);
+        }
     }
 
     public static partial class UpdateFrame
@@ -47,6 +55,11 @@ public static partial class GlobalEmoteBubbleHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial bool Invoke(
+            Terraria.ModLoader.GlobalEmoteBubble self,
+            Terraria.GameContent.UI.EmoteBubble emoteBubble
+        );
     }
 
     public static partial class UpdateFrameInEmoteMenu
@@ -63,6 +76,12 @@ public static partial class GlobalEmoteBubbleHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial bool Invoke(
+            Terraria.ModLoader.GlobalEmoteBubble self,
+            int emoteType,
+            ref int frameCounter
+        );
     }
 
     public static partial class PreDraw
@@ -84,6 +103,17 @@ public static partial class GlobalEmoteBubbleHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial bool Invoke(
+            Terraria.ModLoader.GlobalEmoteBubble self,
+            Terraria.GameContent.UI.EmoteBubble emoteBubble,
+            Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch,
+            Microsoft.Xna.Framework.Graphics.Texture2D texture,
+            Microsoft.Xna.Framework.Vector2 position,
+            Microsoft.Xna.Framework.Rectangle frame,
+            Microsoft.Xna.Framework.Vector2 origin,
+            Microsoft.Xna.Framework.Graphics.SpriteEffects spriteEffects
+        );
     }
 
     public static partial class PostDraw
@@ -105,6 +135,20 @@ public static partial class GlobalEmoteBubbleHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.GlobalEmoteBubble self,
+            Terraria.GameContent.UI.EmoteBubble emoteBubble,
+            Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch,
+            Microsoft.Xna.Framework.Graphics.Texture2D texture,
+            Microsoft.Xna.Framework.Vector2 position,
+            Microsoft.Xna.Framework.Rectangle frame,
+            Microsoft.Xna.Framework.Vector2 origin,
+            Microsoft.Xna.Framework.Graphics.SpriteEffects spriteEffects
+        )
+        {
+            Event?.Invoke(self, emoteBubble, spriteBatch, texture, position, frame, origin, spriteEffects);
+        }
     }
 
     public static partial class PreDrawInEmoteMenu
@@ -125,6 +169,16 @@ public static partial class GlobalEmoteBubbleHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial bool Invoke(
+            Terraria.ModLoader.GlobalEmoteBubble self,
+            int emoteType,
+            Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch,
+            Terraria.GameContent.UI.Elements.EmoteButton uiEmoteButton,
+            Microsoft.Xna.Framework.Vector2 position,
+            Microsoft.Xna.Framework.Rectangle frame,
+            Microsoft.Xna.Framework.Vector2 origin
+        );
     }
 
     public static partial class PostDrawInEmoteMenu
@@ -145,6 +199,19 @@ public static partial class GlobalEmoteBubbleHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.GlobalEmoteBubble self,
+            int emoteType,
+            Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch,
+            Terraria.GameContent.UI.Elements.EmoteButton uiEmoteButton,
+            Microsoft.Xna.Framework.Vector2 position,
+            Microsoft.Xna.Framework.Rectangle frame,
+            Microsoft.Xna.Framework.Vector2 origin
+        )
+        {
+            Event?.Invoke(self, emoteType, spriteBatch, uiEmoteButton, position, frame, origin);
+        }
     }
 
     public static partial class GetFrame
@@ -160,6 +227,11 @@ public static partial class GlobalEmoteBubbleHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial Microsoft.Xna.Framework.Rectangle? Invoke(
+            Terraria.ModLoader.GlobalEmoteBubble self,
+            Terraria.GameContent.UI.EmoteBubble emoteBubble
+        );
     }
 
     public static partial class GetFrameInEmoteMenu
@@ -177,5 +249,12 @@ public static partial class GlobalEmoteBubbleHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial Microsoft.Xna.Framework.Rectangle? Invoke(
+            Terraria.ModLoader.GlobalEmoteBubble self,
+            int emoteType,
+            int frame,
+            int frameCounter
+        );
     }
 }

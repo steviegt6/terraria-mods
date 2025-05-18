@@ -27,6 +27,13 @@ public static partial class GlobalBossBarHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial bool Invoke(
+            Terraria.ModLoader.GlobalBossBar self,
+            Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch,
+            Terraria.NPC npc,
+            ref Terraria.DataStructures.BossBarDrawParams drawParams
+        );
     }
 
     public static partial class PostDraw
@@ -43,6 +50,16 @@ public static partial class GlobalBossBarHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.GlobalBossBar self,
+            Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch,
+            Terraria.NPC npc,
+            Terraria.DataStructures.BossBarDrawParams drawParams
+        )
+        {
+            Event?.Invoke(self, spriteBatch, npc, drawParams);
         }
     }
 }

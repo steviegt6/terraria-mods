@@ -25,6 +25,11 @@ public static partial class GlobalInfoDisplayHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial bool? Invoke(
+            Terraria.ModLoader.GlobalInfoDisplay self,
+            Terraria.ModLoader.InfoDisplay currentDisplay
+        );
     }
 
     public static partial class ModifyDisplayParameters
@@ -43,6 +48,18 @@ public static partial class GlobalInfoDisplayHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.GlobalInfoDisplay self,
+            Terraria.ModLoader.InfoDisplay currentDisplay,
+            ref string displayValue,
+            ref string displayName,
+            ref Microsoft.Xna.Framework.Color displayColor,
+            ref Microsoft.Xna.Framework.Color displayShadowColor
+        )
+        {
+            Event?.Invoke(self, currentDisplay, ref displayValue, ref displayName, ref displayColor, ref displayShadowColor);
         }
     }
 }

@@ -81,6 +81,13 @@ public static partial class ModSystemHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModSystem self
+        )
+        {
+            Event?.Invoke(self);
+        }
     }
 
     public static partial class OnLocalizationsLoaded
@@ -94,6 +101,13 @@ public static partial class ModSystemHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModSystem self
+        )
+        {
+            Event?.Invoke(self);
         }
     }
 
@@ -109,6 +123,13 @@ public static partial class ModSystemHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModSystem self
+        )
+        {
+            Event?.Invoke(self);
+        }
     }
 
     public static partial class PostAddRecipes
@@ -122,6 +143,13 @@ public static partial class ModSystemHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModSystem self
+        )
+        {
+            Event?.Invoke(self);
         }
     }
 
@@ -137,6 +165,13 @@ public static partial class ModSystemHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModSystem self
+        )
+        {
+            Event?.Invoke(self);
+        }
     }
 
     public static partial class AddRecipeGroups
@@ -150,6 +185,13 @@ public static partial class ModSystemHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModSystem self
+        )
+        {
+            Event?.Invoke(self);
         }
     }
 
@@ -165,6 +207,13 @@ public static partial class ModSystemHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModSystem self
+        )
+        {
+            Event?.Invoke(self);
+        }
     }
 
     public static partial class OnWorldUnload
@@ -178,6 +227,13 @@ public static partial class ModSystemHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModSystem self
+        )
+        {
+            Event?.Invoke(self);
         }
     }
 
@@ -193,6 +249,13 @@ public static partial class ModSystemHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModSystem self
+        )
+        {
+            Event?.Invoke(self);
+        }
     }
 
     public static partial class ModifyScreenPosition
@@ -206,6 +269,13 @@ public static partial class ModSystemHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModSystem self
+        )
+        {
+            Event?.Invoke(self);
         }
     }
 
@@ -222,6 +292,14 @@ public static partial class ModSystemHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModSystem self,
+            ref Terraria.Graphics.SpriteViewMatrix Transform
+        )
+        {
+            Event?.Invoke(self, ref Transform);
+        }
     }
 
     public static partial class UpdateUI
@@ -237,6 +315,14 @@ public static partial class ModSystemHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModSystem self,
+            Microsoft.Xna.Framework.GameTime gameTime
+        )
+        {
+            Event?.Invoke(self, gameTime);
+        }
     }
 
     public static partial class PreUpdateEntities
@@ -250,6 +336,13 @@ public static partial class ModSystemHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModSystem self
+        )
+        {
+            Event?.Invoke(self);
         }
     }
 
@@ -265,6 +358,13 @@ public static partial class ModSystemHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModSystem self
+        )
+        {
+            Event?.Invoke(self);
+        }
     }
 
     public static partial class PostUpdatePlayers
@@ -278,6 +378,13 @@ public static partial class ModSystemHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModSystem self
+        )
+        {
+            Event?.Invoke(self);
         }
     }
 
@@ -293,6 +400,13 @@ public static partial class ModSystemHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModSystem self
+        )
+        {
+            Event?.Invoke(self);
+        }
     }
 
     public static partial class PostUpdateNPCs
@@ -306,6 +420,13 @@ public static partial class ModSystemHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModSystem self
+        )
+        {
+            Event?.Invoke(self);
         }
     }
 
@@ -321,6 +442,13 @@ public static partial class ModSystemHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModSystem self
+        )
+        {
+            Event?.Invoke(self);
+        }
     }
 
     public static partial class PostUpdateGores
@@ -334,6 +462,13 @@ public static partial class ModSystemHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModSystem self
+        )
+        {
+            Event?.Invoke(self);
         }
     }
 
@@ -349,6 +484,13 @@ public static partial class ModSystemHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModSystem self
+        )
+        {
+            Event?.Invoke(self);
+        }
     }
 
     public static partial class PostUpdateProjectiles
@@ -362,6 +504,13 @@ public static partial class ModSystemHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModSystem self
+        )
+        {
+            Event?.Invoke(self);
         }
     }
 
@@ -377,6 +526,13 @@ public static partial class ModSystemHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModSystem self
+        )
+        {
+            Event?.Invoke(self);
+        }
     }
 
     public static partial class PostUpdateItems
@@ -390,6 +546,13 @@ public static partial class ModSystemHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModSystem self
+        )
+        {
+            Event?.Invoke(self);
         }
     }
 
@@ -405,6 +568,13 @@ public static partial class ModSystemHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModSystem self
+        )
+        {
+            Event?.Invoke(self);
+        }
     }
 
     public static partial class PostUpdateDusts
@@ -418,6 +588,13 @@ public static partial class ModSystemHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModSystem self
+        )
+        {
+            Event?.Invoke(self);
         }
     }
 
@@ -433,6 +610,13 @@ public static partial class ModSystemHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModSystem self
+        )
+        {
+            Event?.Invoke(self);
+        }
     }
 
     public static partial class PostUpdateTime
@@ -446,6 +630,13 @@ public static partial class ModSystemHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModSystem self
+        )
+        {
+            Event?.Invoke(self);
         }
     }
 
@@ -461,6 +652,13 @@ public static partial class ModSystemHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModSystem self
+        )
+        {
+            Event?.Invoke(self);
+        }
     }
 
     public static partial class PostUpdateWorld
@@ -474,6 +672,13 @@ public static partial class ModSystemHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModSystem self
+        )
+        {
+            Event?.Invoke(self);
         }
     }
 
@@ -489,6 +694,13 @@ public static partial class ModSystemHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModSystem self
+        )
+        {
+            Event?.Invoke(self);
+        }
     }
 
     public static partial class PostUpdateInvasions
@@ -503,6 +715,13 @@ public static partial class ModSystemHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModSystem self
+        )
+        {
+            Event?.Invoke(self);
+        }
     }
 
     public static partial class PostUpdateEverything
@@ -516,6 +735,13 @@ public static partial class ModSystemHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModSystem self
+        )
+        {
+            Event?.Invoke(self);
         }
     }
 
@@ -532,6 +758,14 @@ public static partial class ModSystemHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModSystem self,
+            System.Collections.Generic.List<Terraria.UI.GameInterfaceLayer> layers
+        )
+        {
+            Event?.Invoke(self, layers);
+        }
     }
 
     public static partial class ModifyGameTipVisibility
@@ -547,6 +781,14 @@ public static partial class ModSystemHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModSystem self,
+            System.Collections.Generic.IReadOnlyList<Terraria.ModLoader.GameTipData> gameTips
+        )
+        {
+            Event?.Invoke(self, gameTips);
+        }
     }
 
     public static partial class PostDrawInterface
@@ -561,6 +803,14 @@ public static partial class ModSystemHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModSystem self,
+            Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch
+        )
+        {
+            Event?.Invoke(self, spriteBatch);
         }
     }
 
@@ -578,6 +828,15 @@ public static partial class ModSystemHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModSystem self,
+            System.Collections.Generic.IReadOnlyList<Terraria.Map.IMapLayer> layers,
+            Terraria.Map.MapOverlayDrawContext mapOverlayDrawContext
+        )
+        {
+            Event?.Invoke(self, layers, mapOverlayDrawContext);
+        }
     }
 
     public static partial class PostDrawFullscreenMap
@@ -593,6 +852,14 @@ public static partial class ModSystemHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModSystem self,
+            ref string mouseText
+        )
+        {
+            Event?.Invoke(self, ref mouseText);
+        }
     }
 
     public static partial class PostUpdateInput
@@ -606,6 +873,13 @@ public static partial class ModSystemHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModSystem self
+        )
+        {
+            Event?.Invoke(self);
         }
     }
 
@@ -621,6 +895,13 @@ public static partial class ModSystemHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModSystem self
+        )
+        {
+            Event?.Invoke(self);
+        }
     }
 
     public static partial class PostDrawTiles
@@ -634,6 +915,13 @@ public static partial class ModSystemHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModSystem self
+        )
+        {
+            Event?.Invoke(self);
         }
     }
 
@@ -652,6 +940,16 @@ public static partial class ModSystemHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModSystem self,
+            ref double timeRate,
+            ref double tileUpdateRate,
+            ref double eventUpdateRate
+        )
+        {
+            Event?.Invoke(self, ref timeRate, ref tileUpdateRate, ref eventUpdateRate);
+        }
     }
 
     public static partial class SaveWorldData
@@ -666,6 +964,14 @@ public static partial class ModSystemHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModSystem self,
+            Terraria.ModLoader.IO.TagCompound tag
+        )
+        {
+            Event?.Invoke(self, tag);
         }
     }
 
@@ -682,6 +988,14 @@ public static partial class ModSystemHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModSystem self,
+            Terraria.ModLoader.IO.TagCompound tag
+        )
+        {
+            Event?.Invoke(self, tag);
+        }
     }
 
     public static partial class SaveWorldHeader
@@ -696,6 +1010,14 @@ public static partial class ModSystemHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModSystem self,
+            Terraria.ModLoader.IO.TagCompound tag
+        )
+        {
+            Event?.Invoke(self, tag);
         }
     }
 
@@ -713,6 +1035,12 @@ public static partial class ModSystemHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial bool Invoke(
+            Terraria.ModLoader.ModSystem self,
+            Terraria.IO.PlayerFileData playerData,
+            Terraria.IO.WorldFileData worldFileData
+        );
     }
 
     public static partial class WorldCanBePlayedRejectionMessage
@@ -729,6 +1057,12 @@ public static partial class ModSystemHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial string Invoke(
+            Terraria.ModLoader.ModSystem self,
+            Terraria.IO.PlayerFileData playerData,
+            Terraria.IO.WorldFileData worldData
+        );
     }
 
     public static partial class NetSend
@@ -744,6 +1078,14 @@ public static partial class ModSystemHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModSystem self,
+            System.IO.BinaryWriter writer
+        )
+        {
+            Event?.Invoke(self, writer);
+        }
     }
 
     public static partial class NetReceive
@@ -758,6 +1100,14 @@ public static partial class ModSystemHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModSystem self,
+            System.IO.BinaryReader reader
+        )
+        {
+            Event?.Invoke(self, reader);
         }
     }
 
@@ -776,6 +1126,13 @@ public static partial class ModSystemHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial bool Invoke(
+            Terraria.ModLoader.ModSystem self,
+            ref byte messageType,
+            ref System.IO.BinaryReader reader,
+            int playerNumber
+        );
     }
 
     public static partial class HijackSendData
@@ -802,6 +1159,22 @@ public static partial class ModSystemHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial bool Invoke(
+            Terraria.ModLoader.ModSystem self,
+            int whoAmI,
+            int msgType,
+            int remoteClient,
+            int ignoreClient,
+            Terraria.Localization.NetworkText text,
+            int number,
+            float number2,
+            float number3,
+            float number4,
+            int number5,
+            int number6,
+            int number7
+        );
     }
 
     public static partial class PreWorldGen
@@ -815,6 +1188,13 @@ public static partial class ModSystemHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModSystem self
+        )
+        {
+            Event?.Invoke(self);
         }
     }
 
@@ -832,6 +1212,15 @@ public static partial class ModSystemHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModSystem self,
+            System.Collections.Generic.List<Terraria.WorldBuilding.GenPass> tasks,
+            ref double totalWeight
+        )
+        {
+            Event?.Invoke(self, tasks, ref totalWeight);
+        }
     }
 
     public static partial class PostWorldGen
@@ -845,6 +1234,13 @@ public static partial class ModSystemHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModSystem self
+        )
+        {
+            Event?.Invoke(self);
         }
     }
 
@@ -860,6 +1256,13 @@ public static partial class ModSystemHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModSystem self
+        )
+        {
+            Event?.Invoke(self);
+        }
     }
 
     public static partial class ModifyHardmodeTasks
@@ -874,6 +1277,14 @@ public static partial class ModSystemHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModSystem self,
+            System.Collections.Generic.List<Terraria.WorldBuilding.GenPass> list
+        )
+        {
+            Event?.Invoke(self, list);
         }
     }
 
@@ -891,6 +1302,15 @@ public static partial class ModSystemHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModSystem self,
+            ref Microsoft.Xna.Framework.Color tileColor,
+            ref Microsoft.Xna.Framework.Color backgroundColor
+        )
+        {
+            Event?.Invoke(self, ref tileColor, ref backgroundColor);
+        }
     }
 
     public static partial class ModifyLightingBrightness
@@ -905,6 +1325,14 @@ public static partial class ModSystemHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModSystem self,
+            ref float scale
+        )
+        {
+            Event?.Invoke(self, ref scale);
         }
     }
 
@@ -921,6 +1349,14 @@ public static partial class ModSystemHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModSystem self,
+            System.ReadOnlySpan<int> tileCounts
+        )
+        {
+            Event?.Invoke(self, tileCounts);
+        }
     }
 
     public static partial class ResizeArrays
@@ -934,6 +1370,13 @@ public static partial class ModSystemHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModSystem self
+        )
+        {
+            Event?.Invoke(self);
         }
     }
 }

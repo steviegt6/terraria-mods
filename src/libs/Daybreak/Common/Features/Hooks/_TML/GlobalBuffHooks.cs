@@ -35,6 +35,16 @@ public static partial class GlobalBuffHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.GlobalBuff self,
+            int type,
+            Terraria.Player player,
+            ref int buffIndex
+        )
+        {
+            Event?.Invoke(self, type, player, ref buffIndex);
+        }
     }
 
     public static partial class Update_int_NPC_int
@@ -51,6 +61,16 @@ public static partial class GlobalBuffHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.GlobalBuff self,
+            int type,
+            Terraria.NPC npc,
+            ref int buffIndex
+        )
+        {
+            Event?.Invoke(self, type, npc, ref buffIndex);
         }
     }
 
@@ -70,6 +90,14 @@ public static partial class GlobalBuffHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial bool Invoke(
+            Terraria.ModLoader.GlobalBuff self,
+            int type,
+            Terraria.Player player,
+            int time,
+            int buffIndex
+        );
     }
 
     public static partial class ReApply_int_NPC_int_int
@@ -88,6 +116,14 @@ public static partial class GlobalBuffHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial bool Invoke(
+            Terraria.ModLoader.GlobalBuff self,
+            int type,
+            Terraria.NPC npc,
+            int time,
+            int buffIndex
+        );
     }
 
     public static partial class ModifyBuffText
@@ -106,6 +142,17 @@ public static partial class GlobalBuffHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.GlobalBuff self,
+            int type,
+            ref string buffName,
+            ref string tip,
+            ref int rare
+        )
+        {
+            Event?.Invoke(self, type, ref buffName, ref tip, ref rare);
+        }
     }
 
     public static partial class CustomBuffTipSize
@@ -121,6 +168,15 @@ public static partial class GlobalBuffHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.GlobalBuff self,
+            string buffTip,
+            System.Collections.Generic.List<Microsoft.Xna.Framework.Vector2> sizes
+        )
+        {
+            Event?.Invoke(self, buffTip, sizes);
         }
     }
 
@@ -140,6 +196,17 @@ public static partial class GlobalBuffHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.GlobalBuff self,
+            string buffTip,
+            Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch,
+            int originX,
+            int originY
+        )
+        {
+            Event?.Invoke(self, buffTip, spriteBatch, originX, originY);
+        }
     }
 
     public static partial class PreDraw
@@ -158,6 +225,14 @@ public static partial class GlobalBuffHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial bool Invoke(
+            Terraria.ModLoader.GlobalBuff self,
+            Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch,
+            int type,
+            int buffIndex,
+            ref Terraria.DataStructures.BuffDrawParams drawParams
+        );
     }
 
     public static partial class PostDraw
@@ -176,6 +251,17 @@ public static partial class GlobalBuffHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.GlobalBuff self,
+            Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch,
+            int type,
+            int buffIndex,
+            Terraria.DataStructures.BuffDrawParams drawParams
+        )
+        {
+            Event?.Invoke(self, spriteBatch, type, buffIndex, drawParams);
+        }
     }
 
     public static partial class RightClick
@@ -192,5 +278,11 @@ public static partial class GlobalBuffHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial bool Invoke(
+            Terraria.ModLoader.GlobalBuff self,
+            int type,
+            int buffIndex
+        );
     }
 }

@@ -151,6 +151,11 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial Terraria.ModLoader.ModPlayer Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.Player entity
+        );
     }
 
     public static partial class Initialize
@@ -164,6 +169,13 @@ public static partial class ModPlayerHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self
+        )
+        {
+            Event?.Invoke(self);
         }
     }
 
@@ -179,6 +191,13 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self
+        )
+        {
+            Event?.Invoke(self);
+        }
     }
 
     public static partial class ResetInfoAccessories
@@ -192,6 +211,13 @@ public static partial class ModPlayerHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self
+        )
+        {
+            Event?.Invoke(self);
         }
     }
 
@@ -207,6 +233,14 @@ public static partial class ModPlayerHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.Player otherPlayer
+        )
+        {
+            Event?.Invoke(self, otherPlayer);
         }
     }
 
@@ -224,6 +258,15 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            out Terraria.ModLoader.StatModifier health,
+            out Terraria.ModLoader.StatModifier mana
+        )
+        {
+            Event?.Invoke(self, out health, out mana);
+        }
     }
 
     public static partial class UpdateDead
@@ -238,6 +281,13 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self
+        )
+        {
+            Event?.Invoke(self);
+        }
     }
 
     public static partial class PreSaveCustomData
@@ -251,6 +301,13 @@ public static partial class ModPlayerHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self
+        )
+        {
+            Event?.Invoke(self);
         }
     }
 
@@ -267,6 +324,14 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.ModLoader.IO.TagCompound tag
+        )
+        {
+            Event?.Invoke(self, tag);
+        }
     }
 
     public static partial class LoadData
@@ -282,6 +347,14 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.ModLoader.IO.TagCompound tag
+        )
+        {
+            Event?.Invoke(self, tag);
+        }
     }
 
     public static partial class PreSavePlayer
@@ -295,6 +368,13 @@ public static partial class ModPlayerHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self
+        )
+        {
+            Event?.Invoke(self);
         }
     }
 
@@ -310,6 +390,13 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self
+        )
+        {
+            Event?.Invoke(self);
+        }
     }
 
     public static partial class CopyClientState
@@ -324,6 +411,14 @@ public static partial class ModPlayerHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.ModLoader.ModPlayer targetCopy
+        )
+        {
+            Event?.Invoke(self, targetCopy);
         }
     }
 
@@ -342,6 +437,16 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            int toWho,
+            int fromWho,
+            bool newPlayer
+        )
+        {
+            Event?.Invoke(self, toWho, fromWho, newPlayer);
+        }
     }
 
     public static partial class SendClientChanges
@@ -357,6 +462,14 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.ModLoader.ModPlayer clientPlayer
+        )
+        {
+            Event?.Invoke(self, clientPlayer);
+        }
     }
 
     public static partial class UpdateBadLifeRegen
@@ -371,6 +484,13 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self
+        )
+        {
+            Event?.Invoke(self);
+        }
     }
 
     public static partial class UpdateLifeRegen
@@ -384,6 +504,13 @@ public static partial class ModPlayerHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self
+        )
+        {
+            Event?.Invoke(self);
         }
     }
 
@@ -400,6 +527,14 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            ref float regen
+        )
+        {
+            Event?.Invoke(self, ref regen);
+        }
     }
 
     public static partial class UpdateAutopause
@@ -414,6 +549,13 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self
+        )
+        {
+            Event?.Invoke(self);
+        }
     }
 
     public static partial class PreUpdate
@@ -427,6 +569,13 @@ public static partial class ModPlayerHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self
+        )
+        {
+            Event?.Invoke(self);
         }
     }
 
@@ -443,6 +592,14 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.GameInput.TriggersSet triggersSet
+        )
+        {
+            Event?.Invoke(self, triggersSet);
+        }
     }
 
     public static partial class ArmorSetBonusActivated
@@ -456,6 +613,13 @@ public static partial class ModPlayerHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self
+        )
+        {
+            Event?.Invoke(self);
         }
     }
 
@@ -472,6 +636,14 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            int holdTime
+        )
+        {
+            Event?.Invoke(self, holdTime);
+        }
     }
 
     public static partial class SetControls
@@ -485,6 +657,13 @@ public static partial class ModPlayerHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self
+        )
+        {
+            Event?.Invoke(self);
         }
     }
 
@@ -500,6 +679,13 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self
+        )
+        {
+            Event?.Invoke(self);
+        }
     }
 
     public static partial class PostUpdateBuffs
@@ -513,6 +699,13 @@ public static partial class ModPlayerHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self
+        )
+        {
+            Event?.Invoke(self);
         }
     }
 
@@ -528,6 +721,13 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self
+        )
+        {
+            Event?.Invoke(self);
+        }
     }
 
     public static partial class PostUpdateEquips
@@ -541,6 +741,13 @@ public static partial class ModPlayerHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self
+        )
+        {
+            Event?.Invoke(self);
         }
     }
 
@@ -556,6 +763,13 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self
+        )
+        {
+            Event?.Invoke(self);
+        }
     }
 
     public static partial class UpdateVisibleVanityAccessories
@@ -569,6 +783,13 @@ public static partial class ModPlayerHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self
+        )
+        {
+            Event?.Invoke(self);
         }
     }
 
@@ -584,6 +805,13 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self
+        )
+        {
+            Event?.Invoke(self);
+        }
     }
 
     public static partial class PostUpdateMiscEffects
@@ -597,6 +825,13 @@ public static partial class ModPlayerHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self
+        )
+        {
+            Event?.Invoke(self);
         }
     }
 
@@ -612,6 +847,13 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self
+        )
+        {
+            Event?.Invoke(self);
+        }
     }
 
     public static partial class PreUpdateMovement
@@ -626,6 +868,13 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self
+        )
+        {
+            Event?.Invoke(self);
+        }
     }
 
     public static partial class PostUpdate
@@ -639,6 +888,13 @@ public static partial class ModPlayerHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self
+        )
+        {
+            Event?.Invoke(self);
         }
     }
 
@@ -656,6 +912,15 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.ModLoader.ExtraJump jump,
+            ref float duration
+        )
+        {
+            Event?.Invoke(self, jump, ref duration);
+        }
     }
 
     public static partial class CanStartExtraJump
@@ -671,6 +936,11 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial bool Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.ModLoader.ExtraJump jump
+        );
     }
 
     public static partial class OnExtraJumpStarted
@@ -687,6 +957,15 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.ModLoader.ExtraJump jump,
+            ref bool playSound
+        )
+        {
+            Event?.Invoke(self, jump, ref playSound);
+        }
     }
 
     public static partial class OnExtraJumpEnded
@@ -701,6 +980,14 @@ public static partial class ModPlayerHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.ModLoader.ExtraJump jump
+        )
+        {
+            Event?.Invoke(self, jump);
         }
     }
 
@@ -717,6 +1004,14 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.ModLoader.ExtraJump jump
+        )
+        {
+            Event?.Invoke(self, jump);
+        }
     }
 
     public static partial class ExtraJumpVisuals
@@ -731,6 +1026,14 @@ public static partial class ModPlayerHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.ModLoader.ExtraJump jump
+        )
+        {
+            Event?.Invoke(self, jump);
         }
     }
 
@@ -747,6 +1050,11 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial bool Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.ModLoader.ExtraJump jump
+        );
     }
 
     public static partial class OnExtraJumpCleared
@@ -762,6 +1070,14 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.ModLoader.ExtraJump jump
+        )
+        {
+            Event?.Invoke(self, jump);
+        }
     }
 
     public static partial class FrameEffects
@@ -775,6 +1091,13 @@ public static partial class ModPlayerHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self
+        )
+        {
+            Event?.Invoke(self);
         }
     }
 
@@ -793,6 +1116,13 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial bool Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.DataStructures.PlayerDeathReason damageSource,
+            int cooldownCounter,
+            bool dodgeable
+        );
     }
 
     public static partial class FreeDodge
@@ -808,6 +1138,11 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial bool Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.Player.HurtInfo info
+        );
     }
 
     public static partial class ConsumableDodge
@@ -823,6 +1158,11 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial bool Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.Player.HurtInfo info
+        );
     }
 
     public static partial class ModifyHurt
@@ -837,6 +1177,14 @@ public static partial class ModPlayerHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            ref Terraria.Player.HurtModifiers modifiers
+        )
+        {
+            Event?.Invoke(self, ref modifiers);
         }
     }
 
@@ -853,6 +1201,14 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.Player.HurtInfo info
+        )
+        {
+            Event?.Invoke(self, info);
+        }
     }
 
     public static partial class PostHurt
@@ -867,6 +1223,14 @@ public static partial class ModPlayerHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.Player.HurtInfo info
+        )
+        {
+            Event?.Invoke(self, info);
         }
     }
 
@@ -888,6 +1252,16 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial bool Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            double damage,
+            int hitDirection,
+            bool pvp,
+            ref bool playSound,
+            ref bool genDust,
+            ref Terraria.DataStructures.PlayerDeathReason damageSource
+        );
     }
 
     public static partial class Kill
@@ -906,6 +1280,17 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            double damage,
+            int hitDirection,
+            bool pvp,
+            Terraria.DataStructures.PlayerDeathReason damageSource
+        )
+        {
+            Event?.Invoke(self, damage, hitDirection, pvp, damageSource);
+        }
     }
 
     public static partial class PreModifyLuck
@@ -921,6 +1306,11 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial bool Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            ref float luck
+        );
     }
 
     public static partial class ModifyLuck
@@ -936,6 +1326,14 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            ref float luck
+        )
+        {
+            Event?.Invoke(self, ref luck);
+        }
     }
 
     public static partial class PreItemCheck
@@ -950,6 +1348,10 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial bool Invoke(
+            Terraria.ModLoader.ModPlayer self
+        );
     }
 
     public static partial class PostItemCheck
@@ -963,6 +1365,13 @@ public static partial class ModPlayerHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self
+        )
+        {
+            Event?.Invoke(self);
         }
     }
 
@@ -979,6 +1388,11 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial float Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.Item item
+        );
     }
 
     public static partial class UseAnimationMultiplier
@@ -994,6 +1408,11 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial float Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.Item item
+        );
     }
 
     public static partial class UseSpeedMultiplier
@@ -1009,6 +1428,11 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial float Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.Item item
+        );
     }
 
     public static partial class GetHealLife
@@ -1025,6 +1449,16 @@ public static partial class ModPlayerHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.Item item,
+            bool quickHeal,
+            ref int healValue
+        )
+        {
+            Event?.Invoke(self, item, quickHeal, ref healValue);
         }
     }
 
@@ -1043,6 +1477,16 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.Item item,
+            bool quickHeal,
+            ref int healValue
+        )
+        {
+            Event?.Invoke(self, item, quickHeal, ref healValue);
+        }
     }
 
     public static partial class ModifyManaCost
@@ -1060,6 +1504,16 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.Item item,
+            ref float reduce,
+            ref float mult
+        )
+        {
+            Event?.Invoke(self, item, ref reduce, ref mult);
+        }
     }
 
     public static partial class OnMissingMana
@@ -1075,6 +1529,15 @@ public static partial class ModPlayerHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.Item item,
+            int neededMana
+        )
+        {
+            Event?.Invoke(self, item, neededMana);
         }
     }
 
@@ -1092,6 +1555,15 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.Item item,
+            int manaConsumed
+        )
+        {
+            Event?.Invoke(self, item, manaConsumed);
+        }
     }
 
     public static partial class ModifyWeaponDamage
@@ -1107,6 +1579,15 @@ public static partial class ModPlayerHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.Item item,
+            ref Terraria.ModLoader.StatModifier damage
+        )
+        {
+            Event?.Invoke(self, item, ref damage);
         }
     }
 
@@ -1124,6 +1605,15 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.Item item,
+            ref Terraria.ModLoader.StatModifier knockback
+        )
+        {
+            Event?.Invoke(self, item, ref knockback);
+        }
     }
 
     public static partial class ModifyWeaponCrit
@@ -1139,6 +1629,15 @@ public static partial class ModPlayerHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.Item item,
+            ref float crit
+        )
+        {
+            Event?.Invoke(self, item, ref crit);
         }
     }
 
@@ -1156,6 +1655,12 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial bool Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.Item weapon,
+            Terraria.Item ammo
+        );
     }
 
     public static partial class OnConsumeAmmo
@@ -1172,6 +1677,15 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.Item weapon,
+            Terraria.Item ammo
+        )
+        {
+            Event?.Invoke(self, weapon, ammo);
+        }
     }
 
     public static partial class CanShoot
@@ -1187,6 +1701,11 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial bool Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.Item item
+        );
     }
 
     public static partial class ModifyShootStats
@@ -1206,6 +1725,19 @@ public static partial class ModPlayerHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.Item item,
+            ref Microsoft.Xna.Framework.Vector2 position,
+            ref Microsoft.Xna.Framework.Vector2 velocity,
+            ref int type,
+            ref int damage,
+            ref float knockback
+        )
+        {
+            Event?.Invoke(self, item, ref position, ref velocity, ref type, ref damage, ref knockback);
         }
     }
 
@@ -1228,6 +1760,17 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial bool Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.Item item,
+            Terraria.DataStructures.EntitySource_ItemUse_WithAmmo source,
+            Microsoft.Xna.Framework.Vector2 position,
+            Microsoft.Xna.Framework.Vector2 velocity,
+            int type,
+            int damage,
+            float knockback
+        );
     }
 
     public static partial class MeleeEffects
@@ -1243,6 +1786,15 @@ public static partial class ModPlayerHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.Item item,
+            Microsoft.Xna.Framework.Rectangle hitbox
+        )
+        {
+            Event?.Invoke(self, item, hitbox);
         }
     }
 
@@ -1262,6 +1814,17 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.Projectile projectile,
+            Microsoft.Xna.Framework.Vector2 boxPosition,
+            int boxWidth,
+            int boxHeight
+        )
+        {
+            Event?.Invoke(self, projectile, boxPosition, boxWidth, boxHeight);
+        }
     }
 
     public static partial class CanCatchNPC
@@ -1278,6 +1841,12 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial bool? Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.NPC target,
+            Terraria.Item item
+        );
     }
 
     public static partial class OnCatchNPC
@@ -1295,6 +1864,16 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.NPC npc,
+            Terraria.Item item,
+            bool failed
+        )
+        {
+            Event?.Invoke(self, npc, item, failed);
+        }
     }
 
     public static partial class ModifyItemScale
@@ -1310,6 +1889,15 @@ public static partial class ModPlayerHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.Item item,
+            ref float scale
+        )
+        {
+            Event?.Invoke(self, item, ref scale);
         }
     }
 
@@ -1328,6 +1916,16 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            float x,
+            float y,
+            Terraria.Entity victim
+        )
+        {
+            Event?.Invoke(self, x, y, victim);
+        }
     }
 
     public static partial class CanHitNPC
@@ -1343,6 +1941,11 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial bool Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.NPC target
+        );
     }
 
     public static partial class CanMeleeAttackCollideWithNPC
@@ -1360,6 +1963,13 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial bool? Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.Item item,
+            Microsoft.Xna.Framework.Rectangle meleeAttackHitbox,
+            Terraria.NPC target
+        );
     }
 
     public static partial class ModifyHitNPC
@@ -1375,6 +1985,15 @@ public static partial class ModPlayerHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.NPC target,
+            ref Terraria.NPC.HitModifiers modifiers
+        )
+        {
+            Event?.Invoke(self, target, ref modifiers);
         }
     }
 
@@ -1393,6 +2012,16 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.NPC target,
+            Terraria.NPC.HitInfo hit,
+            int damageDone
+        )
+        {
+            Event?.Invoke(self, target, hit, damageDone);
+        }
     }
 
     public static partial class CanHitNPCWithItem
@@ -1409,6 +2038,12 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial bool? Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.Item item,
+            Terraria.NPC target
+        );
     }
 
     public static partial class ModifyHitNPCWithItem
@@ -1425,6 +2060,16 @@ public static partial class ModPlayerHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.Item item,
+            Terraria.NPC target,
+            ref Terraria.NPC.HitModifiers modifiers
+        )
+        {
+            Event?.Invoke(self, item, target, ref modifiers);
         }
     }
 
@@ -1444,6 +2089,17 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.Item item,
+            Terraria.NPC target,
+            Terraria.NPC.HitInfo hit,
+            int damageDone
+        )
+        {
+            Event?.Invoke(self, item, target, hit, damageDone);
+        }
     }
 
     public static partial class CanHitNPCWithProj
@@ -1460,6 +2116,12 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial bool? Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.Projectile proj,
+            Terraria.NPC target
+        );
     }
 
     public static partial class ModifyHitNPCWithProj
@@ -1476,6 +2138,16 @@ public static partial class ModPlayerHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.Projectile proj,
+            Terraria.NPC target,
+            ref Terraria.NPC.HitModifiers modifiers
+        )
+        {
+            Event?.Invoke(self, proj, target, ref modifiers);
         }
     }
 
@@ -1495,6 +2167,17 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.Projectile proj,
+            Terraria.NPC target,
+            Terraria.NPC.HitInfo hit,
+            int damageDone
+        )
+        {
+            Event?.Invoke(self, proj, target, hit, damageDone);
+        }
     }
 
     public static partial class CanHitPvp
@@ -1511,6 +2194,12 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial bool Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.Item item,
+            Terraria.Player target
+        );
     }
 
     public static partial class CanHitPvpWithProj
@@ -1527,6 +2216,12 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial bool Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.Projectile proj,
+            Terraria.Player target
+        );
     }
 
     public static partial class CanBeHitByNPC
@@ -1543,6 +2238,12 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial bool Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.NPC npc,
+            ref int cooldownSlot
+        );
     }
 
     public static partial class ModifyHitByNPC
@@ -1558,6 +2259,15 @@ public static partial class ModPlayerHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.NPC npc,
+            ref Terraria.Player.HurtModifiers modifiers
+        )
+        {
+            Event?.Invoke(self, npc, ref modifiers);
         }
     }
 
@@ -1575,6 +2285,15 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.NPC npc,
+            Terraria.Player.HurtInfo hurtInfo
+        )
+        {
+            Event?.Invoke(self, npc, hurtInfo);
+        }
     }
 
     public static partial class CanBeHitByProjectile
@@ -1590,6 +2309,11 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial bool Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.Projectile proj
+        );
     }
 
     public static partial class ModifyHitByProjectile
@@ -1605,6 +2329,15 @@ public static partial class ModPlayerHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.Projectile proj,
+            ref Terraria.Player.HurtModifiers modifiers
+        )
+        {
+            Event?.Invoke(self, proj, ref modifiers);
         }
     }
 
@@ -1622,6 +2355,15 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.Projectile proj,
+            Terraria.Player.HurtInfo hurtInfo
+        )
+        {
+            Event?.Invoke(self, proj, hurtInfo);
+        }
     }
 
     public static partial class ModifyFishingAttempt
@@ -1636,6 +2378,14 @@ public static partial class ModPlayerHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            ref Terraria.DataStructures.FishingAttempt attempt
+        )
+        {
+            Event?.Invoke(self, ref attempt);
         }
     }
 
@@ -1656,6 +2406,18 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.DataStructures.FishingAttempt attempt,
+            ref int itemDrop,
+            ref int npcSpawn,
+            ref Terraria.AdvancedPopupRequest sonar,
+            ref Microsoft.Xna.Framework.Vector2 sonarPosition
+        )
+        {
+            Event?.Invoke(self, attempt, ref itemDrop, ref npcSpawn, ref sonar, ref sonarPosition);
+        }
     }
 
     public static partial class ModifyCaughtFish
@@ -1670,6 +2432,14 @@ public static partial class ModPlayerHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.Item fish
+        )
+        {
+            Event?.Invoke(self, fish);
         }
     }
 
@@ -1686,6 +2456,11 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial bool? Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.Item bait
+        );
     }
 
     public static partial class GetFishingLevel
@@ -1703,6 +2478,16 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.Item fishingRod,
+            Terraria.Item bait,
+            ref float fishingLevel
+        )
+        {
+            Event?.Invoke(self, fishingRod, bait, ref fishingLevel);
+        }
     }
 
     public static partial class AnglerQuestReward
@@ -1719,6 +2504,15 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            float rareMultiplier,
+            System.Collections.Generic.List<Terraria.Item> rewardItems
+        )
+        {
+            Event?.Invoke(self, rareMultiplier, rewardItems);
+        }
     }
 
     public static partial class GetDyeTraderReward
@@ -1733,6 +2527,14 @@ public static partial class ModPlayerHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            System.Collections.Generic.List<int> rewardPool
+        )
+        {
+            Event?.Invoke(self, rewardPool);
         }
     }
 
@@ -1754,6 +2556,19 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.DataStructures.PlayerDrawSet drawInfo,
+            ref float r,
+            ref float g,
+            ref float b,
+            ref float a,
+            ref bool fullBright
+        )
+        {
+            Event?.Invoke(self, drawInfo, ref r, ref g, ref b, ref a, ref fullBright);
+        }
     }
 
     public static partial class ModifyDrawInfo
@@ -1768,6 +2583,14 @@ public static partial class ModPlayerHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            ref Terraria.DataStructures.PlayerDrawSet drawInfo
+        )
+        {
+            Event?.Invoke(self, ref drawInfo);
         }
     }
 
@@ -1784,6 +2607,14 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            System.Collections.Generic.IDictionary<Terraria.ModLoader.PlayerDrawLayer, Terraria.ModLoader.PlayerDrawLayer.Position> positions
+        )
+        {
+            Event?.Invoke(self, positions);
+        }
     }
 
     public static partial class HideDrawLayers
@@ -1799,6 +2630,14 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.DataStructures.PlayerDrawSet drawInfo
+        )
+        {
+            Event?.Invoke(self, drawInfo);
+        }
     }
 
     public static partial class ModifyScreenPosition
@@ -1812,6 +2651,13 @@ public static partial class ModPlayerHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self
+        )
+        {
+            Event?.Invoke(self);
         }
     }
 
@@ -1828,6 +2674,14 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            ref float zoom
+        )
+        {
+            Event?.Invoke(self, ref zoom);
+        }
     }
 
     public static partial class PlayerConnect
@@ -1841,6 +2695,13 @@ public static partial class ModPlayerHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self
+        )
+        {
+            Event?.Invoke(self);
         }
     }
 
@@ -1856,6 +2717,13 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self
+        )
+        {
+            Event?.Invoke(self);
+        }
     }
 
     public static partial class OnEnterWorld
@@ -1870,6 +2738,13 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self
+        )
+        {
+            Event?.Invoke(self);
+        }
     }
 
     public static partial class OnRespawn
@@ -1883,6 +2758,13 @@ public static partial class ModPlayerHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self
+        )
+        {
+            Event?.Invoke(self);
         }
     }
 
@@ -1901,6 +2783,13 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial bool Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.Item[] inventory,
+            int context,
+            int slot
+        );
     }
 
     public static partial class HoverSlot
@@ -1918,6 +2807,13 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial bool Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.Item[] inventory,
+            int context,
+            int slot
+        );
     }
 
     public static partial class PostSellItem
@@ -1934,6 +2830,16 @@ public static partial class ModPlayerHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.NPC vendor,
+            Terraria.Item[] shopInventory,
+            Terraria.Item item
+        )
+        {
+            Event?.Invoke(self, vendor, shopInventory, item);
         }
     }
 
@@ -1952,6 +2858,13 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial bool Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.NPC vendor,
+            Terraria.Item[] shopInventory,
+            Terraria.Item item
+        );
     }
 
     public static partial class PostBuyItem
@@ -1968,6 +2881,16 @@ public static partial class ModPlayerHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.NPC vendor,
+            Terraria.Item[] shopInventory,
+            Terraria.Item item
+        )
+        {
+            Event?.Invoke(self, vendor, shopInventory, item);
         }
     }
 
@@ -1986,6 +2909,13 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial bool Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.NPC vendor,
+            Terraria.Item[] shopInventory,
+            Terraria.Item item
+        );
     }
 
     public static partial class CanUseItem
@@ -2001,6 +2931,11 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial bool Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.Item item
+        );
     }
 
     public static partial class CanAutoReuseItem
@@ -2016,6 +2951,11 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial bool? Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.Item item
+        );
     }
 
     public static partial class ModifyNurseHeal
@@ -2034,6 +2974,14 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial bool Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.NPC nurse,
+            ref int health,
+            ref bool removeDebuffs,
+            ref string chatText
+        );
     }
 
     public static partial class ModifyNursePrice
@@ -2051,6 +2999,17 @@ public static partial class ModPlayerHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.NPC nurse,
+            int health,
+            bool removeDebuffs,
+            ref int price
+        )
+        {
+            Event?.Invoke(self, nurse, health, removeDebuffs, ref price);
         }
     }
 
@@ -2070,6 +3029,17 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.NPC nurse,
+            int health,
+            bool removeDebuffs,
+            int price
+        )
+        {
+            Event?.Invoke(self, nurse, health, removeDebuffs, price);
+        }
     }
 
     public static partial class AddStartingItems
@@ -2085,6 +3055,11 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial System.Collections.Generic.IEnumerable<Terraria.Item> Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            bool mediumCoreDeath
+        );
     }
 
     public static partial class ModifyStartingInventory
@@ -2101,6 +3076,15 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static void Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.List<Terraria.Item>> itemsByMod,
+            bool mediumCoreDeath
+        )
+        {
+            Event?.Invoke(self, itemsByMod, mediumCoreDeath);
+        }
     }
 
     public static partial class AddMaterialsForCrafting
@@ -2116,6 +3100,11 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial System.Collections.Generic.IEnumerable<Terraria.Item> Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            out Terraria.ModLoader.ModPlayer.ItemConsumedCallback itemConsumedCallback
+        );
     }
 
     public static partial class OnPickup
@@ -2131,5 +3120,10 @@ public static partial class ModPlayerHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial bool Invoke(
+            Terraria.ModLoader.ModPlayer self,
+            Terraria.Item item
+        );
     }
 }

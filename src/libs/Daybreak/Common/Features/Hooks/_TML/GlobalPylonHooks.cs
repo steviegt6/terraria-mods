@@ -35,6 +35,17 @@ public static partial class GlobalPylonHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial bool Invoke(
+            Terraria.ModLoader.GlobalPylon self,
+            ref Terraria.Map.MapOverlayDrawContext context,
+            ref string mouseOverText,
+            ref Terraria.GameContent.TeleportPylonInfo pylonInfo,
+            ref bool isNearPylon,
+            ref Microsoft.Xna.Framework.Color drawColor,
+            ref float deselectedScale,
+            ref float selectedScale
+        );
     }
 
     public static partial class PreCanPlacePylon
@@ -53,6 +64,14 @@ public static partial class GlobalPylonHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial bool? Invoke(
+            Terraria.ModLoader.GlobalPylon self,
+            int x,
+            int y,
+            int tileType,
+            Terraria.GameContent.TeleportPylonType pylonType
+        );
     }
 
     public static partial class ValidTeleportCheck_PreNPCCount
@@ -69,6 +88,12 @@ public static partial class GlobalPylonHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial bool? Invoke(
+            Terraria.ModLoader.GlobalPylon self,
+            Terraria.GameContent.TeleportPylonInfo pylonInfo,
+            ref int defaultNecessaryNPCCount
+        );
     }
 
     public static partial class ValidTeleportCheck_PreAnyDanger
@@ -84,6 +109,11 @@ public static partial class GlobalPylonHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial bool? Invoke(
+            Terraria.ModLoader.GlobalPylon self,
+            Terraria.GameContent.TeleportPylonInfo pylonInfo
+        );
     }
 
     public static partial class ValidTeleportCheck_PreBiomeRequirements
@@ -100,6 +130,12 @@ public static partial class GlobalPylonHooks
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
         }
+
+        public static partial bool? Invoke(
+            Terraria.ModLoader.GlobalPylon self,
+            Terraria.GameContent.TeleportPylonInfo pylonInfo,
+            Terraria.SceneMetrics sceneData
+        );
     }
 
     public static partial class PostValidTeleportCheck
@@ -118,6 +154,18 @@ public static partial class GlobalPylonHooks
         internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
         {
             return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
+
+        public static void Invoke(
+            Terraria.ModLoader.GlobalPylon self,
+            Terraria.GameContent.TeleportPylonInfo destinationPylonInfo,
+            Terraria.GameContent.TeleportPylonInfo nearbyPylonInfo,
+            ref bool destinationPylonValid,
+            ref bool validNearbyPylonFound,
+            ref string errorKey
+        )
+        {
+            Event?.Invoke(self, destinationPylonInfo, nearbyPylonInfo, ref destinationPylonValid, ref validNearbyPylonFound, ref errorKey);
         }
     }
 }
