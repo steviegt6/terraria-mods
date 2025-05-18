@@ -1,5 +1,9 @@
 namespace Daybreak.Common.Features.Hooks;
 
+// ReSharper disable PartialTypeWithSinglePart
+// ReSharper disable UnusedType.Global
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+
 // Hooks to generate for 'Terraria.ModLoader.GlobalBuff':
 //     System.Void Terraria.ModLoader.GlobalBuff::Update(System.Int32,Terraria.Player,System.Int32&)
 //     System.Void Terraria.ModLoader.GlobalBuff::Update(System.Int32,Terraria.NPC,System.Int32&)

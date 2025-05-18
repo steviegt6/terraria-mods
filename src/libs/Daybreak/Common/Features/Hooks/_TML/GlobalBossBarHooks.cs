@@ -1,5 +1,9 @@
 namespace Daybreak.Common.Features.Hooks;
 
+// ReSharper disable PartialTypeWithSinglePart
+// ReSharper disable UnusedType.Global
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+
 // Hooks to generate for 'Terraria.ModLoader.GlobalBossBar':
 //     System.Boolean Terraria.ModLoader.GlobalBossBar::PreDraw(Microsoft.Xna.Framework.Graphics.SpriteBatch,Terraria.NPC,Terraria.DataStructures.BossBarDrawParams&)
 //     System.Void Terraria.ModLoader.GlobalBossBar::PostDraw(Microsoft.Xna.Framework.Graphics.SpriteBatch,Terraria.NPC,Terraria.DataStructures.BossBarDrawParams)

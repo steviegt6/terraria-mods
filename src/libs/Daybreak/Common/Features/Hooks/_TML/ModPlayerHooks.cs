@@ -1,5 +1,9 @@
 namespace Daybreak.Common.Features.Hooks;
 
+// ReSharper disable PartialTypeWithSinglePart
+// ReSharper disable UnusedType.Global
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+
 // Hooks to generate for 'Terraria.ModLoader.ModPlayer':
 //     Terraria.ModLoader.ModPlayer Terraria.ModLoader.ModPlayer::NewInstance(Terraria.Player)
 //     System.Void Terraria.ModLoader.ModPlayer::Initialize()
@@ -140,20 +144,20 @@ public static partial class ModPlayerHooks
 
     public static partial class Initialize
     {
-        public delegate void Definition(
-        );
+        public delegate void Definition();
+
     }
 
     public static partial class ResetEffects
     {
-        public delegate void Definition(
-        );
+        public delegate void Definition();
+
     }
 
     public static partial class ResetInfoAccessories
     {
-        public delegate void Definition(
-        );
+        public delegate void Definition();
+
     }
 
     public static partial class RefreshInfoAccessoriesFromTeamPlayers
@@ -173,14 +177,14 @@ public static partial class ModPlayerHooks
 
     public static partial class UpdateDead
     {
-        public delegate void Definition(
-        );
+        public delegate void Definition();
+
     }
 
     public static partial class PreSaveCustomData
     {
-        public delegate void Definition(
-        );
+        public delegate void Definition();
+
     }
 
     public static partial class SaveData
@@ -199,14 +203,14 @@ public static partial class ModPlayerHooks
 
     public static partial class PreSavePlayer
     {
-        public delegate void Definition(
-        );
+        public delegate void Definition();
+
     }
 
     public static partial class PostSavePlayer
     {
-        public delegate void Definition(
-        );
+        public delegate void Definition();
+
     }
 
     public static partial class CopyClientState
@@ -234,14 +238,14 @@ public static partial class ModPlayerHooks
 
     public static partial class UpdateBadLifeRegen
     {
-        public delegate void Definition(
-        );
+        public delegate void Definition();
+
     }
 
     public static partial class UpdateLifeRegen
     {
-        public delegate void Definition(
-        );
+        public delegate void Definition();
+
     }
 
     public static partial class NaturalLifeRegen
@@ -253,14 +257,14 @@ public static partial class ModPlayerHooks
 
     public static partial class UpdateAutopause
     {
-        public delegate void Definition(
-        );
+        public delegate void Definition();
+
     }
 
     public static partial class PreUpdate
     {
-        public delegate void Definition(
-        );
+        public delegate void Definition();
+
     }
 
     public static partial class ProcessTriggers
@@ -272,8 +276,8 @@ public static partial class ModPlayerHooks
 
     public static partial class ArmorSetBonusActivated
     {
-        public delegate void Definition(
-        );
+        public delegate void Definition();
+
     }
 
     public static partial class ArmorSetBonusHeld
@@ -285,74 +289,74 @@ public static partial class ModPlayerHooks
 
     public static partial class SetControls
     {
-        public delegate void Definition(
-        );
+        public delegate void Definition();
+
     }
 
     public static partial class PreUpdateBuffs
     {
-        public delegate void Definition(
-        );
+        public delegate void Definition();
+
     }
 
     public static partial class PostUpdateBuffs
     {
-        public delegate void Definition(
-        );
+        public delegate void Definition();
+
     }
 
     public static partial class UpdateEquips
     {
-        public delegate void Definition(
-        );
+        public delegate void Definition();
+
     }
 
     public static partial class PostUpdateEquips
     {
-        public delegate void Definition(
-        );
+        public delegate void Definition();
+
     }
 
     public static partial class UpdateVisibleAccessories
     {
-        public delegate void Definition(
-        );
+        public delegate void Definition();
+
     }
 
     public static partial class UpdateVisibleVanityAccessories
     {
-        public delegate void Definition(
-        );
+        public delegate void Definition();
+
     }
 
     public static partial class UpdateDyes
     {
-        public delegate void Definition(
-        );
+        public delegate void Definition();
+
     }
 
     public static partial class PostUpdateMiscEffects
     {
-        public delegate void Definition(
-        );
+        public delegate void Definition();
+
     }
 
     public static partial class PostUpdateRunSpeeds
     {
-        public delegate void Definition(
-        );
+        public delegate void Definition();
+
     }
 
     public static partial class PreUpdateMovement
     {
-        public delegate void Definition(
-        );
+        public delegate void Definition();
+
     }
 
     public static partial class PostUpdate
     {
-        public delegate void Definition(
-        );
+        public delegate void Definition();
+
     }
 
     public static partial class ModifyExtraJumpDurationMultiplier
@@ -415,8 +419,8 @@ public static partial class ModPlayerHooks
 
     public static partial class FrameEffects
     {
-        public delegate void Definition(
-        );
+        public delegate void Definition();
+
     }
 
     public static partial class ImmuneTo
@@ -501,14 +505,14 @@ public static partial class ModPlayerHooks
 
     public static partial class PreItemCheck
     {
-        public delegate bool Definition(
-        );
+        public delegate bool Definition();
+
     }
 
     public static partial class PostItemCheck
     {
-        public delegate void Definition(
-        );
+        public delegate void Definition();
+
     }
 
     public static partial class UseTimeMultiplier
@@ -940,8 +944,8 @@ public static partial class ModPlayerHooks
 
     public static partial class ModifyScreenPosition
     {
-        public delegate void Definition(
-        );
+        public delegate void Definition();
+
     }
 
     public static partial class ModifyZoom
@@ -953,26 +957,26 @@ public static partial class ModPlayerHooks
 
     public static partial class PlayerConnect
     {
-        public delegate void Definition(
-        );
+        public delegate void Definition();
+
     }
 
     public static partial class PlayerDisconnect
     {
-        public delegate void Definition(
-        );
+        public delegate void Definition();
+
     }
 
     public static partial class OnEnterWorld
     {
-        public delegate void Definition(
-        );
+        public delegate void Definition();
+
     }
 
     public static partial class OnRespawn
     {
-        public delegate void Definition(
-        );
+        public delegate void Definition();
+
     }
 
     public static partial class ShiftClickSlot

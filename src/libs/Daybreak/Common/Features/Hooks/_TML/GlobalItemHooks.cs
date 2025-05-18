@@ -1,5 +1,9 @@
 namespace Daybreak.Common.Features.Hooks;
 
+// ReSharper disable PartialTypeWithSinglePart
+// ReSharper disable UnusedType.Global
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+
 // Hooks to generate for 'Terraria.ModLoader.GlobalItem':
 //     System.Void Terraria.ModLoader.GlobalItem::OnCreated(Terraria.Item,Terraria.DataStructures.ItemCreationContext)
 //     System.Void Terraria.ModLoader.GlobalItem::OnSpawn(Terraria.Item,Terraria.DataStructures.IEntitySource)
@@ -1044,8 +1048,8 @@ public static partial class GlobalItemHooks
 
     public static partial class AddRecipes
     {
-        public delegate void Definition(
-        );
+        public delegate void Definition();
+
     }
 
     public static partial class PreDrawTooltip

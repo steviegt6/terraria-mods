@@ -40,6 +40,10 @@ public sealed class Generator(ModuleDefinition module, TypeDefinition type)
 
         sb.AppendLine($"namespace {typeNamespace};");
         sb.AppendLine();
+        sb.AppendLine("// ReSharper disable PartialTypeWithSinglePart");
+        sb.AppendLine("// ReSharper disable UnusedType.Global");
+        sb.AppendLine("#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member");
+        sb.AppendLine();
         sb.AppendLine($"// Hooks to generate for '{type.FullName}':");
         foreach (var hook in hooks)
         {
@@ -89,27 +93,33 @@ public sealed class Generator(ModuleDefinition module, TypeDefinition type)
 
         var sb = new StringBuilder();
 
-        if (method.Name == "ModifyStartingInventory")
-        {
-            ;
-        }
+        sb.Append($"        public delegate {GetFullTypeNameOrCSharpKeyword(method.ReturnType, includeRefPrefix: true)} Definition(");
 
-        sb.AppendLine($"        public delegate {GetFullTypeNameOrCSharpKeyword(method.ReturnType, includeRefPrefix: true)} Definition(");
         var parameters = method.Parameters;
-        for (var i = 0; i < parameters.Count; i++)
+        if (parameters.Count != 0)
         {
-            var parameter = parameters[i];
-            sb.Append($"            {GetParameterDefinition(parameter)}");
-            if (i < parameters.Count - 1)
+            sb.AppendLine();
+
+            for (var i = 0; i < parameters.Count; i++)
             {
-                sb.AppendLine(",");
+                var parameter = parameters[i];
+                sb.Append($"            {GetParameterDefinition(parameter)}");
+                if (i < parameters.Count - 1)
+                {
+                    sb.AppendLine(",");
+                }
+                else
+                {
+                    sb.AppendLine();
+                }
             }
-            else
-            {
-                sb.AppendLine();
-            }
+
+            sb.Append("        );");
         }
-        sb.Append("        );");
+        else
+        {
+            sb.AppendLine(");");
+        }
 
         return sb.ToString();
     }
@@ -179,7 +189,7 @@ public sealed class Generator(ModuleDefinition module, TypeDefinition type)
         {
             fullName = fullName[..^1];
         }
-        
+
         // Generic parameters are denoted as `n at the end of the name where n
         // is the # of generic parameters.
         var index = fullName.IndexOf('`');

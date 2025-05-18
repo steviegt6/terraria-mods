@@ -1,5 +1,9 @@
 namespace Daybreak.Common.Features.Hooks;
 
+// ReSharper disable PartialTypeWithSinglePart
+// ReSharper disable UnusedType.Global
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+
 // Hooks to generate for 'Terraria.ModLoader.GlobalEmoteBubble':
 //     System.Void Terraria.ModLoader.GlobalEmoteBubble::OnSpawn(Terraria.GameContent.UI.EmoteBubble)
 //     System.Boolean Terraria.ModLoader.GlobalEmoteBubble::UpdateFrame(Terraria.GameContent.UI.EmoteBubble)

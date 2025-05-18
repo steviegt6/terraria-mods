@@ -1,5 +1,9 @@
 namespace Daybreak.Common.Features.Hooks;
 
+// ReSharper disable PartialTypeWithSinglePart
+// ReSharper disable UnusedType.Global
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+
 // Hooks to generate for 'Terraria.ModLoader.GlobalNPC':
 //     System.Void Terraria.ModLoader.GlobalNPC::SetDefaultsFromNetId(Terraria.NPC)
 //     System.Void Terraria.ModLoader.GlobalNPC::OnSpawn(Terraria.NPC,Terraria.DataStructures.IEntitySource)

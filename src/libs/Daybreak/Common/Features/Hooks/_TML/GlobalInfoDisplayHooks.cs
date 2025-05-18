@@ -1,5 +1,9 @@
 namespace Daybreak.Common.Features.Hooks;
 
+// ReSharper disable PartialTypeWithSinglePart
+// ReSharper disable UnusedType.Global
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+
 // Hooks to generate for 'Terraria.ModLoader.GlobalInfoDisplay':
 //     System.Nullable`1<System.Boolean> Terraria.ModLoader.GlobalInfoDisplay::Active(Terraria.ModLoader.InfoDisplay)
 //     System.Void Terraria.ModLoader.GlobalInfoDisplay::ModifyDisplayName(Terraria.ModLoader.InfoDisplay,System.String&)

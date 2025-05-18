@@ -1,5 +1,9 @@
 namespace Daybreak.Common.Features.Hooks;
 
+// ReSharper disable PartialTypeWithSinglePart
+// ReSharper disable UnusedType.Global
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+
 // Hooks to generate for 'Terraria.ModLoader.GlobalTile':
 //     System.Void Terraria.ModLoader.GlobalTile::DropCritterChance(System.Int32,System.Int32,System.Int32,System.Int32&,System.Int32&,System.Int32&)
 //     System.Boolean Terraria.ModLoader.GlobalTile::CanDrop(System.Int32,System.Int32,System.Int32)
@@ -135,8 +139,8 @@ public static partial class GlobalTileHooks
 
     public static partial class AnimateTile
     {
-        public delegate void Definition(
-        );
+        public delegate void Definition();
+
     }
 
     public static partial class DrawEffects
@@ -284,8 +288,8 @@ public static partial class GlobalTileHooks
 
     public static partial class PostSetupTileMerge
     {
-        public delegate void Definition(
-        );
+        public delegate void Definition();
+
     }
 
     public static partial class PreShakeTree
