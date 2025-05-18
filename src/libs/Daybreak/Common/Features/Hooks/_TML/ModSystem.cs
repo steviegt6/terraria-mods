@@ -11,7 +11,6 @@ namespace Daybreak.Common.Features.Hooks;
 /// </summary>
 public static partial class ModSystemHooks
 {
-    [HookDefinition]
     public static partial class SetupContent
     {
         public delegate void Description();
