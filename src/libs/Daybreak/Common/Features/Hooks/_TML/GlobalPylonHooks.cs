@@ -1,5 +1,7 @@
 namespace Daybreak.Common.Features.Hooks;
 
+using System.Linq;
+
 // ReSharper disable PartialTypeWithSinglePart
 // ReSharper disable UnusedType.Global
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
@@ -25,7 +27,12 @@ public static partial class GlobalPylonHooks
             ref float selectedScale
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class PreCanPlacePylon
@@ -37,7 +44,12 @@ public static partial class GlobalPylonHooks
             Terraria.GameContent.TeleportPylonType pylonType
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class ValidTeleportCheck_PreNPCCount
@@ -47,7 +59,12 @@ public static partial class GlobalPylonHooks
             ref int defaultNecessaryNPCCount
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class ValidTeleportCheck_PreAnyDanger
@@ -56,7 +73,12 @@ public static partial class GlobalPylonHooks
             Terraria.GameContent.TeleportPylonInfo pylonInfo
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class ValidTeleportCheck_PreBiomeRequirements
@@ -66,7 +88,12 @@ public static partial class GlobalPylonHooks
             Terraria.SceneMetrics sceneData
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class PostValidTeleportCheck
@@ -79,6 +106,11 @@ public static partial class GlobalPylonHooks
             ref string errorKey
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 }

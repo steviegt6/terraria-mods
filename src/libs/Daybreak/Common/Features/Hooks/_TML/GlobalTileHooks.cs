@@ -1,5 +1,7 @@
 namespace Daybreak.Common.Features.Hooks;
 
+using System.Linq;
+
 // ReSharper disable PartialTypeWithSinglePart
 // ReSharper disable UnusedType.Global
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
@@ -47,7 +49,12 @@ public static partial class GlobalTileHooks
             ref int jungleGrubChance
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class CanDrop
@@ -58,7 +65,12 @@ public static partial class GlobalTileHooks
             int type
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class Drop
@@ -69,7 +81,12 @@ public static partial class GlobalTileHooks
             int type
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class CanKillTile
@@ -81,7 +98,12 @@ public static partial class GlobalTileHooks
             ref bool blockDamaged
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class KillTile
@@ -95,7 +117,12 @@ public static partial class GlobalTileHooks
             ref bool noItem
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class NearbyEffects
@@ -107,7 +134,12 @@ public static partial class GlobalTileHooks
             bool closer
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class IsTileDangerous
@@ -119,7 +151,12 @@ public static partial class GlobalTileHooks
             Terraria.Player player
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class IsTileBiomeSightable
@@ -131,7 +168,12 @@ public static partial class GlobalTileHooks
             ref Microsoft.Xna.Framework.Color sightColor
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class IsTileSpelunkable
@@ -142,7 +184,12 @@ public static partial class GlobalTileHooks
             int type
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class SetSpriteEffects
@@ -154,14 +201,24 @@ public static partial class GlobalTileHooks
             ref Microsoft.Xna.Framework.Graphics.SpriteEffects spriteEffects
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class AnimateTile
     {
         public delegate void Definition();
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class DrawEffects
@@ -174,7 +231,12 @@ public static partial class GlobalTileHooks
             ref Terraria.DataStructures.TileDrawInfo drawData
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class EmitParticles
@@ -190,7 +252,12 @@ public static partial class GlobalTileHooks
             bool visible
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class SpecialDraw
@@ -202,7 +269,12 @@ public static partial class GlobalTileHooks
             Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class TileFrame
@@ -215,7 +287,12 @@ public static partial class GlobalTileHooks
             ref bool noBreak
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class AdjTiles
@@ -224,7 +301,12 @@ public static partial class GlobalTileHooks
             int type
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class RightClick
@@ -235,7 +317,12 @@ public static partial class GlobalTileHooks
             int type
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class MouseOver
@@ -246,7 +333,12 @@ public static partial class GlobalTileHooks
             int type
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class MouseOverFar
@@ -257,7 +349,12 @@ public static partial class GlobalTileHooks
             int type
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class AutoSelect
@@ -269,7 +366,12 @@ public static partial class GlobalTileHooks
             Terraria.Item item
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class PreHitWire
@@ -280,7 +382,12 @@ public static partial class GlobalTileHooks
             int type
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class HitWire
@@ -291,7 +398,12 @@ public static partial class GlobalTileHooks
             int type
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class Slope
@@ -302,7 +414,12 @@ public static partial class GlobalTileHooks
             int type
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class FloorVisuals
@@ -312,7 +429,12 @@ public static partial class GlobalTileHooks
             Terraria.Player player
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class ChangeWaterfallStyle
@@ -322,7 +444,12 @@ public static partial class GlobalTileHooks
             ref int style
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class CanReplace
@@ -334,14 +461,24 @@ public static partial class GlobalTileHooks
             int tileTypeBeingPlaced
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class PostSetupTileMerge
     {
         public delegate void Definition();
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class PreShakeTree
@@ -352,7 +489,12 @@ public static partial class GlobalTileHooks
             Terraria.Enums.TreeTypes treeType
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class ShakeTree
@@ -363,6 +505,11 @@ public static partial class GlobalTileHooks
             Terraria.Enums.TreeTypes treeType
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 }

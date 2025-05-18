@@ -1,5 +1,7 @@
 namespace Daybreak.Common.Features.Hooks;
 
+using System.Linq;
+
 // ReSharper disable PartialTypeWithSinglePart
 // ReSharper disable UnusedType.Global
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
@@ -127,7 +129,12 @@ public static partial class GlobalItemHooks
             Terraria.DataStructures.ItemCreationContext context
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class OnSpawn
@@ -137,7 +144,12 @@ public static partial class GlobalItemHooks
             Terraria.DataStructures.IEntitySource source
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class ChoosePrefix
@@ -147,7 +159,12 @@ public static partial class GlobalItemHooks
             Terraria.Utilities.UnifiedRandom rand
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class PrefixChance
@@ -158,7 +175,12 @@ public static partial class GlobalItemHooks
             Terraria.Utilities.UnifiedRandom rand
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class AllowPrefix
@@ -168,7 +190,12 @@ public static partial class GlobalItemHooks
             int pre
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class CanUseItem
@@ -178,7 +205,12 @@ public static partial class GlobalItemHooks
             Terraria.Player player
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class CanAutoReuseItem
@@ -188,7 +220,12 @@ public static partial class GlobalItemHooks
             Terraria.Player player
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class UseStyle
@@ -199,7 +236,12 @@ public static partial class GlobalItemHooks
             Microsoft.Xna.Framework.Rectangle heldItemFrame
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class HoldStyle
@@ -210,7 +252,12 @@ public static partial class GlobalItemHooks
             Microsoft.Xna.Framework.Rectangle heldItemFrame
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class HoldItem
@@ -220,7 +267,12 @@ public static partial class GlobalItemHooks
             Terraria.Player player
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class UseTimeMultiplier
@@ -230,7 +282,12 @@ public static partial class GlobalItemHooks
             Terraria.Player player
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class UseAnimationMultiplier
@@ -240,7 +297,12 @@ public static partial class GlobalItemHooks
             Terraria.Player player
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class UseSpeedMultiplier
@@ -250,7 +312,12 @@ public static partial class GlobalItemHooks
             Terraria.Player player
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class GetHealLife
@@ -262,7 +329,12 @@ public static partial class GlobalItemHooks
             ref int healValue
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class GetHealMana
@@ -274,7 +346,12 @@ public static partial class GlobalItemHooks
             ref int healValue
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class ModifyManaCost
@@ -286,7 +363,12 @@ public static partial class GlobalItemHooks
             ref float mult
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class OnMissingMana
@@ -297,7 +379,12 @@ public static partial class GlobalItemHooks
             int neededMana
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class OnConsumeMana
@@ -308,7 +395,12 @@ public static partial class GlobalItemHooks
             int manaConsumed
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class ModifyWeaponDamage
@@ -319,7 +411,12 @@ public static partial class GlobalItemHooks
             ref Terraria.ModLoader.StatModifier damage
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class ModifyResearchSorting
@@ -329,7 +426,12 @@ public static partial class GlobalItemHooks
             ref Terraria.ID.ContentSamples.CreativeHelper.ItemGroup itemGroup
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class CanConsumeBait
@@ -339,7 +441,12 @@ public static partial class GlobalItemHooks
             Terraria.Item bait
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class CanResearch
@@ -348,7 +455,12 @@ public static partial class GlobalItemHooks
             Terraria.Item item
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class OnResearched
@@ -358,7 +470,12 @@ public static partial class GlobalItemHooks
             bool fullyResearched
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class ModifyWeaponKnockback
@@ -369,7 +486,12 @@ public static partial class GlobalItemHooks
             ref Terraria.ModLoader.StatModifier knockback
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class ModifyWeaponCrit
@@ -380,7 +502,12 @@ public static partial class GlobalItemHooks
             ref float crit
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class NeedsAmmo
@@ -390,7 +517,12 @@ public static partial class GlobalItemHooks
             Terraria.Player player
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class PickAmmo
@@ -405,7 +537,12 @@ public static partial class GlobalItemHooks
             ref float knockback
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class CanChooseAmmo
@@ -416,7 +553,12 @@ public static partial class GlobalItemHooks
             Terraria.Player player
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class CanBeChosenAsAmmo
@@ -427,7 +569,12 @@ public static partial class GlobalItemHooks
             Terraria.Player player
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class CanConsumeAmmo
@@ -438,7 +585,12 @@ public static partial class GlobalItemHooks
             Terraria.Player player
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class CanBeConsumedAsAmmo
@@ -449,7 +601,12 @@ public static partial class GlobalItemHooks
             Terraria.Player player
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class OnConsumeAmmo
@@ -460,7 +617,12 @@ public static partial class GlobalItemHooks
             Terraria.Player player
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class OnConsumedAsAmmo
@@ -471,7 +633,12 @@ public static partial class GlobalItemHooks
             Terraria.Player player
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class CanShoot
@@ -481,7 +648,12 @@ public static partial class GlobalItemHooks
             Terraria.Player player
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class ModifyShootStats
@@ -496,7 +668,12 @@ public static partial class GlobalItemHooks
             ref float knockback
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class Shoot
@@ -512,7 +689,12 @@ public static partial class GlobalItemHooks
             float knockback
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class UseItemHitbox
@@ -524,7 +706,12 @@ public static partial class GlobalItemHooks
             ref bool noHitbox
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class MeleeEffects
@@ -535,7 +722,12 @@ public static partial class GlobalItemHooks
             Microsoft.Xna.Framework.Rectangle hitbox
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class CanCatchNPC
@@ -546,7 +738,12 @@ public static partial class GlobalItemHooks
             Terraria.Player player
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class OnCatchNPC
@@ -558,7 +755,12 @@ public static partial class GlobalItemHooks
             bool failed
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class ModifyItemScale
@@ -569,7 +771,12 @@ public static partial class GlobalItemHooks
             ref float scale
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class CanHitNPC
@@ -580,7 +787,12 @@ public static partial class GlobalItemHooks
             Terraria.NPC target
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class CanMeleeAttackCollideWithNPC
@@ -592,7 +804,12 @@ public static partial class GlobalItemHooks
             Terraria.NPC target
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class ModifyHitNPC
@@ -604,7 +821,12 @@ public static partial class GlobalItemHooks
             ref Terraria.NPC.HitModifiers modifiers
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class OnHitNPC
@@ -617,7 +839,12 @@ public static partial class GlobalItemHooks
             int damageDone
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class CanHitPvp
@@ -628,7 +855,12 @@ public static partial class GlobalItemHooks
             Terraria.Player target
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class ModifyHitPvp
@@ -640,7 +872,12 @@ public static partial class GlobalItemHooks
             ref Terraria.Player.HurtModifiers modifiers
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class OnHitPvp
@@ -652,7 +889,12 @@ public static partial class GlobalItemHooks
             Terraria.Player.HurtInfo hurtInfo
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class UseItem
@@ -662,7 +904,12 @@ public static partial class GlobalItemHooks
             Terraria.Player player
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class UseAnimation
@@ -672,7 +919,12 @@ public static partial class GlobalItemHooks
             Terraria.Player player
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class ConsumeItem
@@ -682,7 +934,12 @@ public static partial class GlobalItemHooks
             Terraria.Player player
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class OnConsumeItem
@@ -692,7 +949,12 @@ public static partial class GlobalItemHooks
             Terraria.Player player
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class UseItemFrame
@@ -702,7 +964,12 @@ public static partial class GlobalItemHooks
             Terraria.Player player
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class HoldItemFrame
@@ -712,7 +979,12 @@ public static partial class GlobalItemHooks
             Terraria.Player player
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class AltFunctionUse
@@ -722,7 +994,12 @@ public static partial class GlobalItemHooks
             Terraria.Player player
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class UpdateInventory
@@ -732,7 +1009,12 @@ public static partial class GlobalItemHooks
             Terraria.Player player
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class UpdateInfoAccessory
@@ -742,7 +1024,12 @@ public static partial class GlobalItemHooks
             Terraria.Player player
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class UpdateEquip
@@ -752,7 +1039,12 @@ public static partial class GlobalItemHooks
             Terraria.Player player
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class UpdateAccessory
@@ -763,7 +1055,12 @@ public static partial class GlobalItemHooks
             bool hideVisual
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class UpdateVanity
@@ -773,7 +1070,12 @@ public static partial class GlobalItemHooks
             Terraria.Player player
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class IsArmorSet
@@ -784,7 +1086,12 @@ public static partial class GlobalItemHooks
             Terraria.Item legs
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class UpdateArmorSet
@@ -794,7 +1101,12 @@ public static partial class GlobalItemHooks
             string set
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class IsVanitySet
@@ -805,7 +1117,12 @@ public static partial class GlobalItemHooks
             int legs
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class PreUpdateVanitySet
@@ -815,7 +1132,12 @@ public static partial class GlobalItemHooks
             string set
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class UpdateVanitySet
@@ -825,7 +1147,12 @@ public static partial class GlobalItemHooks
             string set
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class ArmorSetShadows
@@ -835,7 +1162,12 @@ public static partial class GlobalItemHooks
             string set
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class SetMatch
@@ -848,7 +1180,12 @@ public static partial class GlobalItemHooks
             ref bool robes
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class CanRightClick
@@ -857,7 +1194,12 @@ public static partial class GlobalItemHooks
             Terraria.Item item
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class RightClick
@@ -867,7 +1209,12 @@ public static partial class GlobalItemHooks
             Terraria.Player player
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class ModifyItemLoot
@@ -877,7 +1224,12 @@ public static partial class GlobalItemHooks
             Terraria.ModLoader.ItemLoot itemLoot
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class CanStack
@@ -887,7 +1239,12 @@ public static partial class GlobalItemHooks
             Terraria.Item source
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class CanStackInWorld
@@ -897,7 +1254,12 @@ public static partial class GlobalItemHooks
             Terraria.Item source
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class OnStack
@@ -908,7 +1270,12 @@ public static partial class GlobalItemHooks
             int numToTransfer
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class SplitStack
@@ -919,7 +1286,12 @@ public static partial class GlobalItemHooks
             int numToTransfer
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class ReforgePrice
@@ -930,7 +1302,12 @@ public static partial class GlobalItemHooks
             ref bool canApplyDiscount
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class CanReforge
@@ -939,7 +1316,12 @@ public static partial class GlobalItemHooks
             Terraria.Item item
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class PreReforge
@@ -948,7 +1330,12 @@ public static partial class GlobalItemHooks
             Terraria.Item item
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class PostReforge
@@ -957,7 +1344,12 @@ public static partial class GlobalItemHooks
             Terraria.Item item
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class DrawArmorColor
@@ -972,7 +1364,12 @@ public static partial class GlobalItemHooks
             ref Microsoft.Xna.Framework.Color glowMaskColor
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class ArmorArmGlowMask
@@ -985,7 +1382,12 @@ public static partial class GlobalItemHooks
             ref Microsoft.Xna.Framework.Color color
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class VerticalWingSpeeds
@@ -1000,7 +1402,12 @@ public static partial class GlobalItemHooks
             ref float constantAscend
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class HorizontalWingSpeeds
@@ -1012,7 +1419,12 @@ public static partial class GlobalItemHooks
             ref float acceleration
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class WingUpdate
@@ -1023,7 +1435,12 @@ public static partial class GlobalItemHooks
             bool inUse
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class Update
@@ -1034,7 +1451,12 @@ public static partial class GlobalItemHooks
             ref float maxFallSpeed
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class PostUpdate
@@ -1043,7 +1465,12 @@ public static partial class GlobalItemHooks
             Terraria.Item item
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class GrabRange
@@ -1054,7 +1481,12 @@ public static partial class GlobalItemHooks
             ref int grabRange
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class GrabStyle
@@ -1064,7 +1496,12 @@ public static partial class GlobalItemHooks
             Terraria.Player player
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class CanPickup
@@ -1074,7 +1511,12 @@ public static partial class GlobalItemHooks
             Terraria.Player player
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class OnPickup
@@ -1084,7 +1526,12 @@ public static partial class GlobalItemHooks
             Terraria.Player player
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class ItemSpace
@@ -1094,7 +1541,12 @@ public static partial class GlobalItemHooks
             Terraria.Player player
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class GetAlpha
@@ -1104,7 +1556,12 @@ public static partial class GlobalItemHooks
             Microsoft.Xna.Framework.Color lightColor
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class PreDrawInWorld
@@ -1119,7 +1576,12 @@ public static partial class GlobalItemHooks
             int whoAmI
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class PostDrawInWorld
@@ -1134,7 +1596,12 @@ public static partial class GlobalItemHooks
             int whoAmI
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class PreDrawInInventory
@@ -1150,7 +1617,12 @@ public static partial class GlobalItemHooks
             float scale
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class PostDrawInInventory
@@ -1166,7 +1638,12 @@ public static partial class GlobalItemHooks
             float scale
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class HoldoutOffset
@@ -1175,7 +1652,12 @@ public static partial class GlobalItemHooks
             int type
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class HoldoutOrigin
@@ -1184,7 +1666,12 @@ public static partial class GlobalItemHooks
             int type
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class CanEquipAccessory
@@ -1196,7 +1683,12 @@ public static partial class GlobalItemHooks
             bool modded
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class CanAccessoryBeEquippedWith
@@ -1207,7 +1699,12 @@ public static partial class GlobalItemHooks
             Terraria.Player player
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class ExtractinatorUse
@@ -1219,7 +1716,12 @@ public static partial class GlobalItemHooks
             ref int resultStack
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class CaughtFishStack
@@ -1229,7 +1731,12 @@ public static partial class GlobalItemHooks
             ref int stack
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class IsAnglerQuestAvailable
@@ -1238,7 +1745,12 @@ public static partial class GlobalItemHooks
             int type
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class AnglerChat
@@ -1249,14 +1761,24 @@ public static partial class GlobalItemHooks
             ref string catchLocation
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class AddRecipes
     {
         public delegate void Definition();
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class PreDrawTooltip
@@ -1268,7 +1790,12 @@ public static partial class GlobalItemHooks
             ref int y
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class PostDrawTooltip
@@ -1278,7 +1805,12 @@ public static partial class GlobalItemHooks
             System.Collections.ObjectModel.ReadOnlyCollection<Terraria.ModLoader.DrawableTooltipLine> lines
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class PreDrawTooltipLine
@@ -1289,7 +1821,12 @@ public static partial class GlobalItemHooks
             ref int yOffset
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class PostDrawTooltipLine
@@ -1299,7 +1836,12 @@ public static partial class GlobalItemHooks
             Terraria.ModLoader.DrawableTooltipLine line
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class ModifyTooltips
@@ -1309,7 +1851,12 @@ public static partial class GlobalItemHooks
             System.Collections.Generic.List<Terraria.ModLoader.TooltipLine> tooltips
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class SaveData
@@ -1319,7 +1866,12 @@ public static partial class GlobalItemHooks
             Terraria.ModLoader.IO.TagCompound tag
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class LoadData
@@ -1329,7 +1881,12 @@ public static partial class GlobalItemHooks
             Terraria.ModLoader.IO.TagCompound tag
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class NetSend
@@ -1339,7 +1896,12 @@ public static partial class GlobalItemHooks
             System.IO.BinaryWriter writer
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class NetReceive
@@ -1349,6 +1911,11 @@ public static partial class GlobalItemHooks
             System.IO.BinaryReader reader
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 }

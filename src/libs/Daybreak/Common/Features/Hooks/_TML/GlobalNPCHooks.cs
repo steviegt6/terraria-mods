@@ -1,5 +1,7 @@
 namespace Daybreak.Common.Features.Hooks;
 
+using System.Linq;
+
 // ReSharper disable PartialTypeWithSinglePart
 // ReSharper disable UnusedType.Global
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
@@ -95,7 +97,12 @@ public static partial class GlobalNPCHooks
             Terraria.NPC npc
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class OnSpawn
@@ -105,7 +112,12 @@ public static partial class GlobalNPCHooks
             Terraria.DataStructures.IEntitySource source
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class ApplyDifficultyAndPlayerScaling
@@ -117,7 +129,12 @@ public static partial class GlobalNPCHooks
             float bossAdjustment
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class SetBestiary
@@ -128,7 +145,12 @@ public static partial class GlobalNPCHooks
             Terraria.GameContent.Bestiary.BestiaryEntry bestiaryEntry
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class ModifyTypeName
@@ -138,7 +160,12 @@ public static partial class GlobalNPCHooks
             ref string typeName
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class ModifyHoverBoundingBox
@@ -148,7 +175,12 @@ public static partial class GlobalNPCHooks
             ref Microsoft.Xna.Framework.Rectangle boundingBox
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class ModifyTownNPCProfile
@@ -157,7 +189,12 @@ public static partial class GlobalNPCHooks
             Terraria.NPC npc
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class ModifyNPCNameList
@@ -167,7 +204,12 @@ public static partial class GlobalNPCHooks
             System.Collections.Generic.List<string> nameList
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class ResetEffects
@@ -176,7 +218,12 @@ public static partial class GlobalNPCHooks
             Terraria.NPC npc
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class PreAI
@@ -185,7 +232,12 @@ public static partial class GlobalNPCHooks
             Terraria.NPC npc
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class AI
@@ -194,7 +246,12 @@ public static partial class GlobalNPCHooks
             Terraria.NPC npc
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class PostAI
@@ -203,7 +260,12 @@ public static partial class GlobalNPCHooks
             Terraria.NPC npc
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class SendExtraAI
@@ -214,7 +276,12 @@ public static partial class GlobalNPCHooks
             System.IO.BinaryWriter binaryWriter
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class ReceiveExtraAI
@@ -225,7 +292,12 @@ public static partial class GlobalNPCHooks
             System.IO.BinaryReader binaryReader
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class FindFrame
@@ -235,7 +307,12 @@ public static partial class GlobalNPCHooks
             int frameHeight
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class HitEffect
@@ -245,7 +322,12 @@ public static partial class GlobalNPCHooks
             Terraria.NPC.HitInfo hit
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class UpdateLifeRegen
@@ -255,7 +337,12 @@ public static partial class GlobalNPCHooks
             ref int damage
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class CheckActive
@@ -264,7 +351,12 @@ public static partial class GlobalNPCHooks
             Terraria.NPC npc
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class CheckDead
@@ -273,7 +365,12 @@ public static partial class GlobalNPCHooks
             Terraria.NPC npc
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class SpecialOnKill
@@ -282,7 +379,12 @@ public static partial class GlobalNPCHooks
             Terraria.NPC npc
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class PreKill
@@ -291,7 +393,12 @@ public static partial class GlobalNPCHooks
             Terraria.NPC npc
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class OnKill
@@ -300,7 +407,12 @@ public static partial class GlobalNPCHooks
             Terraria.NPC npc
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class CanFallThroughPlatforms
@@ -309,7 +421,12 @@ public static partial class GlobalNPCHooks
             Terraria.NPC npc
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class CanBeCaughtBy
@@ -320,7 +437,12 @@ public static partial class GlobalNPCHooks
             Terraria.Player player
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class OnCaughtBy
@@ -332,7 +454,12 @@ public static partial class GlobalNPCHooks
             bool failed
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class ModifyNPCLoot
@@ -342,7 +469,12 @@ public static partial class GlobalNPCHooks
             Terraria.ModLoader.NPCLoot npcLoot
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class ModifyGlobalLoot
@@ -351,7 +483,12 @@ public static partial class GlobalNPCHooks
             Terraria.ModLoader.GlobalLoot globalLoot
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class CanHitPlayer
@@ -362,7 +499,12 @@ public static partial class GlobalNPCHooks
             ref int cooldownSlot
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class ModifyHitPlayer
@@ -373,7 +515,12 @@ public static partial class GlobalNPCHooks
             ref Terraria.Player.HurtModifiers modifiers
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class OnHitPlayer
@@ -384,7 +531,12 @@ public static partial class GlobalNPCHooks
             Terraria.Player.HurtInfo hurtInfo
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class CanHitNPC
@@ -394,7 +546,12 @@ public static partial class GlobalNPCHooks
             Terraria.NPC target
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class CanBeHitByNPC
@@ -404,7 +561,12 @@ public static partial class GlobalNPCHooks
             Terraria.NPC attacker
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class ModifyHitNPC
@@ -415,7 +577,12 @@ public static partial class GlobalNPCHooks
             ref Terraria.NPC.HitModifiers modifiers
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class OnHitNPC
@@ -426,7 +593,12 @@ public static partial class GlobalNPCHooks
             Terraria.NPC.HitInfo hit
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class CanBeHitByItem
@@ -437,7 +609,12 @@ public static partial class GlobalNPCHooks
             Terraria.Item item
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class CanCollideWithPlayerMeleeAttack
@@ -449,7 +626,12 @@ public static partial class GlobalNPCHooks
             Microsoft.Xna.Framework.Rectangle meleeAttackHitbox
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class ModifyHitByItem
@@ -461,7 +643,12 @@ public static partial class GlobalNPCHooks
             ref Terraria.NPC.HitModifiers modifiers
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class OnHitByItem
@@ -474,7 +661,12 @@ public static partial class GlobalNPCHooks
             int damageDone
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class CanBeHitByProjectile
@@ -484,7 +676,12 @@ public static partial class GlobalNPCHooks
             Terraria.Projectile projectile
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class ModifyHitByProjectile
@@ -495,7 +692,12 @@ public static partial class GlobalNPCHooks
             ref Terraria.NPC.HitModifiers modifiers
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class OnHitByProjectile
@@ -507,7 +709,12 @@ public static partial class GlobalNPCHooks
             int damageDone
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class ModifyIncomingHit
@@ -517,7 +724,12 @@ public static partial class GlobalNPCHooks
             ref Terraria.NPC.HitModifiers modifiers
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class BossHeadSlot
@@ -527,7 +739,12 @@ public static partial class GlobalNPCHooks
             ref int index
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class BossHeadRotation
@@ -537,7 +754,12 @@ public static partial class GlobalNPCHooks
             ref float rotation
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class BossHeadSpriteEffects
@@ -547,7 +769,12 @@ public static partial class GlobalNPCHooks
             ref Microsoft.Xna.Framework.Graphics.SpriteEffects spriteEffects
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class GetAlpha
@@ -557,7 +784,12 @@ public static partial class GlobalNPCHooks
             Microsoft.Xna.Framework.Color drawColor
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class DrawEffects
@@ -567,7 +799,12 @@ public static partial class GlobalNPCHooks
             ref Microsoft.Xna.Framework.Color drawColor
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class PreDraw
@@ -579,7 +816,12 @@ public static partial class GlobalNPCHooks
             Microsoft.Xna.Framework.Color drawColor
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class PostDraw
@@ -591,7 +833,12 @@ public static partial class GlobalNPCHooks
             Microsoft.Xna.Framework.Color drawColor
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class DrawBehind
@@ -601,7 +848,12 @@ public static partial class GlobalNPCHooks
             int index
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class DrawHealthBar
@@ -613,7 +865,12 @@ public static partial class GlobalNPCHooks
             ref Microsoft.Xna.Framework.Vector2 position
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class EditSpawnRate
@@ -624,7 +881,12 @@ public static partial class GlobalNPCHooks
             ref int maxSpawns
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class EditSpawnRange
@@ -637,7 +899,12 @@ public static partial class GlobalNPCHooks
             ref int safeRangeY
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class EditSpawnPool
@@ -647,7 +914,12 @@ public static partial class GlobalNPCHooks
             Terraria.ModLoader.NPCSpawnInfo spawnInfo
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class SpawnNPC
@@ -658,7 +930,12 @@ public static partial class GlobalNPCHooks
             int tileY
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class CanChat
@@ -667,7 +944,12 @@ public static partial class GlobalNPCHooks
             Terraria.NPC npc
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class GetChat
@@ -677,7 +959,12 @@ public static partial class GlobalNPCHooks
             ref string chat
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class PreChatButtonClicked
@@ -687,7 +974,12 @@ public static partial class GlobalNPCHooks
             bool firstButton
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class OnChatButtonClicked
@@ -697,7 +989,12 @@ public static partial class GlobalNPCHooks
             bool firstButton
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class ModifyShop
@@ -706,7 +1003,12 @@ public static partial class GlobalNPCHooks
             Terraria.ModLoader.NPCShop shop
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class ModifyActiveShop
@@ -717,7 +1019,12 @@ public static partial class GlobalNPCHooks
             Terraria.Item[] items
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class SetupTravelShop
@@ -727,7 +1034,12 @@ public static partial class GlobalNPCHooks
             ref int nextSlot
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class CanGoToStatue
@@ -737,7 +1049,12 @@ public static partial class GlobalNPCHooks
             bool toKingStatue
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class OnGoToStatue
@@ -747,7 +1064,12 @@ public static partial class GlobalNPCHooks
             bool toKingStatue
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class BuffTownNPC
@@ -757,7 +1079,12 @@ public static partial class GlobalNPCHooks
             ref int defense
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class TownNPCAttackStrength
@@ -768,7 +1095,12 @@ public static partial class GlobalNPCHooks
             ref float knockback
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class TownNPCAttackCooldown
@@ -779,7 +1111,12 @@ public static partial class GlobalNPCHooks
             ref int randExtraCooldown
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class TownNPCAttackProj
@@ -790,7 +1127,12 @@ public static partial class GlobalNPCHooks
             ref int attackDelay
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class TownNPCAttackProjSpeed
@@ -802,7 +1144,12 @@ public static partial class GlobalNPCHooks
             ref float randomOffset
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class TownNPCAttackShoot
@@ -812,7 +1159,12 @@ public static partial class GlobalNPCHooks
             ref bool inBetweenShots
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class TownNPCAttackMagic
@@ -822,7 +1174,12 @@ public static partial class GlobalNPCHooks
             ref float auraLightMultiplier
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class TownNPCAttackSwing
@@ -833,7 +1190,12 @@ public static partial class GlobalNPCHooks
             ref int itemHeight
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class DrawTownAttackGun
@@ -846,7 +1208,12 @@ public static partial class GlobalNPCHooks
             ref int horizontalHoldoutOffset
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class DrawTownAttackSwing
@@ -860,7 +1227,12 @@ public static partial class GlobalNPCHooks
             ref Microsoft.Xna.Framework.Vector2 offset
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class ModifyCollisionData
@@ -873,7 +1245,12 @@ public static partial class GlobalNPCHooks
             ref Microsoft.Xna.Framework.Rectangle npcHitbox
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class NeedSaving
@@ -882,7 +1259,12 @@ public static partial class GlobalNPCHooks
             Terraria.NPC npc
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class SaveData
@@ -892,7 +1274,12 @@ public static partial class GlobalNPCHooks
             Terraria.ModLoader.IO.TagCompound tag
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class LoadData
@@ -902,7 +1289,12 @@ public static partial class GlobalNPCHooks
             Terraria.ModLoader.IO.TagCompound tag
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class PickEmote
@@ -914,7 +1306,12 @@ public static partial class GlobalNPCHooks
             Terraria.GameContent.UI.WorldUIAnchor otherAnchor
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class ChatBubblePosition
@@ -925,7 +1322,12 @@ public static partial class GlobalNPCHooks
             ref Microsoft.Xna.Framework.Graphics.SpriteEffects spriteEffects
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class PartyHatPosition
@@ -936,7 +1338,12 @@ public static partial class GlobalNPCHooks
             ref Microsoft.Xna.Framework.Graphics.SpriteEffects spriteEffects
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class EmoteBubblePosition
@@ -947,6 +1354,11 @@ public static partial class GlobalNPCHooks
             ref Microsoft.Xna.Framework.Graphics.SpriteEffects spriteEffects
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 }

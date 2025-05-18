@@ -1,5 +1,7 @@
 namespace Daybreak.Common.Features.Hooks;
 
+using System.Linq;
+
 // ReSharper disable PartialTypeWithSinglePart
 // ReSharper disable UnusedType.Global
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
@@ -22,7 +24,12 @@ public static partial class GlobalEmoteBubbleHooks
             Terraria.GameContent.UI.EmoteBubble emoteBubble
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class UpdateFrame
@@ -31,7 +38,12 @@ public static partial class GlobalEmoteBubbleHooks
             Terraria.GameContent.UI.EmoteBubble emoteBubble
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class UpdateFrameInEmoteMenu
@@ -41,7 +53,12 @@ public static partial class GlobalEmoteBubbleHooks
             ref int frameCounter
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class PreDraw
@@ -56,7 +73,12 @@ public static partial class GlobalEmoteBubbleHooks
             Microsoft.Xna.Framework.Graphics.SpriteEffects spriteEffects
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class PostDraw
@@ -71,7 +93,12 @@ public static partial class GlobalEmoteBubbleHooks
             Microsoft.Xna.Framework.Graphics.SpriteEffects spriteEffects
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class PreDrawInEmoteMenu
@@ -85,7 +112,12 @@ public static partial class GlobalEmoteBubbleHooks
             Microsoft.Xna.Framework.Vector2 origin
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class PostDrawInEmoteMenu
@@ -99,7 +131,12 @@ public static partial class GlobalEmoteBubbleHooks
             Microsoft.Xna.Framework.Vector2 origin
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class GetFrame
@@ -108,7 +145,12 @@ public static partial class GlobalEmoteBubbleHooks
             Terraria.GameContent.UI.EmoteBubble emoteBubble
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 
     public static partial class GetFrameInEmoteMenu
@@ -119,6 +161,11 @@ public static partial class GlobalEmoteBubbleHooks
             int frameCounter
         );
 
-        public static event Definition Event;
+        public static event Definition? Event;
+
+        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
+        {
+            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
+        }
     }
 }

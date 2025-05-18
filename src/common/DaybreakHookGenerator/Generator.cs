@@ -42,6 +42,8 @@ public sealed class Generator(ModuleDefinition module, TypeDefinition type)
 
         sb.AppendLine($"namespace {typeNamespace};");
         sb.AppendLine();
+        sb.AppendLine("using System.Linq;");
+        sb.AppendLine();
         sb.AppendLine("// ReSharper disable PartialTypeWithSinglePart");
         sb.AppendLine("// ReSharper disable UnusedType.Global");
         sb.AppendLine("#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member");
@@ -90,7 +92,12 @@ public sealed class Generator(ModuleDefinition module, TypeDefinition type)
         sb.AppendLine("    {");
         sb.AppendLine(GetDescriptionForMethod(method));
         sb.AppendLine();
-        sb.AppendLine("        public static event Definition Event;");
+        sb.AppendLine("        public static event Definition? Event;");
+        sb.AppendLine();
+        sb.AppendLine("        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()");
+        sb.AppendLine("        {");
+        sb.AppendLine("            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];");
+        sb.AppendLine("        }");
         sb.AppendLine("    }");
 
         return sb.ToString();
