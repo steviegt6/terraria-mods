@@ -65,7 +65,32 @@ internal static class Program
             new TypeHookDefinition(typeof(GlobalInfoDisplay))
                .WithInvokeStrategy(nameof(GlobalInfoDisplay.Active), new NullableBooleanCombinerStrategy()),
             new TypeHookDefinition(typeof(GlobalItem)),
-            new TypeHookDefinition(typeof(GlobalNPC)),
+            new TypeHookDefinition(typeof(GlobalNPC))
+               .WithExclusions(
+                    nameof(GlobalNPC.ModifyTownNPCProfile),
+                    nameof(GlobalNPC.SpecialOnKill),
+                    nameof(GlobalNPC.CanFallThroughPlatforms),
+                    nameof(GlobalNPC.CanBeCaughtBy),
+                    nameof(GlobalNPC.CanBeHitByItem),
+                    nameof(GlobalNPC.CanCollideWithPlayerMeleeAttack),
+                    nameof(GlobalNPC.CanBeHitByProjectile),
+                    nameof(GlobalNPC.GetAlpha),
+                    nameof(GlobalNPC.DrawHealthBar),
+                    nameof(GlobalNPC.CanChat),
+                    nameof(GlobalNPC.CanGoToStatue),
+                    nameof(GlobalNPC.PickEmote)
+                )
+               .WithInvokeStrategy(nameof(GlobalNPC.PreAI), new BoolCombinerStrategy(true, "&="))
+               .WithInvokeStrategy(nameof(GlobalNPC.CheckActive), new EarlyReturnOnFalseStrategy())
+               .WithInvokeStrategy(nameof(GlobalNPC.CheckDead), new BoolCombinerStrategy(true, "&="))
+               .WithInvokeStrategy(nameof(GlobalNPC.PreKill), new BoolCombinerStrategy(true, "&="))
+               .WithInvokeStrategy(nameof(GlobalNPC.CanHitPlayer), new EarlyReturnOnFalseStrategy())
+               .WithInvokeStrategy(nameof(GlobalNPC.CanHitNPC), new EarlyReturnOnFalseStrategy())
+               .WithInvokeStrategy(nameof(GlobalNPC.CanBeHitByNPC), new EarlyReturnOnFalseStrategy())
+               .WithInvokeStrategy(nameof(GlobalNPC.PreDraw), new BoolCombinerStrategy(true, "&="))
+               .WithInvokeStrategy(nameof(GlobalNPC.PreChatButtonClicked), new BoolCombinerStrategy(true, "&="))
+               .WithInvokeStrategy(nameof(GlobalNPC.ModifyCollisionData), new BoolCombinerStrategy(true, "&="))
+               .WithInvokeStrategy(nameof(GlobalNPC.NeedSaving), new BoolCombinerStrategy(false, "|=")), // TODO: Should we?
             new TypeHookDefinition(typeof(GlobalProjectile))
                .WithExclusions(
                     nameof(GlobalProjectile.CanCutTiles),
@@ -118,7 +143,45 @@ internal static class Program
                     nameof(ModSystem.HijackSendData)
                 )
             /*.WithInvokeStrategy(nameof(ModSystem.CanWorldBePlayed), new EarlyReturnOnFalseStrategy())*/,
-            new TypeHookDefinition(typeof(ModPlayer)),
+            new TypeHookDefinition(typeof(ModPlayer))
+               .WithExclusions(
+                    nameof(ModPlayer.NewInstance),
+                    nameof(ModPlayer.UseTimeMultiplier),
+                    nameof(ModPlayer.UseAnimationMultiplier),
+                    nameof(ModPlayer.UseSpeedMultiplier),
+                    nameof(ModPlayer.CanCatchNPC),
+                    nameof(ModPlayer.CanMeleeAttackCollideWithNPC),
+                    nameof(ModPlayer.CanHitNPCWithItem),
+                    nameof(ModPlayer.CanHitNPCWithProj),
+                    nameof(ModPlayer.CanConsumeBait),
+                    nameof(ModPlayer.CanAutoReuseItem),
+                    nameof(ModPlayer.AddStartingItems),
+                    nameof(ModPlayer.AddMaterialsForCrafting)
+                )
+               .WithInvokeStrategy(nameof(ModPlayer.ModifyMaxStats), new VoidReturnButInitializeOutParametersStrategy())
+               .WithInvokeStrategy(nameof(ModPlayer.CanStartExtraJump), new EarlyReturnOnFalseStrategy())
+               .WithInvokeStrategy(nameof(ModPlayer.CanShowExtraJumpVisuals), new EarlyReturnOnFalseStrategy())
+               .WithInvokeStrategy(nameof(ModPlayer.ImmuneTo), new EarlyReturnOnTrueStrategy())
+               .WithInvokeStrategy(nameof(ModPlayer.FreeDodge), new EarlyReturnOnTrueStrategy())
+               .WithInvokeStrategy(nameof(ModPlayer.ConsumableDodge), new EarlyReturnOnTrueStrategy())
+               .WithInvokeStrategy(nameof(ModPlayer.PreKill), new BoolCombinerStrategy(true, "&="))
+               .WithInvokeStrategy(nameof(ModPlayer.PreModifyLuck), new BoolCombinerStrategy(true, "&="))
+               .WithInvokeStrategy(nameof(ModPlayer.PreItemCheck), new BoolCombinerStrategy(true, "&="))
+               .WithInvokeStrategy(nameof(ModPlayer.CanConsumeAmmo), new EarlyReturnOnFalseStrategy())
+               .WithInvokeStrategy(nameof(ModPlayer.CanShoot), new BoolCombinerStrategy(true, "&="))
+               .WithInvokeStrategy(nameof(ModPlayer.Shoot), new BoolCombinerStrategy(true, "&="))
+               .WithInvokeStrategy(nameof(ModPlayer.CanHitNPC), new EarlyReturnOnFalseStrategy())
+               .WithInvokeStrategy(nameof(ModPlayer.CanHitPvp), new EarlyReturnOnFalseStrategy())
+               .WithInvokeStrategy(nameof(ModPlayer.CanHitPvpWithProj), new EarlyReturnOnFalseStrategy())
+               .WithInvokeStrategy(nameof(ModPlayer.CanBeHitByNPC), new EarlyReturnOnFalseStrategy())
+               .WithInvokeStrategy(nameof(ModPlayer.CanBeHitByProjectile), new EarlyReturnOnFalseStrategy())
+               .WithInvokeStrategy(nameof(ModPlayer.ShiftClickSlot), new EarlyReturnOnTrueStrategy())
+               .WithInvokeStrategy(nameof(ModPlayer.HoverSlot), new EarlyReturnOnTrueStrategy())
+               .WithInvokeStrategy(nameof(ModPlayer.CanSellItem), new EarlyReturnOnFalseStrategy())
+               .WithInvokeStrategy(nameof(ModPlayer.CanBuyItem), new EarlyReturnOnFalseStrategy())
+               .WithInvokeStrategy(nameof(ModPlayer.CanUseItem), new EarlyReturnOnFalseStrategy())
+               .WithInvokeStrategy(nameof(ModPlayer.ModifyNurseHeal), new EarlyReturnOnFalseStrategy())
+               .WithInvokeStrategy(nameof(ModPlayer.OnPickup), new EarlyReturnOnFalseStrategy()),
         };
 
         var modDef = ModuleDefinition.ReadModule(typeof(ModLoader).Assembly.Location);

@@ -5,6 +5,7 @@ using System.Linq;
 // ReSharper disable PartialTypeWithSinglePart
 // ReSharper disable UnusedType.Global
 // ReSharper disable InconsistentNaming
+// ReSharper disable ArrangeDefaultValueWhenTypeNotEvident
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 // Hooks to generate for 'Terraria.ModLoader.GlobalProjectile':

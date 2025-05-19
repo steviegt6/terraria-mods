@@ -5,10 +5,10 @@ using System.Linq;
 // ReSharper disable PartialTypeWithSinglePart
 // ReSharper disable UnusedType.Global
 // ReSharper disable InconsistentNaming
+// ReSharper disable ArrangeDefaultValueWhenTypeNotEvident
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 // Hooks to generate for 'Terraria.ModLoader.ModPlayer':
-//     Terraria.ModLoader.ModPlayer Terraria.ModLoader.ModPlayer::NewInstance(Terraria.Player)
 //     System.Void Terraria.ModLoader.ModPlayer::Initialize()
 //     System.Void Terraria.ModLoader.ModPlayer::ResetEffects()
 //     System.Void Terraria.ModLoader.ModPlayer::ResetInfoAccessories()
@@ -64,9 +64,6 @@ using System.Linq;
 //     System.Void Terraria.ModLoader.ModPlayer::ModifyLuck(System.Single&)
 //     System.Boolean Terraria.ModLoader.ModPlayer::PreItemCheck()
 //     System.Void Terraria.ModLoader.ModPlayer::PostItemCheck()
-//     System.Single Terraria.ModLoader.ModPlayer::UseTimeMultiplier(Terraria.Item)
-//     System.Single Terraria.ModLoader.ModPlayer::UseAnimationMultiplier(Terraria.Item)
-//     System.Single Terraria.ModLoader.ModPlayer::UseSpeedMultiplier(Terraria.Item)
 //     System.Void Terraria.ModLoader.ModPlayer::GetHealLife(Terraria.Item,System.Boolean,System.Int32&)
 //     System.Void Terraria.ModLoader.ModPlayer::GetHealMana(Terraria.Item,System.Boolean,System.Int32&)
 //     System.Void Terraria.ModLoader.ModPlayer::ModifyManaCost(Terraria.Item,System.Single&,System.Single&)
@@ -82,18 +79,14 @@ using System.Linq;
 //     System.Boolean Terraria.ModLoader.ModPlayer::Shoot(Terraria.Item,Terraria.DataStructures.EntitySource_ItemUse_WithAmmo,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,System.Int32,System.Int32,System.Single)
 //     System.Void Terraria.ModLoader.ModPlayer::MeleeEffects(Terraria.Item,Microsoft.Xna.Framework.Rectangle)
 //     System.Void Terraria.ModLoader.ModPlayer::EmitEnchantmentVisualsAt(Terraria.Projectile,Microsoft.Xna.Framework.Vector2,System.Int32,System.Int32)
-//     System.Nullable`1<System.Boolean> Terraria.ModLoader.ModPlayer::CanCatchNPC(Terraria.NPC,Terraria.Item)
 //     System.Void Terraria.ModLoader.ModPlayer::OnCatchNPC(Terraria.NPC,Terraria.Item,System.Boolean)
 //     System.Void Terraria.ModLoader.ModPlayer::ModifyItemScale(Terraria.Item,System.Single&)
 //     System.Void Terraria.ModLoader.ModPlayer::OnHitAnything(System.Single,System.Single,Terraria.Entity)
 //     System.Boolean Terraria.ModLoader.ModPlayer::CanHitNPC(Terraria.NPC)
-//     System.Nullable`1<System.Boolean> Terraria.ModLoader.ModPlayer::CanMeleeAttackCollideWithNPC(Terraria.Item,Microsoft.Xna.Framework.Rectangle,Terraria.NPC)
 //     System.Void Terraria.ModLoader.ModPlayer::ModifyHitNPC(Terraria.NPC,Terraria.NPC/HitModifiers&)
 //     System.Void Terraria.ModLoader.ModPlayer::OnHitNPC(Terraria.NPC,Terraria.NPC/HitInfo,System.Int32)
-//     System.Nullable`1<System.Boolean> Terraria.ModLoader.ModPlayer::CanHitNPCWithItem(Terraria.Item,Terraria.NPC)
 //     System.Void Terraria.ModLoader.ModPlayer::ModifyHitNPCWithItem(Terraria.Item,Terraria.NPC,Terraria.NPC/HitModifiers&)
 //     System.Void Terraria.ModLoader.ModPlayer::OnHitNPCWithItem(Terraria.Item,Terraria.NPC,Terraria.NPC/HitInfo,System.Int32)
-//     System.Nullable`1<System.Boolean> Terraria.ModLoader.ModPlayer::CanHitNPCWithProj(Terraria.Projectile,Terraria.NPC)
 //     System.Void Terraria.ModLoader.ModPlayer::ModifyHitNPCWithProj(Terraria.Projectile,Terraria.NPC,Terraria.NPC/HitModifiers&)
 //     System.Void Terraria.ModLoader.ModPlayer::OnHitNPCWithProj(Terraria.Projectile,Terraria.NPC,Terraria.NPC/HitInfo,System.Int32)
 //     System.Boolean Terraria.ModLoader.ModPlayer::CanHitPvp(Terraria.Item,Terraria.Player)
@@ -107,7 +100,6 @@ using System.Linq;
 //     System.Void Terraria.ModLoader.ModPlayer::ModifyFishingAttempt(Terraria.DataStructures.FishingAttempt&)
 //     System.Void Terraria.ModLoader.ModPlayer::CatchFish(Terraria.DataStructures.FishingAttempt,System.Int32&,System.Int32&,Terraria.AdvancedPopupRequest&,Microsoft.Xna.Framework.Vector2&)
 //     System.Void Terraria.ModLoader.ModPlayer::ModifyCaughtFish(Terraria.Item)
-//     System.Nullable`1<System.Boolean> Terraria.ModLoader.ModPlayer::CanConsumeBait(Terraria.Item)
 //     System.Void Terraria.ModLoader.ModPlayer::GetFishingLevel(Terraria.Item,Terraria.Item,System.Single&)
 //     System.Void Terraria.ModLoader.ModPlayer::AnglerQuestReward(System.Single,System.Collections.Generic.List`1<Terraria.Item>)
 //     System.Void Terraria.ModLoader.ModPlayer::GetDyeTraderReward(System.Collections.Generic.List`1<System.Int32>)
@@ -128,39 +120,13 @@ using System.Linq;
 //     System.Void Terraria.ModLoader.ModPlayer::PostBuyItem(Terraria.NPC,Terraria.Item[],Terraria.Item)
 //     System.Boolean Terraria.ModLoader.ModPlayer::CanBuyItem(Terraria.NPC,Terraria.Item[],Terraria.Item)
 //     System.Boolean Terraria.ModLoader.ModPlayer::CanUseItem(Terraria.Item)
-//     System.Nullable`1<System.Boolean> Terraria.ModLoader.ModPlayer::CanAutoReuseItem(Terraria.Item)
 //     System.Boolean Terraria.ModLoader.ModPlayer::ModifyNurseHeal(Terraria.NPC,System.Int32&,System.Boolean&,System.String&)
 //     System.Void Terraria.ModLoader.ModPlayer::ModifyNursePrice(Terraria.NPC,System.Int32,System.Boolean,System.Int32&)
 //     System.Void Terraria.ModLoader.ModPlayer::PostNurseHeal(Terraria.NPC,System.Int32,System.Boolean,System.Int32)
-//     System.Collections.Generic.IEnumerable`1<Terraria.Item> Terraria.ModLoader.ModPlayer::AddStartingItems(System.Boolean)
 //     System.Void Terraria.ModLoader.ModPlayer::ModifyStartingInventory(System.Collections.Generic.IReadOnlyDictionary`2<System.String,System.Collections.Generic.List`1<Terraria.Item>>,System.Boolean)
-//     System.Collections.Generic.IEnumerable`1<Terraria.Item> Terraria.ModLoader.ModPlayer::AddMaterialsForCrafting(Terraria.ModLoader.ModPlayer/ItemConsumedCallback&)
 //     System.Boolean Terraria.ModLoader.ModPlayer::OnPickup(Terraria.Item)
 public static partial class ModPlayerHooks
 {
-    public static partial class NewInstance
-    {
-        public delegate Terraria.ModLoader.ModPlayer Definition(
-            Terraria.ModLoader.ModPlayer self,
-            Terraria.Player entity
-        );
-
-        public static event Definition? Event;
-
-        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
-        {
-            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
-        }
-
-        public static Terraria.ModLoader.ModPlayer Invoke(
-            Terraria.ModLoader.ModPlayer self,
-            Terraria.Player entity
-        )
-        {
-            Event?.Invoke(self, entity);
-        }
-    }
-
     public static partial class Initialize
     {
         public delegate void Definition(
@@ -268,6 +234,9 @@ public static partial class ModPlayerHooks
             out Terraria.ModLoader.StatModifier mana
         )
         {
+            health = default;
+            mana = default;
+
             Event?.Invoke(self, out health, out mana);
         }
     }
@@ -945,7 +914,20 @@ public static partial class ModPlayerHooks
             Terraria.ModLoader.ExtraJump jump
         )
         {
-            Event?.Invoke(self, jump);
+            if (Event == null)
+            {
+                return true;
+            }
+
+            foreach (var handler in GetInvocationList())
+            {
+                if (!handler.Invoke(self, jump))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 
@@ -1062,7 +1044,20 @@ public static partial class ModPlayerHooks
             Terraria.ModLoader.ExtraJump jump
         )
         {
-            Event?.Invoke(self, jump);
+            if (Event == null)
+            {
+                return true;
+            }
+
+            foreach (var handler in GetInvocationList())
+            {
+                if (!handler.Invoke(self, jump))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 
@@ -1133,7 +1128,20 @@ public static partial class ModPlayerHooks
             bool dodgeable
         )
         {
-            Event?.Invoke(self, damageSource, cooldownCounter, dodgeable);
+            if (Event == null)
+            {
+                return false;
+            }
+
+            foreach (var handler in GetInvocationList())
+            {
+                if (handler.Invoke(self, damageSource, cooldownCounter, dodgeable))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 
@@ -1156,7 +1164,20 @@ public static partial class ModPlayerHooks
             Terraria.Player.HurtInfo info
         )
         {
-            Event?.Invoke(self, info);
+            if (Event == null)
+            {
+                return false;
+            }
+
+            foreach (var handler in GetInvocationList())
+            {
+                if (handler.Invoke(self, info))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 
@@ -1179,7 +1200,20 @@ public static partial class ModPlayerHooks
             Terraria.Player.HurtInfo info
         )
         {
-            Event?.Invoke(self, info);
+            if (Event == null)
+            {
+                return false;
+            }
+
+            foreach (var handler in GetInvocationList())
+            {
+                if (handler.Invoke(self, info))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 
@@ -1281,7 +1315,18 @@ public static partial class ModPlayerHooks
             ref Terraria.DataStructures.PlayerDeathReason damageSource
         )
         {
-            Event?.Invoke(self, damage, hitDirection, pvp, ref playSound, ref genDust, ref damageSource);
+            var result = true;
+            if (Event == null)
+            {
+                return result;
+            }
+
+            foreach (var handler in GetInvocationList())
+            {
+                result &= handler.Invoke(self, damage, hitDirection, pvp, ref playSound, ref genDust, ref damageSource);
+            }
+
+            return result;
         }
     }
 
@@ -1333,7 +1378,18 @@ public static partial class ModPlayerHooks
             ref float luck
         )
         {
-            Event?.Invoke(self, ref luck);
+            var result = true;
+            if (Event == null)
+            {
+                return result;
+            }
+
+            foreach (var handler in GetInvocationList())
+            {
+                result &= handler.Invoke(self, ref luck);
+            }
+
+            return result;
         }
     }
 
@@ -1377,7 +1433,18 @@ public static partial class ModPlayerHooks
             Terraria.ModLoader.ModPlayer self
         )
         {
-            Event?.Invoke(self);
+            var result = true;
+            if (Event == null)
+            {
+                return result;
+            }
+
+            foreach (var handler in GetInvocationList())
+            {
+                result &= handler.Invoke(self);
+            }
+
+            return result;
         }
     }
 
@@ -1399,75 +1466,6 @@ public static partial class ModPlayerHooks
         )
         {
             Event?.Invoke(self);
-        }
-    }
-
-    public static partial class UseTimeMultiplier
-    {
-        public delegate float Definition(
-            Terraria.ModLoader.ModPlayer self,
-            Terraria.Item item
-        );
-
-        public static event Definition? Event;
-
-        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
-        {
-            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
-        }
-
-        public static float Invoke(
-            Terraria.ModLoader.ModPlayer self,
-            Terraria.Item item
-        )
-        {
-            Event?.Invoke(self, item);
-        }
-    }
-
-    public static partial class UseAnimationMultiplier
-    {
-        public delegate float Definition(
-            Terraria.ModLoader.ModPlayer self,
-            Terraria.Item item
-        );
-
-        public static event Definition? Event;
-
-        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
-        {
-            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
-        }
-
-        public static float Invoke(
-            Terraria.ModLoader.ModPlayer self,
-            Terraria.Item item
-        )
-        {
-            Event?.Invoke(self, item);
-        }
-    }
-
-    public static partial class UseSpeedMultiplier
-    {
-        public delegate float Definition(
-            Terraria.ModLoader.ModPlayer self,
-            Terraria.Item item
-        );
-
-        public static event Definition? Event;
-
-        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
-        {
-            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
-        }
-
-        public static float Invoke(
-            Terraria.ModLoader.ModPlayer self,
-            Terraria.Item item
-        )
-        {
-            Event?.Invoke(self, item);
         }
     }
 
@@ -1698,7 +1696,20 @@ public static partial class ModPlayerHooks
             Terraria.Item ammo
         )
         {
-            Event?.Invoke(self, weapon, ammo);
+            if (Event == null)
+            {
+                return true;
+            }
+
+            foreach (var handler in GetInvocationList())
+            {
+                if (!handler.Invoke(self, weapon, ammo))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 
@@ -1746,7 +1757,18 @@ public static partial class ModPlayerHooks
             Terraria.Item item
         )
         {
-            Event?.Invoke(self, item);
+            var result = true;
+            if (Event == null)
+            {
+                return result;
+            }
+
+            foreach (var handler in GetInvocationList())
+            {
+                result &= handler.Invoke(self, item);
+            }
+
+            return result;
         }
     }
 
@@ -1814,7 +1836,18 @@ public static partial class ModPlayerHooks
             float knockback
         )
         {
-            Event?.Invoke(self, item, source, position, velocity, type, damage, knockback);
+            var result = true;
+            if (Event == null)
+            {
+                return result;
+            }
+
+            foreach (var handler in GetInvocationList())
+            {
+                result &= handler.Invoke(self, item, source, position, velocity, type, damage, knockback);
+            }
+
+            return result;
         }
     }
 
@@ -1869,31 +1902,6 @@ public static partial class ModPlayerHooks
         )
         {
             Event?.Invoke(self, projectile, boxPosition, boxWidth, boxHeight);
-        }
-    }
-
-    public static partial class CanCatchNPC
-    {
-        public delegate bool? Definition(
-            Terraria.ModLoader.ModPlayer self,
-            Terraria.NPC target,
-            Terraria.Item item
-        );
-
-        public static event Definition? Event;
-
-        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
-        {
-            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
-        }
-
-        public static bool? Invoke(
-            Terraria.ModLoader.ModPlayer self,
-            Terraria.NPC target,
-            Terraria.Item item
-        )
-        {
-            Event?.Invoke(self, target, item);
         }
     }
 
@@ -1995,34 +2003,20 @@ public static partial class ModPlayerHooks
             Terraria.NPC target
         )
         {
-            Event?.Invoke(self, target);
-        }
-    }
+            if (Event == null)
+            {
+                return true;
+            }
 
-    public static partial class CanMeleeAttackCollideWithNPC
-    {
-        public delegate bool? Definition(
-            Terraria.ModLoader.ModPlayer self,
-            Terraria.Item item,
-            Microsoft.Xna.Framework.Rectangle meleeAttackHitbox,
-            Terraria.NPC target
-        );
+            foreach (var handler in GetInvocationList())
+            {
+                if (!handler.Invoke(self, target))
+                {
+                    return false;
+                }
+            }
 
-        public static event Definition? Event;
-
-        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
-        {
-            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
-        }
-
-        public static bool? Invoke(
-            Terraria.ModLoader.ModPlayer self,
-            Terraria.Item item,
-            Microsoft.Xna.Framework.Rectangle meleeAttackHitbox,
-            Terraria.NPC target
-        )
-        {
-            Event?.Invoke(self, item, meleeAttackHitbox, target);
+            return true;
         }
     }
 
@@ -2075,31 +2069,6 @@ public static partial class ModPlayerHooks
         )
         {
             Event?.Invoke(self, target, hit, damageDone);
-        }
-    }
-
-    public static partial class CanHitNPCWithItem
-    {
-        public delegate bool? Definition(
-            Terraria.ModLoader.ModPlayer self,
-            Terraria.Item item,
-            Terraria.NPC target
-        );
-
-        public static event Definition? Event;
-
-        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
-        {
-            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
-        }
-
-        public static bool? Invoke(
-            Terraria.ModLoader.ModPlayer self,
-            Terraria.Item item,
-            Terraria.NPC target
-        )
-        {
-            Event?.Invoke(self, item, target);
         }
     }
 
@@ -2156,31 +2125,6 @@ public static partial class ModPlayerHooks
         )
         {
             Event?.Invoke(self, item, target, hit, damageDone);
-        }
-    }
-
-    public static partial class CanHitNPCWithProj
-    {
-        public delegate bool? Definition(
-            Terraria.ModLoader.ModPlayer self,
-            Terraria.Projectile proj,
-            Terraria.NPC target
-        );
-
-        public static event Definition? Event;
-
-        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
-        {
-            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
-        }
-
-        public static bool? Invoke(
-            Terraria.ModLoader.ModPlayer self,
-            Terraria.Projectile proj,
-            Terraria.NPC target
-        )
-        {
-            Event?.Invoke(self, proj, target);
         }
     }
 
@@ -2261,7 +2205,20 @@ public static partial class ModPlayerHooks
             Terraria.Player target
         )
         {
-            Event?.Invoke(self, item, target);
+            if (Event == null)
+            {
+                return true;
+            }
+
+            foreach (var handler in GetInvocationList())
+            {
+                if (!handler.Invoke(self, item, target))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 
@@ -2286,7 +2243,20 @@ public static partial class ModPlayerHooks
             Terraria.Player target
         )
         {
-            Event?.Invoke(self, proj, target);
+            if (Event == null)
+            {
+                return true;
+            }
+
+            foreach (var handler in GetInvocationList())
+            {
+                if (!handler.Invoke(self, proj, target))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 
@@ -2311,7 +2281,20 @@ public static partial class ModPlayerHooks
             ref int cooldownSlot
         )
         {
-            Event?.Invoke(self, npc, ref cooldownSlot);
+            if (Event == null)
+            {
+                return true;
+            }
+
+            foreach (var handler in GetInvocationList())
+            {
+                if (!handler.Invoke(self, npc, ref cooldownSlot))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 
@@ -2384,7 +2367,20 @@ public static partial class ModPlayerHooks
             Terraria.Projectile proj
         )
         {
-            Event?.Invoke(self, proj);
+            if (Event == null)
+            {
+                return true;
+            }
+
+            foreach (var handler in GetInvocationList())
+            {
+                if (!handler.Invoke(self, proj))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 
@@ -2512,29 +2508,6 @@ public static partial class ModPlayerHooks
         )
         {
             Event?.Invoke(self, fish);
-        }
-    }
-
-    public static partial class CanConsumeBait
-    {
-        public delegate bool? Definition(
-            Terraria.ModLoader.ModPlayer self,
-            Terraria.Item bait
-        );
-
-        public static event Definition? Event;
-
-        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
-        {
-            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
-        }
-
-        public static bool? Invoke(
-            Terraria.ModLoader.ModPlayer self,
-            Terraria.Item bait
-        )
-        {
-            Event?.Invoke(self, bait);
         }
     }
 
@@ -2866,7 +2839,20 @@ public static partial class ModPlayerHooks
             int slot
         )
         {
-            Event?.Invoke(self, inventory, context, slot);
+            if (Event == null)
+            {
+                return false;
+            }
+
+            foreach (var handler in GetInvocationList())
+            {
+                if (handler.Invoke(self, inventory, context, slot))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 
@@ -2893,7 +2879,20 @@ public static partial class ModPlayerHooks
             int slot
         )
         {
-            Event?.Invoke(self, inventory, context, slot);
+            if (Event == null)
+            {
+                return false;
+            }
+
+            foreach (var handler in GetInvocationList())
+            {
+                if (handler.Invoke(self, inventory, context, slot))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 
@@ -2947,7 +2946,20 @@ public static partial class ModPlayerHooks
             Terraria.Item item
         )
         {
-            Event?.Invoke(self, vendor, shopInventory, item);
+            if (Event == null)
+            {
+                return true;
+            }
+
+            foreach (var handler in GetInvocationList())
+            {
+                if (!handler.Invoke(self, vendor, shopInventory, item))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 
@@ -3001,7 +3013,20 @@ public static partial class ModPlayerHooks
             Terraria.Item item
         )
         {
-            Event?.Invoke(self, vendor, shopInventory, item);
+            if (Event == null)
+            {
+                return true;
+            }
+
+            foreach (var handler in GetInvocationList())
+            {
+                if (!handler.Invoke(self, vendor, shopInventory, item))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 
@@ -3024,30 +3049,20 @@ public static partial class ModPlayerHooks
             Terraria.Item item
         )
         {
-            Event?.Invoke(self, item);
-        }
-    }
+            if (Event == null)
+            {
+                return true;
+            }
 
-    public static partial class CanAutoReuseItem
-    {
-        public delegate bool? Definition(
-            Terraria.ModLoader.ModPlayer self,
-            Terraria.Item item
-        );
+            foreach (var handler in GetInvocationList())
+            {
+                if (!handler.Invoke(self, item))
+                {
+                    return false;
+                }
+            }
 
-        public static event Definition? Event;
-
-        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
-        {
-            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
-        }
-
-        public static bool? Invoke(
-            Terraria.ModLoader.ModPlayer self,
-            Terraria.Item item
-        )
-        {
-            Event?.Invoke(self, item);
+            return true;
         }
     }
 
@@ -3076,7 +3091,20 @@ public static partial class ModPlayerHooks
             ref string chatText
         )
         {
-            Event?.Invoke(self, nurse, ref health, ref removeDebuffs, ref chatText);
+            if (Event == null)
+            {
+                return true;
+            }
+
+            foreach (var handler in GetInvocationList())
+            {
+                if (!handler.Invoke(self, nurse, ref health, ref removeDebuffs, ref chatText))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 
@@ -3138,29 +3166,6 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class AddStartingItems
-    {
-        public delegate System.Collections.Generic.IEnumerable<Terraria.Item> Definition(
-            Terraria.ModLoader.ModPlayer self,
-            bool mediumCoreDeath
-        );
-
-        public static event Definition? Event;
-
-        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
-        {
-            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
-        }
-
-        public static System.Collections.Generic.IEnumerable<Terraria.Item> Invoke(
-            Terraria.ModLoader.ModPlayer self,
-            bool mediumCoreDeath
-        )
-        {
-            Event?.Invoke(self, mediumCoreDeath);
-        }
-    }
-
     public static partial class ModifyStartingInventory
     {
         public delegate void Definition(
@@ -3186,29 +3191,6 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class AddMaterialsForCrafting
-    {
-        public delegate System.Collections.Generic.IEnumerable<Terraria.Item> Definition(
-            Terraria.ModLoader.ModPlayer self,
-            out Terraria.ModLoader.ModPlayer.ItemConsumedCallback itemConsumedCallback
-        );
-
-        public static event Definition? Event;
-
-        internal static System.Collections.Generic.IEnumerable<Definition> GetInvocationList()
-        {
-            return Event?.GetInvocationList().Select(x => (Definition)x) ?? [];
-        }
-
-        public static System.Collections.Generic.IEnumerable<Terraria.Item> Invoke(
-            Terraria.ModLoader.ModPlayer self,
-            out Terraria.ModLoader.ModPlayer.ItemConsumedCallback itemConsumedCallback
-        )
-        {
-            Event?.Invoke(self, out itemConsumedCallback);
-        }
-    }
-
     public static partial class OnPickup
     {
         public delegate bool Definition(
@@ -3228,7 +3210,20 @@ public static partial class ModPlayerHooks
             Terraria.Item item
         )
         {
-            Event?.Invoke(self, item);
+            if (Event == null)
+            {
+                return true;
+            }
+
+            foreach (var handler in GetInvocationList())
+            {
+                if (!handler.Invoke(self, item))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }

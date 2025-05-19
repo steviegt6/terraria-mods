@@ -214,3 +214,24 @@ internal sealed class ArrayCombinerStrategy(string typeName) : InvokeStrategy
         return sb.ToString();
     }
 }
+
+internal sealed class VoidReturnButInitializeOutParametersStrategy : InvokeStrategy
+{
+    public override string GenerateMethodBody(MethodDefinition method)
+    {
+        var sb = new StringBuilder();
+        
+        foreach (var parameter in method.Parameters)
+        {
+            if (parameter.IsOut)
+            {
+                sb.AppendLine($"{INDENT}{parameter.Name} = default;");
+            }
+        }
+
+        sb.AppendLine();
+        sb.AppendLine($"{INDENT}{Invoke(method, "Event?")};");
+
+        return sb.ToString();
+    }
+}
