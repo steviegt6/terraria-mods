@@ -64,7 +64,55 @@ internal static class Program
                .WithInvokeStrategy(nameof(GlobalEmoteBubble.GetFrameInEmoteMenu), new NullableValueMayBeOverriddenStrategy("Microsoft.Xna.Framework.Rectangle")),
             new TypeHookDefinition(typeof(GlobalInfoDisplay))
                .WithInvokeStrategy(nameof(GlobalInfoDisplay.Active), new NullableBooleanCombinerStrategy()),
-            new TypeHookDefinition(typeof(GlobalItem)),
+            new TypeHookDefinition(typeof(GlobalItem))
+               .WithExclusions(
+                    nameof(GlobalItem.ChoosePrefix),
+                    nameof(GlobalItem.PrefixChance),
+                    nameof(GlobalItem.CanAutoReuseItem),
+                    nameof(GlobalItem.UseTimeMultiplier),
+                    nameof(GlobalItem.UseAnimationMultiplier),
+                    nameof(GlobalItem.UseSpeedMultiplier),
+                    nameof(GlobalItem.CanConsumeBait),
+                    nameof(GlobalItem.CanChooseAmmo),
+                    nameof(GlobalItem.CanBeChosenAsAmmo),
+                    nameof(GlobalItem.CanBeConsumedAsAmmo),
+                    nameof(GlobalItem.CanCatchNPC),
+                    nameof(GlobalItem.CanHitNPC),
+                    nameof(GlobalItem.CanMeleeAttackCollideWithNPC),
+                    nameof(GlobalItem.UseItem),
+                    nameof(GlobalItem.IsArmorSet),
+                    nameof(GlobalItem.IsVanitySet),
+                    nameof(GlobalItem.GetAlpha),
+                    nameof(GlobalItem.HoldoutOffset),
+                    nameof(GlobalItem.CanAccessoryBeEquippedWith),
+                    nameof(GlobalItem.IsAnglerQuestAvailable),
+                    nameof(GlobalItem.HoldoutOrigin)
+                )
+               .WithInvokeStrategy(nameof(GlobalItem.AllowPrefix), new BoolCombinerStrategy(true, "&="))
+               .WithInvokeStrategy(nameof(GlobalItem.CanUseItem), new EarlyReturnOnFalseStrategy())
+               .WithInvokeStrategy(nameof(GlobalItem.CanResearch), new EarlyReturnOnFalseStrategy())
+               .WithInvokeStrategy(nameof(GlobalItem.NeedsAmmo), new EarlyReturnOnFalseStrategy())
+               .WithInvokeStrategy(nameof(GlobalItem.CanConsumeAmmo), new EarlyReturnOnFalseStrategy())
+               .WithInvokeStrategy(nameof(GlobalItem.CanShoot), new EarlyReturnOnFalseStrategy())
+               .WithInvokeStrategy(nameof(GlobalItem.Shoot), new BoolCombinerStrategy(true, "&="))
+               .WithInvokeStrategy(nameof(GlobalItem.CanHitPvp), new EarlyReturnOnFalseStrategy())
+               .WithInvokeStrategy(nameof(GlobalItem.ConsumeItem), new EarlyReturnOnFalseStrategy())
+               .WithInvokeStrategy(nameof(GlobalItem.AltFunctionUse), new EarlyReturnOnTrueStrategy())
+               .WithInvokeStrategy(nameof(GlobalItem.CanRightClick), new EarlyReturnOnTrueStrategy())
+               .WithInvokeStrategy(nameof(GlobalItem.CanStack), new EarlyReturnOnFalseStrategy())
+               .WithInvokeStrategy(nameof(GlobalItem.CanStackInWorld), new EarlyReturnOnFalseStrategy())
+               .WithInvokeStrategy(nameof(GlobalItem.ReforgePrice), new BoolCombinerStrategy(true, "&="))
+               .WithInvokeStrategy(nameof(GlobalItem.CanReforge), new BoolCombinerStrategy(true, "&="))
+               .WithInvokeStrategy(nameof(GlobalItem.WingUpdate), new BoolCombinerStrategy(false, "|="))
+               .WithInvokeStrategy(nameof(GlobalItem.GrabStyle), new EarlyReturnOnTrueStrategy())
+               .WithInvokeStrategy(nameof(GlobalItem.CanPickup), new EarlyReturnOnFalseStrategy())
+               .WithInvokeStrategy(nameof(GlobalItem.OnPickup), new EarlyReturnOnFalseStrategy())
+               .WithInvokeStrategy(nameof(GlobalItem.ItemSpace), new EarlyReturnOnTrueStrategy())
+               .WithInvokeStrategy(nameof(GlobalItem.PreDrawInWorld), new BoolCombinerStrategy(true, "&="))
+               .WithInvokeStrategy(nameof(GlobalItem.PreDrawInInventory), new BoolCombinerStrategy(true, "&="))
+               .WithInvokeStrategy(nameof(GlobalItem.CanEquipAccessory), new EarlyReturnOnFalseStrategy())
+               .WithInvokeStrategy(nameof(GlobalItem.PreDrawTooltip), new BoolCombinerStrategy(true, "&="))
+               .WithInvokeStrategy(nameof(GlobalItem.PreDrawTooltipLine), new BoolCombinerStrategy(true, "&=")),
             new TypeHookDefinition(typeof(GlobalNPC))
                .WithExclusions(
                     nameof(GlobalNPC.ModifyTownNPCProfile),
