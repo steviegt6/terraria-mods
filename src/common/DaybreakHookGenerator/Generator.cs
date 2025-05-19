@@ -50,6 +50,7 @@ public sealed class Generator(ModuleDefinition module, TypeDefinition type)
         sb.AppendLine("// ReSharper disable UnusedType.Global");
         sb.AppendLine("// ReSharper disable InconsistentNaming");
         sb.AppendLine("// ReSharper disable ArrangeDefaultValueWhenTypeNotEvident");
+        sb.AppendLine("// ReSharper disable ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract");
         sb.AppendLine("#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member");
         sb.AppendLine();
         sb.AppendLine($"// Hooks to generate for '{type.FullName}':");

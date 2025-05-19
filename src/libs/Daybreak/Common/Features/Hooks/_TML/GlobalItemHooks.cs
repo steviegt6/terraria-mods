@@ -6,6 +6,7 @@ using System.Linq;
 // ReSharper disable UnusedType.Global
 // ReSharper disable InconsistentNaming
 // ReSharper disable ArrangeDefaultValueWhenTypeNotEvident
+// ReSharper disable ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 // Hooks to generate for 'Terraria.ModLoader.GlobalItem':
