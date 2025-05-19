@@ -78,3 +78,53 @@ public static partial class GlobalBossBarHooks
         }
     }
 }
+
+public sealed partial class GlobalBossBarImpl : Terraria.ModLoader.GlobalBossBar
+{
+    public override bool PreDraw(
+        Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch,
+        Terraria.NPC npc,
+        ref Terraria.DataStructures.BossBarDrawParams drawParams
+    )
+    {
+        if (!GlobalBossBarHooks.PreDraw.GetInvocationList().Any())
+        {
+            return base.PreDraw(
+                spriteBatch,
+                npc,
+                ref drawParams
+            );
+        }
+
+        return GlobalBossBarHooks.PreDraw.Invoke(
+            this,
+            spriteBatch,
+            npc,
+            ref drawParams
+        );
+    }
+
+    public override void PostDraw(
+        Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch,
+        Terraria.NPC npc,
+        Terraria.DataStructures.BossBarDrawParams drawParams
+    )
+    {
+        if (!GlobalBossBarHooks.PostDraw.GetInvocationList().Any())
+        {
+            base.PostDraw(
+                spriteBatch,
+                npc,
+                drawParams
+            );
+            return;
+        }
+
+        GlobalBossBarHooks.PostDraw.Invoke(
+            this,
+            spriteBatch,
+            npc,
+            drawParams
+        );
+    }
+}

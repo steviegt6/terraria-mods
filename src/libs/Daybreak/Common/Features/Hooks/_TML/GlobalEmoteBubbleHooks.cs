@@ -351,3 +351,237 @@ public static partial class GlobalEmoteBubbleHooks
         }
     }
 }
+
+public sealed partial class GlobalEmoteBubbleImpl : Terraria.ModLoader.GlobalEmoteBubble
+{
+    public override void OnSpawn(
+        Terraria.GameContent.UI.EmoteBubble emoteBubble
+    )
+    {
+        if (!GlobalEmoteBubbleHooks.OnSpawn.GetInvocationList().Any())
+        {
+            base.OnSpawn(
+                emoteBubble
+            );
+            return;
+        }
+
+        GlobalEmoteBubbleHooks.OnSpawn.Invoke(
+            this,
+            emoteBubble
+        );
+    }
+
+    public override bool UpdateFrame(
+        Terraria.GameContent.UI.EmoteBubble emoteBubble
+    )
+    {
+        if (!GlobalEmoteBubbleHooks.UpdateFrame.GetInvocationList().Any())
+        {
+            return base.UpdateFrame(
+                emoteBubble
+            );
+        }
+
+        return GlobalEmoteBubbleHooks.UpdateFrame.Invoke(
+            this,
+            emoteBubble
+        );
+    }
+
+    public override bool UpdateFrameInEmoteMenu(
+        int emoteType,
+        ref int frameCounter
+    )
+    {
+        if (!GlobalEmoteBubbleHooks.UpdateFrameInEmoteMenu.GetInvocationList().Any())
+        {
+            return base.UpdateFrameInEmoteMenu(
+                emoteType,
+                ref frameCounter
+            );
+        }
+
+        return GlobalEmoteBubbleHooks.UpdateFrameInEmoteMenu.Invoke(
+            this,
+            emoteType,
+            ref frameCounter
+        );
+    }
+
+    public override bool PreDraw(
+        Terraria.GameContent.UI.EmoteBubble emoteBubble,
+        Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch,
+        Microsoft.Xna.Framework.Graphics.Texture2D texture,
+        Microsoft.Xna.Framework.Vector2 position,
+        Microsoft.Xna.Framework.Rectangle frame,
+        Microsoft.Xna.Framework.Vector2 origin,
+        Microsoft.Xna.Framework.Graphics.SpriteEffects spriteEffects
+    )
+    {
+        if (!GlobalEmoteBubbleHooks.PreDraw.GetInvocationList().Any())
+        {
+            return base.PreDraw(
+                emoteBubble,
+                spriteBatch,
+                texture,
+                position,
+                frame,
+                origin,
+                spriteEffects
+            );
+        }
+
+        return GlobalEmoteBubbleHooks.PreDraw.Invoke(
+            this,
+            emoteBubble,
+            spriteBatch,
+            texture,
+            position,
+            frame,
+            origin,
+            spriteEffects
+        );
+    }
+
+    public override void PostDraw(
+        Terraria.GameContent.UI.EmoteBubble emoteBubble,
+        Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch,
+        Microsoft.Xna.Framework.Graphics.Texture2D texture,
+        Microsoft.Xna.Framework.Vector2 position,
+        Microsoft.Xna.Framework.Rectangle frame,
+        Microsoft.Xna.Framework.Vector2 origin,
+        Microsoft.Xna.Framework.Graphics.SpriteEffects spriteEffects
+    )
+    {
+        if (!GlobalEmoteBubbleHooks.PostDraw.GetInvocationList().Any())
+        {
+            base.PostDraw(
+                emoteBubble,
+                spriteBatch,
+                texture,
+                position,
+                frame,
+                origin,
+                spriteEffects
+            );
+            return;
+        }
+
+        GlobalEmoteBubbleHooks.PostDraw.Invoke(
+            this,
+            emoteBubble,
+            spriteBatch,
+            texture,
+            position,
+            frame,
+            origin,
+            spriteEffects
+        );
+    }
+
+    public override bool PreDrawInEmoteMenu(
+        int emoteType,
+        Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch,
+        Terraria.GameContent.UI.Elements.EmoteButton uiEmoteButton,
+        Microsoft.Xna.Framework.Vector2 position,
+        Microsoft.Xna.Framework.Rectangle frame,
+        Microsoft.Xna.Framework.Vector2 origin
+    )
+    {
+        if (!GlobalEmoteBubbleHooks.PreDrawInEmoteMenu.GetInvocationList().Any())
+        {
+            return base.PreDrawInEmoteMenu(
+                emoteType,
+                spriteBatch,
+                uiEmoteButton,
+                position,
+                frame,
+                origin
+            );
+        }
+
+        return GlobalEmoteBubbleHooks.PreDrawInEmoteMenu.Invoke(
+            this,
+            emoteType,
+            spriteBatch,
+            uiEmoteButton,
+            position,
+            frame,
+            origin
+        );
+    }
+
+    public override void PostDrawInEmoteMenu(
+        int emoteType,
+        Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch,
+        Terraria.GameContent.UI.Elements.EmoteButton uiEmoteButton,
+        Microsoft.Xna.Framework.Vector2 position,
+        Microsoft.Xna.Framework.Rectangle frame,
+        Microsoft.Xna.Framework.Vector2 origin
+    )
+    {
+        if (!GlobalEmoteBubbleHooks.PostDrawInEmoteMenu.GetInvocationList().Any())
+        {
+            base.PostDrawInEmoteMenu(
+                emoteType,
+                spriteBatch,
+                uiEmoteButton,
+                position,
+                frame,
+                origin
+            );
+            return;
+        }
+
+        GlobalEmoteBubbleHooks.PostDrawInEmoteMenu.Invoke(
+            this,
+            emoteType,
+            spriteBatch,
+            uiEmoteButton,
+            position,
+            frame,
+            origin
+        );
+    }
+
+    public override Microsoft.Xna.Framework.Rectangle? GetFrame(
+        Terraria.GameContent.UI.EmoteBubble emoteBubble
+    )
+    {
+        if (!GlobalEmoteBubbleHooks.GetFrame.GetInvocationList().Any())
+        {
+            return base.GetFrame(
+                emoteBubble
+            );
+        }
+
+        return GlobalEmoteBubbleHooks.GetFrame.Invoke(
+            this,
+            emoteBubble
+        );
+    }
+
+    public override Microsoft.Xna.Framework.Rectangle? GetFrameInEmoteMenu(
+        int emoteType,
+        int frame,
+        int frameCounter
+    )
+    {
+        if (!GlobalEmoteBubbleHooks.GetFrameInEmoteMenu.GetInvocationList().Any())
+        {
+            return base.GetFrameInEmoteMenu(
+                emoteType,
+                frame,
+                frameCounter
+            );
+        }
+
+        return GlobalEmoteBubbleHooks.GetFrameInEmoteMenu.Invoke(
+            this,
+            emoteType,
+            frame,
+            frameCounter
+        );
+    }
+}

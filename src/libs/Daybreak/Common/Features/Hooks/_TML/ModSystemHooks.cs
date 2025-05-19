@@ -1267,3 +1267,826 @@ public static partial class ModSystemHooks
         }
     }
 }
+
+public sealed partial class ModSystemImpl : Terraria.ModLoader.ModSystem
+{
+    public override void PostSetupContent()
+    {
+        if (!ModSystemHooks.PostSetupContent.GetInvocationList().Any())
+        {
+            base.PostSetupContent();
+            return;
+        }
+
+        ModSystemHooks.PostSetupContent.Invoke(
+            this
+        );
+    }
+
+    public override void OnLocalizationsLoaded()
+    {
+        if (!ModSystemHooks.OnLocalizationsLoaded.GetInvocationList().Any())
+        {
+            base.OnLocalizationsLoaded();
+            return;
+        }
+
+        ModSystemHooks.OnLocalizationsLoaded.Invoke(
+            this
+        );
+    }
+
+    public override void AddRecipes()
+    {
+        if (!ModSystemHooks.AddRecipes.GetInvocationList().Any())
+        {
+            base.AddRecipes();
+            return;
+        }
+
+        ModSystemHooks.AddRecipes.Invoke(
+            this
+        );
+    }
+
+    public override void PostAddRecipes()
+    {
+        if (!ModSystemHooks.PostAddRecipes.GetInvocationList().Any())
+        {
+            base.PostAddRecipes();
+            return;
+        }
+
+        ModSystemHooks.PostAddRecipes.Invoke(
+            this
+        );
+    }
+
+    public override void PostSetupRecipes()
+    {
+        if (!ModSystemHooks.PostSetupRecipes.GetInvocationList().Any())
+        {
+            base.PostSetupRecipes();
+            return;
+        }
+
+        ModSystemHooks.PostSetupRecipes.Invoke(
+            this
+        );
+    }
+
+    public override void AddRecipeGroups()
+    {
+        if (!ModSystemHooks.AddRecipeGroups.GetInvocationList().Any())
+        {
+            base.AddRecipeGroups();
+            return;
+        }
+
+        ModSystemHooks.AddRecipeGroups.Invoke(
+            this
+        );
+    }
+
+    public override void OnWorldLoad()
+    {
+        if (!ModSystemHooks.OnWorldLoad.GetInvocationList().Any())
+        {
+            base.OnWorldLoad();
+            return;
+        }
+
+        ModSystemHooks.OnWorldLoad.Invoke(
+            this
+        );
+    }
+
+    public override void OnWorldUnload()
+    {
+        if (!ModSystemHooks.OnWorldUnload.GetInvocationList().Any())
+        {
+            base.OnWorldUnload();
+            return;
+        }
+
+        ModSystemHooks.OnWorldUnload.Invoke(
+            this
+        );
+    }
+
+    public override void ClearWorld()
+    {
+        if (!ModSystemHooks.ClearWorld.GetInvocationList().Any())
+        {
+            base.ClearWorld();
+            return;
+        }
+
+        ModSystemHooks.ClearWorld.Invoke(
+            this
+        );
+    }
+
+    public override void ModifyScreenPosition()
+    {
+        if (!ModSystemHooks.ModifyScreenPosition.GetInvocationList().Any())
+        {
+            base.ModifyScreenPosition();
+            return;
+        }
+
+        ModSystemHooks.ModifyScreenPosition.Invoke(
+            this
+        );
+    }
+
+    public override void ModifyTransformMatrix(
+        ref Terraria.Graphics.SpriteViewMatrix Transform
+    )
+    {
+        if (!ModSystemHooks.ModifyTransformMatrix.GetInvocationList().Any())
+        {
+            base.ModifyTransformMatrix(
+                ref Transform
+            );
+            return;
+        }
+
+        ModSystemHooks.ModifyTransformMatrix.Invoke(
+            this,
+            ref Transform
+        );
+    }
+
+    public override void UpdateUI(
+        Microsoft.Xna.Framework.GameTime gameTime
+    )
+    {
+        if (!ModSystemHooks.UpdateUI.GetInvocationList().Any())
+        {
+            base.UpdateUI(
+                gameTime
+            );
+            return;
+        }
+
+        ModSystemHooks.UpdateUI.Invoke(
+            this,
+            gameTime
+        );
+    }
+
+    public override void PreUpdateEntities()
+    {
+        if (!ModSystemHooks.PreUpdateEntities.GetInvocationList().Any())
+        {
+            base.PreUpdateEntities();
+            return;
+        }
+
+        ModSystemHooks.PreUpdateEntities.Invoke(
+            this
+        );
+    }
+
+    public override void PreUpdatePlayers()
+    {
+        if (!ModSystemHooks.PreUpdatePlayers.GetInvocationList().Any())
+        {
+            base.PreUpdatePlayers();
+            return;
+        }
+
+        ModSystemHooks.PreUpdatePlayers.Invoke(
+            this
+        );
+    }
+
+    public override void PostUpdatePlayers()
+    {
+        if (!ModSystemHooks.PostUpdatePlayers.GetInvocationList().Any())
+        {
+            base.PostUpdatePlayers();
+            return;
+        }
+
+        ModSystemHooks.PostUpdatePlayers.Invoke(
+            this
+        );
+    }
+
+    public override void PreUpdateNPCs()
+    {
+        if (!ModSystemHooks.PreUpdateNPCs.GetInvocationList().Any())
+        {
+            base.PreUpdateNPCs();
+            return;
+        }
+
+        ModSystemHooks.PreUpdateNPCs.Invoke(
+            this
+        );
+    }
+
+    public override void PostUpdateNPCs()
+    {
+        if (!ModSystemHooks.PostUpdateNPCs.GetInvocationList().Any())
+        {
+            base.PostUpdateNPCs();
+            return;
+        }
+
+        ModSystemHooks.PostUpdateNPCs.Invoke(
+            this
+        );
+    }
+
+    public override void PreUpdateGores()
+    {
+        if (!ModSystemHooks.PreUpdateGores.GetInvocationList().Any())
+        {
+            base.PreUpdateGores();
+            return;
+        }
+
+        ModSystemHooks.PreUpdateGores.Invoke(
+            this
+        );
+    }
+
+    public override void PostUpdateGores()
+    {
+        if (!ModSystemHooks.PostUpdateGores.GetInvocationList().Any())
+        {
+            base.PostUpdateGores();
+            return;
+        }
+
+        ModSystemHooks.PostUpdateGores.Invoke(
+            this
+        );
+    }
+
+    public override void PreUpdateProjectiles()
+    {
+        if (!ModSystemHooks.PreUpdateProjectiles.GetInvocationList().Any())
+        {
+            base.PreUpdateProjectiles();
+            return;
+        }
+
+        ModSystemHooks.PreUpdateProjectiles.Invoke(
+            this
+        );
+    }
+
+    public override void PostUpdateProjectiles()
+    {
+        if (!ModSystemHooks.PostUpdateProjectiles.GetInvocationList().Any())
+        {
+            base.PostUpdateProjectiles();
+            return;
+        }
+
+        ModSystemHooks.PostUpdateProjectiles.Invoke(
+            this
+        );
+    }
+
+    public override void PreUpdateItems()
+    {
+        if (!ModSystemHooks.PreUpdateItems.GetInvocationList().Any())
+        {
+            base.PreUpdateItems();
+            return;
+        }
+
+        ModSystemHooks.PreUpdateItems.Invoke(
+            this
+        );
+    }
+
+    public override void PostUpdateItems()
+    {
+        if (!ModSystemHooks.PostUpdateItems.GetInvocationList().Any())
+        {
+            base.PostUpdateItems();
+            return;
+        }
+
+        ModSystemHooks.PostUpdateItems.Invoke(
+            this
+        );
+    }
+
+    public override void PreUpdateDusts()
+    {
+        if (!ModSystemHooks.PreUpdateDusts.GetInvocationList().Any())
+        {
+            base.PreUpdateDusts();
+            return;
+        }
+
+        ModSystemHooks.PreUpdateDusts.Invoke(
+            this
+        );
+    }
+
+    public override void PostUpdateDusts()
+    {
+        if (!ModSystemHooks.PostUpdateDusts.GetInvocationList().Any())
+        {
+            base.PostUpdateDusts();
+            return;
+        }
+
+        ModSystemHooks.PostUpdateDusts.Invoke(
+            this
+        );
+    }
+
+    public override void PreUpdateTime()
+    {
+        if (!ModSystemHooks.PreUpdateTime.GetInvocationList().Any())
+        {
+            base.PreUpdateTime();
+            return;
+        }
+
+        ModSystemHooks.PreUpdateTime.Invoke(
+            this
+        );
+    }
+
+    public override void PostUpdateTime()
+    {
+        if (!ModSystemHooks.PostUpdateTime.GetInvocationList().Any())
+        {
+            base.PostUpdateTime();
+            return;
+        }
+
+        ModSystemHooks.PostUpdateTime.Invoke(
+            this
+        );
+    }
+
+    public override void PreUpdateWorld()
+    {
+        if (!ModSystemHooks.PreUpdateWorld.GetInvocationList().Any())
+        {
+            base.PreUpdateWorld();
+            return;
+        }
+
+        ModSystemHooks.PreUpdateWorld.Invoke(
+            this
+        );
+    }
+
+    public override void PostUpdateWorld()
+    {
+        if (!ModSystemHooks.PostUpdateWorld.GetInvocationList().Any())
+        {
+            base.PostUpdateWorld();
+            return;
+        }
+
+        ModSystemHooks.PostUpdateWorld.Invoke(
+            this
+        );
+    }
+
+    public override void PreUpdateInvasions()
+    {
+        if (!ModSystemHooks.PreUpdateInvasions.GetInvocationList().Any())
+        {
+            base.PreUpdateInvasions();
+            return;
+        }
+
+        ModSystemHooks.PreUpdateInvasions.Invoke(
+            this
+        );
+    }
+
+    public override void PostUpdateInvasions()
+    {
+        if (!ModSystemHooks.PostUpdateInvasions.GetInvocationList().Any())
+        {
+            base.PostUpdateInvasions();
+            return;
+        }
+
+        ModSystemHooks.PostUpdateInvasions.Invoke(
+            this
+        );
+    }
+
+    public override void PostUpdateEverything()
+    {
+        if (!ModSystemHooks.PostUpdateEverything.GetInvocationList().Any())
+        {
+            base.PostUpdateEverything();
+            return;
+        }
+
+        ModSystemHooks.PostUpdateEverything.Invoke(
+            this
+        );
+    }
+
+    public override void ModifyInterfaceLayers(
+        System.Collections.Generic.List<Terraria.UI.GameInterfaceLayer> layers
+    )
+    {
+        if (!ModSystemHooks.ModifyInterfaceLayers.GetInvocationList().Any())
+        {
+            base.ModifyInterfaceLayers(
+                layers
+            );
+            return;
+        }
+
+        ModSystemHooks.ModifyInterfaceLayers.Invoke(
+            this,
+            layers
+        );
+    }
+
+    public override void ModifyGameTipVisibility(
+        System.Collections.Generic.IReadOnlyList<Terraria.ModLoader.GameTipData> gameTips
+    )
+    {
+        if (!ModSystemHooks.ModifyGameTipVisibility.GetInvocationList().Any())
+        {
+            base.ModifyGameTipVisibility(
+                gameTips
+            );
+            return;
+        }
+
+        ModSystemHooks.ModifyGameTipVisibility.Invoke(
+            this,
+            gameTips
+        );
+    }
+
+    public override void PostDrawInterface(
+        Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch
+    )
+    {
+        if (!ModSystemHooks.PostDrawInterface.GetInvocationList().Any())
+        {
+            base.PostDrawInterface(
+                spriteBatch
+            );
+            return;
+        }
+
+        ModSystemHooks.PostDrawInterface.Invoke(
+            this,
+            spriteBatch
+        );
+    }
+
+    public override void PreDrawMapIconOverlay(
+        System.Collections.Generic.IReadOnlyList<Terraria.Map.IMapLayer> layers,
+        Terraria.Map.MapOverlayDrawContext mapOverlayDrawContext
+    )
+    {
+        if (!ModSystemHooks.PreDrawMapIconOverlay.GetInvocationList().Any())
+        {
+            base.PreDrawMapIconOverlay(
+                layers,
+                mapOverlayDrawContext
+            );
+            return;
+        }
+
+        ModSystemHooks.PreDrawMapIconOverlay.Invoke(
+            this,
+            layers,
+            mapOverlayDrawContext
+        );
+    }
+
+    public override void PostDrawFullscreenMap(
+        ref string mouseText
+    )
+    {
+        if (!ModSystemHooks.PostDrawFullscreenMap.GetInvocationList().Any())
+        {
+            base.PostDrawFullscreenMap(
+                ref mouseText
+            );
+            return;
+        }
+
+        ModSystemHooks.PostDrawFullscreenMap.Invoke(
+            this,
+            ref mouseText
+        );
+    }
+
+    public override void PostUpdateInput()
+    {
+        if (!ModSystemHooks.PostUpdateInput.GetInvocationList().Any())
+        {
+            base.PostUpdateInput();
+            return;
+        }
+
+        ModSystemHooks.PostUpdateInput.Invoke(
+            this
+        );
+    }
+
+    public override void PreSaveAndQuit()
+    {
+        if (!ModSystemHooks.PreSaveAndQuit.GetInvocationList().Any())
+        {
+            base.PreSaveAndQuit();
+            return;
+        }
+
+        ModSystemHooks.PreSaveAndQuit.Invoke(
+            this
+        );
+    }
+
+    public override void PostDrawTiles()
+    {
+        if (!ModSystemHooks.PostDrawTiles.GetInvocationList().Any())
+        {
+            base.PostDrawTiles();
+            return;
+        }
+
+        ModSystemHooks.PostDrawTiles.Invoke(
+            this
+        );
+    }
+
+    public override void ModifyTimeRate(
+        ref double timeRate,
+        ref double tileUpdateRate,
+        ref double eventUpdateRate
+    )
+    {
+        if (!ModSystemHooks.ModifyTimeRate.GetInvocationList().Any())
+        {
+            base.ModifyTimeRate(
+                ref timeRate,
+                ref tileUpdateRate,
+                ref eventUpdateRate
+            );
+            return;
+        }
+
+        ModSystemHooks.ModifyTimeRate.Invoke(
+            this,
+            ref timeRate,
+            ref tileUpdateRate,
+            ref eventUpdateRate
+        );
+    }
+
+    public override void SaveWorldData(
+        Terraria.ModLoader.IO.TagCompound tag
+    )
+    {
+        if (!ModSystemHooks.SaveWorldData.GetInvocationList().Any())
+        {
+            base.SaveWorldData(
+                tag
+            );
+            return;
+        }
+
+        ModSystemHooks.SaveWorldData.Invoke(
+            this,
+            tag
+        );
+    }
+
+    public override void LoadWorldData(
+        Terraria.ModLoader.IO.TagCompound tag
+    )
+    {
+        if (!ModSystemHooks.LoadWorldData.GetInvocationList().Any())
+        {
+            base.LoadWorldData(
+                tag
+            );
+            return;
+        }
+
+        ModSystemHooks.LoadWorldData.Invoke(
+            this,
+            tag
+        );
+    }
+
+    public override void SaveWorldHeader(
+        Terraria.ModLoader.IO.TagCompound tag
+    )
+    {
+        if (!ModSystemHooks.SaveWorldHeader.GetInvocationList().Any())
+        {
+            base.SaveWorldHeader(
+                tag
+            );
+            return;
+        }
+
+        ModSystemHooks.SaveWorldHeader.Invoke(
+            this,
+            tag
+        );
+    }
+
+    public override void NetSend(
+        System.IO.BinaryWriter writer
+    )
+    {
+        if (!ModSystemHooks.NetSend.GetInvocationList().Any())
+        {
+            base.NetSend(
+                writer
+            );
+            return;
+        }
+
+        ModSystemHooks.NetSend.Invoke(
+            this,
+            writer
+        );
+    }
+
+    public override void NetReceive(
+        System.IO.BinaryReader reader
+    )
+    {
+        if (!ModSystemHooks.NetReceive.GetInvocationList().Any())
+        {
+            base.NetReceive(
+                reader
+            );
+            return;
+        }
+
+        ModSystemHooks.NetReceive.Invoke(
+            this,
+            reader
+        );
+    }
+
+    public override void PreWorldGen()
+    {
+        if (!ModSystemHooks.PreWorldGen.GetInvocationList().Any())
+        {
+            base.PreWorldGen();
+            return;
+        }
+
+        ModSystemHooks.PreWorldGen.Invoke(
+            this
+        );
+    }
+
+    public override void ModifyWorldGenTasks(
+        System.Collections.Generic.List<Terraria.WorldBuilding.GenPass> tasks,
+        ref double totalWeight
+    )
+    {
+        if (!ModSystemHooks.ModifyWorldGenTasks.GetInvocationList().Any())
+        {
+            base.ModifyWorldGenTasks(
+                tasks,
+                ref totalWeight
+            );
+            return;
+        }
+
+        ModSystemHooks.ModifyWorldGenTasks.Invoke(
+            this,
+            tasks,
+            ref totalWeight
+        );
+    }
+
+    public override void PostWorldGen()
+    {
+        if (!ModSystemHooks.PostWorldGen.GetInvocationList().Any())
+        {
+            base.PostWorldGen();
+            return;
+        }
+
+        ModSystemHooks.PostWorldGen.Invoke(
+            this
+        );
+    }
+
+    public override void ResetNearbyTileEffects()
+    {
+        if (!ModSystemHooks.ResetNearbyTileEffects.GetInvocationList().Any())
+        {
+            base.ResetNearbyTileEffects();
+            return;
+        }
+
+        ModSystemHooks.ResetNearbyTileEffects.Invoke(
+            this
+        );
+    }
+
+    public override void ModifyHardmodeTasks(
+        System.Collections.Generic.List<Terraria.WorldBuilding.GenPass> list
+    )
+    {
+        if (!ModSystemHooks.ModifyHardmodeTasks.GetInvocationList().Any())
+        {
+            base.ModifyHardmodeTasks(
+                list
+            );
+            return;
+        }
+
+        ModSystemHooks.ModifyHardmodeTasks.Invoke(
+            this,
+            list
+        );
+    }
+
+    public override void ModifySunLightColor(
+        ref Microsoft.Xna.Framework.Color tileColor,
+        ref Microsoft.Xna.Framework.Color backgroundColor
+    )
+    {
+        if (!ModSystemHooks.ModifySunLightColor.GetInvocationList().Any())
+        {
+            base.ModifySunLightColor(
+                ref tileColor,
+                ref backgroundColor
+            );
+            return;
+        }
+
+        ModSystemHooks.ModifySunLightColor.Invoke(
+            this,
+            ref tileColor,
+            ref backgroundColor
+        );
+    }
+
+    public override void ModifyLightingBrightness(
+        ref float scale
+    )
+    {
+        if (!ModSystemHooks.ModifyLightingBrightness.GetInvocationList().Any())
+        {
+            base.ModifyLightingBrightness(
+                ref scale
+            );
+            return;
+        }
+
+        ModSystemHooks.ModifyLightingBrightness.Invoke(
+            this,
+            ref scale
+        );
+    }
+
+    public override void TileCountsAvailable(
+        System.ReadOnlySpan<int> tileCounts
+    )
+    {
+        if (!ModSystemHooks.TileCountsAvailable.GetInvocationList().Any())
+        {
+            base.TileCountsAvailable(
+                tileCounts
+            );
+            return;
+        }
+
+        ModSystemHooks.TileCountsAvailable.Invoke(
+            this,
+            tileCounts
+        );
+    }
+
+    public override void ResizeArrays()
+    {
+        if (!ModSystemHooks.ResizeArrays.GetInvocationList().Any())
+        {
+            base.ResizeArrays();
+            return;
+        }
+
+        ModSystemHooks.ResizeArrays.Invoke(
+            this
+        );
+    }
+}

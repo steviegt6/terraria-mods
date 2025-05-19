@@ -72,25 +72,147 @@ public sealed class Generator(ModuleDefinition module, TypeDefinition type)
         }
         sb.AppendLine("}");
 
+        sb.AppendLine();
+        sb.AppendLine($"public sealed partial class {type.Name}Impl : {type.FullName}");
+        sb.AppendLine("{");
+        ranOnce = false;
+        foreach (var hook in hooks)
+        {
+            if (ranOnce)
+            {
+                sb.AppendLine();
+            }
+            ranOnce = true;
+
+            sb.Append(BuildImpl(hook, hasOverloads: type.GetMethods().Count(x => x.Name == hook.Name) > 1, typeName));
+        }
+        sb.AppendLine("}");
+
         return sb.ToString();
     }
 
-    private static string BuildHook(MethodDefinition method, bool hasOverloads, Dictionary<string, InvokeStrategy> strategies)
+    private static string BuildImpl(MethodDefinition method, bool hasOverloads, string hooksName)
     {
         var sb = new StringBuilder();
-
-        // TODO: This logic for resolving overloads is *very* naive.  For a more
-        //       reliable approach, see how MonoMod does it:
-        // https://github.com/MonoMod/MonoMod/blob/reorganize/src/MonoMod.RuntimeDetour.HookGen/HookGenerator.cs#L234
-
         var name = method.Name;
-        if (hasOverloads)
+        var hookName = GetNameWithoutOverloadCollision(method, hasOverloads);
+
+        sb.Append($"    public override {GetFullTypeNameOrCSharpKeyword(method.ReturnType, includeRefPrefix: true)} {name}(");
+        if (method.Parameters.Count > 0)
         {
-            foreach (var param in method.Parameters)
+            sb.AppendLine();
+
+            for (var i = 0; i < method.Parameters.Count; i++)
             {
-                name += "_" + GetFullTypeNameOrCSharpKeyword(param.ParameterType, includeRefPrefix: false).Split('.').Last();
+                var parameter = method.Parameters[i];
+                sb.Append($"        {GetParameterDefinition(parameter)}");
+                if (i < method.Parameters.Count - 1)
+                {
+                    sb.AppendLine(",");
+                }
+                else
+                {
+                    sb.AppendLine();
+                }
+            }
+
+            sb.AppendLine("    )");
+        }
+        else
+        {
+            sb.AppendLine(")");
+        }
+
+        sb.AppendLine("    {");
+        sb.AppendLine($"        if (!{hooksName}.{hookName}.GetInvocationList().Any())");
+        sb.AppendLine("        {");
+        if (method.ReturnType.FullName == "System.Void")
+        {
+            sb.Append($"            base.{name}(");
+            if (method.Parameters.Count > 0)
+            {
+                sb.AppendLine();
+
+                for (var i = 0; i < method.Parameters.Count; i++)
+                {
+                    var parameter = method.Parameters[i];
+                    sb.AppendLine($"                {GetParameterReference(parameter)}{(i < method.Parameters.Count - 1 ? "," : "")}");
+                }
+                sb.AppendLine("            );");
+            }
+            else
+            {
+                sb.AppendLine(");");
+            }
+
+            sb.AppendLine("            return;");
+        }
+        else
+        {
+            // return base
+            sb.Append($"            return base.{name}(");
+            if (method.Parameters.Count > 0)
+            {
+                sb.AppendLine();
+
+                for (var i = 0; i < method.Parameters.Count; i++)
+                {
+                    var parameter = method.Parameters[i];
+                    sb.AppendLine($"                {GetParameterReference(parameter)}{(i < method.Parameters.Count - 1 ? "," : "")}");
+                }
+
+                sb.AppendLine("            );");
+            }
+            else
+            {
+                sb.AppendLine(");");
             }
         }
+
+        sb.AppendLine("        }");
+        sb.AppendLine();
+
+        if (method.ReturnType.FullName == "System.Void")
+        {
+            sb.AppendLine($"        {hooksName}.{hookName}.Invoke(");
+        }
+        else
+        {
+            sb.AppendLine($"        return {hooksName}.{hookName}.Invoke(");
+        }
+
+        sb.Append("            this");
+
+        if (method.Parameters.Count > 0)
+        {
+            sb.AppendLine(",");
+
+            for (var i = 0; i < method.Parameters.Count; i++)
+            {
+                var parameter = method.Parameters[i];
+                sb.AppendLine($"            {GetParameterReference(parameter)}{(i < method.Parameters.Count - 1 ? "," : "")}");
+            }
+        }
+        else
+        {
+            sb.AppendLine();
+        }
+
+        sb.AppendLine("        );");
+
+        sb.AppendLine("    }");
+
+        return sb.ToString();
+    }
+
+    private static string BuildHook(
+        MethodDefinition method,
+        bool hasOverloads,
+        Dictionary<string, InvokeStrategy> strategies
+    )
+    {
+        var sb = new StringBuilder();
+        var name = GetNameWithoutOverloadCollision(method, hasOverloads);
 
         sb.AppendLine($"    public static partial class {name}");
         sb.AppendLine("    {");
@@ -107,6 +229,26 @@ public sealed class Generator(ModuleDefinition module, TypeDefinition type)
         sb.AppendLine("    }");
 
         return sb.ToString();
+    }
+
+    private static string GetNameWithoutOverloadCollision(MethodDefinition method, bool hasOverloads)
+    {
+        // TODO: This logic for resolving overloads is *very* naive.  For a more
+        //       reliable approach, see how MonoMod does it:
+        // https://github.com/MonoMod/MonoMod/blob/reorganize/src/MonoMod.RuntimeDetour.HookGen/HookGenerator.cs#L234
+
+        var name = method.Name;
+        if (!hasOverloads)
+        {
+            return name;
+        }
+
+        foreach (var param in method.Parameters)
+        {
+            name += "_" + GetFullTypeNameOrCSharpKeyword(param.ParameterType, includeRefPrefix: false).Split('.').Last();
+        }
+
+        return name;
     }
 
     private static MethodDefinition[] ResolveHooksFromType(TypeDefinition typeDef, List<string> excludedHooks)

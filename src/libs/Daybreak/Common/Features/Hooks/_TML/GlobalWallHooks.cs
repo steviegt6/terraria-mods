@@ -131,3 +131,91 @@ public static partial class GlobalWallHooks
         }
     }
 }
+
+public sealed partial class GlobalWallImpl : Terraria.ModLoader.GlobalWall
+{
+    public override bool Drop(
+        int i,
+        int j,
+        int type,
+        ref int dropType
+    )
+    {
+        if (!GlobalWallHooks.Drop.GetInvocationList().Any())
+        {
+            return base.Drop(
+                i,
+                j,
+                type,
+                ref dropType
+            );
+        }
+
+        return GlobalWallHooks.Drop.Invoke(
+            this,
+            i,
+            j,
+            type,
+            ref dropType
+        );
+    }
+
+    public override void KillWall(
+        int i,
+        int j,
+        int type,
+        ref bool fail
+    )
+    {
+        if (!GlobalWallHooks.KillWall.GetInvocationList().Any())
+        {
+            base.KillWall(
+                i,
+                j,
+                type,
+                ref fail
+            );
+            return;
+        }
+
+        GlobalWallHooks.KillWall.Invoke(
+            this,
+            i,
+            j,
+            type,
+            ref fail
+        );
+    }
+
+    public override bool WallFrame(
+        int i,
+        int j,
+        int type,
+        bool randomizeFrame,
+        ref int style,
+        ref int frameNumber
+    )
+    {
+        if (!GlobalWallHooks.WallFrame.GetInvocationList().Any())
+        {
+            return base.WallFrame(
+                i,
+                j,
+                type,
+                randomizeFrame,
+                ref style,
+                ref frameNumber
+            );
+        }
+
+        return GlobalWallHooks.WallFrame.Invoke(
+            this,
+            i,
+            j,
+            type,
+            randomizeFrame,
+            ref style,
+            ref frameNumber
+        );
+    }
+}

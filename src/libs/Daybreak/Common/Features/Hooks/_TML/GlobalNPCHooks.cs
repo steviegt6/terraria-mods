@@ -2034,3 +2034,1576 @@ public static partial class GlobalNPCHooks
         }
     }
 }
+
+public sealed partial class GlobalNPCImpl : Terraria.ModLoader.GlobalNPC
+{
+    public override void SetDefaultsFromNetId(
+        Terraria.NPC npc
+    )
+    {
+        if (!GlobalNPCHooks.SetDefaultsFromNetId.GetInvocationList().Any())
+        {
+            base.SetDefaultsFromNetId(
+                npc
+            );
+            return;
+        }
+
+        GlobalNPCHooks.SetDefaultsFromNetId.Invoke(
+            this,
+            npc
+        );
+    }
+
+    public override void OnSpawn(
+        Terraria.NPC npc,
+        Terraria.DataStructures.IEntitySource source
+    )
+    {
+        if (!GlobalNPCHooks.OnSpawn.GetInvocationList().Any())
+        {
+            base.OnSpawn(
+                npc,
+                source
+            );
+            return;
+        }
+
+        GlobalNPCHooks.OnSpawn.Invoke(
+            this,
+            npc,
+            source
+        );
+    }
+
+    public override void ApplyDifficultyAndPlayerScaling(
+        Terraria.NPC npc,
+        int numPlayers,
+        float balance,
+        float bossAdjustment
+    )
+    {
+        if (!GlobalNPCHooks.ApplyDifficultyAndPlayerScaling.GetInvocationList().Any())
+        {
+            base.ApplyDifficultyAndPlayerScaling(
+                npc,
+                numPlayers,
+                balance,
+                bossAdjustment
+            );
+            return;
+        }
+
+        GlobalNPCHooks.ApplyDifficultyAndPlayerScaling.Invoke(
+            this,
+            npc,
+            numPlayers,
+            balance,
+            bossAdjustment
+        );
+    }
+
+    public override void SetBestiary(
+        Terraria.NPC npc,
+        Terraria.GameContent.Bestiary.BestiaryDatabase database,
+        Terraria.GameContent.Bestiary.BestiaryEntry bestiaryEntry
+    )
+    {
+        if (!GlobalNPCHooks.SetBestiary.GetInvocationList().Any())
+        {
+            base.SetBestiary(
+                npc,
+                database,
+                bestiaryEntry
+            );
+            return;
+        }
+
+        GlobalNPCHooks.SetBestiary.Invoke(
+            this,
+            npc,
+            database,
+            bestiaryEntry
+        );
+    }
+
+    public override void ModifyTypeName(
+        Terraria.NPC npc,
+        ref string typeName
+    )
+    {
+        if (!GlobalNPCHooks.ModifyTypeName.GetInvocationList().Any())
+        {
+            base.ModifyTypeName(
+                npc,
+                ref typeName
+            );
+            return;
+        }
+
+        GlobalNPCHooks.ModifyTypeName.Invoke(
+            this,
+            npc,
+            ref typeName
+        );
+    }
+
+    public override void ModifyHoverBoundingBox(
+        Terraria.NPC npc,
+        ref Microsoft.Xna.Framework.Rectangle boundingBox
+    )
+    {
+        if (!GlobalNPCHooks.ModifyHoverBoundingBox.GetInvocationList().Any())
+        {
+            base.ModifyHoverBoundingBox(
+                npc,
+                ref boundingBox
+            );
+            return;
+        }
+
+        GlobalNPCHooks.ModifyHoverBoundingBox.Invoke(
+            this,
+            npc,
+            ref boundingBox
+        );
+    }
+
+    public override void ModifyNPCNameList(
+        Terraria.NPC npc,
+        System.Collections.Generic.List<string> nameList
+    )
+    {
+        if (!GlobalNPCHooks.ModifyNPCNameList.GetInvocationList().Any())
+        {
+            base.ModifyNPCNameList(
+                npc,
+                nameList
+            );
+            return;
+        }
+
+        GlobalNPCHooks.ModifyNPCNameList.Invoke(
+            this,
+            npc,
+            nameList
+        );
+    }
+
+    public override void ResetEffects(
+        Terraria.NPC npc
+    )
+    {
+        if (!GlobalNPCHooks.ResetEffects.GetInvocationList().Any())
+        {
+            base.ResetEffects(
+                npc
+            );
+            return;
+        }
+
+        GlobalNPCHooks.ResetEffects.Invoke(
+            this,
+            npc
+        );
+    }
+
+    public override bool PreAI(
+        Terraria.NPC npc
+    )
+    {
+        if (!GlobalNPCHooks.PreAI.GetInvocationList().Any())
+        {
+            return base.PreAI(
+                npc
+            );
+        }
+
+        return GlobalNPCHooks.PreAI.Invoke(
+            this,
+            npc
+        );
+    }
+
+    public override void AI(
+        Terraria.NPC npc
+    )
+    {
+        if (!GlobalNPCHooks.AI.GetInvocationList().Any())
+        {
+            base.AI(
+                npc
+            );
+            return;
+        }
+
+        GlobalNPCHooks.AI.Invoke(
+            this,
+            npc
+        );
+    }
+
+    public override void PostAI(
+        Terraria.NPC npc
+    )
+    {
+        if (!GlobalNPCHooks.PostAI.GetInvocationList().Any())
+        {
+            base.PostAI(
+                npc
+            );
+            return;
+        }
+
+        GlobalNPCHooks.PostAI.Invoke(
+            this,
+            npc
+        );
+    }
+
+    public override void SendExtraAI(
+        Terraria.NPC npc,
+        Terraria.ModLoader.IO.BitWriter bitWriter,
+        System.IO.BinaryWriter binaryWriter
+    )
+    {
+        if (!GlobalNPCHooks.SendExtraAI.GetInvocationList().Any())
+        {
+            base.SendExtraAI(
+                npc,
+                bitWriter,
+                binaryWriter
+            );
+            return;
+        }
+
+        GlobalNPCHooks.SendExtraAI.Invoke(
+            this,
+            npc,
+            bitWriter,
+            binaryWriter
+        );
+    }
+
+    public override void ReceiveExtraAI(
+        Terraria.NPC npc,
+        Terraria.ModLoader.IO.BitReader bitReader,
+        System.IO.BinaryReader binaryReader
+    )
+    {
+        if (!GlobalNPCHooks.ReceiveExtraAI.GetInvocationList().Any())
+        {
+            base.ReceiveExtraAI(
+                npc,
+                bitReader,
+                binaryReader
+            );
+            return;
+        }
+
+        GlobalNPCHooks.ReceiveExtraAI.Invoke(
+            this,
+            npc,
+            bitReader,
+            binaryReader
+        );
+    }
+
+    public override void FindFrame(
+        Terraria.NPC npc,
+        int frameHeight
+    )
+    {
+        if (!GlobalNPCHooks.FindFrame.GetInvocationList().Any())
+        {
+            base.FindFrame(
+                npc,
+                frameHeight
+            );
+            return;
+        }
+
+        GlobalNPCHooks.FindFrame.Invoke(
+            this,
+            npc,
+            frameHeight
+        );
+    }
+
+    public override void HitEffect(
+        Terraria.NPC npc,
+        Terraria.NPC.HitInfo hit
+    )
+    {
+        if (!GlobalNPCHooks.HitEffect.GetInvocationList().Any())
+        {
+            base.HitEffect(
+                npc,
+                hit
+            );
+            return;
+        }
+
+        GlobalNPCHooks.HitEffect.Invoke(
+            this,
+            npc,
+            hit
+        );
+    }
+
+    public override void UpdateLifeRegen(
+        Terraria.NPC npc,
+        ref int damage
+    )
+    {
+        if (!GlobalNPCHooks.UpdateLifeRegen.GetInvocationList().Any())
+        {
+            base.UpdateLifeRegen(
+                npc,
+                ref damage
+            );
+            return;
+        }
+
+        GlobalNPCHooks.UpdateLifeRegen.Invoke(
+            this,
+            npc,
+            ref damage
+        );
+    }
+
+    public override bool CheckActive(
+        Terraria.NPC npc
+    )
+    {
+        if (!GlobalNPCHooks.CheckActive.GetInvocationList().Any())
+        {
+            return base.CheckActive(
+                npc
+            );
+        }
+
+        return GlobalNPCHooks.CheckActive.Invoke(
+            this,
+            npc
+        );
+    }
+
+    public override bool CheckDead(
+        Terraria.NPC npc
+    )
+    {
+        if (!GlobalNPCHooks.CheckDead.GetInvocationList().Any())
+        {
+            return base.CheckDead(
+                npc
+            );
+        }
+
+        return GlobalNPCHooks.CheckDead.Invoke(
+            this,
+            npc
+        );
+    }
+
+    public override bool PreKill(
+        Terraria.NPC npc
+    )
+    {
+        if (!GlobalNPCHooks.PreKill.GetInvocationList().Any())
+        {
+            return base.PreKill(
+                npc
+            );
+        }
+
+        return GlobalNPCHooks.PreKill.Invoke(
+            this,
+            npc
+        );
+    }
+
+    public override void OnKill(
+        Terraria.NPC npc
+    )
+    {
+        if (!GlobalNPCHooks.OnKill.GetInvocationList().Any())
+        {
+            base.OnKill(
+                npc
+            );
+            return;
+        }
+
+        GlobalNPCHooks.OnKill.Invoke(
+            this,
+            npc
+        );
+    }
+
+    public override void OnCaughtBy(
+        Terraria.NPC npc,
+        Terraria.Player player,
+        Terraria.Item item,
+        bool failed
+    )
+    {
+        if (!GlobalNPCHooks.OnCaughtBy.GetInvocationList().Any())
+        {
+            base.OnCaughtBy(
+                npc,
+                player,
+                item,
+                failed
+            );
+            return;
+        }
+
+        GlobalNPCHooks.OnCaughtBy.Invoke(
+            this,
+            npc,
+            player,
+            item,
+            failed
+        );
+    }
+
+    public override void ModifyNPCLoot(
+        Terraria.NPC npc,
+        Terraria.ModLoader.NPCLoot npcLoot
+    )
+    {
+        if (!GlobalNPCHooks.ModifyNPCLoot.GetInvocationList().Any())
+        {
+            base.ModifyNPCLoot(
+                npc,
+                npcLoot
+            );
+            return;
+        }
+
+        GlobalNPCHooks.ModifyNPCLoot.Invoke(
+            this,
+            npc,
+            npcLoot
+        );
+    }
+
+    public override void ModifyGlobalLoot(
+        Terraria.ModLoader.GlobalLoot globalLoot
+    )
+    {
+        if (!GlobalNPCHooks.ModifyGlobalLoot.GetInvocationList().Any())
+        {
+            base.ModifyGlobalLoot(
+                globalLoot
+            );
+            return;
+        }
+
+        GlobalNPCHooks.ModifyGlobalLoot.Invoke(
+            this,
+            globalLoot
+        );
+    }
+
+    public override bool CanHitPlayer(
+        Terraria.NPC npc,
+        Terraria.Player target,
+        ref int cooldownSlot
+    )
+    {
+        if (!GlobalNPCHooks.CanHitPlayer.GetInvocationList().Any())
+        {
+            return base.CanHitPlayer(
+                npc,
+                target,
+                ref cooldownSlot
+            );
+        }
+
+        return GlobalNPCHooks.CanHitPlayer.Invoke(
+            this,
+            npc,
+            target,
+            ref cooldownSlot
+        );
+    }
+
+    public override void ModifyHitPlayer(
+        Terraria.NPC npc,
+        Terraria.Player target,
+        ref Terraria.Player.HurtModifiers modifiers
+    )
+    {
+        if (!GlobalNPCHooks.ModifyHitPlayer.GetInvocationList().Any())
+        {
+            base.ModifyHitPlayer(
+                npc,
+                target,
+                ref modifiers
+            );
+            return;
+        }
+
+        GlobalNPCHooks.ModifyHitPlayer.Invoke(
+            this,
+            npc,
+            target,
+            ref modifiers
+        );
+    }
+
+    public override void OnHitPlayer(
+        Terraria.NPC npc,
+        Terraria.Player target,
+        Terraria.Player.HurtInfo hurtInfo
+    )
+    {
+        if (!GlobalNPCHooks.OnHitPlayer.GetInvocationList().Any())
+        {
+            base.OnHitPlayer(
+                npc,
+                target,
+                hurtInfo
+            );
+            return;
+        }
+
+        GlobalNPCHooks.OnHitPlayer.Invoke(
+            this,
+            npc,
+            target,
+            hurtInfo
+        );
+    }
+
+    public override bool CanHitNPC(
+        Terraria.NPC npc,
+        Terraria.NPC target
+    )
+    {
+        if (!GlobalNPCHooks.CanHitNPC.GetInvocationList().Any())
+        {
+            return base.CanHitNPC(
+                npc,
+                target
+            );
+        }
+
+        return GlobalNPCHooks.CanHitNPC.Invoke(
+            this,
+            npc,
+            target
+        );
+    }
+
+    public override bool CanBeHitByNPC(
+        Terraria.NPC npc,
+        Terraria.NPC attacker
+    )
+    {
+        if (!GlobalNPCHooks.CanBeHitByNPC.GetInvocationList().Any())
+        {
+            return base.CanBeHitByNPC(
+                npc,
+                attacker
+            );
+        }
+
+        return GlobalNPCHooks.CanBeHitByNPC.Invoke(
+            this,
+            npc,
+            attacker
+        );
+    }
+
+    public override void ModifyHitNPC(
+        Terraria.NPC npc,
+        Terraria.NPC target,
+        ref Terraria.NPC.HitModifiers modifiers
+    )
+    {
+        if (!GlobalNPCHooks.ModifyHitNPC.GetInvocationList().Any())
+        {
+            base.ModifyHitNPC(
+                npc,
+                target,
+                ref modifiers
+            );
+            return;
+        }
+
+        GlobalNPCHooks.ModifyHitNPC.Invoke(
+            this,
+            npc,
+            target,
+            ref modifiers
+        );
+    }
+
+    public override void OnHitNPC(
+        Terraria.NPC npc,
+        Terraria.NPC target,
+        Terraria.NPC.HitInfo hit
+    )
+    {
+        if (!GlobalNPCHooks.OnHitNPC.GetInvocationList().Any())
+        {
+            base.OnHitNPC(
+                npc,
+                target,
+                hit
+            );
+            return;
+        }
+
+        GlobalNPCHooks.OnHitNPC.Invoke(
+            this,
+            npc,
+            target,
+            hit
+        );
+    }
+
+    public override void ModifyHitByItem(
+        Terraria.NPC npc,
+        Terraria.Player player,
+        Terraria.Item item,
+        ref Terraria.NPC.HitModifiers modifiers
+    )
+    {
+        if (!GlobalNPCHooks.ModifyHitByItem.GetInvocationList().Any())
+        {
+            base.ModifyHitByItem(
+                npc,
+                player,
+                item,
+                ref modifiers
+            );
+            return;
+        }
+
+        GlobalNPCHooks.ModifyHitByItem.Invoke(
+            this,
+            npc,
+            player,
+            item,
+            ref modifiers
+        );
+    }
+
+    public override void OnHitByItem(
+        Terraria.NPC npc,
+        Terraria.Player player,
+        Terraria.Item item,
+        Terraria.NPC.HitInfo hit,
+        int damageDone
+    )
+    {
+        if (!GlobalNPCHooks.OnHitByItem.GetInvocationList().Any())
+        {
+            base.OnHitByItem(
+                npc,
+                player,
+                item,
+                hit,
+                damageDone
+            );
+            return;
+        }
+
+        GlobalNPCHooks.OnHitByItem.Invoke(
+            this,
+            npc,
+            player,
+            item,
+            hit,
+            damageDone
+        );
+    }
+
+    public override void ModifyHitByProjectile(
+        Terraria.NPC npc,
+        Terraria.Projectile projectile,
+        ref Terraria.NPC.HitModifiers modifiers
+    )
+    {
+        if (!GlobalNPCHooks.ModifyHitByProjectile.GetInvocationList().Any())
+        {
+            base.ModifyHitByProjectile(
+                npc,
+                projectile,
+                ref modifiers
+            );
+            return;
+        }
+
+        GlobalNPCHooks.ModifyHitByProjectile.Invoke(
+            this,
+            npc,
+            projectile,
+            ref modifiers
+        );
+    }
+
+    public override void OnHitByProjectile(
+        Terraria.NPC npc,
+        Terraria.Projectile projectile,
+        Terraria.NPC.HitInfo hit,
+        int damageDone
+    )
+    {
+        if (!GlobalNPCHooks.OnHitByProjectile.GetInvocationList().Any())
+        {
+            base.OnHitByProjectile(
+                npc,
+                projectile,
+                hit,
+                damageDone
+            );
+            return;
+        }
+
+        GlobalNPCHooks.OnHitByProjectile.Invoke(
+            this,
+            npc,
+            projectile,
+            hit,
+            damageDone
+        );
+    }
+
+    public override void ModifyIncomingHit(
+        Terraria.NPC npc,
+        ref Terraria.NPC.HitModifiers modifiers
+    )
+    {
+        if (!GlobalNPCHooks.ModifyIncomingHit.GetInvocationList().Any())
+        {
+            base.ModifyIncomingHit(
+                npc,
+                ref modifiers
+            );
+            return;
+        }
+
+        GlobalNPCHooks.ModifyIncomingHit.Invoke(
+            this,
+            npc,
+            ref modifiers
+        );
+    }
+
+    public override void BossHeadSlot(
+        Terraria.NPC npc,
+        ref int index
+    )
+    {
+        if (!GlobalNPCHooks.BossHeadSlot.GetInvocationList().Any())
+        {
+            base.BossHeadSlot(
+                npc,
+                ref index
+            );
+            return;
+        }
+
+        GlobalNPCHooks.BossHeadSlot.Invoke(
+            this,
+            npc,
+            ref index
+        );
+    }
+
+    public override void BossHeadRotation(
+        Terraria.NPC npc,
+        ref float rotation
+    )
+    {
+        if (!GlobalNPCHooks.BossHeadRotation.GetInvocationList().Any())
+        {
+            base.BossHeadRotation(
+                npc,
+                ref rotation
+            );
+            return;
+        }
+
+        GlobalNPCHooks.BossHeadRotation.Invoke(
+            this,
+            npc,
+            ref rotation
+        );
+    }
+
+    public override void BossHeadSpriteEffects(
+        Terraria.NPC npc,
+        ref Microsoft.Xna.Framework.Graphics.SpriteEffects spriteEffects
+    )
+    {
+        if (!GlobalNPCHooks.BossHeadSpriteEffects.GetInvocationList().Any())
+        {
+            base.BossHeadSpriteEffects(
+                npc,
+                ref spriteEffects
+            );
+            return;
+        }
+
+        GlobalNPCHooks.BossHeadSpriteEffects.Invoke(
+            this,
+            npc,
+            ref spriteEffects
+        );
+    }
+
+    public override void DrawEffects(
+        Terraria.NPC npc,
+        ref Microsoft.Xna.Framework.Color drawColor
+    )
+    {
+        if (!GlobalNPCHooks.DrawEffects.GetInvocationList().Any())
+        {
+            base.DrawEffects(
+                npc,
+                ref drawColor
+            );
+            return;
+        }
+
+        GlobalNPCHooks.DrawEffects.Invoke(
+            this,
+            npc,
+            ref drawColor
+        );
+    }
+
+    public override bool PreDraw(
+        Terraria.NPC npc,
+        Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch,
+        Microsoft.Xna.Framework.Vector2 screenPos,
+        Microsoft.Xna.Framework.Color drawColor
+    )
+    {
+        if (!GlobalNPCHooks.PreDraw.GetInvocationList().Any())
+        {
+            return base.PreDraw(
+                npc,
+                spriteBatch,
+                screenPos,
+                drawColor
+            );
+        }
+
+        return GlobalNPCHooks.PreDraw.Invoke(
+            this,
+            npc,
+            spriteBatch,
+            screenPos,
+            drawColor
+        );
+    }
+
+    public override void PostDraw(
+        Terraria.NPC npc,
+        Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch,
+        Microsoft.Xna.Framework.Vector2 screenPos,
+        Microsoft.Xna.Framework.Color drawColor
+    )
+    {
+        if (!GlobalNPCHooks.PostDraw.GetInvocationList().Any())
+        {
+            base.PostDraw(
+                npc,
+                spriteBatch,
+                screenPos,
+                drawColor
+            );
+            return;
+        }
+
+        GlobalNPCHooks.PostDraw.Invoke(
+            this,
+            npc,
+            spriteBatch,
+            screenPos,
+            drawColor
+        );
+    }
+
+    public override void DrawBehind(
+        Terraria.NPC npc,
+        int index
+    )
+    {
+        if (!GlobalNPCHooks.DrawBehind.GetInvocationList().Any())
+        {
+            base.DrawBehind(
+                npc,
+                index
+            );
+            return;
+        }
+
+        GlobalNPCHooks.DrawBehind.Invoke(
+            this,
+            npc,
+            index
+        );
+    }
+
+    public override void EditSpawnRate(
+        Terraria.Player player,
+        ref int spawnRate,
+        ref int maxSpawns
+    )
+    {
+        if (!GlobalNPCHooks.EditSpawnRate.GetInvocationList().Any())
+        {
+            base.EditSpawnRate(
+                player,
+                ref spawnRate,
+                ref maxSpawns
+            );
+            return;
+        }
+
+        GlobalNPCHooks.EditSpawnRate.Invoke(
+            this,
+            player,
+            ref spawnRate,
+            ref maxSpawns
+        );
+    }
+
+    public override void EditSpawnRange(
+        Terraria.Player player,
+        ref int spawnRangeX,
+        ref int spawnRangeY,
+        ref int safeRangeX,
+        ref int safeRangeY
+    )
+    {
+        if (!GlobalNPCHooks.EditSpawnRange.GetInvocationList().Any())
+        {
+            base.EditSpawnRange(
+                player,
+                ref spawnRangeX,
+                ref spawnRangeY,
+                ref safeRangeX,
+                ref safeRangeY
+            );
+            return;
+        }
+
+        GlobalNPCHooks.EditSpawnRange.Invoke(
+            this,
+            player,
+            ref spawnRangeX,
+            ref spawnRangeY,
+            ref safeRangeX,
+            ref safeRangeY
+        );
+    }
+
+    public override void EditSpawnPool(
+        System.Collections.Generic.IDictionary<int, float> pool,
+        Terraria.ModLoader.NPCSpawnInfo spawnInfo
+    )
+    {
+        if (!GlobalNPCHooks.EditSpawnPool.GetInvocationList().Any())
+        {
+            base.EditSpawnPool(
+                pool,
+                spawnInfo
+            );
+            return;
+        }
+
+        GlobalNPCHooks.EditSpawnPool.Invoke(
+            this,
+            pool,
+            spawnInfo
+        );
+    }
+
+    public override void SpawnNPC(
+        int npc,
+        int tileX,
+        int tileY
+    )
+    {
+        if (!GlobalNPCHooks.SpawnNPC.GetInvocationList().Any())
+        {
+            base.SpawnNPC(
+                npc,
+                tileX,
+                tileY
+            );
+            return;
+        }
+
+        GlobalNPCHooks.SpawnNPC.Invoke(
+            this,
+            npc,
+            tileX,
+            tileY
+        );
+    }
+
+    public override void GetChat(
+        Terraria.NPC npc,
+        ref string chat
+    )
+    {
+        if (!GlobalNPCHooks.GetChat.GetInvocationList().Any())
+        {
+            base.GetChat(
+                npc,
+                ref chat
+            );
+            return;
+        }
+
+        GlobalNPCHooks.GetChat.Invoke(
+            this,
+            npc,
+            ref chat
+        );
+    }
+
+    public override bool PreChatButtonClicked(
+        Terraria.NPC npc,
+        bool firstButton
+    )
+    {
+        if (!GlobalNPCHooks.PreChatButtonClicked.GetInvocationList().Any())
+        {
+            return base.PreChatButtonClicked(
+                npc,
+                firstButton
+            );
+        }
+
+        return GlobalNPCHooks.PreChatButtonClicked.Invoke(
+            this,
+            npc,
+            firstButton
+        );
+    }
+
+    public override void OnChatButtonClicked(
+        Terraria.NPC npc,
+        bool firstButton
+    )
+    {
+        if (!GlobalNPCHooks.OnChatButtonClicked.GetInvocationList().Any())
+        {
+            base.OnChatButtonClicked(
+                npc,
+                firstButton
+            );
+            return;
+        }
+
+        GlobalNPCHooks.OnChatButtonClicked.Invoke(
+            this,
+            npc,
+            firstButton
+        );
+    }
+
+    public override void ModifyShop(
+        Terraria.ModLoader.NPCShop shop
+    )
+    {
+        if (!GlobalNPCHooks.ModifyShop.GetInvocationList().Any())
+        {
+            base.ModifyShop(
+                shop
+            );
+            return;
+        }
+
+        GlobalNPCHooks.ModifyShop.Invoke(
+            this,
+            shop
+        );
+    }
+
+    public override void ModifyActiveShop(
+        Terraria.NPC npc,
+        string shopName,
+        Terraria.Item[] items
+    )
+    {
+        if (!GlobalNPCHooks.ModifyActiveShop.GetInvocationList().Any())
+        {
+            base.ModifyActiveShop(
+                npc,
+                shopName,
+                items
+            );
+            return;
+        }
+
+        GlobalNPCHooks.ModifyActiveShop.Invoke(
+            this,
+            npc,
+            shopName,
+            items
+        );
+    }
+
+    public override void SetupTravelShop(
+        int[] shop,
+        ref int nextSlot
+    )
+    {
+        if (!GlobalNPCHooks.SetupTravelShop.GetInvocationList().Any())
+        {
+            base.SetupTravelShop(
+                shop,
+                ref nextSlot
+            );
+            return;
+        }
+
+        GlobalNPCHooks.SetupTravelShop.Invoke(
+            this,
+            shop,
+            ref nextSlot
+        );
+    }
+
+    public override void OnGoToStatue(
+        Terraria.NPC npc,
+        bool toKingStatue
+    )
+    {
+        if (!GlobalNPCHooks.OnGoToStatue.GetInvocationList().Any())
+        {
+            base.OnGoToStatue(
+                npc,
+                toKingStatue
+            );
+            return;
+        }
+
+        GlobalNPCHooks.OnGoToStatue.Invoke(
+            this,
+            npc,
+            toKingStatue
+        );
+    }
+
+    public override void BuffTownNPC(
+        ref float damageMult,
+        ref int defense
+    )
+    {
+        if (!GlobalNPCHooks.BuffTownNPC.GetInvocationList().Any())
+        {
+            base.BuffTownNPC(
+                ref damageMult,
+                ref defense
+            );
+            return;
+        }
+
+        GlobalNPCHooks.BuffTownNPC.Invoke(
+            this,
+            ref damageMult,
+            ref defense
+        );
+    }
+
+    public override void TownNPCAttackStrength(
+        Terraria.NPC npc,
+        ref int damage,
+        ref float knockback
+    )
+    {
+        if (!GlobalNPCHooks.TownNPCAttackStrength.GetInvocationList().Any())
+        {
+            base.TownNPCAttackStrength(
+                npc,
+                ref damage,
+                ref knockback
+            );
+            return;
+        }
+
+        GlobalNPCHooks.TownNPCAttackStrength.Invoke(
+            this,
+            npc,
+            ref damage,
+            ref knockback
+        );
+    }
+
+    public override void TownNPCAttackCooldown(
+        Terraria.NPC npc,
+        ref int cooldown,
+        ref int randExtraCooldown
+    )
+    {
+        if (!GlobalNPCHooks.TownNPCAttackCooldown.GetInvocationList().Any())
+        {
+            base.TownNPCAttackCooldown(
+                npc,
+                ref cooldown,
+                ref randExtraCooldown
+            );
+            return;
+        }
+
+        GlobalNPCHooks.TownNPCAttackCooldown.Invoke(
+            this,
+            npc,
+            ref cooldown,
+            ref randExtraCooldown
+        );
+    }
+
+    public override void TownNPCAttackProj(
+        Terraria.NPC npc,
+        ref int projType,
+        ref int attackDelay
+    )
+    {
+        if (!GlobalNPCHooks.TownNPCAttackProj.GetInvocationList().Any())
+        {
+            base.TownNPCAttackProj(
+                npc,
+                ref projType,
+                ref attackDelay
+            );
+            return;
+        }
+
+        GlobalNPCHooks.TownNPCAttackProj.Invoke(
+            this,
+            npc,
+            ref projType,
+            ref attackDelay
+        );
+    }
+
+    public override void TownNPCAttackProjSpeed(
+        Terraria.NPC npc,
+        ref float multiplier,
+        ref float gravityCorrection,
+        ref float randomOffset
+    )
+    {
+        if (!GlobalNPCHooks.TownNPCAttackProjSpeed.GetInvocationList().Any())
+        {
+            base.TownNPCAttackProjSpeed(
+                npc,
+                ref multiplier,
+                ref gravityCorrection,
+                ref randomOffset
+            );
+            return;
+        }
+
+        GlobalNPCHooks.TownNPCAttackProjSpeed.Invoke(
+            this,
+            npc,
+            ref multiplier,
+            ref gravityCorrection,
+            ref randomOffset
+        );
+    }
+
+    public override void TownNPCAttackShoot(
+        Terraria.NPC npc,
+        ref bool inBetweenShots
+    )
+    {
+        if (!GlobalNPCHooks.TownNPCAttackShoot.GetInvocationList().Any())
+        {
+            base.TownNPCAttackShoot(
+                npc,
+                ref inBetweenShots
+            );
+            return;
+        }
+
+        GlobalNPCHooks.TownNPCAttackShoot.Invoke(
+            this,
+            npc,
+            ref inBetweenShots
+        );
+    }
+
+    public override void TownNPCAttackMagic(
+        Terraria.NPC npc,
+        ref float auraLightMultiplier
+    )
+    {
+        if (!GlobalNPCHooks.TownNPCAttackMagic.GetInvocationList().Any())
+        {
+            base.TownNPCAttackMagic(
+                npc,
+                ref auraLightMultiplier
+            );
+            return;
+        }
+
+        GlobalNPCHooks.TownNPCAttackMagic.Invoke(
+            this,
+            npc,
+            ref auraLightMultiplier
+        );
+    }
+
+    public override void TownNPCAttackSwing(
+        Terraria.NPC npc,
+        ref int itemWidth,
+        ref int itemHeight
+    )
+    {
+        if (!GlobalNPCHooks.TownNPCAttackSwing.GetInvocationList().Any())
+        {
+            base.TownNPCAttackSwing(
+                npc,
+                ref itemWidth,
+                ref itemHeight
+            );
+            return;
+        }
+
+        GlobalNPCHooks.TownNPCAttackSwing.Invoke(
+            this,
+            npc,
+            ref itemWidth,
+            ref itemHeight
+        );
+    }
+
+    public override void DrawTownAttackGun(
+        Terraria.NPC npc,
+        ref Microsoft.Xna.Framework.Graphics.Texture2D item,
+        ref Microsoft.Xna.Framework.Rectangle itemFrame,
+        ref float scale,
+        ref int horizontalHoldoutOffset
+    )
+    {
+        if (!GlobalNPCHooks.DrawTownAttackGun.GetInvocationList().Any())
+        {
+            base.DrawTownAttackGun(
+                npc,
+                ref item,
+                ref itemFrame,
+                ref scale,
+                ref horizontalHoldoutOffset
+            );
+            return;
+        }
+
+        GlobalNPCHooks.DrawTownAttackGun.Invoke(
+            this,
+            npc,
+            ref item,
+            ref itemFrame,
+            ref scale,
+            ref horizontalHoldoutOffset
+        );
+    }
+
+    public override void DrawTownAttackSwing(
+        Terraria.NPC npc,
+        ref Microsoft.Xna.Framework.Graphics.Texture2D item,
+        ref Microsoft.Xna.Framework.Rectangle itemFrame,
+        ref int itemSize,
+        ref float scale,
+        ref Microsoft.Xna.Framework.Vector2 offset
+    )
+    {
+        if (!GlobalNPCHooks.DrawTownAttackSwing.GetInvocationList().Any())
+        {
+            base.DrawTownAttackSwing(
+                npc,
+                ref item,
+                ref itemFrame,
+                ref itemSize,
+                ref scale,
+                ref offset
+            );
+            return;
+        }
+
+        GlobalNPCHooks.DrawTownAttackSwing.Invoke(
+            this,
+            npc,
+            ref item,
+            ref itemFrame,
+            ref itemSize,
+            ref scale,
+            ref offset
+        );
+    }
+
+    public override bool ModifyCollisionData(
+        Terraria.NPC npc,
+        Microsoft.Xna.Framework.Rectangle victimHitbox,
+        ref int immunityCooldownSlot,
+        ref Terraria.ModLoader.MultipliableFloat damageMultiplier,
+        ref Microsoft.Xna.Framework.Rectangle npcHitbox
+    )
+    {
+        if (!GlobalNPCHooks.ModifyCollisionData.GetInvocationList().Any())
+        {
+            return base.ModifyCollisionData(
+                npc,
+                victimHitbox,
+                ref immunityCooldownSlot,
+                ref damageMultiplier,
+                ref npcHitbox
+            );
+        }
+
+        return GlobalNPCHooks.ModifyCollisionData.Invoke(
+            this,
+            npc,
+            victimHitbox,
+            ref immunityCooldownSlot,
+            ref damageMultiplier,
+            ref npcHitbox
+        );
+    }
+
+    public override bool NeedSaving(
+        Terraria.NPC npc
+    )
+    {
+        if (!GlobalNPCHooks.NeedSaving.GetInvocationList().Any())
+        {
+            return base.NeedSaving(
+                npc
+            );
+        }
+
+        return GlobalNPCHooks.NeedSaving.Invoke(
+            this,
+            npc
+        );
+    }
+
+    public override void SaveData(
+        Terraria.NPC npc,
+        Terraria.ModLoader.IO.TagCompound tag
+    )
+    {
+        if (!GlobalNPCHooks.SaveData.GetInvocationList().Any())
+        {
+            base.SaveData(
+                npc,
+                tag
+            );
+            return;
+        }
+
+        GlobalNPCHooks.SaveData.Invoke(
+            this,
+            npc,
+            tag
+        );
+    }
+
+    public override void LoadData(
+        Terraria.NPC npc,
+        Terraria.ModLoader.IO.TagCompound tag
+    )
+    {
+        if (!GlobalNPCHooks.LoadData.GetInvocationList().Any())
+        {
+            base.LoadData(
+                npc,
+                tag
+            );
+            return;
+        }
+
+        GlobalNPCHooks.LoadData.Invoke(
+            this,
+            npc,
+            tag
+        );
+    }
+
+    public override void ChatBubblePosition(
+        Terraria.NPC npc,
+        ref Microsoft.Xna.Framework.Vector2 position,
+        ref Microsoft.Xna.Framework.Graphics.SpriteEffects spriteEffects
+    )
+    {
+        if (!GlobalNPCHooks.ChatBubblePosition.GetInvocationList().Any())
+        {
+            base.ChatBubblePosition(
+                npc,
+                ref position,
+                ref spriteEffects
+            );
+            return;
+        }
+
+        GlobalNPCHooks.ChatBubblePosition.Invoke(
+            this,
+            npc,
+            ref position,
+            ref spriteEffects
+        );
+    }
+
+    public override void PartyHatPosition(
+        Terraria.NPC npc,
+        ref Microsoft.Xna.Framework.Vector2 position,
+        ref Microsoft.Xna.Framework.Graphics.SpriteEffects spriteEffects
+    )
+    {
+        if (!GlobalNPCHooks.PartyHatPosition.GetInvocationList().Any())
+        {
+            base.PartyHatPosition(
+                npc,
+                ref position,
+                ref spriteEffects
+            );
+            return;
+        }
+
+        GlobalNPCHooks.PartyHatPosition.Invoke(
+            this,
+            npc,
+            ref position,
+            ref spriteEffects
+        );
+    }
+
+    public override void EmoteBubblePosition(
+        Terraria.NPC npc,
+        ref Microsoft.Xna.Framework.Vector2 position,
+        ref Microsoft.Xna.Framework.Graphics.SpriteEffects spriteEffects
+    )
+    {
+        if (!GlobalNPCHooks.EmoteBubblePosition.GetInvocationList().Any())
+        {
+            base.EmoteBubblePosition(
+                npc,
+                ref position,
+                ref spriteEffects
+            );
+            return;
+        }
+
+        GlobalNPCHooks.EmoteBubblePosition.Invoke(
+            this,
+            npc,
+            ref position,
+            ref spriteEffects
+        );
+    }
+}

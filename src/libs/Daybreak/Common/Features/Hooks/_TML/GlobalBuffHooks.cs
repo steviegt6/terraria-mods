@@ -347,3 +347,254 @@ public static partial class GlobalBuffHooks
         }
     }
 }
+
+public sealed partial class GlobalBuffImpl : Terraria.ModLoader.GlobalBuff
+{
+    public override void Update(
+        int type,
+        Terraria.Player player,
+        ref int buffIndex
+    )
+    {
+        if (!GlobalBuffHooks.Update_int_Player_int.GetInvocationList().Any())
+        {
+            base.Update(
+                type,
+                player,
+                ref buffIndex
+            );
+            return;
+        }
+
+        GlobalBuffHooks.Update_int_Player_int.Invoke(
+            this,
+            type,
+            player,
+            ref buffIndex
+        );
+    }
+
+    public override void Update(
+        int type,
+        Terraria.NPC npc,
+        ref int buffIndex
+    )
+    {
+        if (!GlobalBuffHooks.Update_int_NPC_int.GetInvocationList().Any())
+        {
+            base.Update(
+                type,
+                npc,
+                ref buffIndex
+            );
+            return;
+        }
+
+        GlobalBuffHooks.Update_int_NPC_int.Invoke(
+            this,
+            type,
+            npc,
+            ref buffIndex
+        );
+    }
+
+    public override bool ReApply(
+        int type,
+        Terraria.Player player,
+        int time,
+        int buffIndex
+    )
+    {
+        if (!GlobalBuffHooks.ReApply_int_Player_int_int.GetInvocationList().Any())
+        {
+            return base.ReApply(
+                type,
+                player,
+                time,
+                buffIndex
+            );
+        }
+
+        return GlobalBuffHooks.ReApply_int_Player_int_int.Invoke(
+            this,
+            type,
+            player,
+            time,
+            buffIndex
+        );
+    }
+
+    public override bool ReApply(
+        int type,
+        Terraria.NPC npc,
+        int time,
+        int buffIndex
+    )
+    {
+        if (!GlobalBuffHooks.ReApply_int_NPC_int_int.GetInvocationList().Any())
+        {
+            return base.ReApply(
+                type,
+                npc,
+                time,
+                buffIndex
+            );
+        }
+
+        return GlobalBuffHooks.ReApply_int_NPC_int_int.Invoke(
+            this,
+            type,
+            npc,
+            time,
+            buffIndex
+        );
+    }
+
+    public override void ModifyBuffText(
+        int type,
+        ref string buffName,
+        ref string tip,
+        ref int rare
+    )
+    {
+        if (!GlobalBuffHooks.ModifyBuffText.GetInvocationList().Any())
+        {
+            base.ModifyBuffText(
+                type,
+                ref buffName,
+                ref tip,
+                ref rare
+            );
+            return;
+        }
+
+        GlobalBuffHooks.ModifyBuffText.Invoke(
+            this,
+            type,
+            ref buffName,
+            ref tip,
+            ref rare
+        );
+    }
+
+    public override void CustomBuffTipSize(
+        string buffTip,
+        System.Collections.Generic.List<Microsoft.Xna.Framework.Vector2> sizes
+    )
+    {
+        if (!GlobalBuffHooks.CustomBuffTipSize.GetInvocationList().Any())
+        {
+            base.CustomBuffTipSize(
+                buffTip,
+                sizes
+            );
+            return;
+        }
+
+        GlobalBuffHooks.CustomBuffTipSize.Invoke(
+            this,
+            buffTip,
+            sizes
+        );
+    }
+
+    public override void DrawCustomBuffTip(
+        string buffTip,
+        Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch,
+        int originX,
+        int originY
+    )
+    {
+        if (!GlobalBuffHooks.DrawCustomBuffTip.GetInvocationList().Any())
+        {
+            base.DrawCustomBuffTip(
+                buffTip,
+                spriteBatch,
+                originX,
+                originY
+            );
+            return;
+        }
+
+        GlobalBuffHooks.DrawCustomBuffTip.Invoke(
+            this,
+            buffTip,
+            spriteBatch,
+            originX,
+            originY
+        );
+    }
+
+    public override bool PreDraw(
+        Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch,
+        int type,
+        int buffIndex,
+        ref Terraria.DataStructures.BuffDrawParams drawParams
+    )
+    {
+        if (!GlobalBuffHooks.PreDraw.GetInvocationList().Any())
+        {
+            return base.PreDraw(
+                spriteBatch,
+                type,
+                buffIndex,
+                ref drawParams
+            );
+        }
+
+        return GlobalBuffHooks.PreDraw.Invoke(
+            this,
+            spriteBatch,
+            type,
+            buffIndex,
+            ref drawParams
+        );
+    }
+
+    public override void PostDraw(
+        Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch,
+        int type,
+        int buffIndex,
+        Terraria.DataStructures.BuffDrawParams drawParams
+    )
+    {
+        if (!GlobalBuffHooks.PostDraw.GetInvocationList().Any())
+        {
+            base.PostDraw(
+                spriteBatch,
+                type,
+                buffIndex,
+                drawParams
+            );
+            return;
+        }
+
+        GlobalBuffHooks.PostDraw.Invoke(
+            this,
+            spriteBatch,
+            type,
+            buffIndex,
+            drawParams
+        );
+    }
+
+    public override bool RightClick(
+        int type,
+        int buffIndex
+    )
+    {
+        if (!GlobalBuffHooks.RightClick.GetInvocationList().Any())
+        {
+            return base.RightClick(
+                type,
+                buffIndex
+            );
+        }
+
+        return GlobalBuffHooks.RightClick.Invoke(
+            this,
+            type,
+            buffIndex
+        );
+    }
+}

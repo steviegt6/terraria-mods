@@ -3227,3 +3227,2217 @@ public static partial class ModPlayerHooks
         }
     }
 }
+
+public sealed partial class ModPlayerImpl : Terraria.ModLoader.ModPlayer
+{
+    public override void Initialize()
+    {
+        if (!ModPlayerHooks.Initialize.GetInvocationList().Any())
+        {
+            base.Initialize();
+            return;
+        }
+
+        ModPlayerHooks.Initialize.Invoke(
+            this
+        );
+    }
+
+    public override void ResetEffects()
+    {
+        if (!ModPlayerHooks.ResetEffects.GetInvocationList().Any())
+        {
+            base.ResetEffects();
+            return;
+        }
+
+        ModPlayerHooks.ResetEffects.Invoke(
+            this
+        );
+    }
+
+    public override void ResetInfoAccessories()
+    {
+        if (!ModPlayerHooks.ResetInfoAccessories.GetInvocationList().Any())
+        {
+            base.ResetInfoAccessories();
+            return;
+        }
+
+        ModPlayerHooks.ResetInfoAccessories.Invoke(
+            this
+        );
+    }
+
+    public override void RefreshInfoAccessoriesFromTeamPlayers(
+        Terraria.Player otherPlayer
+    )
+    {
+        if (!ModPlayerHooks.RefreshInfoAccessoriesFromTeamPlayers.GetInvocationList().Any())
+        {
+            base.RefreshInfoAccessoriesFromTeamPlayers(
+                otherPlayer
+            );
+            return;
+        }
+
+        ModPlayerHooks.RefreshInfoAccessoriesFromTeamPlayers.Invoke(
+            this,
+            otherPlayer
+        );
+    }
+
+    public override void ModifyMaxStats(
+        out Terraria.ModLoader.StatModifier health,
+        out Terraria.ModLoader.StatModifier mana
+    )
+    {
+        if (!ModPlayerHooks.ModifyMaxStats.GetInvocationList().Any())
+        {
+            base.ModifyMaxStats(
+                out health,
+                out mana
+            );
+            return;
+        }
+
+        ModPlayerHooks.ModifyMaxStats.Invoke(
+            this,
+            out health,
+            out mana
+        );
+    }
+
+    public override void UpdateDead()
+    {
+        if (!ModPlayerHooks.UpdateDead.GetInvocationList().Any())
+        {
+            base.UpdateDead();
+            return;
+        }
+
+        ModPlayerHooks.UpdateDead.Invoke(
+            this
+        );
+    }
+
+    public override void PreSaveCustomData()
+    {
+        if (!ModPlayerHooks.PreSaveCustomData.GetInvocationList().Any())
+        {
+            base.PreSaveCustomData();
+            return;
+        }
+
+        ModPlayerHooks.PreSaveCustomData.Invoke(
+            this
+        );
+    }
+
+    public override void SaveData(
+        Terraria.ModLoader.IO.TagCompound tag
+    )
+    {
+        if (!ModPlayerHooks.SaveData.GetInvocationList().Any())
+        {
+            base.SaveData(
+                tag
+            );
+            return;
+        }
+
+        ModPlayerHooks.SaveData.Invoke(
+            this,
+            tag
+        );
+    }
+
+    public override void LoadData(
+        Terraria.ModLoader.IO.TagCompound tag
+    )
+    {
+        if (!ModPlayerHooks.LoadData.GetInvocationList().Any())
+        {
+            base.LoadData(
+                tag
+            );
+            return;
+        }
+
+        ModPlayerHooks.LoadData.Invoke(
+            this,
+            tag
+        );
+    }
+
+    public override void PreSavePlayer()
+    {
+        if (!ModPlayerHooks.PreSavePlayer.GetInvocationList().Any())
+        {
+            base.PreSavePlayer();
+            return;
+        }
+
+        ModPlayerHooks.PreSavePlayer.Invoke(
+            this
+        );
+    }
+
+    public override void PostSavePlayer()
+    {
+        if (!ModPlayerHooks.PostSavePlayer.GetInvocationList().Any())
+        {
+            base.PostSavePlayer();
+            return;
+        }
+
+        ModPlayerHooks.PostSavePlayer.Invoke(
+            this
+        );
+    }
+
+    public override void CopyClientState(
+        Terraria.ModLoader.ModPlayer targetCopy
+    )
+    {
+        if (!ModPlayerHooks.CopyClientState.GetInvocationList().Any())
+        {
+            base.CopyClientState(
+                targetCopy
+            );
+            return;
+        }
+
+        ModPlayerHooks.CopyClientState.Invoke(
+            this,
+            targetCopy
+        );
+    }
+
+    public override void SyncPlayer(
+        int toWho,
+        int fromWho,
+        bool newPlayer
+    )
+    {
+        if (!ModPlayerHooks.SyncPlayer.GetInvocationList().Any())
+        {
+            base.SyncPlayer(
+                toWho,
+                fromWho,
+                newPlayer
+            );
+            return;
+        }
+
+        ModPlayerHooks.SyncPlayer.Invoke(
+            this,
+            toWho,
+            fromWho,
+            newPlayer
+        );
+    }
+
+    public override void SendClientChanges(
+        Terraria.ModLoader.ModPlayer clientPlayer
+    )
+    {
+        if (!ModPlayerHooks.SendClientChanges.GetInvocationList().Any())
+        {
+            base.SendClientChanges(
+                clientPlayer
+            );
+            return;
+        }
+
+        ModPlayerHooks.SendClientChanges.Invoke(
+            this,
+            clientPlayer
+        );
+    }
+
+    public override void UpdateBadLifeRegen()
+    {
+        if (!ModPlayerHooks.UpdateBadLifeRegen.GetInvocationList().Any())
+        {
+            base.UpdateBadLifeRegen();
+            return;
+        }
+
+        ModPlayerHooks.UpdateBadLifeRegen.Invoke(
+            this
+        );
+    }
+
+    public override void UpdateLifeRegen()
+    {
+        if (!ModPlayerHooks.UpdateLifeRegen.GetInvocationList().Any())
+        {
+            base.UpdateLifeRegen();
+            return;
+        }
+
+        ModPlayerHooks.UpdateLifeRegen.Invoke(
+            this
+        );
+    }
+
+    public override void NaturalLifeRegen(
+        ref float regen
+    )
+    {
+        if (!ModPlayerHooks.NaturalLifeRegen.GetInvocationList().Any())
+        {
+            base.NaturalLifeRegen(
+                ref regen
+            );
+            return;
+        }
+
+        ModPlayerHooks.NaturalLifeRegen.Invoke(
+            this,
+            ref regen
+        );
+    }
+
+    public override void UpdateAutopause()
+    {
+        if (!ModPlayerHooks.UpdateAutopause.GetInvocationList().Any())
+        {
+            base.UpdateAutopause();
+            return;
+        }
+
+        ModPlayerHooks.UpdateAutopause.Invoke(
+            this
+        );
+    }
+
+    public override void PreUpdate()
+    {
+        if (!ModPlayerHooks.PreUpdate.GetInvocationList().Any())
+        {
+            base.PreUpdate();
+            return;
+        }
+
+        ModPlayerHooks.PreUpdate.Invoke(
+            this
+        );
+    }
+
+    public override void ProcessTriggers(
+        Terraria.GameInput.TriggersSet triggersSet
+    )
+    {
+        if (!ModPlayerHooks.ProcessTriggers.GetInvocationList().Any())
+        {
+            base.ProcessTriggers(
+                triggersSet
+            );
+            return;
+        }
+
+        ModPlayerHooks.ProcessTriggers.Invoke(
+            this,
+            triggersSet
+        );
+    }
+
+    public override void ArmorSetBonusActivated()
+    {
+        if (!ModPlayerHooks.ArmorSetBonusActivated.GetInvocationList().Any())
+        {
+            base.ArmorSetBonusActivated();
+            return;
+        }
+
+        ModPlayerHooks.ArmorSetBonusActivated.Invoke(
+            this
+        );
+    }
+
+    public override void ArmorSetBonusHeld(
+        int holdTime
+    )
+    {
+        if (!ModPlayerHooks.ArmorSetBonusHeld.GetInvocationList().Any())
+        {
+            base.ArmorSetBonusHeld(
+                holdTime
+            );
+            return;
+        }
+
+        ModPlayerHooks.ArmorSetBonusHeld.Invoke(
+            this,
+            holdTime
+        );
+    }
+
+    public override void SetControls()
+    {
+        if (!ModPlayerHooks.SetControls.GetInvocationList().Any())
+        {
+            base.SetControls();
+            return;
+        }
+
+        ModPlayerHooks.SetControls.Invoke(
+            this
+        );
+    }
+
+    public override void PreUpdateBuffs()
+    {
+        if (!ModPlayerHooks.PreUpdateBuffs.GetInvocationList().Any())
+        {
+            base.PreUpdateBuffs();
+            return;
+        }
+
+        ModPlayerHooks.PreUpdateBuffs.Invoke(
+            this
+        );
+    }
+
+    public override void PostUpdateBuffs()
+    {
+        if (!ModPlayerHooks.PostUpdateBuffs.GetInvocationList().Any())
+        {
+            base.PostUpdateBuffs();
+            return;
+        }
+
+        ModPlayerHooks.PostUpdateBuffs.Invoke(
+            this
+        );
+    }
+
+    public override void UpdateEquips()
+    {
+        if (!ModPlayerHooks.UpdateEquips.GetInvocationList().Any())
+        {
+            base.UpdateEquips();
+            return;
+        }
+
+        ModPlayerHooks.UpdateEquips.Invoke(
+            this
+        );
+    }
+
+    public override void PostUpdateEquips()
+    {
+        if (!ModPlayerHooks.PostUpdateEquips.GetInvocationList().Any())
+        {
+            base.PostUpdateEquips();
+            return;
+        }
+
+        ModPlayerHooks.PostUpdateEquips.Invoke(
+            this
+        );
+    }
+
+    public override void UpdateVisibleAccessories()
+    {
+        if (!ModPlayerHooks.UpdateVisibleAccessories.GetInvocationList().Any())
+        {
+            base.UpdateVisibleAccessories();
+            return;
+        }
+
+        ModPlayerHooks.UpdateVisibleAccessories.Invoke(
+            this
+        );
+    }
+
+    public override void UpdateVisibleVanityAccessories()
+    {
+        if (!ModPlayerHooks.UpdateVisibleVanityAccessories.GetInvocationList().Any())
+        {
+            base.UpdateVisibleVanityAccessories();
+            return;
+        }
+
+        ModPlayerHooks.UpdateVisibleVanityAccessories.Invoke(
+            this
+        );
+    }
+
+    public override void UpdateDyes()
+    {
+        if (!ModPlayerHooks.UpdateDyes.GetInvocationList().Any())
+        {
+            base.UpdateDyes();
+            return;
+        }
+
+        ModPlayerHooks.UpdateDyes.Invoke(
+            this
+        );
+    }
+
+    public override void PostUpdateMiscEffects()
+    {
+        if (!ModPlayerHooks.PostUpdateMiscEffects.GetInvocationList().Any())
+        {
+            base.PostUpdateMiscEffects();
+            return;
+        }
+
+        ModPlayerHooks.PostUpdateMiscEffects.Invoke(
+            this
+        );
+    }
+
+    public override void PostUpdateRunSpeeds()
+    {
+        if (!ModPlayerHooks.PostUpdateRunSpeeds.GetInvocationList().Any())
+        {
+            base.PostUpdateRunSpeeds();
+            return;
+        }
+
+        ModPlayerHooks.PostUpdateRunSpeeds.Invoke(
+            this
+        );
+    }
+
+    public override void PreUpdateMovement()
+    {
+        if (!ModPlayerHooks.PreUpdateMovement.GetInvocationList().Any())
+        {
+            base.PreUpdateMovement();
+            return;
+        }
+
+        ModPlayerHooks.PreUpdateMovement.Invoke(
+            this
+        );
+    }
+
+    public override void PostUpdate()
+    {
+        if (!ModPlayerHooks.PostUpdate.GetInvocationList().Any())
+        {
+            base.PostUpdate();
+            return;
+        }
+
+        ModPlayerHooks.PostUpdate.Invoke(
+            this
+        );
+    }
+
+    public override void ModifyExtraJumpDurationMultiplier(
+        Terraria.ModLoader.ExtraJump jump,
+        ref float duration
+    )
+    {
+        if (!ModPlayerHooks.ModifyExtraJumpDurationMultiplier.GetInvocationList().Any())
+        {
+            base.ModifyExtraJumpDurationMultiplier(
+                jump,
+                ref duration
+            );
+            return;
+        }
+
+        ModPlayerHooks.ModifyExtraJumpDurationMultiplier.Invoke(
+            this,
+            jump,
+            ref duration
+        );
+    }
+
+    public override bool CanStartExtraJump(
+        Terraria.ModLoader.ExtraJump jump
+    )
+    {
+        if (!ModPlayerHooks.CanStartExtraJump.GetInvocationList().Any())
+        {
+            return base.CanStartExtraJump(
+                jump
+            );
+        }
+
+        return ModPlayerHooks.CanStartExtraJump.Invoke(
+            this,
+            jump
+        );
+    }
+
+    public override void OnExtraJumpStarted(
+        Terraria.ModLoader.ExtraJump jump,
+        ref bool playSound
+    )
+    {
+        if (!ModPlayerHooks.OnExtraJumpStarted.GetInvocationList().Any())
+        {
+            base.OnExtraJumpStarted(
+                jump,
+                ref playSound
+            );
+            return;
+        }
+
+        ModPlayerHooks.OnExtraJumpStarted.Invoke(
+            this,
+            jump,
+            ref playSound
+        );
+    }
+
+    public override void OnExtraJumpEnded(
+        Terraria.ModLoader.ExtraJump jump
+    )
+    {
+        if (!ModPlayerHooks.OnExtraJumpEnded.GetInvocationList().Any())
+        {
+            base.OnExtraJumpEnded(
+                jump
+            );
+            return;
+        }
+
+        ModPlayerHooks.OnExtraJumpEnded.Invoke(
+            this,
+            jump
+        );
+    }
+
+    public override void OnExtraJumpRefreshed(
+        Terraria.ModLoader.ExtraJump jump
+    )
+    {
+        if (!ModPlayerHooks.OnExtraJumpRefreshed.GetInvocationList().Any())
+        {
+            base.OnExtraJumpRefreshed(
+                jump
+            );
+            return;
+        }
+
+        ModPlayerHooks.OnExtraJumpRefreshed.Invoke(
+            this,
+            jump
+        );
+    }
+
+    public override void ExtraJumpVisuals(
+        Terraria.ModLoader.ExtraJump jump
+    )
+    {
+        if (!ModPlayerHooks.ExtraJumpVisuals.GetInvocationList().Any())
+        {
+            base.ExtraJumpVisuals(
+                jump
+            );
+            return;
+        }
+
+        ModPlayerHooks.ExtraJumpVisuals.Invoke(
+            this,
+            jump
+        );
+    }
+
+    public override bool CanShowExtraJumpVisuals(
+        Terraria.ModLoader.ExtraJump jump
+    )
+    {
+        if (!ModPlayerHooks.CanShowExtraJumpVisuals.GetInvocationList().Any())
+        {
+            return base.CanShowExtraJumpVisuals(
+                jump
+            );
+        }
+
+        return ModPlayerHooks.CanShowExtraJumpVisuals.Invoke(
+            this,
+            jump
+        );
+    }
+
+    public override void OnExtraJumpCleared(
+        Terraria.ModLoader.ExtraJump jump
+    )
+    {
+        if (!ModPlayerHooks.OnExtraJumpCleared.GetInvocationList().Any())
+        {
+            base.OnExtraJumpCleared(
+                jump
+            );
+            return;
+        }
+
+        ModPlayerHooks.OnExtraJumpCleared.Invoke(
+            this,
+            jump
+        );
+    }
+
+    public override void FrameEffects()
+    {
+        if (!ModPlayerHooks.FrameEffects.GetInvocationList().Any())
+        {
+            base.FrameEffects();
+            return;
+        }
+
+        ModPlayerHooks.FrameEffects.Invoke(
+            this
+        );
+    }
+
+    public override bool ImmuneTo(
+        Terraria.DataStructures.PlayerDeathReason damageSource,
+        int cooldownCounter,
+        bool dodgeable
+    )
+    {
+        if (!ModPlayerHooks.ImmuneTo.GetInvocationList().Any())
+        {
+            return base.ImmuneTo(
+                damageSource,
+                cooldownCounter,
+                dodgeable
+            );
+        }
+
+        return ModPlayerHooks.ImmuneTo.Invoke(
+            this,
+            damageSource,
+            cooldownCounter,
+            dodgeable
+        );
+    }
+
+    public override bool FreeDodge(
+        Terraria.Player.HurtInfo info
+    )
+    {
+        if (!ModPlayerHooks.FreeDodge.GetInvocationList().Any())
+        {
+            return base.FreeDodge(
+                info
+            );
+        }
+
+        return ModPlayerHooks.FreeDodge.Invoke(
+            this,
+            info
+        );
+    }
+
+    public override bool ConsumableDodge(
+        Terraria.Player.HurtInfo info
+    )
+    {
+        if (!ModPlayerHooks.ConsumableDodge.GetInvocationList().Any())
+        {
+            return base.ConsumableDodge(
+                info
+            );
+        }
+
+        return ModPlayerHooks.ConsumableDodge.Invoke(
+            this,
+            info
+        );
+    }
+
+    public override void ModifyHurt(
+        ref Terraria.Player.HurtModifiers modifiers
+    )
+    {
+        if (!ModPlayerHooks.ModifyHurt.GetInvocationList().Any())
+        {
+            base.ModifyHurt(
+                ref modifiers
+            );
+            return;
+        }
+
+        ModPlayerHooks.ModifyHurt.Invoke(
+            this,
+            ref modifiers
+        );
+    }
+
+    public override void OnHurt(
+        Terraria.Player.HurtInfo info
+    )
+    {
+        if (!ModPlayerHooks.OnHurt.GetInvocationList().Any())
+        {
+            base.OnHurt(
+                info
+            );
+            return;
+        }
+
+        ModPlayerHooks.OnHurt.Invoke(
+            this,
+            info
+        );
+    }
+
+    public override void PostHurt(
+        Terraria.Player.HurtInfo info
+    )
+    {
+        if (!ModPlayerHooks.PostHurt.GetInvocationList().Any())
+        {
+            base.PostHurt(
+                info
+            );
+            return;
+        }
+
+        ModPlayerHooks.PostHurt.Invoke(
+            this,
+            info
+        );
+    }
+
+    public override bool PreKill(
+        double damage,
+        int hitDirection,
+        bool pvp,
+        ref bool playSound,
+        ref bool genDust,
+        ref Terraria.DataStructures.PlayerDeathReason damageSource
+    )
+    {
+        if (!ModPlayerHooks.PreKill.GetInvocationList().Any())
+        {
+            return base.PreKill(
+                damage,
+                hitDirection,
+                pvp,
+                ref playSound,
+                ref genDust,
+                ref damageSource
+            );
+        }
+
+        return ModPlayerHooks.PreKill.Invoke(
+            this,
+            damage,
+            hitDirection,
+            pvp,
+            ref playSound,
+            ref genDust,
+            ref damageSource
+        );
+    }
+
+    public override void Kill(
+        double damage,
+        int hitDirection,
+        bool pvp,
+        Terraria.DataStructures.PlayerDeathReason damageSource
+    )
+    {
+        if (!ModPlayerHooks.Kill.GetInvocationList().Any())
+        {
+            base.Kill(
+                damage,
+                hitDirection,
+                pvp,
+                damageSource
+            );
+            return;
+        }
+
+        ModPlayerHooks.Kill.Invoke(
+            this,
+            damage,
+            hitDirection,
+            pvp,
+            damageSource
+        );
+    }
+
+    public override bool PreModifyLuck(
+        ref float luck
+    )
+    {
+        if (!ModPlayerHooks.PreModifyLuck.GetInvocationList().Any())
+        {
+            return base.PreModifyLuck(
+                ref luck
+            );
+        }
+
+        return ModPlayerHooks.PreModifyLuck.Invoke(
+            this,
+            ref luck
+        );
+    }
+
+    public override void ModifyLuck(
+        ref float luck
+    )
+    {
+        if (!ModPlayerHooks.ModifyLuck.GetInvocationList().Any())
+        {
+            base.ModifyLuck(
+                ref luck
+            );
+            return;
+        }
+
+        ModPlayerHooks.ModifyLuck.Invoke(
+            this,
+            ref luck
+        );
+    }
+
+    public override bool PreItemCheck()
+    {
+        if (!ModPlayerHooks.PreItemCheck.GetInvocationList().Any())
+        {
+            return base.PreItemCheck();
+        }
+
+        return ModPlayerHooks.PreItemCheck.Invoke(
+            this
+        );
+    }
+
+    public override void PostItemCheck()
+    {
+        if (!ModPlayerHooks.PostItemCheck.GetInvocationList().Any())
+        {
+            base.PostItemCheck();
+            return;
+        }
+
+        ModPlayerHooks.PostItemCheck.Invoke(
+            this
+        );
+    }
+
+    public override void GetHealLife(
+        Terraria.Item item,
+        bool quickHeal,
+        ref int healValue
+    )
+    {
+        if (!ModPlayerHooks.GetHealLife.GetInvocationList().Any())
+        {
+            base.GetHealLife(
+                item,
+                quickHeal,
+                ref healValue
+            );
+            return;
+        }
+
+        ModPlayerHooks.GetHealLife.Invoke(
+            this,
+            item,
+            quickHeal,
+            ref healValue
+        );
+    }
+
+    public override void GetHealMana(
+        Terraria.Item item,
+        bool quickHeal,
+        ref int healValue
+    )
+    {
+        if (!ModPlayerHooks.GetHealMana.GetInvocationList().Any())
+        {
+            base.GetHealMana(
+                item,
+                quickHeal,
+                ref healValue
+            );
+            return;
+        }
+
+        ModPlayerHooks.GetHealMana.Invoke(
+            this,
+            item,
+            quickHeal,
+            ref healValue
+        );
+    }
+
+    public override void ModifyManaCost(
+        Terraria.Item item,
+        ref float reduce,
+        ref float mult
+    )
+    {
+        if (!ModPlayerHooks.ModifyManaCost.GetInvocationList().Any())
+        {
+            base.ModifyManaCost(
+                item,
+                ref reduce,
+                ref mult
+            );
+            return;
+        }
+
+        ModPlayerHooks.ModifyManaCost.Invoke(
+            this,
+            item,
+            ref reduce,
+            ref mult
+        );
+    }
+
+    public override void OnMissingMana(
+        Terraria.Item item,
+        int neededMana
+    )
+    {
+        if (!ModPlayerHooks.OnMissingMana.GetInvocationList().Any())
+        {
+            base.OnMissingMana(
+                item,
+                neededMana
+            );
+            return;
+        }
+
+        ModPlayerHooks.OnMissingMana.Invoke(
+            this,
+            item,
+            neededMana
+        );
+    }
+
+    public override void OnConsumeMana(
+        Terraria.Item item,
+        int manaConsumed
+    )
+    {
+        if (!ModPlayerHooks.OnConsumeMana.GetInvocationList().Any())
+        {
+            base.OnConsumeMana(
+                item,
+                manaConsumed
+            );
+            return;
+        }
+
+        ModPlayerHooks.OnConsumeMana.Invoke(
+            this,
+            item,
+            manaConsumed
+        );
+    }
+
+    public override void ModifyWeaponDamage(
+        Terraria.Item item,
+        ref Terraria.ModLoader.StatModifier damage
+    )
+    {
+        if (!ModPlayerHooks.ModifyWeaponDamage.GetInvocationList().Any())
+        {
+            base.ModifyWeaponDamage(
+                item,
+                ref damage
+            );
+            return;
+        }
+
+        ModPlayerHooks.ModifyWeaponDamage.Invoke(
+            this,
+            item,
+            ref damage
+        );
+    }
+
+    public override void ModifyWeaponKnockback(
+        Terraria.Item item,
+        ref Terraria.ModLoader.StatModifier knockback
+    )
+    {
+        if (!ModPlayerHooks.ModifyWeaponKnockback.GetInvocationList().Any())
+        {
+            base.ModifyWeaponKnockback(
+                item,
+                ref knockback
+            );
+            return;
+        }
+
+        ModPlayerHooks.ModifyWeaponKnockback.Invoke(
+            this,
+            item,
+            ref knockback
+        );
+    }
+
+    public override void ModifyWeaponCrit(
+        Terraria.Item item,
+        ref float crit
+    )
+    {
+        if (!ModPlayerHooks.ModifyWeaponCrit.GetInvocationList().Any())
+        {
+            base.ModifyWeaponCrit(
+                item,
+                ref crit
+            );
+            return;
+        }
+
+        ModPlayerHooks.ModifyWeaponCrit.Invoke(
+            this,
+            item,
+            ref crit
+        );
+    }
+
+    public override bool CanConsumeAmmo(
+        Terraria.Item weapon,
+        Terraria.Item ammo
+    )
+    {
+        if (!ModPlayerHooks.CanConsumeAmmo.GetInvocationList().Any())
+        {
+            return base.CanConsumeAmmo(
+                weapon,
+                ammo
+            );
+        }
+
+        return ModPlayerHooks.CanConsumeAmmo.Invoke(
+            this,
+            weapon,
+            ammo
+        );
+    }
+
+    public override void OnConsumeAmmo(
+        Terraria.Item weapon,
+        Terraria.Item ammo
+    )
+    {
+        if (!ModPlayerHooks.OnConsumeAmmo.GetInvocationList().Any())
+        {
+            base.OnConsumeAmmo(
+                weapon,
+                ammo
+            );
+            return;
+        }
+
+        ModPlayerHooks.OnConsumeAmmo.Invoke(
+            this,
+            weapon,
+            ammo
+        );
+    }
+
+    public override bool CanShoot(
+        Terraria.Item item
+    )
+    {
+        if (!ModPlayerHooks.CanShoot.GetInvocationList().Any())
+        {
+            return base.CanShoot(
+                item
+            );
+        }
+
+        return ModPlayerHooks.CanShoot.Invoke(
+            this,
+            item
+        );
+    }
+
+    public override void ModifyShootStats(
+        Terraria.Item item,
+        ref Microsoft.Xna.Framework.Vector2 position,
+        ref Microsoft.Xna.Framework.Vector2 velocity,
+        ref int type,
+        ref int damage,
+        ref float knockback
+    )
+    {
+        if (!ModPlayerHooks.ModifyShootStats.GetInvocationList().Any())
+        {
+            base.ModifyShootStats(
+                item,
+                ref position,
+                ref velocity,
+                ref type,
+                ref damage,
+                ref knockback
+            );
+            return;
+        }
+
+        ModPlayerHooks.ModifyShootStats.Invoke(
+            this,
+            item,
+            ref position,
+            ref velocity,
+            ref type,
+            ref damage,
+            ref knockback
+        );
+    }
+
+    public override bool Shoot(
+        Terraria.Item item,
+        Terraria.DataStructures.EntitySource_ItemUse_WithAmmo source,
+        Microsoft.Xna.Framework.Vector2 position,
+        Microsoft.Xna.Framework.Vector2 velocity,
+        int type,
+        int damage,
+        float knockback
+    )
+    {
+        if (!ModPlayerHooks.Shoot.GetInvocationList().Any())
+        {
+            return base.Shoot(
+                item,
+                source,
+                position,
+                velocity,
+                type,
+                damage,
+                knockback
+            );
+        }
+
+        return ModPlayerHooks.Shoot.Invoke(
+            this,
+            item,
+            source,
+            position,
+            velocity,
+            type,
+            damage,
+            knockback
+        );
+    }
+
+    public override void MeleeEffects(
+        Terraria.Item item,
+        Microsoft.Xna.Framework.Rectangle hitbox
+    )
+    {
+        if (!ModPlayerHooks.MeleeEffects.GetInvocationList().Any())
+        {
+            base.MeleeEffects(
+                item,
+                hitbox
+            );
+            return;
+        }
+
+        ModPlayerHooks.MeleeEffects.Invoke(
+            this,
+            item,
+            hitbox
+        );
+    }
+
+    public override void EmitEnchantmentVisualsAt(
+        Terraria.Projectile projectile,
+        Microsoft.Xna.Framework.Vector2 boxPosition,
+        int boxWidth,
+        int boxHeight
+    )
+    {
+        if (!ModPlayerHooks.EmitEnchantmentVisualsAt.GetInvocationList().Any())
+        {
+            base.EmitEnchantmentVisualsAt(
+                projectile,
+                boxPosition,
+                boxWidth,
+                boxHeight
+            );
+            return;
+        }
+
+        ModPlayerHooks.EmitEnchantmentVisualsAt.Invoke(
+            this,
+            projectile,
+            boxPosition,
+            boxWidth,
+            boxHeight
+        );
+    }
+
+    public override void OnCatchNPC(
+        Terraria.NPC npc,
+        Terraria.Item item,
+        bool failed
+    )
+    {
+        if (!ModPlayerHooks.OnCatchNPC.GetInvocationList().Any())
+        {
+            base.OnCatchNPC(
+                npc,
+                item,
+                failed
+            );
+            return;
+        }
+
+        ModPlayerHooks.OnCatchNPC.Invoke(
+            this,
+            npc,
+            item,
+            failed
+        );
+    }
+
+    public override void ModifyItemScale(
+        Terraria.Item item,
+        ref float scale
+    )
+    {
+        if (!ModPlayerHooks.ModifyItemScale.GetInvocationList().Any())
+        {
+            base.ModifyItemScale(
+                item,
+                ref scale
+            );
+            return;
+        }
+
+        ModPlayerHooks.ModifyItemScale.Invoke(
+            this,
+            item,
+            ref scale
+        );
+    }
+
+    public override void OnHitAnything(
+        float x,
+        float y,
+        Terraria.Entity victim
+    )
+    {
+        if (!ModPlayerHooks.OnHitAnything.GetInvocationList().Any())
+        {
+            base.OnHitAnything(
+                x,
+                y,
+                victim
+            );
+            return;
+        }
+
+        ModPlayerHooks.OnHitAnything.Invoke(
+            this,
+            x,
+            y,
+            victim
+        );
+    }
+
+    public override bool CanHitNPC(
+        Terraria.NPC target
+    )
+    {
+        if (!ModPlayerHooks.CanHitNPC.GetInvocationList().Any())
+        {
+            return base.CanHitNPC(
+                target
+            );
+        }
+
+        return ModPlayerHooks.CanHitNPC.Invoke(
+            this,
+            target
+        );
+    }
+
+    public override void ModifyHitNPC(
+        Terraria.NPC target,
+        ref Terraria.NPC.HitModifiers modifiers
+    )
+    {
+        if (!ModPlayerHooks.ModifyHitNPC.GetInvocationList().Any())
+        {
+            base.ModifyHitNPC(
+                target,
+                ref modifiers
+            );
+            return;
+        }
+
+        ModPlayerHooks.ModifyHitNPC.Invoke(
+            this,
+            target,
+            ref modifiers
+        );
+    }
+
+    public override void OnHitNPC(
+        Terraria.NPC target,
+        Terraria.NPC.HitInfo hit,
+        int damageDone
+    )
+    {
+        if (!ModPlayerHooks.OnHitNPC.GetInvocationList().Any())
+        {
+            base.OnHitNPC(
+                target,
+                hit,
+                damageDone
+            );
+            return;
+        }
+
+        ModPlayerHooks.OnHitNPC.Invoke(
+            this,
+            target,
+            hit,
+            damageDone
+        );
+    }
+
+    public override void ModifyHitNPCWithItem(
+        Terraria.Item item,
+        Terraria.NPC target,
+        ref Terraria.NPC.HitModifiers modifiers
+    )
+    {
+        if (!ModPlayerHooks.ModifyHitNPCWithItem.GetInvocationList().Any())
+        {
+            base.ModifyHitNPCWithItem(
+                item,
+                target,
+                ref modifiers
+            );
+            return;
+        }
+
+        ModPlayerHooks.ModifyHitNPCWithItem.Invoke(
+            this,
+            item,
+            target,
+            ref modifiers
+        );
+    }
+
+    public override void OnHitNPCWithItem(
+        Terraria.Item item,
+        Terraria.NPC target,
+        Terraria.NPC.HitInfo hit,
+        int damageDone
+    )
+    {
+        if (!ModPlayerHooks.OnHitNPCWithItem.GetInvocationList().Any())
+        {
+            base.OnHitNPCWithItem(
+                item,
+                target,
+                hit,
+                damageDone
+            );
+            return;
+        }
+
+        ModPlayerHooks.OnHitNPCWithItem.Invoke(
+            this,
+            item,
+            target,
+            hit,
+            damageDone
+        );
+    }
+
+    public override void ModifyHitNPCWithProj(
+        Terraria.Projectile proj,
+        Terraria.NPC target,
+        ref Terraria.NPC.HitModifiers modifiers
+    )
+    {
+        if (!ModPlayerHooks.ModifyHitNPCWithProj.GetInvocationList().Any())
+        {
+            base.ModifyHitNPCWithProj(
+                proj,
+                target,
+                ref modifiers
+            );
+            return;
+        }
+
+        ModPlayerHooks.ModifyHitNPCWithProj.Invoke(
+            this,
+            proj,
+            target,
+            ref modifiers
+        );
+    }
+
+    public override void OnHitNPCWithProj(
+        Terraria.Projectile proj,
+        Terraria.NPC target,
+        Terraria.NPC.HitInfo hit,
+        int damageDone
+    )
+    {
+        if (!ModPlayerHooks.OnHitNPCWithProj.GetInvocationList().Any())
+        {
+            base.OnHitNPCWithProj(
+                proj,
+                target,
+                hit,
+                damageDone
+            );
+            return;
+        }
+
+        ModPlayerHooks.OnHitNPCWithProj.Invoke(
+            this,
+            proj,
+            target,
+            hit,
+            damageDone
+        );
+    }
+
+    public override bool CanHitPvp(
+        Terraria.Item item,
+        Terraria.Player target
+    )
+    {
+        if (!ModPlayerHooks.CanHitPvp.GetInvocationList().Any())
+        {
+            return base.CanHitPvp(
+                item,
+                target
+            );
+        }
+
+        return ModPlayerHooks.CanHitPvp.Invoke(
+            this,
+            item,
+            target
+        );
+    }
+
+    public override bool CanHitPvpWithProj(
+        Terraria.Projectile proj,
+        Terraria.Player target
+    )
+    {
+        if (!ModPlayerHooks.CanHitPvpWithProj.GetInvocationList().Any())
+        {
+            return base.CanHitPvpWithProj(
+                proj,
+                target
+            );
+        }
+
+        return ModPlayerHooks.CanHitPvpWithProj.Invoke(
+            this,
+            proj,
+            target
+        );
+    }
+
+    public override bool CanBeHitByNPC(
+        Terraria.NPC npc,
+        ref int cooldownSlot
+    )
+    {
+        if (!ModPlayerHooks.CanBeHitByNPC.GetInvocationList().Any())
+        {
+            return base.CanBeHitByNPC(
+                npc,
+                ref cooldownSlot
+            );
+        }
+
+        return ModPlayerHooks.CanBeHitByNPC.Invoke(
+            this,
+            npc,
+            ref cooldownSlot
+        );
+    }
+
+    public override void ModifyHitByNPC(
+        Terraria.NPC npc,
+        ref Terraria.Player.HurtModifiers modifiers
+    )
+    {
+        if (!ModPlayerHooks.ModifyHitByNPC.GetInvocationList().Any())
+        {
+            base.ModifyHitByNPC(
+                npc,
+                ref modifiers
+            );
+            return;
+        }
+
+        ModPlayerHooks.ModifyHitByNPC.Invoke(
+            this,
+            npc,
+            ref modifiers
+        );
+    }
+
+    public override void OnHitByNPC(
+        Terraria.NPC npc,
+        Terraria.Player.HurtInfo hurtInfo
+    )
+    {
+        if (!ModPlayerHooks.OnHitByNPC.GetInvocationList().Any())
+        {
+            base.OnHitByNPC(
+                npc,
+                hurtInfo
+            );
+            return;
+        }
+
+        ModPlayerHooks.OnHitByNPC.Invoke(
+            this,
+            npc,
+            hurtInfo
+        );
+    }
+
+    public override bool CanBeHitByProjectile(
+        Terraria.Projectile proj
+    )
+    {
+        if (!ModPlayerHooks.CanBeHitByProjectile.GetInvocationList().Any())
+        {
+            return base.CanBeHitByProjectile(
+                proj
+            );
+        }
+
+        return ModPlayerHooks.CanBeHitByProjectile.Invoke(
+            this,
+            proj
+        );
+    }
+
+    public override void ModifyHitByProjectile(
+        Terraria.Projectile proj,
+        ref Terraria.Player.HurtModifiers modifiers
+    )
+    {
+        if (!ModPlayerHooks.ModifyHitByProjectile.GetInvocationList().Any())
+        {
+            base.ModifyHitByProjectile(
+                proj,
+                ref modifiers
+            );
+            return;
+        }
+
+        ModPlayerHooks.ModifyHitByProjectile.Invoke(
+            this,
+            proj,
+            ref modifiers
+        );
+    }
+
+    public override void OnHitByProjectile(
+        Terraria.Projectile proj,
+        Terraria.Player.HurtInfo hurtInfo
+    )
+    {
+        if (!ModPlayerHooks.OnHitByProjectile.GetInvocationList().Any())
+        {
+            base.OnHitByProjectile(
+                proj,
+                hurtInfo
+            );
+            return;
+        }
+
+        ModPlayerHooks.OnHitByProjectile.Invoke(
+            this,
+            proj,
+            hurtInfo
+        );
+    }
+
+    public override void ModifyFishingAttempt(
+        ref Terraria.DataStructures.FishingAttempt attempt
+    )
+    {
+        if (!ModPlayerHooks.ModifyFishingAttempt.GetInvocationList().Any())
+        {
+            base.ModifyFishingAttempt(
+                ref attempt
+            );
+            return;
+        }
+
+        ModPlayerHooks.ModifyFishingAttempt.Invoke(
+            this,
+            ref attempt
+        );
+    }
+
+    public override void CatchFish(
+        Terraria.DataStructures.FishingAttempt attempt,
+        ref int itemDrop,
+        ref int npcSpawn,
+        ref Terraria.AdvancedPopupRequest sonar,
+        ref Microsoft.Xna.Framework.Vector2 sonarPosition
+    )
+    {
+        if (!ModPlayerHooks.CatchFish.GetInvocationList().Any())
+        {
+            base.CatchFish(
+                attempt,
+                ref itemDrop,
+                ref npcSpawn,
+                ref sonar,
+                ref sonarPosition
+            );
+            return;
+        }
+
+        ModPlayerHooks.CatchFish.Invoke(
+            this,
+            attempt,
+            ref itemDrop,
+            ref npcSpawn,
+            ref sonar,
+            ref sonarPosition
+        );
+    }
+
+    public override void ModifyCaughtFish(
+        Terraria.Item fish
+    )
+    {
+        if (!ModPlayerHooks.ModifyCaughtFish.GetInvocationList().Any())
+        {
+            base.ModifyCaughtFish(
+                fish
+            );
+            return;
+        }
+
+        ModPlayerHooks.ModifyCaughtFish.Invoke(
+            this,
+            fish
+        );
+    }
+
+    public override void GetFishingLevel(
+        Terraria.Item fishingRod,
+        Terraria.Item bait,
+        ref float fishingLevel
+    )
+    {
+        if (!ModPlayerHooks.GetFishingLevel.GetInvocationList().Any())
+        {
+            base.GetFishingLevel(
+                fishingRod,
+                bait,
+                ref fishingLevel
+            );
+            return;
+        }
+
+        ModPlayerHooks.GetFishingLevel.Invoke(
+            this,
+            fishingRod,
+            bait,
+            ref fishingLevel
+        );
+    }
+
+    public override void AnglerQuestReward(
+        float rareMultiplier,
+        System.Collections.Generic.List<Terraria.Item> rewardItems
+    )
+    {
+        if (!ModPlayerHooks.AnglerQuestReward.GetInvocationList().Any())
+        {
+            base.AnglerQuestReward(
+                rareMultiplier,
+                rewardItems
+            );
+            return;
+        }
+
+        ModPlayerHooks.AnglerQuestReward.Invoke(
+            this,
+            rareMultiplier,
+            rewardItems
+        );
+    }
+
+    public override void GetDyeTraderReward(
+        System.Collections.Generic.List<int> rewardPool
+    )
+    {
+        if (!ModPlayerHooks.GetDyeTraderReward.GetInvocationList().Any())
+        {
+            base.GetDyeTraderReward(
+                rewardPool
+            );
+            return;
+        }
+
+        ModPlayerHooks.GetDyeTraderReward.Invoke(
+            this,
+            rewardPool
+        );
+    }
+
+    public override void DrawEffects(
+        Terraria.DataStructures.PlayerDrawSet drawInfo,
+        ref float r,
+        ref float g,
+        ref float b,
+        ref float a,
+        ref bool fullBright
+    )
+    {
+        if (!ModPlayerHooks.DrawEffects.GetInvocationList().Any())
+        {
+            base.DrawEffects(
+                drawInfo,
+                ref r,
+                ref g,
+                ref b,
+                ref a,
+                ref fullBright
+            );
+            return;
+        }
+
+        ModPlayerHooks.DrawEffects.Invoke(
+            this,
+            drawInfo,
+            ref r,
+            ref g,
+            ref b,
+            ref a,
+            ref fullBright
+        );
+    }
+
+    public override void ModifyDrawInfo(
+        ref Terraria.DataStructures.PlayerDrawSet drawInfo
+    )
+    {
+        if (!ModPlayerHooks.ModifyDrawInfo.GetInvocationList().Any())
+        {
+            base.ModifyDrawInfo(
+                ref drawInfo
+            );
+            return;
+        }
+
+        ModPlayerHooks.ModifyDrawInfo.Invoke(
+            this,
+            ref drawInfo
+        );
+    }
+
+    public override void ModifyDrawLayerOrdering(
+        System.Collections.Generic.IDictionary<Terraria.ModLoader.PlayerDrawLayer, Terraria.ModLoader.PlayerDrawLayer.Position> positions
+    )
+    {
+        if (!ModPlayerHooks.ModifyDrawLayerOrdering.GetInvocationList().Any())
+        {
+            base.ModifyDrawLayerOrdering(
+                positions
+            );
+            return;
+        }
+
+        ModPlayerHooks.ModifyDrawLayerOrdering.Invoke(
+            this,
+            positions
+        );
+    }
+
+    public override void HideDrawLayers(
+        Terraria.DataStructures.PlayerDrawSet drawInfo
+    )
+    {
+        if (!ModPlayerHooks.HideDrawLayers.GetInvocationList().Any())
+        {
+            base.HideDrawLayers(
+                drawInfo
+            );
+            return;
+        }
+
+        ModPlayerHooks.HideDrawLayers.Invoke(
+            this,
+            drawInfo
+        );
+    }
+
+    public override void ModifyScreenPosition()
+    {
+        if (!ModPlayerHooks.ModifyScreenPosition.GetInvocationList().Any())
+        {
+            base.ModifyScreenPosition();
+            return;
+        }
+
+        ModPlayerHooks.ModifyScreenPosition.Invoke(
+            this
+        );
+    }
+
+    public override void ModifyZoom(
+        ref float zoom
+    )
+    {
+        if (!ModPlayerHooks.ModifyZoom.GetInvocationList().Any())
+        {
+            base.ModifyZoom(
+                ref zoom
+            );
+            return;
+        }
+
+        ModPlayerHooks.ModifyZoom.Invoke(
+            this,
+            ref zoom
+        );
+    }
+
+    public override void PlayerConnect()
+    {
+        if (!ModPlayerHooks.PlayerConnect.GetInvocationList().Any())
+        {
+            base.PlayerConnect();
+            return;
+        }
+
+        ModPlayerHooks.PlayerConnect.Invoke(
+            this
+        );
+    }
+
+    public override void PlayerDisconnect()
+    {
+        if (!ModPlayerHooks.PlayerDisconnect.GetInvocationList().Any())
+        {
+            base.PlayerDisconnect();
+            return;
+        }
+
+        ModPlayerHooks.PlayerDisconnect.Invoke(
+            this
+        );
+    }
+
+    public override void OnEnterWorld()
+    {
+        if (!ModPlayerHooks.OnEnterWorld.GetInvocationList().Any())
+        {
+            base.OnEnterWorld();
+            return;
+        }
+
+        ModPlayerHooks.OnEnterWorld.Invoke(
+            this
+        );
+    }
+
+    public override void OnRespawn()
+    {
+        if (!ModPlayerHooks.OnRespawn.GetInvocationList().Any())
+        {
+            base.OnRespawn();
+            return;
+        }
+
+        ModPlayerHooks.OnRespawn.Invoke(
+            this
+        );
+    }
+
+    public override bool ShiftClickSlot(
+        Terraria.Item[] inventory,
+        int context,
+        int slot
+    )
+    {
+        if (!ModPlayerHooks.ShiftClickSlot.GetInvocationList().Any())
+        {
+            return base.ShiftClickSlot(
+                inventory,
+                context,
+                slot
+            );
+        }
+
+        return ModPlayerHooks.ShiftClickSlot.Invoke(
+            this,
+            inventory,
+            context,
+            slot
+        );
+    }
+
+    public override bool HoverSlot(
+        Terraria.Item[] inventory,
+        int context,
+        int slot
+    )
+    {
+        if (!ModPlayerHooks.HoverSlot.GetInvocationList().Any())
+        {
+            return base.HoverSlot(
+                inventory,
+                context,
+                slot
+            );
+        }
+
+        return ModPlayerHooks.HoverSlot.Invoke(
+            this,
+            inventory,
+            context,
+            slot
+        );
+    }
+
+    public override void PostSellItem(
+        Terraria.NPC vendor,
+        Terraria.Item[] shopInventory,
+        Terraria.Item item
+    )
+    {
+        if (!ModPlayerHooks.PostSellItem.GetInvocationList().Any())
+        {
+            base.PostSellItem(
+                vendor,
+                shopInventory,
+                item
+            );
+            return;
+        }
+
+        ModPlayerHooks.PostSellItem.Invoke(
+            this,
+            vendor,
+            shopInventory,
+            item
+        );
+    }
+
+    public override bool CanSellItem(
+        Terraria.NPC vendor,
+        Terraria.Item[] shopInventory,
+        Terraria.Item item
+    )
+    {
+        if (!ModPlayerHooks.CanSellItem.GetInvocationList().Any())
+        {
+            return base.CanSellItem(
+                vendor,
+                shopInventory,
+                item
+            );
+        }
+
+        return ModPlayerHooks.CanSellItem.Invoke(
+            this,
+            vendor,
+            shopInventory,
+            item
+        );
+    }
+
+    public override void PostBuyItem(
+        Terraria.NPC vendor,
+        Terraria.Item[] shopInventory,
+        Terraria.Item item
+    )
+    {
+        if (!ModPlayerHooks.PostBuyItem.GetInvocationList().Any())
+        {
+            base.PostBuyItem(
+                vendor,
+                shopInventory,
+                item
+            );
+            return;
+        }
+
+        ModPlayerHooks.PostBuyItem.Invoke(
+            this,
+            vendor,
+            shopInventory,
+            item
+        );
+    }
+
+    public override bool CanBuyItem(
+        Terraria.NPC vendor,
+        Terraria.Item[] shopInventory,
+        Terraria.Item item
+    )
+    {
+        if (!ModPlayerHooks.CanBuyItem.GetInvocationList().Any())
+        {
+            return base.CanBuyItem(
+                vendor,
+                shopInventory,
+                item
+            );
+        }
+
+        return ModPlayerHooks.CanBuyItem.Invoke(
+            this,
+            vendor,
+            shopInventory,
+            item
+        );
+    }
+
+    public override bool CanUseItem(
+        Terraria.Item item
+    )
+    {
+        if (!ModPlayerHooks.CanUseItem.GetInvocationList().Any())
+        {
+            return base.CanUseItem(
+                item
+            );
+        }
+
+        return ModPlayerHooks.CanUseItem.Invoke(
+            this,
+            item
+        );
+    }
+
+    public override bool ModifyNurseHeal(
+        Terraria.NPC nurse,
+        ref int health,
+        ref bool removeDebuffs,
+        ref string chatText
+    )
+    {
+        if (!ModPlayerHooks.ModifyNurseHeal.GetInvocationList().Any())
+        {
+            return base.ModifyNurseHeal(
+                nurse,
+                ref health,
+                ref removeDebuffs,
+                ref chatText
+            );
+        }
+
+        return ModPlayerHooks.ModifyNurseHeal.Invoke(
+            this,
+            nurse,
+            ref health,
+            ref removeDebuffs,
+            ref chatText
+        );
+    }
+
+    public override void ModifyNursePrice(
+        Terraria.NPC nurse,
+        int health,
+        bool removeDebuffs,
+        ref int price
+    )
+    {
+        if (!ModPlayerHooks.ModifyNursePrice.GetInvocationList().Any())
+        {
+            base.ModifyNursePrice(
+                nurse,
+                health,
+                removeDebuffs,
+                ref price
+            );
+            return;
+        }
+
+        ModPlayerHooks.ModifyNursePrice.Invoke(
+            this,
+            nurse,
+            health,
+            removeDebuffs,
+            ref price
+        );
+    }
+
+    public override void PostNurseHeal(
+        Terraria.NPC nurse,
+        int health,
+        bool removeDebuffs,
+        int price
+    )
+    {
+        if (!ModPlayerHooks.PostNurseHeal.GetInvocationList().Any())
+        {
+            base.PostNurseHeal(
+                nurse,
+                health,
+                removeDebuffs,
+                price
+            );
+            return;
+        }
+
+        ModPlayerHooks.PostNurseHeal.Invoke(
+            this,
+            nurse,
+            health,
+            removeDebuffs,
+            price
+        );
+    }
+
+    public override void ModifyStartingInventory(
+        System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.List<Terraria.Item>> itemsByMod,
+        bool mediumCoreDeath
+    )
+    {
+        if (!ModPlayerHooks.ModifyStartingInventory.GetInvocationList().Any())
+        {
+            base.ModifyStartingInventory(
+                itemsByMod,
+                mediumCoreDeath
+            );
+            return;
+        }
+
+        ModPlayerHooks.ModifyStartingInventory.Invoke(
+            this,
+            itemsByMod,
+            mediumCoreDeath
+        );
+    }
+
+    public override bool OnPickup(
+        Terraria.Item item
+    )
+    {
+        if (!ModPlayerHooks.OnPickup.GetInvocationList().Any())
+        {
+            return base.OnPickup(
+                item
+            );
+        }
+
+        return ModPlayerHooks.OnPickup.Invoke(
+            this,
+            item
+        );
+    }
+}

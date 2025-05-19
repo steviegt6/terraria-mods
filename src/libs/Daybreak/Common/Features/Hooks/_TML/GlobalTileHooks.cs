@@ -925,3 +925,676 @@ public static partial class GlobalTileHooks
         }
     }
 }
+
+public sealed partial class GlobalTileImpl : Terraria.ModLoader.GlobalTile
+{
+    public override void DropCritterChance(
+        int i,
+        int j,
+        int type,
+        ref int wormChance,
+        ref int grassHopperChance,
+        ref int jungleGrubChance
+    )
+    {
+        if (!GlobalTileHooks.DropCritterChance.GetInvocationList().Any())
+        {
+            base.DropCritterChance(
+                i,
+                j,
+                type,
+                ref wormChance,
+                ref grassHopperChance,
+                ref jungleGrubChance
+            );
+            return;
+        }
+
+        GlobalTileHooks.DropCritterChance.Invoke(
+            this,
+            i,
+            j,
+            type,
+            ref wormChance,
+            ref grassHopperChance,
+            ref jungleGrubChance
+        );
+    }
+
+    public override bool CanDrop(
+        int i,
+        int j,
+        int type
+    )
+    {
+        if (!GlobalTileHooks.CanDrop.GetInvocationList().Any())
+        {
+            return base.CanDrop(
+                i,
+                j,
+                type
+            );
+        }
+
+        return GlobalTileHooks.CanDrop.Invoke(
+            this,
+            i,
+            j,
+            type
+        );
+    }
+
+    public override void Drop(
+        int i,
+        int j,
+        int type
+    )
+    {
+        if (!GlobalTileHooks.Drop.GetInvocationList().Any())
+        {
+            base.Drop(
+                i,
+                j,
+                type
+            );
+            return;
+        }
+
+        GlobalTileHooks.Drop.Invoke(
+            this,
+            i,
+            j,
+            type
+        );
+    }
+
+    public override bool CanKillTile(
+        int i,
+        int j,
+        int type,
+        ref bool blockDamaged
+    )
+    {
+        if (!GlobalTileHooks.CanKillTile.GetInvocationList().Any())
+        {
+            return base.CanKillTile(
+                i,
+                j,
+                type,
+                ref blockDamaged
+            );
+        }
+
+        return GlobalTileHooks.CanKillTile.Invoke(
+            this,
+            i,
+            j,
+            type,
+            ref blockDamaged
+        );
+    }
+
+    public override void KillTile(
+        int i,
+        int j,
+        int type,
+        ref bool fail,
+        ref bool effectOnly,
+        ref bool noItem
+    )
+    {
+        if (!GlobalTileHooks.KillTile.GetInvocationList().Any())
+        {
+            base.KillTile(
+                i,
+                j,
+                type,
+                ref fail,
+                ref effectOnly,
+                ref noItem
+            );
+            return;
+        }
+
+        GlobalTileHooks.KillTile.Invoke(
+            this,
+            i,
+            j,
+            type,
+            ref fail,
+            ref effectOnly,
+            ref noItem
+        );
+    }
+
+    public override void NearbyEffects(
+        int i,
+        int j,
+        int type,
+        bool closer
+    )
+    {
+        if (!GlobalTileHooks.NearbyEffects.GetInvocationList().Any())
+        {
+            base.NearbyEffects(
+                i,
+                j,
+                type,
+                closer
+            );
+            return;
+        }
+
+        GlobalTileHooks.NearbyEffects.Invoke(
+            this,
+            i,
+            j,
+            type,
+            closer
+        );
+    }
+
+    public override bool? IsTileDangerous(
+        int i,
+        int j,
+        int type,
+        Terraria.Player player
+    )
+    {
+        if (!GlobalTileHooks.IsTileDangerous.GetInvocationList().Any())
+        {
+            return base.IsTileDangerous(
+                i,
+                j,
+                type,
+                player
+            );
+        }
+
+        return GlobalTileHooks.IsTileDangerous.Invoke(
+            this,
+            i,
+            j,
+            type,
+            player
+        );
+    }
+
+    public override bool? IsTileBiomeSightable(
+        int i,
+        int j,
+        int type,
+        ref Microsoft.Xna.Framework.Color sightColor
+    )
+    {
+        if (!GlobalTileHooks.IsTileBiomeSightable.GetInvocationList().Any())
+        {
+            return base.IsTileBiomeSightable(
+                i,
+                j,
+                type,
+                ref sightColor
+            );
+        }
+
+        return GlobalTileHooks.IsTileBiomeSightable.Invoke(
+            this,
+            i,
+            j,
+            type,
+            ref sightColor
+        );
+    }
+
+    public override bool? IsTileSpelunkable(
+        int i,
+        int j,
+        int type
+    )
+    {
+        if (!GlobalTileHooks.IsTileSpelunkable.GetInvocationList().Any())
+        {
+            return base.IsTileSpelunkable(
+                i,
+                j,
+                type
+            );
+        }
+
+        return GlobalTileHooks.IsTileSpelunkable.Invoke(
+            this,
+            i,
+            j,
+            type
+        );
+    }
+
+    public override void SetSpriteEffects(
+        int i,
+        int j,
+        int type,
+        ref Microsoft.Xna.Framework.Graphics.SpriteEffects spriteEffects
+    )
+    {
+        if (!GlobalTileHooks.SetSpriteEffects.GetInvocationList().Any())
+        {
+            base.SetSpriteEffects(
+                i,
+                j,
+                type,
+                ref spriteEffects
+            );
+            return;
+        }
+
+        GlobalTileHooks.SetSpriteEffects.Invoke(
+            this,
+            i,
+            j,
+            type,
+            ref spriteEffects
+        );
+    }
+
+    public override void AnimateTile()
+    {
+        if (!GlobalTileHooks.AnimateTile.GetInvocationList().Any())
+        {
+            base.AnimateTile();
+            return;
+        }
+
+        GlobalTileHooks.AnimateTile.Invoke(
+            this
+        );
+    }
+
+    public override void DrawEffects(
+        int i,
+        int j,
+        int type,
+        Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch,
+        ref Terraria.DataStructures.TileDrawInfo drawData
+    )
+    {
+        if (!GlobalTileHooks.DrawEffects.GetInvocationList().Any())
+        {
+            base.DrawEffects(
+                i,
+                j,
+                type,
+                spriteBatch,
+                ref drawData
+            );
+            return;
+        }
+
+        GlobalTileHooks.DrawEffects.Invoke(
+            this,
+            i,
+            j,
+            type,
+            spriteBatch,
+            ref drawData
+        );
+    }
+
+    public override void EmitParticles(
+        int i,
+        int j,
+        Terraria.Tile tileCache,
+        ushort typeCache,
+        short tileFrameX,
+        short tileFrameY,
+        Microsoft.Xna.Framework.Color tileLight,
+        bool visible
+    )
+    {
+        if (!GlobalTileHooks.EmitParticles.GetInvocationList().Any())
+        {
+            base.EmitParticles(
+                i,
+                j,
+                tileCache,
+                typeCache,
+                tileFrameX,
+                tileFrameY,
+                tileLight,
+                visible
+            );
+            return;
+        }
+
+        GlobalTileHooks.EmitParticles.Invoke(
+            this,
+            i,
+            j,
+            tileCache,
+            typeCache,
+            tileFrameX,
+            tileFrameY,
+            tileLight,
+            visible
+        );
+    }
+
+    public override void SpecialDraw(
+        int i,
+        int j,
+        int type,
+        Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch
+    )
+    {
+        if (!GlobalTileHooks.SpecialDraw.GetInvocationList().Any())
+        {
+            base.SpecialDraw(
+                i,
+                j,
+                type,
+                spriteBatch
+            );
+            return;
+        }
+
+        GlobalTileHooks.SpecialDraw.Invoke(
+            this,
+            i,
+            j,
+            type,
+            spriteBatch
+        );
+    }
+
+    public override bool TileFrame(
+        int i,
+        int j,
+        int type,
+        ref bool resetFrame,
+        ref bool noBreak
+    )
+    {
+        if (!GlobalTileHooks.TileFrame.GetInvocationList().Any())
+        {
+            return base.TileFrame(
+                i,
+                j,
+                type,
+                ref resetFrame,
+                ref noBreak
+            );
+        }
+
+        return GlobalTileHooks.TileFrame.Invoke(
+            this,
+            i,
+            j,
+            type,
+            ref resetFrame,
+            ref noBreak
+        );
+    }
+
+    public override int[] AdjTiles(
+        int type
+    )
+    {
+        if (!GlobalTileHooks.AdjTiles.GetInvocationList().Any())
+        {
+            return base.AdjTiles(
+                type
+            );
+        }
+
+        return GlobalTileHooks.AdjTiles.Invoke(
+            this,
+            type
+        );
+    }
+
+    public override void RightClick(
+        int i,
+        int j,
+        int type
+    )
+    {
+        if (!GlobalTileHooks.RightClick.GetInvocationList().Any())
+        {
+            base.RightClick(
+                i,
+                j,
+                type
+            );
+            return;
+        }
+
+        GlobalTileHooks.RightClick.Invoke(
+            this,
+            i,
+            j,
+            type
+        );
+    }
+
+    public override void MouseOver(
+        int i,
+        int j,
+        int type
+    )
+    {
+        if (!GlobalTileHooks.MouseOver.GetInvocationList().Any())
+        {
+            base.MouseOver(
+                i,
+                j,
+                type
+            );
+            return;
+        }
+
+        GlobalTileHooks.MouseOver.Invoke(
+            this,
+            i,
+            j,
+            type
+        );
+    }
+
+    public override void MouseOverFar(
+        int i,
+        int j,
+        int type
+    )
+    {
+        if (!GlobalTileHooks.MouseOverFar.GetInvocationList().Any())
+        {
+            base.MouseOverFar(
+                i,
+                j,
+                type
+            );
+            return;
+        }
+
+        GlobalTileHooks.MouseOverFar.Invoke(
+            this,
+            i,
+            j,
+            type
+        );
+    }
+
+    public override bool PreHitWire(
+        int i,
+        int j,
+        int type
+    )
+    {
+        if (!GlobalTileHooks.PreHitWire.GetInvocationList().Any())
+        {
+            return base.PreHitWire(
+                i,
+                j,
+                type
+            );
+        }
+
+        return GlobalTileHooks.PreHitWire.Invoke(
+            this,
+            i,
+            j,
+            type
+        );
+    }
+
+    public override void HitWire(
+        int i,
+        int j,
+        int type
+    )
+    {
+        if (!GlobalTileHooks.HitWire.GetInvocationList().Any())
+        {
+            base.HitWire(
+                i,
+                j,
+                type
+            );
+            return;
+        }
+
+        GlobalTileHooks.HitWire.Invoke(
+            this,
+            i,
+            j,
+            type
+        );
+    }
+
+    public override void FloorVisuals(
+        int type,
+        Terraria.Player player
+    )
+    {
+        if (!GlobalTileHooks.FloorVisuals.GetInvocationList().Any())
+        {
+            base.FloorVisuals(
+                type,
+                player
+            );
+            return;
+        }
+
+        GlobalTileHooks.FloorVisuals.Invoke(
+            this,
+            type,
+            player
+        );
+    }
+
+    public override void ChangeWaterfallStyle(
+        int type,
+        ref int style
+    )
+    {
+        if (!GlobalTileHooks.ChangeWaterfallStyle.GetInvocationList().Any())
+        {
+            base.ChangeWaterfallStyle(
+                type,
+                ref style
+            );
+            return;
+        }
+
+        GlobalTileHooks.ChangeWaterfallStyle.Invoke(
+            this,
+            type,
+            ref style
+        );
+    }
+
+    public override bool CanReplace(
+        int i,
+        int j,
+        int type,
+        int tileTypeBeingPlaced
+    )
+    {
+        if (!GlobalTileHooks.CanReplace.GetInvocationList().Any())
+        {
+            return base.CanReplace(
+                i,
+                j,
+                type,
+                tileTypeBeingPlaced
+            );
+        }
+
+        return GlobalTileHooks.CanReplace.Invoke(
+            this,
+            i,
+            j,
+            type,
+            tileTypeBeingPlaced
+        );
+    }
+
+    public override void PostSetupTileMerge()
+    {
+        if (!GlobalTileHooks.PostSetupTileMerge.GetInvocationList().Any())
+        {
+            base.PostSetupTileMerge();
+            return;
+        }
+
+        GlobalTileHooks.PostSetupTileMerge.Invoke(
+            this
+        );
+    }
+
+    public override void PreShakeTree(
+        int x,
+        int y,
+        Terraria.Enums.TreeTypes treeType
+    )
+    {
+        if (!GlobalTileHooks.PreShakeTree.GetInvocationList().Any())
+        {
+            base.PreShakeTree(
+                x,
+                y,
+                treeType
+            );
+            return;
+        }
+
+        GlobalTileHooks.PreShakeTree.Invoke(
+            this,
+            x,
+            y,
+            treeType
+        );
+    }
+
+    public override bool ShakeTree(
+        int x,
+        int y,
+        Terraria.Enums.TreeTypes treeType
+    )
+    {
+        if (!GlobalTileHooks.ShakeTree.GetInvocationList().Any())
+        {
+            return base.ShakeTree(
+                x,
+                y,
+                treeType
+            );
+        }
+
+        return GlobalTileHooks.ShakeTree.Invoke(
+            this,
+            x,
+            y,
+            treeType
+        );
+    }
+}

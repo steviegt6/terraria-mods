@@ -276,3 +276,154 @@ public static partial class GlobalPylonHooks
         }
     }
 }
+
+public sealed partial class GlobalPylonImpl : Terraria.ModLoader.GlobalPylon
+{
+    public override bool PreDrawMapIcon(
+        ref Terraria.Map.MapOverlayDrawContext context,
+        ref string mouseOverText,
+        ref Terraria.GameContent.TeleportPylonInfo pylonInfo,
+        ref bool isNearPylon,
+        ref Microsoft.Xna.Framework.Color drawColor,
+        ref float deselectedScale,
+        ref float selectedScale
+    )
+    {
+        if (!GlobalPylonHooks.PreDrawMapIcon.GetInvocationList().Any())
+        {
+            return base.PreDrawMapIcon(
+                ref context,
+                ref mouseOverText,
+                ref pylonInfo,
+                ref isNearPylon,
+                ref drawColor,
+                ref deselectedScale,
+                ref selectedScale
+            );
+        }
+
+        return GlobalPylonHooks.PreDrawMapIcon.Invoke(
+            this,
+            ref context,
+            ref mouseOverText,
+            ref pylonInfo,
+            ref isNearPylon,
+            ref drawColor,
+            ref deselectedScale,
+            ref selectedScale
+        );
+    }
+
+    public override bool? PreCanPlacePylon(
+        int x,
+        int y,
+        int tileType,
+        Terraria.GameContent.TeleportPylonType pylonType
+    )
+    {
+        if (!GlobalPylonHooks.PreCanPlacePylon.GetInvocationList().Any())
+        {
+            return base.PreCanPlacePylon(
+                x,
+                y,
+                tileType,
+                pylonType
+            );
+        }
+
+        return GlobalPylonHooks.PreCanPlacePylon.Invoke(
+            this,
+            x,
+            y,
+            tileType,
+            pylonType
+        );
+    }
+
+    public override bool? ValidTeleportCheck_PreNPCCount(
+        Terraria.GameContent.TeleportPylonInfo pylonInfo,
+        ref int defaultNecessaryNPCCount
+    )
+    {
+        if (!GlobalPylonHooks.ValidTeleportCheck_PreNPCCount.GetInvocationList().Any())
+        {
+            return base.ValidTeleportCheck_PreNPCCount(
+                pylonInfo,
+                ref defaultNecessaryNPCCount
+            );
+        }
+
+        return GlobalPylonHooks.ValidTeleportCheck_PreNPCCount.Invoke(
+            this,
+            pylonInfo,
+            ref defaultNecessaryNPCCount
+        );
+    }
+
+    public override bool? ValidTeleportCheck_PreAnyDanger(
+        Terraria.GameContent.TeleportPylonInfo pylonInfo
+    )
+    {
+        if (!GlobalPylonHooks.ValidTeleportCheck_PreAnyDanger.GetInvocationList().Any())
+        {
+            return base.ValidTeleportCheck_PreAnyDanger(
+                pylonInfo
+            );
+        }
+
+        return GlobalPylonHooks.ValidTeleportCheck_PreAnyDanger.Invoke(
+            this,
+            pylonInfo
+        );
+    }
+
+    public override bool? ValidTeleportCheck_PreBiomeRequirements(
+        Terraria.GameContent.TeleportPylonInfo pylonInfo,
+        Terraria.SceneMetrics sceneData
+    )
+    {
+        if (!GlobalPylonHooks.ValidTeleportCheck_PreBiomeRequirements.GetInvocationList().Any())
+        {
+            return base.ValidTeleportCheck_PreBiomeRequirements(
+                pylonInfo,
+                sceneData
+            );
+        }
+
+        return GlobalPylonHooks.ValidTeleportCheck_PreBiomeRequirements.Invoke(
+            this,
+            pylonInfo,
+            sceneData
+        );
+    }
+
+    public override void PostValidTeleportCheck(
+        Terraria.GameContent.TeleportPylonInfo destinationPylonInfo,
+        Terraria.GameContent.TeleportPylonInfo nearbyPylonInfo,
+        ref bool destinationPylonValid,
+        ref bool validNearbyPylonFound,
+        ref string errorKey
+    )
+    {
+        if (!GlobalPylonHooks.PostValidTeleportCheck.GetInvocationList().Any())
+        {
+            base.PostValidTeleportCheck(
+                destinationPylonInfo,
+                nearbyPylonInfo,
+                ref destinationPylonValid,
+                ref validNearbyPylonFound,
+                ref errorKey
+            );
+            return;
+        }
+
+        GlobalPylonHooks.PostValidTeleportCheck.Invoke(
+            this,
+            destinationPylonInfo,
+            nearbyPylonInfo,
+            ref destinationPylonValid,
+            ref validNearbyPylonFound,
+            ref errorKey
+        );
+    }
+}

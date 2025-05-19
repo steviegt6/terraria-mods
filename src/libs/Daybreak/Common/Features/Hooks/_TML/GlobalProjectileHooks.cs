@@ -887,3 +887,649 @@ public static partial class GlobalProjectileHooks
         }
     }
 }
+
+public sealed partial class GlobalProjectileImpl : Terraria.ModLoader.GlobalProjectile
+{
+    public override void OnSpawn(
+        Terraria.Projectile projectile,
+        Terraria.DataStructures.IEntitySource source
+    )
+    {
+        if (!GlobalProjectileHooks.OnSpawn.GetInvocationList().Any())
+        {
+            base.OnSpawn(
+                projectile,
+                source
+            );
+            return;
+        }
+
+        GlobalProjectileHooks.OnSpawn.Invoke(
+            this,
+            projectile,
+            source
+        );
+    }
+
+    public override bool PreAI(
+        Terraria.Projectile projectile
+    )
+    {
+        if (!GlobalProjectileHooks.PreAI.GetInvocationList().Any())
+        {
+            return base.PreAI(
+                projectile
+            );
+        }
+
+        return GlobalProjectileHooks.PreAI.Invoke(
+            this,
+            projectile
+        );
+    }
+
+    public override void AI(
+        Terraria.Projectile projectile
+    )
+    {
+        if (!GlobalProjectileHooks.AI.GetInvocationList().Any())
+        {
+            base.AI(
+                projectile
+            );
+            return;
+        }
+
+        GlobalProjectileHooks.AI.Invoke(
+            this,
+            projectile
+        );
+    }
+
+    public override void PostAI(
+        Terraria.Projectile projectile
+    )
+    {
+        if (!GlobalProjectileHooks.PostAI.GetInvocationList().Any())
+        {
+            base.PostAI(
+                projectile
+            );
+            return;
+        }
+
+        GlobalProjectileHooks.PostAI.Invoke(
+            this,
+            projectile
+        );
+    }
+
+    public override void SendExtraAI(
+        Terraria.Projectile projectile,
+        Terraria.ModLoader.IO.BitWriter bitWriter,
+        System.IO.BinaryWriter binaryWriter
+    )
+    {
+        if (!GlobalProjectileHooks.SendExtraAI.GetInvocationList().Any())
+        {
+            base.SendExtraAI(
+                projectile,
+                bitWriter,
+                binaryWriter
+            );
+            return;
+        }
+
+        GlobalProjectileHooks.SendExtraAI.Invoke(
+            this,
+            projectile,
+            bitWriter,
+            binaryWriter
+        );
+    }
+
+    public override void ReceiveExtraAI(
+        Terraria.Projectile projectile,
+        Terraria.ModLoader.IO.BitReader bitReader,
+        System.IO.BinaryReader binaryReader
+    )
+    {
+        if (!GlobalProjectileHooks.ReceiveExtraAI.GetInvocationList().Any())
+        {
+            base.ReceiveExtraAI(
+                projectile,
+                bitReader,
+                binaryReader
+            );
+            return;
+        }
+
+        GlobalProjectileHooks.ReceiveExtraAI.Invoke(
+            this,
+            projectile,
+            bitReader,
+            binaryReader
+        );
+    }
+
+    public override bool ShouldUpdatePosition(
+        Terraria.Projectile projectile
+    )
+    {
+        if (!GlobalProjectileHooks.ShouldUpdatePosition.GetInvocationList().Any())
+        {
+            return base.ShouldUpdatePosition(
+                projectile
+            );
+        }
+
+        return GlobalProjectileHooks.ShouldUpdatePosition.Invoke(
+            this,
+            projectile
+        );
+    }
+
+    public override bool TileCollideStyle(
+        Terraria.Projectile projectile,
+        ref int width,
+        ref int height,
+        ref bool fallThrough,
+        ref Microsoft.Xna.Framework.Vector2 hitboxCenterFrac
+    )
+    {
+        if (!GlobalProjectileHooks.TileCollideStyle.GetInvocationList().Any())
+        {
+            return base.TileCollideStyle(
+                projectile,
+                ref width,
+                ref height,
+                ref fallThrough,
+                ref hitboxCenterFrac
+            );
+        }
+
+        return GlobalProjectileHooks.TileCollideStyle.Invoke(
+            this,
+            projectile,
+            ref width,
+            ref height,
+            ref fallThrough,
+            ref hitboxCenterFrac
+        );
+    }
+
+    public override bool OnTileCollide(
+        Terraria.Projectile projectile,
+        Microsoft.Xna.Framework.Vector2 oldVelocity
+    )
+    {
+        if (!GlobalProjectileHooks.OnTileCollide.GetInvocationList().Any())
+        {
+            return base.OnTileCollide(
+                projectile,
+                oldVelocity
+            );
+        }
+
+        return GlobalProjectileHooks.OnTileCollide.Invoke(
+            this,
+            projectile,
+            oldVelocity
+        );
+    }
+
+    public override bool PreKill(
+        Terraria.Projectile projectile,
+        int timeLeft
+    )
+    {
+        if (!GlobalProjectileHooks.PreKill.GetInvocationList().Any())
+        {
+            return base.PreKill(
+                projectile,
+                timeLeft
+            );
+        }
+
+        return GlobalProjectileHooks.PreKill.Invoke(
+            this,
+            projectile,
+            timeLeft
+        );
+    }
+
+    public override void OnKill(
+        Terraria.Projectile projectile,
+        int timeLeft
+    )
+    {
+        if (!GlobalProjectileHooks.OnKill.GetInvocationList().Any())
+        {
+            base.OnKill(
+                projectile,
+                timeLeft
+            );
+            return;
+        }
+
+        GlobalProjectileHooks.OnKill.Invoke(
+            this,
+            projectile,
+            timeLeft
+        );
+    }
+
+    public override void CutTiles(
+        Terraria.Projectile projectile
+    )
+    {
+        if (!GlobalProjectileHooks.CutTiles.GetInvocationList().Any())
+        {
+            base.CutTiles(
+                projectile
+            );
+            return;
+        }
+
+        GlobalProjectileHooks.CutTiles.Invoke(
+            this,
+            projectile
+        );
+    }
+
+    public override bool MinionContactDamage(
+        Terraria.Projectile projectile
+    )
+    {
+        if (!GlobalProjectileHooks.MinionContactDamage.GetInvocationList().Any())
+        {
+            return base.MinionContactDamage(
+                projectile
+            );
+        }
+
+        return GlobalProjectileHooks.MinionContactDamage.Invoke(
+            this,
+            projectile
+        );
+    }
+
+    public override void ModifyDamageHitbox(
+        Terraria.Projectile projectile,
+        ref Microsoft.Xna.Framework.Rectangle hitbox
+    )
+    {
+        if (!GlobalProjectileHooks.ModifyDamageHitbox.GetInvocationList().Any())
+        {
+            base.ModifyDamageHitbox(
+                projectile,
+                ref hitbox
+            );
+            return;
+        }
+
+        GlobalProjectileHooks.ModifyDamageHitbox.Invoke(
+            this,
+            projectile,
+            ref hitbox
+        );
+    }
+
+    public override void ModifyHitNPC(
+        Terraria.Projectile projectile,
+        Terraria.NPC target,
+        ref Terraria.NPC.HitModifiers modifiers
+    )
+    {
+        if (!GlobalProjectileHooks.ModifyHitNPC.GetInvocationList().Any())
+        {
+            base.ModifyHitNPC(
+                projectile,
+                target,
+                ref modifiers
+            );
+            return;
+        }
+
+        GlobalProjectileHooks.ModifyHitNPC.Invoke(
+            this,
+            projectile,
+            target,
+            ref modifiers
+        );
+    }
+
+    public override void OnHitNPC(
+        Terraria.Projectile projectile,
+        Terraria.NPC target,
+        Terraria.NPC.HitInfo hit,
+        int damageDone
+    )
+    {
+        if (!GlobalProjectileHooks.OnHitNPC.GetInvocationList().Any())
+        {
+            base.OnHitNPC(
+                projectile,
+                target,
+                hit,
+                damageDone
+            );
+            return;
+        }
+
+        GlobalProjectileHooks.OnHitNPC.Invoke(
+            this,
+            projectile,
+            target,
+            hit,
+            damageDone
+        );
+    }
+
+    public override void ModifyHitPlayer(
+        Terraria.Projectile projectile,
+        Terraria.Player target,
+        ref Terraria.Player.HurtModifiers modifiers
+    )
+    {
+        if (!GlobalProjectileHooks.ModifyHitPlayer.GetInvocationList().Any())
+        {
+            base.ModifyHitPlayer(
+                projectile,
+                target,
+                ref modifiers
+            );
+            return;
+        }
+
+        GlobalProjectileHooks.ModifyHitPlayer.Invoke(
+            this,
+            projectile,
+            target,
+            ref modifiers
+        );
+    }
+
+    public override void OnHitPlayer(
+        Terraria.Projectile projectile,
+        Terraria.Player target,
+        Terraria.Player.HurtInfo info
+    )
+    {
+        if (!GlobalProjectileHooks.OnHitPlayer.GetInvocationList().Any())
+        {
+            base.OnHitPlayer(
+                projectile,
+                target,
+                info
+            );
+            return;
+        }
+
+        GlobalProjectileHooks.OnHitPlayer.Invoke(
+            this,
+            projectile,
+            target,
+            info
+        );
+    }
+
+    public override bool PreDrawExtras(
+        Terraria.Projectile projectile
+    )
+    {
+        if (!GlobalProjectileHooks.PreDrawExtras.GetInvocationList().Any())
+        {
+            return base.PreDrawExtras(
+                projectile
+            );
+        }
+
+        return GlobalProjectileHooks.PreDrawExtras.Invoke(
+            this,
+            projectile
+        );
+    }
+
+    public override bool PreDraw(
+        Terraria.Projectile projectile,
+        ref Microsoft.Xna.Framework.Color lightColor
+    )
+    {
+        if (!GlobalProjectileHooks.PreDraw.GetInvocationList().Any())
+        {
+            return base.PreDraw(
+                projectile,
+                ref lightColor
+            );
+        }
+
+        return GlobalProjectileHooks.PreDraw.Invoke(
+            this,
+            projectile,
+            ref lightColor
+        );
+    }
+
+    public override void PostDraw(
+        Terraria.Projectile projectile,
+        Microsoft.Xna.Framework.Color lightColor
+    )
+    {
+        if (!GlobalProjectileHooks.PostDraw.GetInvocationList().Any())
+        {
+            base.PostDraw(
+                projectile,
+                lightColor
+            );
+            return;
+        }
+
+        GlobalProjectileHooks.PostDraw.Invoke(
+            this,
+            projectile,
+            lightColor
+        );
+    }
+
+    public override void DrawBehind(
+        Terraria.Projectile projectile,
+        int index,
+        System.Collections.Generic.List<int> behindNPCsAndTiles,
+        System.Collections.Generic.List<int> behindNPCs,
+        System.Collections.Generic.List<int> behindProjectiles,
+        System.Collections.Generic.List<int> overPlayers,
+        System.Collections.Generic.List<int> overWiresUI
+    )
+    {
+        if (!GlobalProjectileHooks.DrawBehind.GetInvocationList().Any())
+        {
+            base.DrawBehind(
+                projectile,
+                index,
+                behindNPCsAndTiles,
+                behindNPCs,
+                behindProjectiles,
+                overPlayers,
+                overWiresUI
+            );
+            return;
+        }
+
+        GlobalProjectileHooks.DrawBehind.Invoke(
+            this,
+            projectile,
+            index,
+            behindNPCsAndTiles,
+            behindNPCs,
+            behindProjectiles,
+            overPlayers,
+            overWiresUI
+        );
+    }
+
+    public override void UseGrapple(
+        Terraria.Player player,
+        ref int type
+    )
+    {
+        if (!GlobalProjectileHooks.UseGrapple.GetInvocationList().Any())
+        {
+            base.UseGrapple(
+                player,
+                ref type
+            );
+            return;
+        }
+
+        GlobalProjectileHooks.UseGrapple.Invoke(
+            this,
+            player,
+            ref type
+        );
+    }
+
+    public override void NumGrappleHooks(
+        Terraria.Projectile projectile,
+        Terraria.Player player,
+        ref int numHooks
+    )
+    {
+        if (!GlobalProjectileHooks.NumGrappleHooks.GetInvocationList().Any())
+        {
+            base.NumGrappleHooks(
+                projectile,
+                player,
+                ref numHooks
+            );
+            return;
+        }
+
+        GlobalProjectileHooks.NumGrappleHooks.Invoke(
+            this,
+            projectile,
+            player,
+            ref numHooks
+        );
+    }
+
+    public override void GrappleRetreatSpeed(
+        Terraria.Projectile projectile,
+        Terraria.Player player,
+        ref float speed
+    )
+    {
+        if (!GlobalProjectileHooks.GrappleRetreatSpeed.GetInvocationList().Any())
+        {
+            base.GrappleRetreatSpeed(
+                projectile,
+                player,
+                ref speed
+            );
+            return;
+        }
+
+        GlobalProjectileHooks.GrappleRetreatSpeed.Invoke(
+            this,
+            projectile,
+            player,
+            ref speed
+        );
+    }
+
+    public override void GrapplePullSpeed(
+        Terraria.Projectile projectile,
+        Terraria.Player player,
+        ref float speed
+    )
+    {
+        if (!GlobalProjectileHooks.GrapplePullSpeed.GetInvocationList().Any())
+        {
+            base.GrapplePullSpeed(
+                projectile,
+                player,
+                ref speed
+            );
+            return;
+        }
+
+        GlobalProjectileHooks.GrapplePullSpeed.Invoke(
+            this,
+            projectile,
+            player,
+            ref speed
+        );
+    }
+
+    public override void GrappleTargetPoint(
+        Terraria.Projectile projectile,
+        Terraria.Player player,
+        ref float grappleX,
+        ref float grappleY
+    )
+    {
+        if (!GlobalProjectileHooks.GrappleTargetPoint.GetInvocationList().Any())
+        {
+            base.GrappleTargetPoint(
+                projectile,
+                player,
+                ref grappleX,
+                ref grappleY
+            );
+            return;
+        }
+
+        GlobalProjectileHooks.GrappleTargetPoint.Invoke(
+            this,
+            projectile,
+            player,
+            ref grappleX,
+            ref grappleY
+        );
+    }
+
+    public override void PrepareBombToBlow(
+        Terraria.Projectile projectile
+    )
+    {
+        if (!GlobalProjectileHooks.PrepareBombToBlow.GetInvocationList().Any())
+        {
+            base.PrepareBombToBlow(
+                projectile
+            );
+            return;
+        }
+
+        GlobalProjectileHooks.PrepareBombToBlow.Invoke(
+            this,
+            projectile
+        );
+    }
+
+    public override void EmitEnchantmentVisualsAt(
+        Terraria.Projectile projectile,
+        Microsoft.Xna.Framework.Vector2 boxPosition,
+        int boxWidth,
+        int boxHeight
+    )
+    {
+        if (!GlobalProjectileHooks.EmitEnchantmentVisualsAt.GetInvocationList().Any())
+        {
+            base.EmitEnchantmentVisualsAt(
+                projectile,
+                boxPosition,
+                boxWidth,
+                boxHeight
+            );
+            return;
+        }
+
+        GlobalProjectileHooks.EmitEnchantmentVisualsAt.Invoke(
+            this,
+            projectile,
+            boxPosition,
+            boxWidth,
+            boxHeight
+        );
+    }
+}
