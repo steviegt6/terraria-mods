@@ -82,7 +82,7 @@ using System.Linq;
 //     System.Void Terraria.ModLoader.GlobalNPC::EmoteBubblePosition(Terraria.NPC,Microsoft.Xna.Framework.Vector2&,Microsoft.Xna.Framework.Graphics.SpriteEffects&)
 public static partial class GlobalNPCHooks
 {
-    public static partial class SetDefaultsFromNetId
+    public sealed partial class SetDefaultsFromNetId
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -105,7 +105,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class OnSpawn
+    public sealed partial class OnSpawn
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -130,7 +130,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class ApplyDifficultyAndPlayerScaling
+    public sealed partial class ApplyDifficultyAndPlayerScaling
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -159,7 +159,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class SetBestiary
+    public sealed partial class SetBestiary
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -186,7 +186,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class ModifyTypeName
+    public sealed partial class ModifyTypeName
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -211,7 +211,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class ModifyHoverBoundingBox
+    public sealed partial class ModifyHoverBoundingBox
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -236,7 +236,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class ModifyNPCNameList
+    public sealed partial class ModifyNPCNameList
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -261,7 +261,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class ResetEffects
+    public sealed partial class ResetEffects
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -284,7 +284,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class PreAI
+    public sealed partial class PreAI
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -318,7 +318,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class AI
+    public sealed partial class AI
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -341,7 +341,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class PostAI
+    public sealed partial class PostAI
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -364,7 +364,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class SendExtraAI
+    public sealed partial class SendExtraAI
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -391,7 +391,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class ReceiveExtraAI
+    public sealed partial class ReceiveExtraAI
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -418,7 +418,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class FindFrame
+    public sealed partial class FindFrame
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -443,7 +443,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class HitEffect
+    public sealed partial class HitEffect
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -468,7 +468,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class UpdateLifeRegen
+    public sealed partial class UpdateLifeRegen
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -493,7 +493,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class CheckActive
+    public sealed partial class CheckActive
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -529,7 +529,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class CheckDead
+    public sealed partial class CheckDead
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -563,7 +563,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class PreKill
+    public sealed partial class PreKill
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -597,7 +597,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class OnKill
+    public sealed partial class OnKill
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -620,7 +620,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class OnCaughtBy
+    public sealed partial class OnCaughtBy
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -649,7 +649,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class ModifyNPCLoot
+    public sealed partial class ModifyNPCLoot
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -674,7 +674,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class ModifyGlobalLoot
+    public sealed partial class ModifyGlobalLoot
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -697,7 +697,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class CanHitPlayer
+    public sealed partial class CanHitPlayer
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -737,7 +737,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class ModifyHitPlayer
+    public sealed partial class ModifyHitPlayer
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -764,7 +764,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class OnHitPlayer
+    public sealed partial class OnHitPlayer
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -791,7 +791,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class CanHitNPC
+    public sealed partial class CanHitNPC
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -829,7 +829,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class CanBeHitByNPC
+    public sealed partial class CanBeHitByNPC
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -867,7 +867,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class ModifyHitNPC
+    public sealed partial class ModifyHitNPC
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -894,7 +894,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class OnHitNPC
+    public sealed partial class OnHitNPC
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -921,7 +921,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class ModifyHitByItem
+    public sealed partial class ModifyHitByItem
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -950,7 +950,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class OnHitByItem
+    public sealed partial class OnHitByItem
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -981,7 +981,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class ModifyHitByProjectile
+    public sealed partial class ModifyHitByProjectile
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -1008,7 +1008,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class OnHitByProjectile
+    public sealed partial class OnHitByProjectile
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -1037,7 +1037,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class ModifyIncomingHit
+    public sealed partial class ModifyIncomingHit
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -1062,7 +1062,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class BossHeadSlot
+    public sealed partial class BossHeadSlot
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -1087,7 +1087,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class BossHeadRotation
+    public sealed partial class BossHeadRotation
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -1112,7 +1112,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class BossHeadSpriteEffects
+    public sealed partial class BossHeadSpriteEffects
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -1137,7 +1137,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class DrawEffects
+    public sealed partial class DrawEffects
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -1162,7 +1162,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class PreDraw
+    public sealed partial class PreDraw
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -1202,7 +1202,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class PostDraw
+    public sealed partial class PostDraw
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -1231,7 +1231,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class DrawBehind
+    public sealed partial class DrawBehind
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -1256,7 +1256,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class EditSpawnRate
+    public sealed partial class EditSpawnRate
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -1283,7 +1283,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class EditSpawnRange
+    public sealed partial class EditSpawnRange
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -1314,7 +1314,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class EditSpawnPool
+    public sealed partial class EditSpawnPool
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -1339,7 +1339,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class SpawnNPC
+    public sealed partial class SpawnNPC
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -1366,7 +1366,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class GetChat
+    public sealed partial class GetChat
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -1391,7 +1391,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class PreChatButtonClicked
+    public sealed partial class PreChatButtonClicked
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -1427,7 +1427,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class OnChatButtonClicked
+    public sealed partial class OnChatButtonClicked
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -1452,7 +1452,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class ModifyShop
+    public sealed partial class ModifyShop
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -1475,7 +1475,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class ModifyActiveShop
+    public sealed partial class ModifyActiveShop
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -1502,7 +1502,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class SetupTravelShop
+    public sealed partial class SetupTravelShop
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -1527,7 +1527,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class OnGoToStatue
+    public sealed partial class OnGoToStatue
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -1552,7 +1552,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class BuffTownNPC
+    public sealed partial class BuffTownNPC
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -1577,7 +1577,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class TownNPCAttackStrength
+    public sealed partial class TownNPCAttackStrength
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -1604,7 +1604,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class TownNPCAttackCooldown
+    public sealed partial class TownNPCAttackCooldown
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -1631,7 +1631,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class TownNPCAttackProj
+    public sealed partial class TownNPCAttackProj
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -1658,7 +1658,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class TownNPCAttackProjSpeed
+    public sealed partial class TownNPCAttackProjSpeed
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -1687,7 +1687,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class TownNPCAttackShoot
+    public sealed partial class TownNPCAttackShoot
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -1712,7 +1712,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class TownNPCAttackMagic
+    public sealed partial class TownNPCAttackMagic
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -1737,7 +1737,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class TownNPCAttackSwing
+    public sealed partial class TownNPCAttackSwing
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -1764,7 +1764,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class DrawTownAttackGun
+    public sealed partial class DrawTownAttackGun
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -1795,7 +1795,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class DrawTownAttackSwing
+    public sealed partial class DrawTownAttackSwing
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -1828,7 +1828,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class ModifyCollisionData
+    public sealed partial class ModifyCollisionData
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -1870,7 +1870,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class NeedSaving
+    public sealed partial class NeedSaving
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -1904,7 +1904,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class SaveData
+    public sealed partial class SaveData
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -1929,7 +1929,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class LoadData
+    public sealed partial class LoadData
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -1954,7 +1954,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class ChatBubblePosition
+    public sealed partial class ChatBubblePosition
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -1981,7 +1981,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class PartyHatPosition
+    public sealed partial class PartyHatPosition
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,
@@ -2008,7 +2008,7 @@ public static partial class GlobalNPCHooks
         }
     }
 
-    public static partial class EmoteBubblePosition
+    public sealed partial class EmoteBubblePosition
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalNPC self,

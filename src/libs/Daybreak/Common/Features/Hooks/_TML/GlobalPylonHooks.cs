@@ -18,7 +18,7 @@ using System.Linq;
 //     System.Void Terraria.ModLoader.GlobalPylon::PostValidTeleportCheck(Terraria.GameContent.TeleportPylonInfo,Terraria.GameContent.TeleportPylonInfo,System.Boolean&,System.Boolean&,System.String&)
 public static partial class GlobalPylonHooks
 {
-    public static partial class PreDrawMapIcon
+    public sealed partial class PreDrawMapIcon
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalPylon self,
@@ -64,7 +64,7 @@ public static partial class GlobalPylonHooks
         }
     }
 
-    public static partial class PreCanPlacePylon
+    public sealed partial class PreCanPlacePylon
     {
         public delegate bool? Definition(
             Terraria.ModLoader.GlobalPylon self,
@@ -113,7 +113,7 @@ public static partial class GlobalPylonHooks
         }
     }
 
-    public static partial class ValidTeleportCheck_PreNPCCount
+    public sealed partial class ValidTeleportCheck_PreNPCCount
     {
         public delegate bool? Definition(
             Terraria.ModLoader.GlobalPylon self,
@@ -158,7 +158,7 @@ public static partial class GlobalPylonHooks
         }
     }
 
-    public static partial class ValidTeleportCheck_PreAnyDanger
+    public sealed partial class ValidTeleportCheck_PreAnyDanger
     {
         public delegate bool? Definition(
             Terraria.ModLoader.GlobalPylon self,
@@ -201,7 +201,7 @@ public static partial class GlobalPylonHooks
         }
     }
 
-    public static partial class ValidTeleportCheck_PreBiomeRequirements
+    public sealed partial class ValidTeleportCheck_PreBiomeRequirements
     {
         public delegate bool? Definition(
             Terraria.ModLoader.GlobalPylon self,
@@ -246,7 +246,7 @@ public static partial class GlobalPylonHooks
         }
     }
 
-    public static partial class PostValidTeleportCheck
+    public sealed partial class PostValidTeleportCheck
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalPylon self,

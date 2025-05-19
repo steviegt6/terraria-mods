@@ -104,7 +104,7 @@ using System.Linq;
 //     System.Void Terraria.ModLoader.GlobalItem::NetReceive(Terraria.Item,System.IO.BinaryReader)
 public static partial class GlobalItemHooks
 {
-    public static partial class OnCreated
+    public sealed partial class OnCreated
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -129,7 +129,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class OnSpawn
+    public sealed partial class OnSpawn
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -154,7 +154,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class AllowPrefix
+    public sealed partial class AllowPrefix
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -190,7 +190,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class CanUseItem
+    public sealed partial class CanUseItem
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -228,7 +228,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class UseStyle
+    public sealed partial class UseStyle
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -255,7 +255,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class HoldStyle
+    public sealed partial class HoldStyle
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -282,7 +282,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class HoldItem
+    public sealed partial class HoldItem
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -307,7 +307,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class GetHealLife
+    public sealed partial class GetHealLife
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -336,7 +336,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class GetHealMana
+    public sealed partial class GetHealMana
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -365,7 +365,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class ModifyManaCost
+    public sealed partial class ModifyManaCost
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -394,7 +394,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class OnMissingMana
+    public sealed partial class OnMissingMana
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -421,7 +421,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class OnConsumeMana
+    public sealed partial class OnConsumeMana
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -448,7 +448,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class ModifyWeaponDamage
+    public sealed partial class ModifyWeaponDamage
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -475,7 +475,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class ModifyResearchSorting
+    public sealed partial class ModifyResearchSorting
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -500,7 +500,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class CanResearch
+    public sealed partial class CanResearch
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -536,7 +536,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class OnResearched
+    public sealed partial class OnResearched
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -561,7 +561,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class ModifyWeaponKnockback
+    public sealed partial class ModifyWeaponKnockback
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -588,7 +588,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class ModifyWeaponCrit
+    public sealed partial class ModifyWeaponCrit
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -615,7 +615,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class NeedsAmmo
+    public sealed partial class NeedsAmmo
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -653,7 +653,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class PickAmmo
+    public sealed partial class PickAmmo
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -688,7 +688,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class CanConsumeAmmo
+    public sealed partial class CanConsumeAmmo
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -728,7 +728,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class OnConsumeAmmo
+    public sealed partial class OnConsumeAmmo
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -755,7 +755,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class OnConsumedAsAmmo
+    public sealed partial class OnConsumedAsAmmo
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -782,7 +782,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class CanShoot
+    public sealed partial class CanShoot
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -820,7 +820,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class ModifyShootStats
+    public sealed partial class ModifyShootStats
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -855,7 +855,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class Shoot
+    public sealed partial class Shoot
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -903,7 +903,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class UseItemHitbox
+    public sealed partial class UseItemHitbox
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -932,7 +932,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class MeleeEffects
+    public sealed partial class MeleeEffects
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -959,7 +959,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class OnCatchNPC
+    public sealed partial class OnCatchNPC
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -988,7 +988,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class ModifyItemScale
+    public sealed partial class ModifyItemScale
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -1015,7 +1015,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class ModifyHitNPC
+    public sealed partial class ModifyHitNPC
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -1044,7 +1044,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class OnHitNPC
+    public sealed partial class OnHitNPC
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -1075,7 +1075,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class CanHitPvp
+    public sealed partial class CanHitPvp
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -1115,7 +1115,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class ModifyHitPvp
+    public sealed partial class ModifyHitPvp
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -1144,7 +1144,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class OnHitPvp
+    public sealed partial class OnHitPvp
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -1173,7 +1173,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class UseAnimation
+    public sealed partial class UseAnimation
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -1198,7 +1198,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class ConsumeItem
+    public sealed partial class ConsumeItem
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -1236,7 +1236,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class OnConsumeItem
+    public sealed partial class OnConsumeItem
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -1261,7 +1261,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class UseItemFrame
+    public sealed partial class UseItemFrame
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -1286,7 +1286,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class HoldItemFrame
+    public sealed partial class HoldItemFrame
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -1311,7 +1311,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class AltFunctionUse
+    public sealed partial class AltFunctionUse
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -1349,7 +1349,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class UpdateInventory
+    public sealed partial class UpdateInventory
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -1374,7 +1374,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class UpdateInfoAccessory
+    public sealed partial class UpdateInfoAccessory
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -1399,7 +1399,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class UpdateEquip
+    public sealed partial class UpdateEquip
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -1424,7 +1424,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class UpdateAccessory
+    public sealed partial class UpdateAccessory
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -1451,7 +1451,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class UpdateVanity
+    public sealed partial class UpdateVanity
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -1476,7 +1476,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class UpdateArmorSet
+    public sealed partial class UpdateArmorSet
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -1501,7 +1501,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class PreUpdateVanitySet
+    public sealed partial class PreUpdateVanitySet
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -1526,7 +1526,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class UpdateVanitySet
+    public sealed partial class UpdateVanitySet
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -1551,7 +1551,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class ArmorSetShadows
+    public sealed partial class ArmorSetShadows
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -1576,7 +1576,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class SetMatch
+    public sealed partial class SetMatch
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -1607,7 +1607,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class CanRightClick
+    public sealed partial class CanRightClick
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -1643,7 +1643,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class RightClick
+    public sealed partial class RightClick
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -1668,7 +1668,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class ModifyItemLoot
+    public sealed partial class ModifyItemLoot
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -1693,7 +1693,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class CanStack
+    public sealed partial class CanStack
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -1731,7 +1731,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class CanStackInWorld
+    public sealed partial class CanStackInWorld
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -1769,7 +1769,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class OnStack
+    public sealed partial class OnStack
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -1796,7 +1796,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class SplitStack
+    public sealed partial class SplitStack
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -1823,7 +1823,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class ReforgePrice
+    public sealed partial class ReforgePrice
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -1861,7 +1861,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class CanReforge
+    public sealed partial class CanReforge
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -1895,7 +1895,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class PreReforge
+    public sealed partial class PreReforge
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -1918,7 +1918,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class PostReforge
+    public sealed partial class PostReforge
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -1941,7 +1941,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class DrawArmorColor
+    public sealed partial class DrawArmorColor
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -1976,7 +1976,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class ArmorArmGlowMask
+    public sealed partial class ArmorArmGlowMask
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -2007,7 +2007,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class VerticalWingSpeeds
+    public sealed partial class VerticalWingSpeeds
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -2042,7 +2042,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class HorizontalWingSpeeds
+    public sealed partial class HorizontalWingSpeeds
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -2071,7 +2071,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class WingUpdate
+    public sealed partial class WingUpdate
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -2109,7 +2109,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class Update
+    public sealed partial class Update
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -2136,7 +2136,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class PostUpdate
+    public sealed partial class PostUpdate
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -2159,7 +2159,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class GrabRange
+    public sealed partial class GrabRange
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -2186,7 +2186,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class GrabStyle
+    public sealed partial class GrabStyle
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -2224,7 +2224,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class CanPickup
+    public sealed partial class CanPickup
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -2262,7 +2262,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class OnPickup
+    public sealed partial class OnPickup
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -2300,7 +2300,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class ItemSpace
+    public sealed partial class ItemSpace
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -2338,7 +2338,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class PreDrawInWorld
+    public sealed partial class PreDrawInWorld
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -2384,7 +2384,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class PostDrawInWorld
+    public sealed partial class PostDrawInWorld
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -2419,7 +2419,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class PreDrawInInventory
+    public sealed partial class PreDrawInInventory
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -2467,7 +2467,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class PostDrawInInventory
+    public sealed partial class PostDrawInInventory
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -2504,7 +2504,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class CanEquipAccessory
+    public sealed partial class CanEquipAccessory
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -2546,7 +2546,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class ExtractinatorUse
+    public sealed partial class ExtractinatorUse
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -2575,7 +2575,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class CaughtFishStack
+    public sealed partial class CaughtFishStack
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -2600,7 +2600,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class AnglerChat
+    public sealed partial class AnglerChat
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -2627,7 +2627,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class AddRecipes
+    public sealed partial class AddRecipes
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self
@@ -2648,7 +2648,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class PreDrawTooltip
+    public sealed partial class PreDrawTooltip
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -2688,7 +2688,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class PostDrawTooltip
+    public sealed partial class PostDrawTooltip
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -2713,7 +2713,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class PreDrawTooltipLine
+    public sealed partial class PreDrawTooltipLine
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -2751,7 +2751,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class PostDrawTooltipLine
+    public sealed partial class PostDrawTooltipLine
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -2776,7 +2776,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class ModifyTooltips
+    public sealed partial class ModifyTooltips
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -2801,7 +2801,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class SaveData
+    public sealed partial class SaveData
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -2826,7 +2826,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class LoadData
+    public sealed partial class LoadData
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -2851,7 +2851,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class NetSend
+    public sealed partial class NetSend
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,
@@ -2876,7 +2876,7 @@ public static partial class GlobalItemHooks
         }
     }
 
-    public static partial class NetReceive
+    public sealed partial class NetReceive
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalItem self,

@@ -67,7 +67,7 @@ using System.Linq;
 //     System.Void Terraria.ModLoader.ModSystem::ResizeArrays()
 public static partial class ModSystemHooks
 {
-    public static partial class PostSetupContent
+    public sealed partial class PostSetupContent
     {
         public delegate void Definition(
             Terraria.ModLoader.ModSystem self
@@ -88,7 +88,7 @@ public static partial class ModSystemHooks
         }
     }
 
-    public static partial class OnLocalizationsLoaded
+    public sealed partial class OnLocalizationsLoaded
     {
         public delegate void Definition(
             Terraria.ModLoader.ModSystem self
@@ -109,7 +109,7 @@ public static partial class ModSystemHooks
         }
     }
 
-    public static partial class AddRecipes
+    public sealed partial class AddRecipes
     {
         public delegate void Definition(
             Terraria.ModLoader.ModSystem self
@@ -130,7 +130,7 @@ public static partial class ModSystemHooks
         }
     }
 
-    public static partial class PostAddRecipes
+    public sealed partial class PostAddRecipes
     {
         public delegate void Definition(
             Terraria.ModLoader.ModSystem self
@@ -151,7 +151,7 @@ public static partial class ModSystemHooks
         }
     }
 
-    public static partial class PostSetupRecipes
+    public sealed partial class PostSetupRecipes
     {
         public delegate void Definition(
             Terraria.ModLoader.ModSystem self
@@ -172,7 +172,7 @@ public static partial class ModSystemHooks
         }
     }
 
-    public static partial class AddRecipeGroups
+    public sealed partial class AddRecipeGroups
     {
         public delegate void Definition(
             Terraria.ModLoader.ModSystem self
@@ -193,7 +193,7 @@ public static partial class ModSystemHooks
         }
     }
 
-    public static partial class OnWorldLoad
+    public sealed partial class OnWorldLoad
     {
         public delegate void Definition(
             Terraria.ModLoader.ModSystem self
@@ -214,7 +214,7 @@ public static partial class ModSystemHooks
         }
     }
 
-    public static partial class OnWorldUnload
+    public sealed partial class OnWorldUnload
     {
         public delegate void Definition(
             Terraria.ModLoader.ModSystem self
@@ -235,7 +235,7 @@ public static partial class ModSystemHooks
         }
     }
 
-    public static partial class ClearWorld
+    public sealed partial class ClearWorld
     {
         public delegate void Definition(
             Terraria.ModLoader.ModSystem self
@@ -256,7 +256,7 @@ public static partial class ModSystemHooks
         }
     }
 
-    public static partial class ModifyScreenPosition
+    public sealed partial class ModifyScreenPosition
     {
         public delegate void Definition(
             Terraria.ModLoader.ModSystem self
@@ -277,7 +277,7 @@ public static partial class ModSystemHooks
         }
     }
 
-    public static partial class ModifyTransformMatrix
+    public sealed partial class ModifyTransformMatrix
     {
         public delegate void Definition(
             Terraria.ModLoader.ModSystem self,
@@ -300,7 +300,7 @@ public static partial class ModSystemHooks
         }
     }
 
-    public static partial class UpdateUI
+    public sealed partial class UpdateUI
     {
         public delegate void Definition(
             Terraria.ModLoader.ModSystem self,
@@ -323,7 +323,7 @@ public static partial class ModSystemHooks
         }
     }
 
-    public static partial class PreUpdateEntities
+    public sealed partial class PreUpdateEntities
     {
         public delegate void Definition(
             Terraria.ModLoader.ModSystem self
@@ -344,7 +344,7 @@ public static partial class ModSystemHooks
         }
     }
 
-    public static partial class PreUpdatePlayers
+    public sealed partial class PreUpdatePlayers
     {
         public delegate void Definition(
             Terraria.ModLoader.ModSystem self
@@ -365,7 +365,7 @@ public static partial class ModSystemHooks
         }
     }
 
-    public static partial class PostUpdatePlayers
+    public sealed partial class PostUpdatePlayers
     {
         public delegate void Definition(
             Terraria.ModLoader.ModSystem self
@@ -386,7 +386,7 @@ public static partial class ModSystemHooks
         }
     }
 
-    public static partial class PreUpdateNPCs
+    public sealed partial class PreUpdateNPCs
     {
         public delegate void Definition(
             Terraria.ModLoader.ModSystem self
@@ -407,7 +407,7 @@ public static partial class ModSystemHooks
         }
     }
 
-    public static partial class PostUpdateNPCs
+    public sealed partial class PostUpdateNPCs
     {
         public delegate void Definition(
             Terraria.ModLoader.ModSystem self
@@ -428,7 +428,7 @@ public static partial class ModSystemHooks
         }
     }
 
-    public static partial class PreUpdateGores
+    public sealed partial class PreUpdateGores
     {
         public delegate void Definition(
             Terraria.ModLoader.ModSystem self
@@ -449,7 +449,7 @@ public static partial class ModSystemHooks
         }
     }
 
-    public static partial class PostUpdateGores
+    public sealed partial class PostUpdateGores
     {
         public delegate void Definition(
             Terraria.ModLoader.ModSystem self
@@ -470,7 +470,7 @@ public static partial class ModSystemHooks
         }
     }
 
-    public static partial class PreUpdateProjectiles
+    public sealed partial class PreUpdateProjectiles
     {
         public delegate void Definition(
             Terraria.ModLoader.ModSystem self
@@ -491,7 +491,7 @@ public static partial class ModSystemHooks
         }
     }
 
-    public static partial class PostUpdateProjectiles
+    public sealed partial class PostUpdateProjectiles
     {
         public delegate void Definition(
             Terraria.ModLoader.ModSystem self
@@ -512,7 +512,7 @@ public static partial class ModSystemHooks
         }
     }
 
-    public static partial class PreUpdateItems
+    public sealed partial class PreUpdateItems
     {
         public delegate void Definition(
             Terraria.ModLoader.ModSystem self
@@ -533,7 +533,7 @@ public static partial class ModSystemHooks
         }
     }
 
-    public static partial class PostUpdateItems
+    public sealed partial class PostUpdateItems
     {
         public delegate void Definition(
             Terraria.ModLoader.ModSystem self
@@ -554,7 +554,7 @@ public static partial class ModSystemHooks
         }
     }
 
-    public static partial class PreUpdateDusts
+    public sealed partial class PreUpdateDusts
     {
         public delegate void Definition(
             Terraria.ModLoader.ModSystem self
@@ -575,7 +575,7 @@ public static partial class ModSystemHooks
         }
     }
 
-    public static partial class PostUpdateDusts
+    public sealed partial class PostUpdateDusts
     {
         public delegate void Definition(
             Terraria.ModLoader.ModSystem self
@@ -596,7 +596,7 @@ public static partial class ModSystemHooks
         }
     }
 
-    public static partial class PreUpdateTime
+    public sealed partial class PreUpdateTime
     {
         public delegate void Definition(
             Terraria.ModLoader.ModSystem self
@@ -617,7 +617,7 @@ public static partial class ModSystemHooks
         }
     }
 
-    public static partial class PostUpdateTime
+    public sealed partial class PostUpdateTime
     {
         public delegate void Definition(
             Terraria.ModLoader.ModSystem self
@@ -638,7 +638,7 @@ public static partial class ModSystemHooks
         }
     }
 
-    public static partial class PreUpdateWorld
+    public sealed partial class PreUpdateWorld
     {
         public delegate void Definition(
             Terraria.ModLoader.ModSystem self
@@ -659,7 +659,7 @@ public static partial class ModSystemHooks
         }
     }
 
-    public static partial class PostUpdateWorld
+    public sealed partial class PostUpdateWorld
     {
         public delegate void Definition(
             Terraria.ModLoader.ModSystem self
@@ -680,7 +680,7 @@ public static partial class ModSystemHooks
         }
     }
 
-    public static partial class PreUpdateInvasions
+    public sealed partial class PreUpdateInvasions
     {
         public delegate void Definition(
             Terraria.ModLoader.ModSystem self
@@ -701,7 +701,7 @@ public static partial class ModSystemHooks
         }
     }
 
-    public static partial class PostUpdateInvasions
+    public sealed partial class PostUpdateInvasions
     {
         public delegate void Definition(
             Terraria.ModLoader.ModSystem self
@@ -722,7 +722,7 @@ public static partial class ModSystemHooks
         }
     }
 
-    public static partial class PostUpdateEverything
+    public sealed partial class PostUpdateEverything
     {
         public delegate void Definition(
             Terraria.ModLoader.ModSystem self
@@ -743,7 +743,7 @@ public static partial class ModSystemHooks
         }
     }
 
-    public static partial class ModifyInterfaceLayers
+    public sealed partial class ModifyInterfaceLayers
     {
         public delegate void Definition(
             Terraria.ModLoader.ModSystem self,
@@ -766,7 +766,7 @@ public static partial class ModSystemHooks
         }
     }
 
-    public static partial class ModifyGameTipVisibility
+    public sealed partial class ModifyGameTipVisibility
     {
         public delegate void Definition(
             Terraria.ModLoader.ModSystem self,
@@ -789,7 +789,7 @@ public static partial class ModSystemHooks
         }
     }
 
-    public static partial class PostDrawInterface
+    public sealed partial class PostDrawInterface
     {
         public delegate void Definition(
             Terraria.ModLoader.ModSystem self,
@@ -812,7 +812,7 @@ public static partial class ModSystemHooks
         }
     }
 
-    public static partial class PreDrawMapIconOverlay
+    public sealed partial class PreDrawMapIconOverlay
     {
         public delegate void Definition(
             Terraria.ModLoader.ModSystem self,
@@ -837,7 +837,7 @@ public static partial class ModSystemHooks
         }
     }
 
-    public static partial class PostDrawFullscreenMap
+    public sealed partial class PostDrawFullscreenMap
     {
         public delegate void Definition(
             Terraria.ModLoader.ModSystem self,
@@ -860,7 +860,7 @@ public static partial class ModSystemHooks
         }
     }
 
-    public static partial class PostUpdateInput
+    public sealed partial class PostUpdateInput
     {
         public delegate void Definition(
             Terraria.ModLoader.ModSystem self
@@ -881,7 +881,7 @@ public static partial class ModSystemHooks
         }
     }
 
-    public static partial class PreSaveAndQuit
+    public sealed partial class PreSaveAndQuit
     {
         public delegate void Definition(
             Terraria.ModLoader.ModSystem self
@@ -902,7 +902,7 @@ public static partial class ModSystemHooks
         }
     }
 
-    public static partial class PostDrawTiles
+    public sealed partial class PostDrawTiles
     {
         public delegate void Definition(
             Terraria.ModLoader.ModSystem self
@@ -923,7 +923,7 @@ public static partial class ModSystemHooks
         }
     }
 
-    public static partial class ModifyTimeRate
+    public sealed partial class ModifyTimeRate
     {
         public delegate void Definition(
             Terraria.ModLoader.ModSystem self,
@@ -950,7 +950,7 @@ public static partial class ModSystemHooks
         }
     }
 
-    public static partial class SaveWorldData
+    public sealed partial class SaveWorldData
     {
         public delegate void Definition(
             Terraria.ModLoader.ModSystem self,
@@ -973,7 +973,7 @@ public static partial class ModSystemHooks
         }
     }
 
-    public static partial class LoadWorldData
+    public sealed partial class LoadWorldData
     {
         public delegate void Definition(
             Terraria.ModLoader.ModSystem self,
@@ -996,7 +996,7 @@ public static partial class ModSystemHooks
         }
     }
 
-    public static partial class SaveWorldHeader
+    public sealed partial class SaveWorldHeader
     {
         public delegate void Definition(
             Terraria.ModLoader.ModSystem self,
@@ -1019,7 +1019,7 @@ public static partial class ModSystemHooks
         }
     }
 
-    public static partial class NetSend
+    public sealed partial class NetSend
     {
         public delegate void Definition(
             Terraria.ModLoader.ModSystem self,
@@ -1042,7 +1042,7 @@ public static partial class ModSystemHooks
         }
     }
 
-    public static partial class NetReceive
+    public sealed partial class NetReceive
     {
         public delegate void Definition(
             Terraria.ModLoader.ModSystem self,
@@ -1065,7 +1065,7 @@ public static partial class ModSystemHooks
         }
     }
 
-    public static partial class PreWorldGen
+    public sealed partial class PreWorldGen
     {
         public delegate void Definition(
             Terraria.ModLoader.ModSystem self
@@ -1086,7 +1086,7 @@ public static partial class ModSystemHooks
         }
     }
 
-    public static partial class ModifyWorldGenTasks
+    public sealed partial class ModifyWorldGenTasks
     {
         public delegate void Definition(
             Terraria.ModLoader.ModSystem self,
@@ -1111,7 +1111,7 @@ public static partial class ModSystemHooks
         }
     }
 
-    public static partial class PostWorldGen
+    public sealed partial class PostWorldGen
     {
         public delegate void Definition(
             Terraria.ModLoader.ModSystem self
@@ -1132,7 +1132,7 @@ public static partial class ModSystemHooks
         }
     }
 
-    public static partial class ResetNearbyTileEffects
+    public sealed partial class ResetNearbyTileEffects
     {
         public delegate void Definition(
             Terraria.ModLoader.ModSystem self
@@ -1153,7 +1153,7 @@ public static partial class ModSystemHooks
         }
     }
 
-    public static partial class ModifyHardmodeTasks
+    public sealed partial class ModifyHardmodeTasks
     {
         public delegate void Definition(
             Terraria.ModLoader.ModSystem self,
@@ -1176,7 +1176,7 @@ public static partial class ModSystemHooks
         }
     }
 
-    public static partial class ModifySunLightColor
+    public sealed partial class ModifySunLightColor
     {
         public delegate void Definition(
             Terraria.ModLoader.ModSystem self,
@@ -1201,7 +1201,7 @@ public static partial class ModSystemHooks
         }
     }
 
-    public static partial class ModifyLightingBrightness
+    public sealed partial class ModifyLightingBrightness
     {
         public delegate void Definition(
             Terraria.ModLoader.ModSystem self,
@@ -1224,7 +1224,7 @@ public static partial class ModSystemHooks
         }
     }
 
-    public static partial class TileCountsAvailable
+    public sealed partial class TileCountsAvailable
     {
         public delegate void Definition(
             Terraria.ModLoader.ModSystem self,
@@ -1247,7 +1247,7 @@ public static partial class ModSystemHooks
         }
     }
 
-    public static partial class ResizeArrays
+    public sealed partial class ResizeArrays
     {
         public delegate void Definition(
             Terraria.ModLoader.ModSystem self

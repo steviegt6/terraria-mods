@@ -15,7 +15,7 @@ using System.Linq;
 //     System.Boolean Terraria.ModLoader.GlobalWall::WallFrame(System.Int32,System.Int32,System.Int32,System.Boolean,System.Int32&,System.Int32&)
 public static partial class GlobalWallHooks
 {
-    public static partial class Drop
+    public sealed partial class Drop
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalWall self,
@@ -57,7 +57,7 @@ public static partial class GlobalWallHooks
         }
     }
 
-    public static partial class KillWall
+    public sealed partial class KillWall
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalWall self,
@@ -86,7 +86,7 @@ public static partial class GlobalWallHooks
         }
     }
 
-    public static partial class WallFrame
+    public sealed partial class WallFrame
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalWall self,

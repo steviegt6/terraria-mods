@@ -14,7 +14,7 @@ using System.Linq;
 //     System.Void Terraria.ModLoader.GlobalBossBar::PostDraw(Microsoft.Xna.Framework.Graphics.SpriteBatch,Terraria.NPC,Terraria.DataStructures.BossBarDrawParams)
 public static partial class GlobalBossBarHooks
 {
-    public static partial class PreDraw
+    public sealed partial class PreDraw
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalBossBar self,
@@ -52,7 +52,7 @@ public static partial class GlobalBossBarHooks
         }
     }
 
-    public static partial class PostDraw
+    public sealed partial class PostDraw
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalBossBar self,

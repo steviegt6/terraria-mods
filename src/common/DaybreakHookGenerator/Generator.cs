@@ -215,7 +215,7 @@ public sealed class Generator(ModuleDefinition module, TypeDefinition type)
         var sb = new StringBuilder();
         var name = GetNameWithoutOverloadCollision(method, hasOverloads);
 
-        sb.AppendLine($"    public static partial class {name}");
+        sb.AppendLine($"    public sealed partial class {name}");
         sb.AppendLine("    {");
         sb.AppendLine(GetDescriptionForMethod(method));
         sb.AppendLine();

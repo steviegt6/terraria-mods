@@ -41,7 +41,7 @@ using System.Linq;
 //     System.Void Terraria.ModLoader.GlobalProjectile::EmitEnchantmentVisualsAt(Terraria.Projectile,Microsoft.Xna.Framework.Vector2,System.Int32,System.Int32)
 public static partial class GlobalProjectileHooks
 {
-    public static partial class OnSpawn
+    public sealed partial class OnSpawn
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalProjectile self,
@@ -66,7 +66,7 @@ public static partial class GlobalProjectileHooks
         }
     }
 
-    public static partial class PreAI
+    public sealed partial class PreAI
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalProjectile self,
@@ -100,7 +100,7 @@ public static partial class GlobalProjectileHooks
         }
     }
 
-    public static partial class AI
+    public sealed partial class AI
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalProjectile self,
@@ -123,7 +123,7 @@ public static partial class GlobalProjectileHooks
         }
     }
 
-    public static partial class PostAI
+    public sealed partial class PostAI
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalProjectile self,
@@ -146,7 +146,7 @@ public static partial class GlobalProjectileHooks
         }
     }
 
-    public static partial class SendExtraAI
+    public sealed partial class SendExtraAI
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalProjectile self,
@@ -173,7 +173,7 @@ public static partial class GlobalProjectileHooks
         }
     }
 
-    public static partial class ReceiveExtraAI
+    public sealed partial class ReceiveExtraAI
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalProjectile self,
@@ -200,7 +200,7 @@ public static partial class GlobalProjectileHooks
         }
     }
 
-    public static partial class ShouldUpdatePosition
+    public sealed partial class ShouldUpdatePosition
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalProjectile self,
@@ -236,7 +236,7 @@ public static partial class GlobalProjectileHooks
         }
     }
 
-    public static partial class TileCollideStyle
+    public sealed partial class TileCollideStyle
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalProjectile self,
@@ -280,7 +280,7 @@ public static partial class GlobalProjectileHooks
         }
     }
 
-    public static partial class OnTileCollide
+    public sealed partial class OnTileCollide
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalProjectile self,
@@ -316,7 +316,7 @@ public static partial class GlobalProjectileHooks
         }
     }
 
-    public static partial class PreKill
+    public sealed partial class PreKill
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalProjectile self,
@@ -352,7 +352,7 @@ public static partial class GlobalProjectileHooks
         }
     }
 
-    public static partial class OnKill
+    public sealed partial class OnKill
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalProjectile self,
@@ -377,7 +377,7 @@ public static partial class GlobalProjectileHooks
         }
     }
 
-    public static partial class CutTiles
+    public sealed partial class CutTiles
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalProjectile self,
@@ -400,7 +400,7 @@ public static partial class GlobalProjectileHooks
         }
     }
 
-    public static partial class MinionContactDamage
+    public sealed partial class MinionContactDamage
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalProjectile self,
@@ -436,7 +436,7 @@ public static partial class GlobalProjectileHooks
         }
     }
 
-    public static partial class ModifyDamageHitbox
+    public sealed partial class ModifyDamageHitbox
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalProjectile self,
@@ -461,7 +461,7 @@ public static partial class GlobalProjectileHooks
         }
     }
 
-    public static partial class ModifyHitNPC
+    public sealed partial class ModifyHitNPC
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalProjectile self,
@@ -488,7 +488,7 @@ public static partial class GlobalProjectileHooks
         }
     }
 
-    public static partial class OnHitNPC
+    public sealed partial class OnHitNPC
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalProjectile self,
@@ -517,7 +517,7 @@ public static partial class GlobalProjectileHooks
         }
     }
 
-    public static partial class ModifyHitPlayer
+    public sealed partial class ModifyHitPlayer
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalProjectile self,
@@ -544,7 +544,7 @@ public static partial class GlobalProjectileHooks
         }
     }
 
-    public static partial class OnHitPlayer
+    public sealed partial class OnHitPlayer
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalProjectile self,
@@ -571,7 +571,7 @@ public static partial class GlobalProjectileHooks
         }
     }
 
-    public static partial class PreDrawExtras
+    public sealed partial class PreDrawExtras
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalProjectile self,
@@ -605,7 +605,7 @@ public static partial class GlobalProjectileHooks
         }
     }
 
-    public static partial class PreDraw
+    public sealed partial class PreDraw
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalProjectile self,
@@ -641,7 +641,7 @@ public static partial class GlobalProjectileHooks
         }
     }
 
-    public static partial class PostDraw
+    public sealed partial class PostDraw
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalProjectile self,
@@ -666,7 +666,7 @@ public static partial class GlobalProjectileHooks
         }
     }
 
-    public static partial class DrawBehind
+    public sealed partial class DrawBehind
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalProjectile self,
@@ -701,7 +701,7 @@ public static partial class GlobalProjectileHooks
         }
     }
 
-    public static partial class UseGrapple
+    public sealed partial class UseGrapple
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalProjectile self,
@@ -726,7 +726,7 @@ public static partial class GlobalProjectileHooks
         }
     }
 
-    public static partial class NumGrappleHooks
+    public sealed partial class NumGrappleHooks
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalProjectile self,
@@ -753,7 +753,7 @@ public static partial class GlobalProjectileHooks
         }
     }
 
-    public static partial class GrappleRetreatSpeed
+    public sealed partial class GrappleRetreatSpeed
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalProjectile self,
@@ -780,7 +780,7 @@ public static partial class GlobalProjectileHooks
         }
     }
 
-    public static partial class GrapplePullSpeed
+    public sealed partial class GrapplePullSpeed
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalProjectile self,
@@ -807,7 +807,7 @@ public static partial class GlobalProjectileHooks
         }
     }
 
-    public static partial class GrappleTargetPoint
+    public sealed partial class GrappleTargetPoint
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalProjectile self,
@@ -836,7 +836,7 @@ public static partial class GlobalProjectileHooks
         }
     }
 
-    public static partial class PrepareBombToBlow
+    public sealed partial class PrepareBombToBlow
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalProjectile self,
@@ -859,7 +859,7 @@ public static partial class GlobalProjectileHooks
         }
     }
 
-    public static partial class EmitEnchantmentVisualsAt
+    public sealed partial class EmitEnchantmentVisualsAt
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalProjectile self,

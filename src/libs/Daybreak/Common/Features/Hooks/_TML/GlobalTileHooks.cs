@@ -39,7 +39,7 @@ using System.Linq;
 //     System.Boolean Terraria.ModLoader.GlobalTile::ShakeTree(System.Int32,System.Int32,Terraria.Enums.TreeTypes)
 public static partial class GlobalTileHooks
 {
-    public static partial class DropCritterChance
+    public sealed partial class DropCritterChance
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalTile self,
@@ -72,7 +72,7 @@ public static partial class GlobalTileHooks
         }
     }
 
-    public static partial class CanDrop
+    public sealed partial class CanDrop
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalTile self,
@@ -110,7 +110,7 @@ public static partial class GlobalTileHooks
         }
     }
 
-    public static partial class Drop
+    public sealed partial class Drop
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalTile self,
@@ -137,7 +137,7 @@ public static partial class GlobalTileHooks
         }
     }
 
-    public static partial class CanKillTile
+    public sealed partial class CanKillTile
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalTile self,
@@ -179,7 +179,7 @@ public static partial class GlobalTileHooks
         }
     }
 
-    public static partial class KillTile
+    public sealed partial class KillTile
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalTile self,
@@ -212,7 +212,7 @@ public static partial class GlobalTileHooks
         }
     }
 
-    public static partial class NearbyEffects
+    public sealed partial class NearbyEffects
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalTile self,
@@ -241,7 +241,7 @@ public static partial class GlobalTileHooks
         }
     }
 
-    public static partial class IsTileDangerous
+    public sealed partial class IsTileDangerous
     {
         public delegate bool? Definition(
             Terraria.ModLoader.GlobalTile self,
@@ -285,7 +285,7 @@ public static partial class GlobalTileHooks
         }
     }
 
-    public static partial class IsTileBiomeSightable
+    public sealed partial class IsTileBiomeSightable
     {
         public delegate bool? Definition(
             Terraria.ModLoader.GlobalTile self,
@@ -329,7 +329,7 @@ public static partial class GlobalTileHooks
         }
     }
 
-    public static partial class IsTileSpelunkable
+    public sealed partial class IsTileSpelunkable
     {
         public delegate bool? Definition(
             Terraria.ModLoader.GlobalTile self,
@@ -371,7 +371,7 @@ public static partial class GlobalTileHooks
         }
     }
 
-    public static partial class SetSpriteEffects
+    public sealed partial class SetSpriteEffects
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalTile self,
@@ -400,7 +400,7 @@ public static partial class GlobalTileHooks
         }
     }
 
-    public static partial class AnimateTile
+    public sealed partial class AnimateTile
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalTile self
@@ -421,7 +421,7 @@ public static partial class GlobalTileHooks
         }
     }
 
-    public static partial class DrawEffects
+    public sealed partial class DrawEffects
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalTile self,
@@ -452,7 +452,7 @@ public static partial class GlobalTileHooks
         }
     }
 
-    public static partial class EmitParticles
+    public sealed partial class EmitParticles
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalTile self,
@@ -489,7 +489,7 @@ public static partial class GlobalTileHooks
         }
     }
 
-    public static partial class SpecialDraw
+    public sealed partial class SpecialDraw
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalTile self,
@@ -518,7 +518,7 @@ public static partial class GlobalTileHooks
         }
     }
 
-    public static partial class TileFrame
+    public sealed partial class TileFrame
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalTile self,
@@ -560,7 +560,7 @@ public static partial class GlobalTileHooks
         }
     }
 
-    public static partial class AdjTiles
+    public sealed partial class AdjTiles
     {
         public delegate int[] Definition(
             Terraria.ModLoader.GlobalTile self,
@@ -598,7 +598,7 @@ public static partial class GlobalTileHooks
         }
     }
 
-    public static partial class RightClick
+    public sealed partial class RightClick
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalTile self,
@@ -625,7 +625,7 @@ public static partial class GlobalTileHooks
         }
     }
 
-    public static partial class MouseOver
+    public sealed partial class MouseOver
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalTile self,
@@ -652,7 +652,7 @@ public static partial class GlobalTileHooks
         }
     }
 
-    public static partial class MouseOverFar
+    public sealed partial class MouseOverFar
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalTile self,
@@ -679,7 +679,7 @@ public static partial class GlobalTileHooks
         }
     }
 
-    public static partial class PreHitWire
+    public sealed partial class PreHitWire
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalTile self,
@@ -719,7 +719,7 @@ public static partial class GlobalTileHooks
         }
     }
 
-    public static partial class HitWire
+    public sealed partial class HitWire
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalTile self,
@@ -746,7 +746,7 @@ public static partial class GlobalTileHooks
         }
     }
 
-    public static partial class FloorVisuals
+    public sealed partial class FloorVisuals
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalTile self,
@@ -771,7 +771,7 @@ public static partial class GlobalTileHooks
         }
     }
 
-    public static partial class ChangeWaterfallStyle
+    public sealed partial class ChangeWaterfallStyle
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalTile self,
@@ -796,7 +796,7 @@ public static partial class GlobalTileHooks
         }
     }
 
-    public static partial class CanReplace
+    public sealed partial class CanReplace
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalTile self,
@@ -838,7 +838,7 @@ public static partial class GlobalTileHooks
         }
     }
 
-    public static partial class PostSetupTileMerge
+    public sealed partial class PostSetupTileMerge
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalTile self
@@ -859,7 +859,7 @@ public static partial class GlobalTileHooks
         }
     }
 
-    public static partial class PreShakeTree
+    public sealed partial class PreShakeTree
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalTile self,
@@ -886,7 +886,7 @@ public static partial class GlobalTileHooks
         }
     }
 
-    public static partial class ShakeTree
+    public sealed partial class ShakeTree
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalTile self,

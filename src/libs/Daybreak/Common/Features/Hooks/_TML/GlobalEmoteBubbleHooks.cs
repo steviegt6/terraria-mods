@@ -21,7 +21,7 @@ using System.Linq;
 //     System.Nullable`1<Microsoft.Xna.Framework.Rectangle> Terraria.ModLoader.GlobalEmoteBubble::GetFrameInEmoteMenu(System.Int32,System.Int32,System.Int32)
 public static partial class GlobalEmoteBubbleHooks
 {
-    public static partial class OnSpawn
+    public sealed partial class OnSpawn
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalEmoteBubble self,
@@ -44,7 +44,7 @@ public static partial class GlobalEmoteBubbleHooks
         }
     }
 
-    public static partial class UpdateFrame
+    public sealed partial class UpdateFrame
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalEmoteBubble self,
@@ -78,7 +78,7 @@ public static partial class GlobalEmoteBubbleHooks
         }
     }
 
-    public static partial class UpdateFrameInEmoteMenu
+    public sealed partial class UpdateFrameInEmoteMenu
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalEmoteBubble self,
@@ -114,7 +114,7 @@ public static partial class GlobalEmoteBubbleHooks
         }
     }
 
-    public static partial class PreDraw
+    public sealed partial class PreDraw
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalEmoteBubble self,
@@ -160,7 +160,7 @@ public static partial class GlobalEmoteBubbleHooks
         }
     }
 
-    public static partial class PostDraw
+    public sealed partial class PostDraw
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalEmoteBubble self,
@@ -195,7 +195,7 @@ public static partial class GlobalEmoteBubbleHooks
         }
     }
 
-    public static partial class PreDrawInEmoteMenu
+    public sealed partial class PreDrawInEmoteMenu
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalEmoteBubble self,
@@ -239,7 +239,7 @@ public static partial class GlobalEmoteBubbleHooks
         }
     }
 
-    public static partial class PostDrawInEmoteMenu
+    public sealed partial class PostDrawInEmoteMenu
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalEmoteBubble self,
@@ -272,7 +272,7 @@ public static partial class GlobalEmoteBubbleHooks
         }
     }
 
-    public static partial class GetFrame
+    public sealed partial class GetFrame
     {
         public delegate Microsoft.Xna.Framework.Rectangle? Definition(
             Terraria.ModLoader.GlobalEmoteBubble self,
@@ -310,7 +310,7 @@ public static partial class GlobalEmoteBubbleHooks
         }
     }
 
-    public static partial class GetFrameInEmoteMenu
+    public sealed partial class GetFrameInEmoteMenu
     {
         public delegate Microsoft.Xna.Framework.Rectangle? Definition(
             Terraria.ModLoader.GlobalEmoteBubble self,

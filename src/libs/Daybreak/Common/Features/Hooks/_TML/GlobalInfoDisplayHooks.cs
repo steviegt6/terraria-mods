@@ -14,7 +14,7 @@ using System.Linq;
 //     System.Void Terraria.ModLoader.GlobalInfoDisplay::ModifyDisplayParameters(Terraria.ModLoader.InfoDisplay,System.String&,System.String&,Microsoft.Xna.Framework.Color&,Microsoft.Xna.Framework.Color&)
 public static partial class GlobalInfoDisplayHooks
 {
-    public static partial class Active
+    public sealed partial class Active
     {
         public delegate bool? Definition(
             Terraria.ModLoader.GlobalInfoDisplay self,
@@ -52,7 +52,7 @@ public static partial class GlobalInfoDisplayHooks
         }
     }
 
-    public static partial class ModifyDisplayParameters
+    public sealed partial class ModifyDisplayParameters
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalInfoDisplay self,

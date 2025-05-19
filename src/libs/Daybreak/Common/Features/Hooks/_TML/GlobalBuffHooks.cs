@@ -22,7 +22,7 @@ using System.Linq;
 //     System.Boolean Terraria.ModLoader.GlobalBuff::RightClick(System.Int32,System.Int32)
 public static partial class GlobalBuffHooks
 {
-    public static partial class Update_int_Player_int
+    public sealed partial class Update_int_Player_int
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalBuff self,
@@ -49,7 +49,7 @@ public static partial class GlobalBuffHooks
         }
     }
 
-    public static partial class Update_int_NPC_int
+    public sealed partial class Update_int_NPC_int
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalBuff self,
@@ -76,7 +76,7 @@ public static partial class GlobalBuffHooks
         }
     }
 
-    public static partial class ReApply_int_Player_int_int
+    public sealed partial class ReApply_int_Player_int_int
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalBuff self,
@@ -118,7 +118,7 @@ public static partial class GlobalBuffHooks
         }
     }
 
-    public static partial class ReApply_int_NPC_int_int
+    public sealed partial class ReApply_int_NPC_int_int
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalBuff self,
@@ -160,7 +160,7 @@ public static partial class GlobalBuffHooks
         }
     }
 
-    public static partial class ModifyBuffText
+    public sealed partial class ModifyBuffText
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalBuff self,
@@ -189,7 +189,7 @@ public static partial class GlobalBuffHooks
         }
     }
 
-    public static partial class CustomBuffTipSize
+    public sealed partial class CustomBuffTipSize
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalBuff self,
@@ -214,7 +214,7 @@ public static partial class GlobalBuffHooks
         }
     }
 
-    public static partial class DrawCustomBuffTip
+    public sealed partial class DrawCustomBuffTip
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalBuff self,
@@ -243,7 +243,7 @@ public static partial class GlobalBuffHooks
         }
     }
 
-    public static partial class PreDraw
+    public sealed partial class PreDraw
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalBuff self,
@@ -283,7 +283,7 @@ public static partial class GlobalBuffHooks
         }
     }
 
-    public static partial class PostDraw
+    public sealed partial class PostDraw
     {
         public delegate void Definition(
             Terraria.ModLoader.GlobalBuff self,
@@ -312,7 +312,7 @@ public static partial class GlobalBuffHooks
         }
     }
 
-    public static partial class RightClick
+    public sealed partial class RightClick
     {
         public delegate bool Definition(
             Terraria.ModLoader.GlobalBuff self,

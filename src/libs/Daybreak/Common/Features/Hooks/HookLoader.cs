@@ -59,11 +59,52 @@ internal static class HookLoader
 
     private static void ResolveInstancedHooks(ILoadable instance)
     {
-        // TODO
+        SubscribeToHooks(
+            instance.GetType().GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance),
+            instance
+        );
     }
 
     private static void ResolveStaticHooks(Type type)
     {
-        // TODO
+        SubscribeToHooks(
+            type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static),
+            null
+        );
+    }
+
+    private static void SubscribeToHooks(MethodInfo[] methods, object? instance)
+    {
+        foreach (var method in methods)
+        {
+            var attributes = method.GetCustomAttributes(typeof(SubscribesToAttribute<>), true);
+            if (attributes.Length == 0)
+            {
+                continue;
+            }
+
+            foreach (var attribute in attributes)
+            {
+                var hookType = attribute.GetType().GetGenericArguments()[0];
+                Subscribe(hookType, method, instance);
+            }
+        }
+    }
+
+    private static void Subscribe(Type hookType, MethodInfo method, object? instance)
+    {
+        var eventInfo = hookType.GetEvent("Event");
+        if (eventInfo is null)
+        {
+            throw new InvalidOperationException($"The type {hookType} does not have an event named Event.");
+        }
+
+        var handler = Delegate.CreateDelegate(eventInfo.EventHandlerType!, instance, method);
+        if (handler is null)
+        {
+            throw new InvalidOperationException($"The method {method} is not compatible with the event {eventInfo}.");
+        }
+        
+        eventInfo.AddEventHandler(null, handler);
     }
 }

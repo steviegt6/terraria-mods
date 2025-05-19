@@ -128,7 +128,7 @@ using System.Linq;
 //     System.Boolean Terraria.ModLoader.ModPlayer::OnPickup(Terraria.Item)
 public static partial class ModPlayerHooks
 {
-    public static partial class Initialize
+    public sealed partial class Initialize
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self
@@ -149,7 +149,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class ResetEffects
+    public sealed partial class ResetEffects
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self
@@ -170,7 +170,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class ResetInfoAccessories
+    public sealed partial class ResetInfoAccessories
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self
@@ -191,7 +191,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class RefreshInfoAccessoriesFromTeamPlayers
+    public sealed partial class RefreshInfoAccessoriesFromTeamPlayers
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -214,7 +214,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class ModifyMaxStats
+    public sealed partial class ModifyMaxStats
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -242,7 +242,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class UpdateDead
+    public sealed partial class UpdateDead
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self
@@ -263,7 +263,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class PreSaveCustomData
+    public sealed partial class PreSaveCustomData
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self
@@ -284,7 +284,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class SaveData
+    public sealed partial class SaveData
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -307,7 +307,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class LoadData
+    public sealed partial class LoadData
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -330,7 +330,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class PreSavePlayer
+    public sealed partial class PreSavePlayer
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self
@@ -351,7 +351,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class PostSavePlayer
+    public sealed partial class PostSavePlayer
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self
@@ -372,7 +372,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class CopyClientState
+    public sealed partial class CopyClientState
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -395,7 +395,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class SyncPlayer
+    public sealed partial class SyncPlayer
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -422,7 +422,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class SendClientChanges
+    public sealed partial class SendClientChanges
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -445,7 +445,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class UpdateBadLifeRegen
+    public sealed partial class UpdateBadLifeRegen
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self
@@ -466,7 +466,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class UpdateLifeRegen
+    public sealed partial class UpdateLifeRegen
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self
@@ -487,7 +487,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class NaturalLifeRegen
+    public sealed partial class NaturalLifeRegen
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -510,7 +510,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class UpdateAutopause
+    public sealed partial class UpdateAutopause
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self
@@ -531,7 +531,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class PreUpdate
+    public sealed partial class PreUpdate
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self
@@ -552,7 +552,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class ProcessTriggers
+    public sealed partial class ProcessTriggers
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -575,7 +575,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class ArmorSetBonusActivated
+    public sealed partial class ArmorSetBonusActivated
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self
@@ -596,7 +596,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class ArmorSetBonusHeld
+    public sealed partial class ArmorSetBonusHeld
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -619,7 +619,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class SetControls
+    public sealed partial class SetControls
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self
@@ -640,7 +640,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class PreUpdateBuffs
+    public sealed partial class PreUpdateBuffs
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self
@@ -661,7 +661,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class PostUpdateBuffs
+    public sealed partial class PostUpdateBuffs
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self
@@ -682,7 +682,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class UpdateEquips
+    public sealed partial class UpdateEquips
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self
@@ -703,7 +703,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class PostUpdateEquips
+    public sealed partial class PostUpdateEquips
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self
@@ -724,7 +724,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class UpdateVisibleAccessories
+    public sealed partial class UpdateVisibleAccessories
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self
@@ -745,7 +745,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class UpdateVisibleVanityAccessories
+    public sealed partial class UpdateVisibleVanityAccessories
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self
@@ -766,7 +766,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class UpdateDyes
+    public sealed partial class UpdateDyes
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self
@@ -787,7 +787,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class PostUpdateMiscEffects
+    public sealed partial class PostUpdateMiscEffects
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self
@@ -808,7 +808,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class PostUpdateRunSpeeds
+    public sealed partial class PostUpdateRunSpeeds
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self
@@ -829,7 +829,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class PreUpdateMovement
+    public sealed partial class PreUpdateMovement
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self
@@ -850,7 +850,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class PostUpdate
+    public sealed partial class PostUpdate
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self
@@ -871,7 +871,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class ModifyExtraJumpDurationMultiplier
+    public sealed partial class ModifyExtraJumpDurationMultiplier
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -896,7 +896,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class CanStartExtraJump
+    public sealed partial class CanStartExtraJump
     {
         public delegate bool Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -932,7 +932,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class OnExtraJumpStarted
+    public sealed partial class OnExtraJumpStarted
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -957,7 +957,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class OnExtraJumpEnded
+    public sealed partial class OnExtraJumpEnded
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -980,7 +980,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class OnExtraJumpRefreshed
+    public sealed partial class OnExtraJumpRefreshed
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -1003,7 +1003,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class ExtraJumpVisuals
+    public sealed partial class ExtraJumpVisuals
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -1026,7 +1026,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class CanShowExtraJumpVisuals
+    public sealed partial class CanShowExtraJumpVisuals
     {
         public delegate bool Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -1062,7 +1062,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class OnExtraJumpCleared
+    public sealed partial class OnExtraJumpCleared
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -1085,7 +1085,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class FrameEffects
+    public sealed partial class FrameEffects
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self
@@ -1106,7 +1106,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class ImmuneTo
+    public sealed partial class ImmuneTo
     {
         public delegate bool Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -1146,7 +1146,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class FreeDodge
+    public sealed partial class FreeDodge
     {
         public delegate bool Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -1182,7 +1182,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class ConsumableDodge
+    public sealed partial class ConsumableDodge
     {
         public delegate bool Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -1218,7 +1218,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class ModifyHurt
+    public sealed partial class ModifyHurt
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -1241,7 +1241,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class OnHurt
+    public sealed partial class OnHurt
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -1264,7 +1264,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class PostHurt
+    public sealed partial class PostHurt
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -1287,7 +1287,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class PreKill
+    public sealed partial class PreKill
     {
         public delegate bool Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -1331,7 +1331,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class Kill
+    public sealed partial class Kill
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -1360,7 +1360,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class PreModifyLuck
+    public sealed partial class PreModifyLuck
     {
         public delegate bool Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -1394,7 +1394,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class ModifyLuck
+    public sealed partial class ModifyLuck
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -1417,7 +1417,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class PreItemCheck
+    public sealed partial class PreItemCheck
     {
         public delegate bool Definition(
             Terraria.ModLoader.ModPlayer self
@@ -1449,7 +1449,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class PostItemCheck
+    public sealed partial class PostItemCheck
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self
@@ -1470,7 +1470,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class GetHealLife
+    public sealed partial class GetHealLife
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -1497,7 +1497,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class GetHealMana
+    public sealed partial class GetHealMana
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -1524,7 +1524,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class ModifyManaCost
+    public sealed partial class ModifyManaCost
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -1551,7 +1551,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class OnMissingMana
+    public sealed partial class OnMissingMana
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -1576,7 +1576,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class OnConsumeMana
+    public sealed partial class OnConsumeMana
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -1601,7 +1601,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class ModifyWeaponDamage
+    public sealed partial class ModifyWeaponDamage
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -1626,7 +1626,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class ModifyWeaponKnockback
+    public sealed partial class ModifyWeaponKnockback
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -1651,7 +1651,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class ModifyWeaponCrit
+    public sealed partial class ModifyWeaponCrit
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -1676,7 +1676,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class CanConsumeAmmo
+    public sealed partial class CanConsumeAmmo
     {
         public delegate bool Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -1714,7 +1714,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class OnConsumeAmmo
+    public sealed partial class OnConsumeAmmo
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -1739,7 +1739,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class CanShoot
+    public sealed partial class CanShoot
     {
         public delegate bool Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -1773,7 +1773,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class ModifyShootStats
+    public sealed partial class ModifyShootStats
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -1806,7 +1806,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class Shoot
+    public sealed partial class Shoot
     {
         public delegate bool Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -1852,7 +1852,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class MeleeEffects
+    public sealed partial class MeleeEffects
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -1877,7 +1877,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class EmitEnchantmentVisualsAt
+    public sealed partial class EmitEnchantmentVisualsAt
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -1906,7 +1906,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class OnCatchNPC
+    public sealed partial class OnCatchNPC
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -1933,7 +1933,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class ModifyItemScale
+    public sealed partial class ModifyItemScale
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -1958,7 +1958,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class OnHitAnything
+    public sealed partial class OnHitAnything
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -1985,7 +1985,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class CanHitNPC
+    public sealed partial class CanHitNPC
     {
         public delegate bool Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -2021,7 +2021,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class ModifyHitNPC
+    public sealed partial class ModifyHitNPC
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -2046,7 +2046,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class OnHitNPC
+    public sealed partial class OnHitNPC
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -2073,7 +2073,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class ModifyHitNPCWithItem
+    public sealed partial class ModifyHitNPCWithItem
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -2100,7 +2100,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class OnHitNPCWithItem
+    public sealed partial class OnHitNPCWithItem
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -2129,7 +2129,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class ModifyHitNPCWithProj
+    public sealed partial class ModifyHitNPCWithProj
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -2156,7 +2156,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class OnHitNPCWithProj
+    public sealed partial class OnHitNPCWithProj
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -2185,7 +2185,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class CanHitPvp
+    public sealed partial class CanHitPvp
     {
         public delegate bool Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -2223,7 +2223,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class CanHitPvpWithProj
+    public sealed partial class CanHitPvpWithProj
     {
         public delegate bool Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -2261,7 +2261,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class CanBeHitByNPC
+    public sealed partial class CanBeHitByNPC
     {
         public delegate bool Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -2299,7 +2299,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class ModifyHitByNPC
+    public sealed partial class ModifyHitByNPC
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -2324,7 +2324,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class OnHitByNPC
+    public sealed partial class OnHitByNPC
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -2349,7 +2349,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class CanBeHitByProjectile
+    public sealed partial class CanBeHitByProjectile
     {
         public delegate bool Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -2385,7 +2385,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class ModifyHitByProjectile
+    public sealed partial class ModifyHitByProjectile
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -2410,7 +2410,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class OnHitByProjectile
+    public sealed partial class OnHitByProjectile
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -2435,7 +2435,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class ModifyFishingAttempt
+    public sealed partial class ModifyFishingAttempt
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -2458,7 +2458,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class CatchFish
+    public sealed partial class CatchFish
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -2489,7 +2489,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class ModifyCaughtFish
+    public sealed partial class ModifyCaughtFish
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -2512,7 +2512,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class GetFishingLevel
+    public sealed partial class GetFishingLevel
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -2539,7 +2539,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class AnglerQuestReward
+    public sealed partial class AnglerQuestReward
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -2564,7 +2564,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class GetDyeTraderReward
+    public sealed partial class GetDyeTraderReward
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -2587,7 +2587,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class DrawEffects
+    public sealed partial class DrawEffects
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -2620,7 +2620,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class ModifyDrawInfo
+    public sealed partial class ModifyDrawInfo
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -2643,7 +2643,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class ModifyDrawLayerOrdering
+    public sealed partial class ModifyDrawLayerOrdering
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -2666,7 +2666,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class HideDrawLayers
+    public sealed partial class HideDrawLayers
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -2689,7 +2689,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class ModifyScreenPosition
+    public sealed partial class ModifyScreenPosition
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self
@@ -2710,7 +2710,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class ModifyZoom
+    public sealed partial class ModifyZoom
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -2733,7 +2733,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class PlayerConnect
+    public sealed partial class PlayerConnect
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self
@@ -2754,7 +2754,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class PlayerDisconnect
+    public sealed partial class PlayerDisconnect
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self
@@ -2775,7 +2775,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class OnEnterWorld
+    public sealed partial class OnEnterWorld
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self
@@ -2796,7 +2796,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class OnRespawn
+    public sealed partial class OnRespawn
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self
@@ -2817,7 +2817,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class ShiftClickSlot
+    public sealed partial class ShiftClickSlot
     {
         public delegate bool Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -2857,7 +2857,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class HoverSlot
+    public sealed partial class HoverSlot
     {
         public delegate bool Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -2897,7 +2897,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class PostSellItem
+    public sealed partial class PostSellItem
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -2924,7 +2924,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class CanSellItem
+    public sealed partial class CanSellItem
     {
         public delegate bool Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -2964,7 +2964,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class PostBuyItem
+    public sealed partial class PostBuyItem
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -2991,7 +2991,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class CanBuyItem
+    public sealed partial class CanBuyItem
     {
         public delegate bool Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -3031,7 +3031,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class CanUseItem
+    public sealed partial class CanUseItem
     {
         public delegate bool Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -3067,7 +3067,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class ModifyNurseHeal
+    public sealed partial class ModifyNurseHeal
     {
         public delegate bool Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -3109,7 +3109,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class ModifyNursePrice
+    public sealed partial class ModifyNursePrice
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -3138,7 +3138,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class PostNurseHeal
+    public sealed partial class PostNurseHeal
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -3167,7 +3167,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class ModifyStartingInventory
+    public sealed partial class ModifyStartingInventory
     {
         public delegate void Definition(
             Terraria.ModLoader.ModPlayer self,
@@ -3192,7 +3192,7 @@ public static partial class ModPlayerHooks
         }
     }
 
-    public static partial class OnPickup
+    public sealed partial class OnPickup
     {
         public delegate bool Definition(
             Terraria.ModLoader.ModPlayer self,
