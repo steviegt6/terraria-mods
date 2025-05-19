@@ -19,17 +19,22 @@ internal static class HookLoader
         // them.
         MonoModHooks.Add(
             typeof(Mod).GetMethods().Single(x => x.Name.Equals(nameof(Mod.AddContent)) && !x.IsGenericMethod),
-            AddContent_ResolveInstancedHooks
+            AddContent_ResolveInstancedHooks_CallOnLoads
         );
 
         MonoModHooks.Add(
             typeof(Mod).GetMethod(nameof(Mod.Autoload), BindingFlags.NonPublic | BindingFlags.Instance)!,
-            Autoload_ResolveStaticHooks
+            Autoload_ResolveStaticHooks_CallOnLoads
+        );
+
+        MonoModHooks.Add(
+            typeof(MenuLoader).GetMethod(nameof(MenuLoader.Unload), BindingFlags.NonPublic | BindingFlags.Static)!,
+            Unload_CallOnUnloads
         );
     }
 #pragma warning restore CA2255
 
-    private static bool AddContent_ResolveInstancedHooks(Func<Mod, ILoadable, bool> orig, Mod self, ILoadable instance)
+    private static bool AddContent_ResolveInstancedHooks_CallOnLoads(Func<Mod, ILoadable, bool> orig, Mod self, ILoadable instance)
     {
         // Only attempt to resolve and apply hooks if the instance actually
         // loaded...
@@ -39,10 +44,11 @@ internal static class HookLoader
         }
 
         ResolveInstancedHooks(instance);
+        CallOnLoads(instance);
         return true;
     }
 
-    private static void Autoload_ResolveStaticHooks(Action<Mod> orig, Mod self)
+    private static void Autoload_ResolveStaticHooks_CallOnLoads(Action<Mod> orig, Mod self)
     {
         orig(self);
 
@@ -52,9 +58,89 @@ internal static class HookLoader
         }
 
         var loadableTypes = AssemblyManager.GetLoadableTypes(self.Code)
-                                           .OrderBy(x => x.FullName, StringComparer.InvariantCulture);
+                                           .OrderBy(x => x.FullName, StringComparer.InvariantCulture)
+                                           .ToArray();
 
         LoaderUtils.ForEachAndAggregateExceptions(loadableTypes, ResolveStaticHooks);
+        LoaderUtils.ForEachAndAggregateExceptions(loadableTypes, CallOnLoads);
+    }
+
+    private static void Unload_CallOnUnloads(Action orig)
+    {
+        foreach (var mod in ModLoader.Mods)
+        {
+            var loadableTypes = AssemblyManager.GetLoadableTypes(mod.Code)
+                                               .OrderBy(x => x.FullName, StringComparer.InvariantCulture)
+                                               .ToArray();
+            LoaderUtils.ForEachAndAggregateExceptions(loadableTypes.Reverse(), CallOnUnloads);
+
+            foreach (var loadable in mod.GetContent().Reverse())
+            {
+                CallOnUnloads(loadable);
+            }
+        }
+
+        orig();
+    }
+
+    private static void CallOnUnloads(ILoadable instance)
+    {
+        var methods = instance.GetType().GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+        foreach (var method in methods.Reverse())
+        {
+            var attributes = method.GetCustomAttributes(typeof(OnUnloadAttribute), true);
+            if (attributes.Length == 0)
+            {
+                continue;
+            }
+
+            if (method.IsGenericMethod)
+            {
+                throw new InvalidOperationException($"The method {method} cannot be generic.");
+            }
+
+            if (method.ReturnType != typeof(void))
+            {
+                throw new InvalidOperationException($"The method {method} must return void.");
+            }
+
+            if (method.GetParameters().Length != 0)
+            {
+                throw new InvalidOperationException($"The method {method} must not have any parameters.");
+            }
+
+            method.Invoke(instance, null);
+        }
+    }
+
+    private static void CallOnUnloads(Type type)
+    {
+        var methods = type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
+        foreach (var method in methods.Reverse())
+        {
+            var attributes = method.GetCustomAttributes(typeof(OnUnloadAttribute), true);
+            if (attributes.Length == 0)
+            {
+                continue;
+            }
+
+            if (method.IsGenericMethod)
+            {
+                throw new InvalidOperationException($"The method {method} cannot be generic.");
+            }
+
+            if (method.ReturnType != typeof(void))
+            {
+                throw new InvalidOperationException($"The method {method} must return void.");
+            }
+
+            if (method.GetParameters().Length != 0)
+            {
+                throw new InvalidOperationException($"The method {method} must not have any parameters.");
+            }
+
+            method.Invoke(null, null);
+        }
     }
 
     private static void ResolveInstancedHooks(ILoadable instance)
@@ -71,6 +157,66 @@ internal static class HookLoader
             type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static),
             null
         );
+    }
+
+    private static void CallOnLoads(ILoadable instance)
+    {
+        var methods = instance.GetType().GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+        foreach (var method in methods)
+        {
+            var attributes = method.GetCustomAttributes(typeof(OnLoadAttribute), true);
+            if (attributes.Length == 0)
+            {
+                continue;
+            }
+
+            if (method.IsGenericMethod)
+            {
+                throw new InvalidOperationException($"The method {method} cannot be generic.");
+            }
+
+            if (method.ReturnType != typeof(void))
+            {
+                throw new InvalidOperationException($"The method {method} must return void.");
+            }
+
+            if (method.GetParameters().Length != 0)
+            {
+                throw new InvalidOperationException($"The method {method} must not have any parameters.");
+            }
+
+            method.Invoke(instance, null);
+        }
+    }
+
+    private static void CallOnLoads(Type type)
+    {
+        var methods = type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
+        foreach (var method in methods)
+        {
+            var attributes = method.GetCustomAttributes(typeof(OnLoadAttribute), true);
+            if (attributes.Length == 0)
+            {
+                continue;
+            }
+
+            if (method.IsGenericMethod)
+            {
+                throw new InvalidOperationException($"The method {method} cannot be generic.");
+            }
+
+            if (method.ReturnType != typeof(void))
+            {
+                throw new InvalidOperationException($"The method {method} must return void.");
+            }
+
+            if (method.GetParameters().Length != 0)
+            {
+                throw new InvalidOperationException($"The method {method} must not have any parameters.");
+            }
+
+            method.Invoke(null, null);
+        }
     }
 
     private static void SubscribeToHooks(MethodInfo[] methods, object? instance)
@@ -104,7 +250,7 @@ internal static class HookLoader
         {
             throw new InvalidOperationException($"The method {method} is not compatible with the event {eventInfo}.");
         }
-        
+
         eventInfo.AddEventHandler(null, handler);
     }
 }

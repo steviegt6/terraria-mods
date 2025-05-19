@@ -1,6 +1,8 @@
 using System;
 using System.Reflection;
 
+using JetBrains.Annotations;
+
 using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
 
@@ -22,4 +24,5 @@ namespace Daybreak.Common.Features.Hooks;
 /// </summary>
 /// <typeparam name="T">The hook type to subscribe the method to.</typeparam>
 [AttributeUsage(AttributeTargets.Method)]
+[MeansImplicitUse]
 public sealed class SubscribesToAttribute<T> : Attribute;
