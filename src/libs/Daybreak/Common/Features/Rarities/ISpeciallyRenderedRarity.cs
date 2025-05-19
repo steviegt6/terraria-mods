@@ -58,10 +58,10 @@ public interface ISpeciallyRenderedRarity
     private static void Load()
     {
         IL_Main.DrawItemTextPopups += RenderSpecialRarities;
+        GlobalItemHooks.PreDrawTooltipLine.Event += RenderSpecialRarityItemName;
     }
 
-    [SubscribesTo<GlobalItemHooks.PreDrawTooltipLine>]
-    private static bool PreDrawTooltipLine(GlobalItem self, Item item, DrawableTooltipLine line, ref int yOffset)
+    private static bool RenderSpecialRarityItemName(GlobalItem self, Item item, DrawableTooltipLine line, ref int yOffset)
     {
         if (line is not { Mod: "Terraria", Name: "ItemName" })
         {
