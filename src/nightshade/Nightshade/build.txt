@@ -4,3 +4,4 @@ version = 1.0.0
 homepage = https://discord.gg/6Fm4ZTHVub
 side = Both
 modReferences = Daybreak@1.0.0
+weakReferences = CalamityFables
