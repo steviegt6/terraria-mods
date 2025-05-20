@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 
 using Daybreak.Common.Features.Hooks;
 
@@ -13,6 +14,7 @@ using ReLogic.Graphics;
 
 using Terraria;
 using Terraria.ModLoader;
+using Terraria.UI.Chat;
 
 namespace Daybreak.Common.Features.Rarities;
 
@@ -57,11 +59,12 @@ public interface ISpeciallyRenderedRarity
     [OnLoad]
     private static void Load()
     {
-        IL_Main.DrawItemTextPopups += RenderSpecialRarities;
-        GlobalItemHooks.PreDrawTooltipLine.Event += RenderSpecialRarityItemName;
+        GlobalItemHooks.PreDrawTooltipLine.Event += RenderSpecialRaritiesInTooltips;
+        IL_Main.DrawItemTextPopups += RenderSpecialRaritiesInPopupText;
+        IL_Main.MouseTextInner += RenderSpecialRaritiesInMouseText;
     }
 
-    private static bool RenderSpecialRarityItemName(GlobalItem self, Item item, DrawableTooltipLine line, ref int yOffset)
+    private static bool RenderSpecialRaritiesInTooltips(GlobalItem self, Item item, DrawableTooltipLine line, ref int yOffset)
     {
         if (line is not { Mod: "Terraria", Name: "ItemName" })
         {
@@ -90,7 +93,7 @@ public interface ISpeciallyRenderedRarity
         return false;
     }
 
-    private static void RenderSpecialRarities(ILContext il)
+    private static void RenderSpecialRaritiesInPopupText(ILContext il)
     {
         var c = new ILCursor(il);
 
@@ -145,6 +148,42 @@ public interface ISpeciallyRenderedRarity
                 }
 
                 rarity.RenderRarityText(spriteBatch, font, text, position, color, rotation, origin, new Vector2(scale), effects, -1, 2, false);
+            }
+        );
+    }
+
+    private static void RenderSpecialRaritiesInMouseText(ILContext il)
+    {
+        var c = new ILCursor(il);
+
+        c.GotoNext(MoveType.Before, x => x.MatchCall("Terraria.UI.Chat.ChatManager", "DrawColorCodedStringWithShadow"));
+        c.Remove();
+
+        c.EmitLdarg1(); // info
+        c.EmitLdfld(typeof(Main.MouseTextCache).GetField(nameof(Main.MouseTextCache.rare), BindingFlags.Public | BindingFlags.Instance)!);
+        c.EmitDelegate(
+            (
+                SpriteBatch spriteBatch,
+                DynamicSpriteFont font,
+                string text,
+                Vector2 position,
+                Color baseColor,
+                float rotation,
+                Vector2 origin,
+                Vector2 baseScale,
+                float maxWidth,
+                float spread,
+                int rare
+            ) =>
+            {
+                if (RarityLoader.GetRarity(rare) is not ISpeciallyRenderedRarity rarity)
+                {
+                    ChatManager.DrawColorCodedStringWithShadow(spriteBatch, font, text, position, baseColor, rotation, origin, baseScale, maxWidth, spread);
+                    return Vector2.Zero;
+                }
+
+                rarity.RenderRarityText(spriteBatch, font, text, position, baseColor, rotation, origin, baseScale, SpriteEffects.None, maxWidth, spread, false);
+                return Vector2.Zero;
             }
         );
     }
