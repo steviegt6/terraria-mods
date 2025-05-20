@@ -15,20 +15,19 @@ using Terraria.GameContent.UI.Elements;
 using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.Localization;
+using Terraria.ModLoader;
 using Terraria.UI;
 using Terraria.UI.Gamepad;
 
 namespace Daybreak.Content.UI;
 
-internal sealed class AchievementsMenu : UIState, ILoad
+internal sealed class AchievementsMenu : UIState, ILoadable
 {
     private UIList? achievementsList;
     private List<AchievementListItem> achievementElements = [];
     private List<UIToggleImage> categoryButtons = [];
     private UIElement? backPanel;
     private UIElement? outerContainer;
-
-    void ILoad.Load() { }
 
     public void InitializePage()
     {
@@ -157,7 +156,7 @@ internal sealed class AchievementsMenu : UIState, ILoad
 
     private void FadedMouseOver(UIMouseEvent e, UIElement element)
     {
-        SoundEngine.PlaySound(12);
+        SoundEngine.PlaySound(SoundID.MenuTick);
         ((UIPanel)e.Target).BackgroundColor = new Color(73, 94, 171);
         ((UIPanel)e.Target).BorderColor = Colors.FancyUIFatButtonMouseOver;
     }
@@ -172,7 +171,7 @@ internal sealed class AchievementsMenu : UIState, ILoad
     {
         Debug.Assert(achievementsList is not null);
 
-        SoundEngine.PlaySound(12);
+        SoundEngine.PlaySound(SoundID.MenuTick);
 
         achievementsList.Clear();
         foreach (var achievementElement in achievementElements)
@@ -193,7 +192,7 @@ internal sealed class AchievementsMenu : UIState, ILoad
         base.OnActivate();
 
         InitializePage();
-        
+
         Debug.Assert(outerContainer is not null);
         Debug.Assert(achievementsList is not null);
 
@@ -255,4 +254,8 @@ internal sealed class AchievementsMenu : UIState, ILoad
             }
         }
     }
+
+    public void Load(Mod mod) { }
+
+    public void Unload() { }
 }
