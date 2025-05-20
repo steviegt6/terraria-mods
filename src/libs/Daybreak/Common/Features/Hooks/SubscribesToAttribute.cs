@@ -23,6 +23,7 @@ namespace Daybreak.Common.Features.Hooks;
 ///     does not have any generic parameters (technical limitation).
 /// </summary>
 /// <typeparam name="T">The hook type to subscribe the method to.</typeparam>
-[AttributeUsage(AttributeTargets.Method)]
+[PublicAPI]
 [MeansImplicitUse]
+[AttributeUsage(AttributeTargets.Method)]
 public sealed class SubscribesToAttribute<T> : Attribute;

@@ -16,8 +16,9 @@ namespace Daybreak.Common.Features.Hooks;
 ///     If the method is static, it will just be called at the end of
 ///     <see cref="Mod.Autoload"/>.
 /// </summary>
-[AttributeUsage(AttributeTargets.Method)]
+[PublicAPI]
 [MeansImplicitUse]
+[AttributeUsage(AttributeTargets.Method)]
 public sealed class OnLoadAttribute : Attribute;
 
 /// <summary>
@@ -30,6 +31,7 @@ public sealed class OnLoadAttribute : Attribute;
 ///     <see cref="ModContent.UnloadModContent"/>
 ///     (before <see cref="MenuLoader.Unload"/>).
 /// </summary>
-[AttributeUsage(AttributeTargets.Method)]
+[PublicAPI]
 [MeansImplicitUse]
+[AttributeUsage(AttributeTargets.Method)]
 public sealed class OnUnloadAttribute : Attribute;

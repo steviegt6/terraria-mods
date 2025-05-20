@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
+
+using JetBrains.Annotations;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -17,6 +17,7 @@ namespace Daybreak.Common.Features.Achievements;
 ///     <see cref="Terraria.Achievements.Achievement"/> type, which this
 ///     implementation wholly replaces.
 /// </summary>
+[PublicAPI]
 public abstract class Achievement : ModTexturedType, ILocalizedModType
 {
     /// <inheritdoc cref="ILocalizedModType.LocalizationCategory"/>
@@ -37,7 +38,7 @@ public abstract class Achievement : ModTexturedType, ILocalizedModType
     ///     advisor cards.  Return a value below <c>0f</c> to omit it from the
     ///     advisor card system.
     /// </summary>
-    public virtual float AdvisorOrder { get; } = -1f;
+    public virtual float AdvisorOrder => -1f;
 
     /// <summary>
     ///     Whether this achievement has been completed.
@@ -46,12 +47,19 @@ public abstract class Achievement : ModTexturedType, ILocalizedModType
 
     internal int Id { get; set; }
 
+    /// <summary>
+    ///     Lets the implementation know about the achievement and registers it
+    ///     as known content.
+    /// </summary>
     protected sealed override void Register()
     {
         AchievementImpl.Register(this);
         ModTypeLookup<Achievement>.Register(this);
     }
 
+    /// <summary>
+    ///     Unused; this type is a singleton.
+    /// </summary>
     protected sealed override void InitTemplateInstance() { }
 
     /// <summary>

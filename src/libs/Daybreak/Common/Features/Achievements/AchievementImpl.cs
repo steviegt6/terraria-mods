@@ -7,7 +7,6 @@ using System.Linq;
 using Daybreak.Common.Features.Hooks;
 using Daybreak.Content.Config;
 using Daybreak.Content.UI;
-using Daybreak.Core.Hooks;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;

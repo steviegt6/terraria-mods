@@ -3,6 +3,7 @@ using JetBrains.Annotations;
 using Microsoft.Xna.Framework.Graphics;
 
 using Terraria.GameContent.UI.Elements;
+using Terraria.ModLoader;
 using Terraria.ModLoader.UI;
 
 namespace Daybreak.Common.Features.ModPanel;
@@ -16,53 +17,64 @@ namespace Daybreak.Common.Features.ModPanel;
 ///     convenient access to the object.
 /// </summary>
 [PublicAPI]
+[Autoload(Side = ModSide.Client)]
 public abstract class ModPanelStyleExt : ModPanelStyle
 {
+    /// <inheritdoc cref="ModPanelStyle.PreInitialize"/>
     public sealed override bool PreInitialize(UIPanel element)
     {
         return PreInitialize((UIModItem)element);
     }
 
+    /// <inheritdoc cref="ModPanelStyle.PostInitialize"/>
     public sealed override void PostInitialize(UIPanel element)
     {
         PostInitialize((UIModItem)element);
     }
 
+    /// <inheritdoc cref="ModPanelStyle.ModifyModIcon"/>
     public sealed override UIImage? ModifyModIcon(UIPanel element, UIImage modIcon, ref int modIconAdjust)
     {
         return ModifyModIcon((UIModItem)element, modIcon, ref modIconAdjust);
     }
 
+    /// <inheritdoc cref="ModPanelStyle.ModifyModName"/>
     public sealed override UIText ModifyModName(UIPanel element, UIText modName)
     {
         return ModifyModName((UIModItem)element, modName);
     }
 
+    /// <inheritdoc cref="ModPanelStyle.PreSetHoverColors"/>
     public sealed override bool PreSetHoverColors(UIPanel element, bool hovered)
     {
         return PreSetHoverColors((UIModItem)element, hovered);
     }
 
+    /// <inheritdoc cref="ModPanelStyle.PostSetHoverColors"/>
     public sealed override void PostSetHoverColors(UIPanel element, bool hovered)
     {
         PostSetHoverColors((UIModItem)element, hovered);
     }
 
+    /// <inheritdoc cref="ModPanelStyle.PreDraw"/>
     public sealed override bool PreDraw(UIPanel element, SpriteBatch sb)
     {
         return PreDraw((UIModItem)element, sb);
     }
 
+    /// <inheritdoc cref="ModPanelStyle.PostDraw"/>
     public sealed override void PostDraw(UIPanel element, SpriteBatch sb)
     {
         PostDraw((UIModItem)element, sb);
     }
 
+    /// <inheritdoc cref="ModPanelStyle.PreDrawPanel"/>
     public sealed override bool PreDrawPanel(UIPanel element, SpriteBatch sb)
     {
         return PreDrawPanel((UIModItem)element, sb);
     }
 
+    /// <inheritdoc cref="ModPanelStyle.PostDrawPanel"/>
     public sealed override void PostDrawPanel(UIPanel element, SpriteBatch sb)
     {
         PostDrawPanel((UIModItem)element, sb);
@@ -77,6 +89,7 @@ public abstract class ModPanelStyleExt : ModPanelStyle
     /// <inheritdoc cref="ModPanelStyle.PostInitialize"/>
     public virtual void PostInitialize(UIModItem element) { }
 
+    // ReSharper disable once ReturnTypeCanBeNotNullable
     /// <inheritdoc cref="ModPanelStyle.ModifyModIcon"/>
     public virtual UIImage? ModifyModIcon(UIModItem element, UIImage modIcon, ref int modIconAdjust)
     {
