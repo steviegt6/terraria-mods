@@ -3,6 +3,7 @@
     "path": "Tomat.TML.sln",
     "projects": [
       "common\\CodeAnalysis\\CodeAnalysis.csproj",
+      "common\\DaybreakHookGenerator\\DaybreakHookGenerator.csproj",
       "common\\LocalizationChecker\\LocalizationChecker.csproj",
       "common\\ShaderCompiler\\ShaderCompiler.csproj",
       "common\\SourceGenerator\\SourceGenerator.csproj",

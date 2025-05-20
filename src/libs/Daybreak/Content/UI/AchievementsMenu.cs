@@ -192,10 +192,10 @@ internal sealed class AchievementsMenu : UIState, ILoad
     {
         base.OnActivate();
 
+        InitializePage();
+        
         Debug.Assert(outerContainer is not null);
         Debug.Assert(achievementsList is not null);
-
-        InitializePage();
 
         if (Main.gameMenu)
         {
