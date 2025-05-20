@@ -88,8 +88,13 @@ internal static class HookLoader
         var methods = instance.GetType().GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
         foreach (var method in methods.Reverse())
         {
-            var attributes = method.GetCustomAttributes(typeof(OnUnloadAttribute), true);
-            if (attributes.Length == 0)
+            var attribute = method.GetCustomAttribute<OnUnloadAttribute>(inherit: false);
+            if (attribute is null)
+            {
+                continue;
+            }
+
+            if (!ModOrganizer.LoadSide(attribute.Side))
             {
                 continue;
             }
@@ -118,8 +123,13 @@ internal static class HookLoader
         var methods = type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
         foreach (var method in methods.Reverse())
         {
-            var attributes = method.GetCustomAttributes(typeof(OnUnloadAttribute), true);
-            if (attributes.Length == 0)
+            var attribute = method.GetCustomAttribute<OnUnloadAttribute>(inherit: false);
+            if (attribute is null)
+            {
+                continue;
+            }
+
+            if (!ModOrganizer.LoadSide(attribute.Side))
             {
                 continue;
             }
@@ -164,8 +174,13 @@ internal static class HookLoader
         var methods = instance.GetType().GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
         foreach (var method in methods)
         {
-            var attributes = method.GetCustomAttributes(typeof(OnLoadAttribute), true);
-            if (attributes.Length == 0)
+            var attribute = method.GetCustomAttribute<OnLoadAttribute>(inherit: false);
+            if (attribute is null)
+            {
+                continue;
+            }
+
+            if (!ModOrganizer.LoadSide(attribute.Side))
             {
                 continue;
             }
@@ -194,8 +209,13 @@ internal static class HookLoader
         var methods = type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
         foreach (var method in methods)
         {
-            var attributes = method.GetCustomAttributes(typeof(OnLoadAttribute), true);
-            if (attributes.Length == 0)
+            var attribute = method.GetCustomAttribute<OnLoadAttribute>(inherit: false);
+            if (attribute is null)
+            {
+                continue;
+            }
+
+            if (!ModOrganizer.LoadSide(attribute.Side))
             {
                 continue;
             }
@@ -223,7 +243,7 @@ internal static class HookLoader
     {
         foreach (var method in methods)
         {
-            var attributes = method.GetCustomAttributes(typeof(SubscribesToAttribute<>), true);
+            var attributes = method.GetCustomAttributes(typeof(SubscribesToAttribute<>), inherit: false);
             if (attributes.Length == 0)
             {
                 continue;
@@ -231,6 +251,11 @@ internal static class HookLoader
 
             foreach (var attribute in attributes)
             {
+                if (attribute is IHasSide hasSide && !ModOrganizer.LoadSide(hasSide.Side))
+                {
+                    continue;
+                }
+
                 var hookType = attribute.GetType().GetGenericArguments()[0];
                 Subscribe(hookType, method, instance);
             }

@@ -26,4 +26,15 @@ namespace Daybreak.Common.Features.Hooks;
 [PublicAPI]
 [MeansImplicitUse]
 [AttributeUsage(AttributeTargets.Method)]
-public sealed class SubscribesToAttribute<T> : Attribute;
+public sealed class SubscribesToAttribute<T> : Attribute, IHasSide
+{
+    /// <summary>
+    ///     The side to load this on.
+    /// </summary>
+    public ModSide Side { get; set; } = ModSide.Both;
+}
+
+internal interface IHasSide
+{
+    ModSide Side { get; }
+}

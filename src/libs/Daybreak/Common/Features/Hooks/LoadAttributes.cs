@@ -19,7 +19,13 @@ namespace Daybreak.Common.Features.Hooks;
 [PublicAPI]
 [MeansImplicitUse]
 [AttributeUsage(AttributeTargets.Method)]
-public sealed class OnLoadAttribute : Attribute;
+public sealed class OnLoadAttribute : Attribute
+{
+    /// <summary>
+    ///     The side to load this on.
+    /// </summary>
+    public ModSide Side { get; set; } = ModSide.Both;
+}
 
 /// <summary>
 ///     Automatically calls the decorated function on unload.
@@ -34,4 +40,10 @@ public sealed class OnLoadAttribute : Attribute;
 [PublicAPI]
 [MeansImplicitUse]
 [AttributeUsage(AttributeTargets.Method)]
-public sealed class OnUnloadAttribute : Attribute;
+public sealed class OnUnloadAttribute : Attribute
+{
+    /// <summary>
+    ///     The side to load this on.
+    /// </summary>
+    public ModSide Side { get; set; } = ModSide.Both;
+}

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
+using Daybreak.Common.Features.Hooks;
 using Daybreak.Core.Hooks;
 
 using Microsoft.Xna.Framework;
@@ -23,8 +24,7 @@ using Terraria.UI;
 
 namespace Daybreak.Common.Features.ModPanel;
 
-[Autoload(Side = ModSide.Client)]
-internal sealed class CustomModPanelImpl : ILoad, IUnload
+internal sealed class CustomModPanelImpl
 {
     // This exists instead of a regular IL edit/detour because, for some reason,
     // it would seem that some part of the drawing routine may get inlined such
@@ -174,7 +174,8 @@ internal sealed class CustomModPanelImpl : ILoad, IUnload
         return false;
     }
 
-    void ILoad.Load()
+    [OnLoad(Side = ModSide.Client)]
+    private static void Load()
     {
         if (!ConciseModListCompat())
         {
@@ -300,7 +301,8 @@ internal sealed class CustomModPanelImpl : ILoad, IUnload
         }
     }
 
-    void IUnload.Unload()
+    [OnUnload(Side = ModSide.Client)]
+    private static void Unload()
     {
         currentMod = null;
         panel_styles.Clear();
