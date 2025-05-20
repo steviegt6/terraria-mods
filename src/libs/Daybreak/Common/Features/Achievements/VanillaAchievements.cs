@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 
+using Daybreak.Common.Features.Hooks;
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -14,7 +16,7 @@ using Terraria.ModLoader;
 namespace Daybreak.Common.Features.Achievements;
 
 // TODO: [DependsOn<AchievementImpl>]
-internal sealed class VanillaAchievements : ModSystem
+internal static class VanillaAchievements
 {
     private sealed class VanillaCategory : AchievementCategory
     {
@@ -174,13 +176,12 @@ internal sealed class VanillaAchievements : ModSystem
         "Achievements.ChallengerCategory",
     ];
 
-    public override void Load()
+    [OnLoad]
+    public static void Load()
     {
-        base.Load();
-
         foreach (var (name, category) in vanilla_categories)
         {
-            Mod.AddContent(new VanillaCategory(name, category));
+            ModContent.GetInstance<ModImpl>().AddContent(new VanillaCategory(name, category));
         }
 
         var num = 0;
@@ -418,7 +419,7 @@ internal sealed class VanillaAchievements : ModSystem
 
         foreach (var achievement in icon_indices.Keys)
         {
-            Mod.AddContent(new VanillaAchievement(achievement));
+            ModContent.GetInstance<ModImpl>().AddContent(new VanillaAchievement(achievement));
         }
 
         // Vanilla sets this to 0, but we want mods to be able to add

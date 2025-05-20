@@ -15,7 +15,6 @@ internal sealed class LivingPalmWoodBlock : ModItem
 
         Item.DefaultToPlaceableTile(ModContent.TileType<LivingPalmWood>());
 
-        Item.value = 100;
         Item.rare = ItemRarityID.Green;
     }
 }
@@ -30,7 +29,6 @@ internal sealed class LivingPalmLeafBlock : ModItem
 
         Item.DefaultToPlaceableTile(ModContent.TileType<LivingPalmLeaf>());
 
-        Item.value = 100;
         Item.rare = ItemRarityID.Green;
     }
 }

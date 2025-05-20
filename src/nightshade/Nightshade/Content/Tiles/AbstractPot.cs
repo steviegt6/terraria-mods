@@ -12,7 +12,7 @@ internal abstract class AbstractPot : ModTile
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
-        
+
         Main.tileFrameImportant[Type] = true;
         Main.tileLavaDeath[Type] = true;
         Main.tileWaterDeath[Type] = false;

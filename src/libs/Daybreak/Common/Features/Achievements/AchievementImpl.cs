@@ -4,9 +4,9 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 
+using Daybreak.Common.Features.Hooks;
 using Daybreak.Content.Config;
 using Daybreak.Content.UI;
-using Daybreak.Core.Hooks;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -176,7 +176,7 @@ internal sealed class AchievementImpl : ModSystem
         }
     }
 
-    private sealed class CustomAchievementAdvisor : ModSystem
+    private static class CustomAchievementAdvisor
     {
         private static readonly Asset<Texture2D> achievements_border_texture = Main.Assets.Request<Texture2D>("Images/UI/Achievement_Borders");
         private static readonly Asset<Texture2D> achievements_border_mouse_hover_fat_texture = Main.Assets.Request<Texture2D>("Images/UI/Achievement_Borders_MouseHover");
@@ -186,10 +186,9 @@ internal sealed class AchievementImpl : ModSystem
 
         private static Achievement? hoveredCard;
 
-        public override void PostSetupContent()
+        [SubscribesTo<ModSystemHooks.PostSetupContent>]
+        public static void InitializeAchievementAdvisorHooks(ModSystem self)
         {
-            base.PostSetupContent();
-
             if (!AchievementConfig.AreAchievementsEnabled())
             {
                 return;

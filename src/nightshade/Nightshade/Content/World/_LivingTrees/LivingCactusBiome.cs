@@ -3,8 +3,9 @@ using System.Collections.Generic;
 
 using Microsoft.Xna.Framework;
 using Nightshade.Common.Utilities;
+using Nightshade.Content.Items;
 using Nightshade.Content.Tiles;
-
+using Nightshade.Content.Walls;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -20,9 +21,9 @@ internal sealed class LivingCactusBiome : MicroBiome
 
     private static ushort PlatformType => (ushort)ModContent.TileType<CactusWoodPlatform>();
 
-    private static ushort WoodWallType => WallID.LivingWood;
+    private static ushort WoodWallType => (ushort)ModContent.WallType<LivingCactusWoodWall>();
 
-    private static ushort PotType => (ushort)ModContent.TileType<LivingCactusPot>();
+	private static ushort PotType => (ushort)ModContent.TileType<LivingCactusPot>();
 
     public bool Round { get; set; }
 
@@ -563,10 +564,49 @@ internal sealed class LivingCactusBiome : MicroBiome
 			TryPlacePlatform(x, y, -1, width / 2 + 1);
 		}
 
-		WorldGen.PlaceChest(x - 1 + WorldGen.genRand.Next(-width / 2 + 1, width / 2), y - 1, style: 10);
-    }
+		int index = WorldGen.PlaceChest(x - 1 + WorldGen.genRand.Next(-width / 2 + 1, width / 2), y - 1, style: 10);
+        if (index < 0)
+            return;
 
-    private static void PlacePotsEverywhere(int x, int y, int radius)
+        List<Item> loot = new List<Item>();
+
+        if (WorldGen.genRand.NextBool(4))
+            loot.Add(new Item(ModContent.ItemType<PreDigester>()));
+        else if (WorldGen.genRand.NextBool(10))
+			loot.Add(new Item(ItemID.Extractinator));
+
+		loot.Add(new Item(ModContent.ItemType<CactusSplashJug>(), WorldGen.genRand.Next(30, 50)));
+
+        if (WorldGen.genRand.NextBool(10))
+			loot.Add(new Item(ItemID.CatBast));
+
+        if (WorldGen.genRand.NextBool())
+        {
+            if (GenVars.gold == 8)
+				loot.Add(new Item(ItemID.GoldBar, WorldGen.genRand.Next(5, 10)));
+			else if (GenVars.gold == 169)
+				loot.Add(new Item(ItemID.PlatinumBar, WorldGen.genRand.Next(5, 10)));
+            else // If we get here, then some mod adds a third ore alt. Cool!
+				loot.Add(new Item(ItemID.Diamond, WorldGen.genRand.Next(5, 10)));
+		}
+        
+        loot.Add(new Item(ItemID.Grenade, WorldGen.genRand.Next(30, 50)));
+
+		if (WorldGen.genRand.NextBool())
+			loot.Add(new Item(ItemID.ScarabBomb, WorldGen.genRand.Next(5, 20)));
+
+		if (WorldGen.genRand.NextBool(5))
+			loot.Add(new Item(ItemID.ThornsPotion, WorldGen.genRand.Next(1, 4)));
+        else
+			loot.Add(new Item(ItemID.RecallPotion, WorldGen.genRand.Next(1, 5)));
+
+		if (WorldGen.genRand.NextBool())
+            loot.Add(new Item(ItemID.SilverCoin, WorldGen.genRand.Next(25, 90)));
+
+		NightshadeGenUtil.AddLootToChest(ref Main.chest[index], loot.ToArray());
+	}
+
+	private static void PlacePotsEverywhere(int x, int y, int radius)
     {
         for (int i = x - radius; i < x + radius; i++)
         {

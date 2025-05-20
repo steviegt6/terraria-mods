@@ -38,7 +38,3 @@ internal readonly record struct ReLogicMutableAssetProvider<T>(Asset<T> Source) 
         set => Source.ownValue = value;
     }
 }
-
-// TODO: Why was this relevant prior?
-/*public readonly record struct StrongBoxAssetProvider<T>(T Source) : IMutableAssetProvider<T>
-    where T : class { }*/

@@ -221,6 +221,20 @@ Items: {
 			Allows flight and slow fall
 			'''
 	}
+
+	CactusSplashJug: {
+		DisplayName: Succulent Splash
+		Tooltip:
+			'''
+			Filled with a life restoring beverage
+			Right click to splash yourself with it
+			'''
+	}
+
+	LivingCactusWoodWallBlock: {
+		DisplayName: Living Cactus Wood Wall Block
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
@@ -233,6 +247,7 @@ Projectiles: {
 	StarFragmentProj5.DisplayName: Star Fragment
 	StarFragmentProjSpawner.DisplayName: Star Fragment Proj Spawner
 	PreDigesterHeldProj.DisplayName: Pre Digester Held Proj
+	CactusSplashJugThrown.DisplayName: Cactus Splash Jug Thrown
 }
 
 Configs.DummyConfig.DisplayName: Dummy Config

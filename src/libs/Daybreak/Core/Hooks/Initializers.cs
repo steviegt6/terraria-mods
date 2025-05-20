@@ -1,3 +1,5 @@
+using System;
+
 using JetBrains.Annotations;
 
 using Terraria.ModLoader;
@@ -14,6 +16,7 @@ namespace Daybreak.Core.Hooks;
     ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature,
     ImplicitUseTargetFlags.WithInheritors | ImplicitUseTargetFlags.WithMembers
 )]
+[Obsolete("Use OnLoadAttribute/OnUnloadAttribute instead")]
 public interface IInitializer : ILoadable
 {
     void ILoadable.Load(Mod mod)
@@ -27,14 +30,30 @@ public interface IInitializer : ILoadable
     }
 }
 
+/// <summary>
+///     Provides a load hook.
+/// </summary>
 [PublicAPI]
+[Obsolete("Use OnLoadAttribute instead")]
 public interface ILoad : IInitializer
 {
+    /// <summary>
+    ///     The load hook.
+    /// </summary>
+    [Obsolete("Use OnLoadAttribute instead")]
     void Load();
 }
 
+/// <summary>
+///     Provides an unload hook.
+/// </summary>
 [PublicAPI]
+[Obsolete("Use OnUnloadAttribute instead")]
 public interface IUnload : IInitializer
 {
+    /// <summary>
+    ///     The unload hook.
+    /// </summary>
+    [Obsolete("Use OnUnloadAttribute instead")]
     new void Unload();
 }

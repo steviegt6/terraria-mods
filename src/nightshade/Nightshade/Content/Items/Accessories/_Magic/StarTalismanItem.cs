@@ -50,7 +50,7 @@ internal sealed class StarTalismanItem : ModItem
         Item.accessory = true;
 
         Item.rare  = ItemRarityID.Blue;
-        Item.value = Item.sellPrice(silver: 20);
+        Item.value = Item.buyPrice(silver: 20);
     }
 
     public override void UpdateAccessory(Player player, bool hideVisual)

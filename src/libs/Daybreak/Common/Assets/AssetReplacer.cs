@@ -58,6 +58,9 @@ public static class AssetReplacer
             source.Asset = target;
         }
 
+        /// <summary>
+        ///     Disposes of the handle, restoring the original asset.
+        /// </summary>
         public void Dispose()
         {
             source.Asset = original;
@@ -81,12 +84,18 @@ public static class AssetReplacer
     // them in themselves if we haven't added them yet.
 
 #region TextureAssets
+    /// <summary>
+    ///     <see cref="TextureAssets.Npc"/>
+    /// </summary>
     public static Handle<Texture2D> Npc(int value, Texture2D newAsset)
     {
         Main.instance.LoadNPC(value); // Import to ensure the asset is loaded!
         return Replace(TextureAssets.Npc[value], newAsset);
     }
 
+    /// <summary>
+    ///     <see cref="TextureAssets.Extra"/>
+    /// </summary>
     public static Handle<Texture2D> Extra(int value, Texture2D newAsset)
     {
         return Replace(TextureAssets.Extra[value], newAsset);

@@ -1,5 +1,7 @@
 using System;
 
+using Daybreak.Common.Features.Hooks;
+
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -25,17 +27,17 @@ public interface INpcCustomShimmerAi
         ///     index <c>0</c>, which is set to <c>25f</c>.
         /// </summary>
         ResetAi = 1 << 0,
-        
+
         /// <summary>
         ///     Resets <see cref="NPC.netUpdate"/> to <see langword="true"/>.
         /// </summary>
         NetUpdate = 1 << 1,
-        
+
         /// <summary>
         ///     Sets <see cref="NPC.shimmerTransparency"/>.
         /// </summary>
         ShimmerTransparency = 1 << 2,
-        
+
         /// <summary>
         ///     Removes the <see cref="BuffID.Shimmer"/> debuf.
         /// </summary>
@@ -45,7 +47,7 @@ public interface INpcCustomShimmerAi
         ///     No behavior; skips all logic.
         /// </summary>
         None = 0,
-        
+
         /// <summary>
         ///     All behavior; performs vanilla logic.
         /// </summary>
@@ -63,4 +65,61 @@ public interface INpcCustomShimmerAi
     ///     preserve and which to skip.
     /// </remarks>
     Behavior GetShimmered();
+
+    [OnLoad]
+    private static void ApplyHooks()
+    {
+        On_NPC.GetShimmered += HandleCustomShimmer;
+    }
+
+    private static void HandleCustomShimmer(On_NPC.orig_GetShimmered orig, NPC self)
+    {
+        if (self.ModNPC is not INpcCustomShimmerAi shimmerHandler)
+        {
+            orig(self);
+            return;
+        }
+
+        if (self.SpawnedFromStatue
+         || NPCID.Sets.ShimmerTransformToNPC[self.type] >= 0
+         || NPCID.Sets.ShimmerTransformToItem[self.type] >= 0
+         || !NPCID.Sets.ShimmerTownTransform[self.type])
+        {
+            return;
+        }
+
+        var behavior = shimmerHandler.GetShimmered();
+
+        if (behavior == INpcCustomShimmerAi.Behavior.None)
+        {
+            return;
+        }
+
+        if (behavior.HasFlag(INpcCustomShimmerAi.Behavior.ResetAi))
+        {
+            self.ai[0] = 25f;
+            self.ai[1] = 0f;
+            self.ai[2] = 0f;
+            self.ai[3] = 0f;
+        }
+
+        if (behavior.HasFlag(INpcCustomShimmerAi.Behavior.NetUpdate))
+        {
+            self.netUpdate = true;
+        }
+
+        if (behavior.HasFlag(INpcCustomShimmerAi.Behavior.ShimmerTransparency))
+        {
+            self.shimmerTransparency = 0.89f;
+        }
+
+        if (behavior.HasFlag(INpcCustomShimmerAi.Behavior.RemoveShimmerDebuff))
+        {
+            var idx = self.FindBuffIndex(BuffID.Shimmer);
+            if (idx != -1)
+            {
+                self.DelBuff(idx);
+            }
+        }
+    }
 }

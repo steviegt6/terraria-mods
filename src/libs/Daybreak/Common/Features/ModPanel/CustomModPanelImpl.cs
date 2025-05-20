@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
+using Daybreak.Common.Features.Hooks;
 using Daybreak.Core.Hooks;
 
 using Microsoft.Xna.Framework;
@@ -23,13 +24,17 @@ using Terraria.UI;
 
 namespace Daybreak.Common.Features.ModPanel;
 
-[Autoload(Side = ModSide.Client)]
-internal sealed class CustomModPanelImpl : ILoad, IUnload
+internal sealed class CustomModPanelImpl
 {
-    private sealed class DumbWorkaround : UIModItem
+    // This exists instead of a regular IL edit/detour because, for some reason,
+    // it would seem that some part of the drawing routine may get inlined such
+    // that our changes are not properly reflected.  This, of course, only
+    // happens if you start the game with DAYBREAK disabled, entire the Mods
+    // List, and then enable DAYBREAK (since the JIT would have JITed the
+    // UI-related code).  I cannot, for the life of me, figure out how or why
+    // this is happening to non-concrete, virtual symbols.
+    private sealed class ModItemWithCustomDrawing(LocalMod mod) : UIModItem(mod)
     {
-        public DumbWorkaround(LocalMod mod) : base(mod) { }
-
         public override void Draw(SpriteBatch spriteBatch)
         {
             if (!ModLoader.TryGetMod(_mod.Name, out var mod) || !TryGetPanelStyle(mod, out var style))
@@ -77,7 +82,7 @@ internal sealed class CustomModPanelImpl : ILoad, IUnload
             if (_mod.properties.side != ModSide.Server && (_mod.Enabled != _loaded || _configChangesRequireReload))
             {
                 drawPos += new Vector2(_uiModStateText.Width.Pixels + left2ndLine, 0f);
-                Utils.DrawBorderString(spriteBatch, _configChangesRequireReload ? Language.GetTextValue("tModLoader.ModReloadForced") : Language.GetTextValue("tModLoader.ModReloadRequired"), drawPos, Color.White, 1f, 0f, 0f, -1);
+                Utils.DrawBorderString(spriteBatch, _configChangesRequireReload ? Language.GetTextValue("tModLoader.ModReloadForced") : Language.GetTextValue("tModLoader.ModReloadRequired"), drawPos, Color.White);
             }
             if (_mod.properties.side == ModSide.Server)
             {
@@ -169,7 +174,8 @@ internal sealed class CustomModPanelImpl : ILoad, IUnload
         return false;
     }
 
-    void ILoad.Load()
+    [OnLoad(Side = ModSide.Client)]
+    private static void Load()
     {
         if (!ConciseModListCompat())
         {
@@ -179,7 +185,7 @@ internal sealed class CustomModPanelImpl : ILoad, IUnload
                 {
                     self.modItemsTask = Task.Run(() =>
                         {
-                            return ModOrganizer.FindMods(logDuplicates: true).Select(mod => new DumbWorkaround(mod)).Cast<UIModItem>().ToList();
+                            return ModOrganizer.FindMods(logDuplicates: true).Select(mod => new ModItemWithCustomDrawing(mod)).Cast<UIModItem>().ToList();
                         }
                     );
                 }
@@ -295,7 +301,8 @@ internal sealed class CustomModPanelImpl : ILoad, IUnload
         }
     }
 
-    void IUnload.Unload()
+    [OnUnload(Side = ModSide.Client)]
+    private static void Unload()
     {
         currentMod = null;
         panel_styles.Clear();

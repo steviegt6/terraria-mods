@@ -122,13 +122,41 @@ public abstract class ModPanelStyle : ModType
     /// </summary>
     public readonly record struct PanelInfo(UIHoverImage InfoImage);
 
+    /// <summary>
+    ///     The 'texture kind', denoting known textures that can be overridden.
+    /// </summary>
     public enum TextureKind
     {
+        /// <summary>
+        ///     The 'Mod Info' button.
+        /// </summary>
         ModInfo,
+        
+        /// <summary>
+        ///     The 'Mod Config' button.
+        /// </summary>
         ModConfig,
+        
+        /// <summary>
+        ///     The 'Deps' icon, shown to display dependencies and dependents.
+        /// </summary>
         Deps,
+        
+        /// <summary>
+        ///     The 'Translation Mod' icon, shown to display that this mod
+        ///     implements translations for other mods.
+        /// </summary>
         TranslationMod,
+        
+        /// <summary>
+        ///     The 'Error' icon, shown to display errors (namely unloading
+        ///     issues) to mod developers.
+        /// </summary>
         Error,
+        
+        /// <summary>
+        ///     The inner panel used to render the 'Enabled'/'Disabled' text.
+        /// </summary>
         InnerPanel,
     }
 
@@ -139,11 +167,17 @@ public abstract class ModPanelStyle : ModType
     /// </summary>
     public virtual Dictionary<TextureKind, Asset<Texture2D>> TextureOverrides { get; } = [];
 
+    /// <summary>
+    ///     Registers this style as known to the implementation.
+    /// </summary>
     protected sealed override void Register()
     {
         CustomModPanelImpl.AddPanelStyle(Mod, this);
     }
 
+    /// <summary>
+    ///     Unused; this type is a singleton.
+    /// </summary>
     protected sealed override void InitTemplateInstance() { }
 
     // I guess if someone was really crazy, they could do all the initialization
@@ -246,6 +280,17 @@ public abstract class ModPanelStyle : ModType
         "tModLoader.ModsXMounts",
     ];
 
+    /// <summary>
+    ///     Gets the panel information items for this mod.  Offsets are
+    ///     automatically calculated.
+    /// </summary>
+    /// <param name="mod">The mod instance to get information from.</param>
+    /// <returns>A collection of panel infos to be displayed.</returns>
+    /// <remarks>
+    ///     The <paramref name="mod"/> is passed because, despite panels being a
+    ///     per-mod thing, there is nothing necessarily limiting mods from
+    ///     sharing panel styles or similar cases.
+    /// </remarks>
     public virtual IEnumerable<PanelInfo> GetInfos(Mod mod)
     {
         return GetDefaultInfos(mod);
