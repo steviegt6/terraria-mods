@@ -18,7 +18,7 @@ namespace Daybreak.Common.Features.Hooks;
 /// </summary>
 [PublicAPI]
 [MeansImplicitUse]
-[AttributeUsage(AttributeTargets.Method)]
+[AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
 public sealed class OnLoadAttribute : Attribute
 {
     /// <summary>
@@ -39,7 +39,7 @@ public sealed class OnLoadAttribute : Attribute
 /// </summary>
 [PublicAPI]
 [MeansImplicitUse]
-[AttributeUsage(AttributeTargets.Method)]
+[AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
 public sealed class OnUnloadAttribute : Attribute
 {
     /// <summary>

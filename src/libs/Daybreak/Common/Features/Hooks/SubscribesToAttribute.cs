@@ -25,7 +25,7 @@ namespace Daybreak.Common.Features.Hooks;
 /// <typeparam name="T">The hook type to subscribe the method to.</typeparam>
 [PublicAPI]
 [MeansImplicitUse]
-[AttributeUsage(AttributeTargets.Method)]
+[AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
 public sealed class SubscribesToAttribute<T> : Attribute, IHasSide
 {
     /// <summary>
