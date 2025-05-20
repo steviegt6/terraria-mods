@@ -1,6 +1,9 @@
 ﻿using Daybreak.Core.Hooks;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+
+using Daybreak.Common.Features.Hooks;
+
 using Terraria;
 using Terraria.Graphics.Renderers;
 
@@ -9,9 +12,10 @@ namespace Nightshade.Common.Features;
 /// <summary>
 /// Contains particle systems.
 /// </summary>
-public sealed class ParticleEngine : ILoad
+public static class ParticleEngine
 {
-	public void Load()
+	[OnLoad]
+	public static void Load()
 	{
 		On_Main.UpdateParticleSystems += UpdateParticles;
 		On_Main.DrawDust += DrawParticlesPreDust;
@@ -22,13 +26,13 @@ public sealed class ParticleEngine : ILoad
 	/// </summary>
 	public static ParticleRenderer Particles = new ParticleRenderer();
 
-	private void UpdateParticles(On_Main.orig_UpdateParticleSystems orig, Main self)
+	private static void UpdateParticles(On_Main.orig_UpdateParticleSystems orig, Main self)
 	{
 		orig(self);
 		Particles.Update();
 	}
 
-	private void DrawParticlesPreDust(On_Main.orig_DrawDust orig, Main self)
+	private static void DrawParticlesPreDust(On_Main.orig_DrawDust orig, Main self)
 	{
 		Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
 		Particles.Settings.AnchorPosition = -Main.screenPosition;
