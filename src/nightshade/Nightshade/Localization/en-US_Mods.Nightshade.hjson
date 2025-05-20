@@ -182,3 +182,5 @@ Achievements: {
 		Description: Dummy Achievement 3 Description Dummy Achievement 3 Description Dummy Achievement 3 Description Dummy Achievement 3 Description Dummy Achievement 3 Description Dummy Achievement 3 Description
 	}
 }
+
+NPCs.TestNpc.DisplayName: Test Npc
