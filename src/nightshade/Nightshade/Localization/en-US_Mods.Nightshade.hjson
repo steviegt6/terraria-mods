@@ -184,6 +184,39 @@ Achievements: {
 }
 
 NPCs: {
-	TestNpc.DisplayName: Test Npc
-	SlimeBoss.DisplayName: Slime Boss
+	SlimeBoss: {
+		DisplayName: Reductio ad Astra
+		FullBossName: "{0}, {1}"
+		BossName: Reductio ad {0}
+		BossSubtitle: Dream {0}
+
+		BossNames: {
+			0: Astra
+			1: Somnior
+			2: Excito
+			3: Hallucinor
+			4: Sidereal
+			5: Absurdum
+		}
+
+		BossTitle: "{0}"
+
+		BossTitles: {
+			0: Sleeping Star Beyond The Darkest Expanse
+			1: Aimless Wanderer Beyond The Empyrean Abyss
+		}
+
+		BossSubtitles: {
+			0: Weaver
+			1: Eater
+			2: Deeper
+			3: Above
+			4: Diver
+			5: Dweller
+			6: Composer
+			7: Mirror
+			8: Epicure
+			9: Dissenter
+		}
+	}
 }

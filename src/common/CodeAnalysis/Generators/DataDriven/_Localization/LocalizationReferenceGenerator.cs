@@ -136,6 +136,11 @@ public sealed class LocalizationReferenceGenerator : IIncrementalGenerator
         foreach (var (key, value) in node.Keys)
         {
             var name = key.Split('.').Last();
+            if (!char.IsLetter(name[0]))
+            {
+                name = "_" + name;
+            }
+            
             var args = GetArgumentCount(value);
 
             sb.AppendLine($"{indent}    public static partial class {name}");

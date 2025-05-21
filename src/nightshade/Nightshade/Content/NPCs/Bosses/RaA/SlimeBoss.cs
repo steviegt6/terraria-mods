@@ -2,7 +2,7 @@ using Terraria.ModLoader;
 
 namespace Nightshade.Content.NPCs.Bosses.RaA;
 
-public sealed class SlimeBoss : ModNPC
+public sealed partial class SlimeBoss : ModNPC
 {
     public override string Texture => Assets.Images.NPCs.Bosses.RaA.SlimeBoss.KEY;
 
