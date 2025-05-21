@@ -183,4 +183,7 @@ Achievements: {
 	}
 }
 
-NPCs.TestNpc.DisplayName: Test Npc
+NPCs: {
+	TestNpc.DisplayName: Test Npc
+	SlimeBoss.DisplayName: Slime Boss
+}
