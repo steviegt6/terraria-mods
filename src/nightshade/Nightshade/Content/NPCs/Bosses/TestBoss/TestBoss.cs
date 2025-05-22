@@ -6,7 +6,7 @@ using MonoMod.Cil;
 using System.Text.RegularExpressions;
 using Mono.Cecil.Cil;
 using System;
-using System.Reflection.Emit;
+using Terraria.WorldBuilding;
 
 public class ConsumerOfSouls : ModNPC
 {
@@ -34,17 +34,103 @@ public class ConsumerOfSouls : ModNPC
 
 public class Loader : ModSystem
 {
-    const double DungeonBlobSize = 60.0;
+    const double DungeonBlobExtensionX = 60.0;
+    const double DungeonBlobExtensionY = 20.0;
     private static int side = 0;
     public override void Load()
     {
+        IL_WorldGen.MakeDungeon += IL_DungeonGen;
         IL_WorldGen.DungeonEnt += IL_DungeonEnt;
+        IL_WorldGen.MakeDungeon_Banners += IL_DungeonBanners;
     }
 
     // TODO: Place Consumer's NPC here 
+    static bool chand = false;
+    static int lastY = 0;
+    static int dungeonBrick = 0;
+    private static void IL_DungeonGen(ILContext il)
+    {
+        var c = new ILCursor(il);
+        // IL_0042: stloc.2
+        c.GotoNext(MoveType.Before, x => x.MatchStloc0());
+        c.EmitDelegate<Func<int, int>>((dungeonBrickCol) =>
+        {
+            dungeonBrick = dungeonBrickCol;
+            return dungeonBrickCol;
+        });
+    }
+
+    private static void IL_DungeonBanners(ILContext il)
+    {
+        var c = new ILCursor(il);
+        /*
+        IL_00b9: ldloc.2
+		IL_00ba: ldc.i4.1
+		IL_00bb: add
+		IL_00bc: stloc.2
+        */
+        c.GotoNext(MoveType.After, x => x.MatchLdloc2(),
+        x => x.MatchLdcI4(1),
+        x => x.MatchAdd());
+        c.EmitDelegate<Func<int, int>>((y) =>
+        {
+            lastY = y;
+            return y;
+        });
+        /*
+        // PlaceTile(num, num2, 91, mute: true, forced: false, -1, num3);
+		IL_025d: ldloc.1
+		IL_025e: ldloc.2
+		IL_025f: ldc.i4.s 91 // banner
+		IL_0261: ldc.i4.1
+		IL_0262: ldc.i4.0
+		IL_0263: ldc.i4.m1
+		IL_0264: ldloc.s 7 // style
+        */
+
+        c.GotoNext(MoveType.Before, x => x.MatchLdloc1(),
+        x => x.MatchLdloc2(),
+        x => x.MatchLdcI4(91),
+        x => x.Match(OpCodes.Ldc_I4_1),
+        x => x.Match(OpCodes.Ldc_I4_0),
+        x => x.Match(OpCodes.Ldc_I4_M1),
+        x => x.MatchLdloc(7));
+
+        c.GotoPrev(MoveType.Before, x => x.MatchStloc(7));
+        c.EmitDelegate<Func<int, int>>((style) =>
+        {
+            if (chand = WorldGen.genRand.NextBool(1, 3) && lastY < Main.worldSurface)
+            {
+                // bone chandelier place style,
+                // placeStyle = 18 + type - 2141;
+                // type 2144
+
+                return 27 + dungeonBrick;
+            }
+            else
+            {
+                chand = false;
+            }
+
+            return style;
+        });
+
+
+        c.GotoNext(MoveType.Before, x => x.MatchLdcI4(91));
+        c.Remove();
+        c.EmitDelegate<Func<int>>(() =>
+        {
+            if (chand)
+            {
+                return TileID.Chandeliers;
+            }
+
+            chand = false;
+            return TileID.Banners;
+        });
+    }
     private static void IL_DungeonEnt(ILContext il)
     {
-
         var c = new ILCursor(il);
 
         c.EmitLdsfld(typeof(Terraria.WorldBuilding.GenVars).GetField("dungeonSide"));
@@ -67,16 +153,16 @@ public class Loader : ModSystem
         x => x.MatchLdloc1());
 
         c.GotoPrev(MoveType.After, x => x.MatchLdfld(typeof(ReLogic.Utilities.Vector2D).GetField("X")));
-        c.EmitDelegate<Func<double>>(() => 
+        c.EmitDelegate<Func<double>>(() =>
         {
-            return (int)(side == -1 ? DungeonBlobSize : 0);
+            return (int)(side == -1 ? DungeonBlobExtensionX : 0);
         });
         c.EmitSub();
 
         c.GotoNext(MoveType.After, x => x.MatchLdfld(typeof(ReLogic.Utilities.Vector2D).GetField("X")));
-        c.EmitDelegate<Func<double>>(() => 
+        c.EmitDelegate<Func<double>>(() =>
         {
-            return (int)(side == 1 ? DungeonBlobSize : 0);
+            return (int)(side == 1 ? DungeonBlobExtensionX : 0);
         });
         c.EmitAdd();
 
@@ -86,7 +172,7 @@ public class Loader : ModSystem
         x => x.MatchLdloc2());
 
         c.GotoPrev(MoveType.After, x => x.MatchLdfld(typeof(ReLogic.Utilities.Vector2D).GetField("Y")));
-        c.EmitLdcR8(DungeonBlobSize);
+        c.EmitLdcR8(DungeonBlobExtensionY);
         c.EmitSub();
 
         // modify inner walls, do a precise match to get to the right instruction 
@@ -99,22 +185,22 @@ public class Loader : ModSystem
 
         // wall x size
         c.GotoPrev(MoveType.After, x => x.MatchLdfld(typeof(ReLogic.Utilities.Vector2D).GetField("X")));
-        c.EmitDelegate<Func<double>>(() => 
+        c.EmitDelegate<Func<double>>(() =>
         {
-            return (int)(side == -1 ? DungeonBlobSize : 0);
+            return (int)(side == -1 ? DungeonBlobExtensionX : 0);
         });
         c.EmitSub();
 
         c.GotoNext(MoveType.After, x => x.MatchLdfld(typeof(ReLogic.Utilities.Vector2D).GetField("X")));
-        c.EmitDelegate<Func<double>>(() => 
+        c.EmitDelegate<Func<double>>(() =>
         {
-            return (int)(side == 1 ? DungeonBlobSize : 0);
+            return (int)(side == 1 ? DungeonBlobExtensionX : 0);
         });
         c.EmitAdd();
 
         // wall y size
         c.GotoNext(MoveType.After, x => x.MatchLdfld(typeof(ReLogic.Utilities.Vector2D).GetField("Y")));
-        c.EmitLdcR8(DungeonBlobSize);
+        c.EmitLdcR8(DungeonBlobExtensionY);
         c.EmitSub();
 
         /*
