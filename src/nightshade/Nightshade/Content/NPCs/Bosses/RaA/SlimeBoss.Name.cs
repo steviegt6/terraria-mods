@@ -55,9 +55,20 @@ partial class SlimeBoss
     private static void ApplyRenderingTweaksToRenderNameAsStarspeak()
     {
         On_BestiaryEntry.Enemy += ModifyInfoItemsToUseCustomName;
+        On_UnlockableNPCEntryIcon.GetHoverText += ModifyBestiaryIconToUseCustomName;
 
         On_Main.MouseText_string_string_int_byte_int_int_int_int_int_bool += ApplyHoverNameHack;
         On_Main.HoverOverNPCs += ApplyHoverNameHack_EnableHoveringNpcs;
+    }
+
+    private static string ModifyBestiaryIconToUseCustomName(On_UnlockableNPCEntryIcon.orig_GetHoverText orig, UnlockableNPCEntryIcon self, BestiaryUICollectionInfo providedInfo)
+    {
+        if (self._npcNetId == ModContent.NPCType<SlimeBoss>() && self.GetUnlockState(providedInfo))
+        {
+            return Starspeak.GetBossNameTag();
+        }
+
+        return orig(self, providedInfo);
     }
 
     private static void ApplyHoverNameHack_EnableHoveringNpcs(On_Main.orig_HoverOverNPCs orig, Main self, Rectangle mouseRectangle)
