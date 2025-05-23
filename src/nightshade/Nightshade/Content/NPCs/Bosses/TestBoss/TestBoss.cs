@@ -7,20 +7,26 @@ using System;
 using System.Collections.Generic;
 using Nightshade.Common.Utilities;
 using System.IO;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
 
 internal struct ConsumerData
 {
     public int npcID;
+    public ref NPC thisNPC => ref Main.npc[npcID];
+    public ref Vector2 curPosition => ref Main.npc[npcID].position;
+    public bool shouldBeDeadNow;
+
 }
 
 internal abstract class BossState : State<ConsumerData>
 {
+    internal static Action<SpriteBatch, Vector2>? StatelessDrawActions;
     public abstract void Broadcast(BinaryWriter writer);
     public abstract void Listen(BinaryReader reader);
 }
 public class ConsumerOfSouls : ModNPC
 {
-
     private ConsumerData _data = new();
     private StateController<ConsumerData> StateController { get; set; } = new();
     private BossState? currentState => StateController.CurrentState as BossState;
@@ -29,6 +35,7 @@ public class ConsumerOfSouls : ModNPC
 
     public override void SetStaticDefaults()
     {
+        Main.npcFrameCount[NPC.type] = 4;
         base.SetDefaults();
     }
 
@@ -36,8 +43,8 @@ public class ConsumerOfSouls : ModNPC
     {
         base.SetDefaults();
 
-        NPC.width = 50;
-        NPC.height = 50;
+        NPC.width = 34;
+        NPC.height = 44;
         NPC.damage = 50;
         NPC.defense = 10;
         NPC.lifeMax = 5000;
@@ -45,10 +52,14 @@ public class ConsumerOfSouls : ModNPC
         NPC.value = Item.buyPrice(0, 10, 0, 0);
         NPC.knockBackResist = 0.5f;
         NPC.boss = true;
-        NPC.noTileCollide = true;
-        NPC.noGravity = true;
+        NPC.noGravity = false;
+        NPC.npcSlots = 10f;
+        NPC.netAlways = true;
+        NPC.lavaImmune = true;
+        
 
         _data.npcID = NPC.whoAmI;
+        StateController.PushState(new InitTransitionState());
 
         if (!Main.dedServ)
         {
@@ -56,6 +67,7 @@ public class ConsumerOfSouls : ModNPC
         }
     }
 
+    int state = 0;
     public override void AI()
     {
         base.AI();
@@ -93,9 +105,41 @@ public class ConsumerOfSouls : ModNPC
 
         currentState?.Listen(reader);
     }
+
+    public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+    {
+        if (currentState is not null)
+        {
+            state = 0;
+            SpriteEffects effects = NPC.direction == 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+            Vector2 pos = NPC.Center + new Vector2(0, 68);
+            
+            int frameY = 44 * (state + 0);
+            int frameX = 0;
+
+            Rectangle frame = new Rectangle(frameX, frameY, 34, 44);
+
+            Texture2D texture = ModContent.Request<Texture2D>(Assets.Images.NPCs.Consumer_Boss_Sheet.KEY).Value;
+
+            spriteBatch.Draw(texture, pos - screenPos, frame, drawColor, NPC.rotation, texture.Size() / 2f, NPC.scale, effects, 0f);
+            return false;
+        }
+
+        BossState.StatelessDrawActions?.Invoke(spriteBatch, screenPos);
+        return false;
+    }
+    public override bool PreKill()
+    {
+        return _data.shouldBeDeadNow;
+    }
+    public override void OnKill()
+    {
+
+        base.OnKill();
+    }
 }
 
-internal class InitState : BossState
+internal class InitTransitionState : BossState
 {
     public override bool Enter(params ConsumerData[] parameters)
     {
@@ -118,92 +162,122 @@ internal class InitState : BossState
 
     public override bool Update(params ConsumerData[] parameters)
     {
+        stateData.shouldBeDeadNow = false;
+        return true;
+    }
+}
+
+internal class DeathTransitionState : BossState
+{
+    public override bool Enter(params ConsumerData[] parameters)
+    {
+        Main.NewText("You have defeated the Consumer of Souls!", Color.Red);
+        return true;
+    }
+
+    public override bool Exit(params ConsumerData[] parameters)
+    {
+        return true;
+    }
+
+    public override void Broadcast(BinaryWriter writer)
+    {
+
+    }
+    public override void Listen(BinaryReader reader)
+    {
+
+    }
+
+    public override bool Update(params ConsumerData[] parameters)
+    {
+        stateData.shouldBeDeadNow = false;
         return true;
     }
 }
 
 public class ConsumerOfSoulsNPC : ModNPC
+{
+    public override string Texture => Assets.Images.NPCs.ConsumerSheet.KEY;
+    public override string BossHeadTexture => Assets.Images.NPCs.ConsumerHead.KEY;
+
+    public override void SetStaticDefaults()
     {
-        public override string Texture => Assets.Images.NPCs.ConsumerSheet.KEY;
-        public override string BossHeadTexture => Assets.Images.NPCs.ConsumerHead.KEY;
+        Main.npcFrameCount[NPC.type] = 24;
 
-        public override void SetStaticDefaults()
-        {
-            Main.npcFrameCount[NPC.type] = 24;
+        NPCID.Sets.ExtraFramesCount[NPC.type] = 5; // revisit later
+        NPCID.Sets.AttackFrameCount[NPC.type] = 4;
+        NPCID.Sets.DangerDetectRange[NPC.type] = 16 * 10; // length in tiles
+        NPCID.Sets.AttackType[NPC.type] = 0;
+        NPCID.Sets.AttackTime[NPC.type] = 100;
+        NPCID.Sets.AttackAverageChance[NPC.type] = 50;
+    }
 
-            NPCID.Sets.ExtraFramesCount[NPC.type] = 5; // revisit later
-            NPCID.Sets.AttackFrameCount[NPC.type] = 4;
-            NPCID.Sets.DangerDetectRange[NPC.type] = 16 * 10; // length in tiles
-            NPCID.Sets.AttackType[NPC.type] = 0;
-            NPCID.Sets.AttackTime[NPC.type] = 100;
-            NPCID.Sets.AttackAverageChance[NPC.type] = 50;
-        }
+    public override void SetDefaults()
+    {
+        base.SetDefaults();
 
-        public override void SetDefaults()
-        {
-            base.SetDefaults();
+        NPC.townNPC = true;
+        NPC.friendly = true;
+        NPC.friendlyRegen = 10;
 
-            NPC.townNPC = true;
-            NPC.friendly = true;
-            NPC.friendlyRegen = 10;
+        NPC.width = 30;
+        NPC.height = 44;
 
-            NPC.width = 30;
-            NPC.height = 44;
+        NPC.aiStyle = 7; // passive ai
+        AnimationType = NPCID.Dryad;
 
-            NPC.aiStyle = 7; // passive ai
-            AnimationType = NPCID.Dryad;
+        NPC.defense = 300;
+        NPC.damage = 300;
 
-            NPC.defense = 300;
-            NPC.damage = 300;
-
-            NPC.lifeMax = 300;
-            NPC.knockBackResist = 0.1f;
-        }
-        static List<string> chat = new List<string>
+        NPC.lifeMax = 300;
+        NPC.knockBackResist = 0.1f;
+    }
+    static List<string> chat = new List<string>
         {
             "My thrall was recently freed from his curse... are you the one who did it?",
             "I can feel that one of my guardians has left this place. I'll have that old man's head.",
             "Where did it go!? Where did it go... where did it go..."
         };
 
-        static List<(Func<bool> predicate, string message)> SpecialInteractions = new()
+    static List<(Func<bool> predicate, string message)> SpecialInteractions = new()
         {
             new(() => NPC.AnyNPCs(NPCID.Clothier), "Ugh... I can still feel my connection to the host. Where is he?"),
             new(() => NPC.AnyNPCs(NPCID.Mechanic), "Did you free our new convert? Suspicious..."),
             new(() => NPC.AnyNPCs(NPCID.Truffle), "The Dungeons could benefit from a faster way of cleaning a skeleton. Speaking of which..."),
         };
 
-        public override string GetChat()
-        {
-            base.GetChat();
+    public override string GetChat()
+    {
+        base.GetChat();
 
-            int randomNumber = Main.rand.Next();
-            var randomTuple = SpecialInteractions[randomNumber % SpecialInteractions.Count];
-            string chatText = randomTuple.predicate() ? randomTuple.message : chat[randomNumber % chat.Count];
-            return chatText;
-        }
-
-        public override void SetChatButtons(ref string button, ref string button2)
-        {
-            button = "Confess";
-            button2 = "Ask about the Dungeon";
-
-            base.SetChatButtons(ref button, ref button2);
-        }
-
-        public override void OnChatButtonClicked(bool firstButton, ref string shopName)
-        {
-            if (!firstButton)
-            {
-                Main.npcChatText = "Why would I tell you?";
-            }
-            else
-            {
-                NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.position.X, (int)NPC.position.Y, ModContent.NPCType<ConsumerOfSouls>());
-            }
-            base.OnChatButtonClicked(firstButton, ref shopName);
-        }
+        int randomNumber = Main.rand.Next();
+        var randomTuple = SpecialInteractions[randomNumber % SpecialInteractions.Count];
+        string chatText = randomTuple.predicate() ? randomTuple.message : chat[randomNumber % chat.Count];
+        return chatText;
     }
+
+    public override void SetChatButtons(ref string button, ref string button2)
+    {
+        button = "Confess";
+        button2 = "Ask about the Dungeon";
+
+        base.SetChatButtons(ref button, ref button2);
+    }
+
+    public override void OnChatButtonClicked(bool firstButton, ref string shopName)
+    {
+        if (!firstButton)
+        {
+            Main.npcChatText = "Why would I tell you?";
+        }
+        else
+        {
+            NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.position.X, (int)NPC.position.Y, ModContent.NPCType<ConsumerOfSouls>());
+        }
+        base.OnChatButtonClicked(firstButton, ref shopName);
+    }
+}
 
 public class Loader : ModSystem
 {
