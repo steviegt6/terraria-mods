@@ -26,7 +26,7 @@ namespace Nightshade.Content.VisualTweaks.UI;
 
 internal sealed class NightshadePanelStyle : ModPanelStyleExt
 {
-    private sealed class ModName : UIText
+    public sealed class ModName : UIText
     {
         private readonly string originalText;
 
