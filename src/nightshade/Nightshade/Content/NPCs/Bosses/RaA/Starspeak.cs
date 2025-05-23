@@ -262,19 +262,6 @@ internal static class Starspeak
             points[i] = new Vector2(x, y);
         }
 
-        // Clamp beginning and end stars so they reach the end of the sentence.
-        // points[0].X = 0f;
-        // points[^1].X = width;
-
-        // Distribute randomly horizontally.
-        /*if (starCount > 2)
-        {
-            for (var i = 1; i < starCount - 1; i++)
-            {
-                points[i].X += NextFloat(rand, -step, step) / 2f;
-            }
-        }*/
-
         // Normalize horizontal values to [0, 1]
         for (var i = 0; i < starCount; i++)
         {
