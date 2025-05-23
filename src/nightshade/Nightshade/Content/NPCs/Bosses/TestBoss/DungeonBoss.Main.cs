@@ -10,11 +10,16 @@ using System.IO;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 
+namespace Nightshade.Content.NPCs.Bosses;
+
 internal struct ConsumerData
 {
-    public int npcID;
-    public ref NPC thisNPC => ref Main.npc[npcID];
-    public ref Vector2 curPosition => ref Main.npc[npcID].position;
+    public int phase;
+    public ConsumerOfSouls ModNPC { get; set; }
+    public NPC ThisNPC => ModNPC.NPC;
+    public int npcID => ThisNPC.whoAmI;
+    public Vector2 curPosition => ThisNPC.position;
+    public bool stateDone;
     public bool shouldBeDeadNow;
 
 }
@@ -25,6 +30,7 @@ internal abstract class BossState : State<ConsumerData>
     public abstract void Broadcast(BinaryWriter writer);
     public abstract void Listen(BinaryReader reader);
 }
+
 public class ConsumerOfSouls : ModNPC
 {
     private ConsumerData _data = new();
@@ -48,18 +54,15 @@ public class ConsumerOfSouls : ModNPC
         NPC.damage = 50;
         NPC.defense = 10;
         NPC.lifeMax = 5000;
-        NPC.aiStyle = -1;
+        NPC.aiStyle = 0;
         NPC.value = Item.buyPrice(0, 10, 0, 0);
         NPC.knockBackResist = 0.5f;
         NPC.boss = true;
         NPC.noGravity = false;
         NPC.npcSlots = 10f;
-        NPC.netAlways = true;
         NPC.lavaImmune = true;
-        
 
-        _data.npcID = NPC.whoAmI;
-        StateController.PushState(new InitTransitionState());
+
 
         if (!Main.dedServ)
         {
@@ -67,10 +70,16 @@ public class ConsumerOfSouls : ModNPC
         }
     }
 
-    int state = 0;
+    int state = -1;
     public override void AI()
     {
         base.AI();
+
+        if (state++ == -1)
+        {
+            _data.ModNPC = this;
+            StateController.PushState(new Consumer_InitTransitionState());
+        }
 
         if (!StateController.Update(_data))
         {
@@ -85,10 +94,19 @@ public class ConsumerOfSouls : ModNPC
         if (state is not null)
         {
             state.stateData = _data;
+
             if (!StateController.PushState(state))
             {
                 StateController.PopCurState();
             }
+        }
+    }
+
+    internal void SyncState()
+    {
+        if (currentState is not null)
+        {
+            _data = currentState.stateData;
         }
     }
 
@@ -113,8 +131,8 @@ public class ConsumerOfSouls : ModNPC
             state = 0;
             SpriteEffects effects = NPC.direction == 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
             Vector2 pos = NPC.Center + new Vector2(0, 68);
-            
-            int frameY = 44 * (state + 0);
+
+            int frameY = 44 * _data.phase;
             int frameX = 0;
 
             Rectangle frame = new Rectangle(frameX, frameY, 34, 44);
@@ -139,7 +157,7 @@ public class ConsumerOfSouls : ModNPC
     }
 }
 
-internal class InitTransitionState : BossState
+internal class Consumer_InitTransitionState : BossState
 {
     public override bool Enter(params ConsumerData[] parameters)
     {
@@ -162,12 +180,21 @@ internal class InitTransitionState : BossState
 
     public override bool Update(params ConsumerData[] parameters)
     {
+        stateData = parameters[0];
+
         stateData.shouldBeDeadNow = false;
+        stateData.stateDone = true;
+
+        stateData.ModNPC.SyncState();
+        PopSelf();
+        stateData.ModNPC.AddState(new Consumer_PhaseTransitionState());
+
+
         return true;
     }
 }
 
-internal class DeathTransitionState : BossState
+internal class Consumer_DeathTransitionState : BossState
 {
     public override bool Enter(params ConsumerData[] parameters)
     {
@@ -191,7 +218,35 @@ internal class DeathTransitionState : BossState
 
     public override bool Update(params ConsumerData[] parameters)
     {
-        stateData.shouldBeDeadNow = false;
+        stateData.shouldBeDeadNow = true;
+        return true;
+    }
+}
+
+internal class Consumer_PhaseTransitionState : BossState
+{
+    public override bool Enter(params ConsumerData[] parameters)
+    {
+        return true;
+    }
+
+    public override bool Exit(params ConsumerData[] parameters)
+    {
+        return true;
+    }
+
+    public override void Broadcast(BinaryWriter writer)
+    {
+
+    }
+    public override void Listen(BinaryReader reader)
+    {
+
+    }
+
+    public override bool Update(params ConsumerData[] parameters)
+    {
+        stateData.phase = (int)(4 - stateData.ThisNPC.life / (stateData.ThisNPC.lifeMax / 4f));
         return true;
     }
 }
