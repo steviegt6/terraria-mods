@@ -110,9 +110,9 @@ internal static class Starspeak
     )
     {
         // temporary color fix maybe
-        color.A = 255;
+        // color.A = 255;
 
-        const float thickness = 6f;
+        var thickness = 6f;
 
         var sentence = GetSentence(font, text);
         var size = font.MeasureString(text) * scale;
@@ -126,82 +126,107 @@ internal static class Starspeak
 
         // Draw constellation.
         {
-            var points = sentence.NormalPoints;
-
-            var starCount = points.Length;
-            for (var i = 0; i < starCount; i++)
-            {
-                var point = points[i];
-                var x = drawArea.X + (int)(point.X * drawArea.Width);
-                var y = drawArea.Y + (int)(point.Y * drawArea.Height);
-
-                var star = new Rectangle(x, y, (int)(thickness * scale), (int)(thickness * scale));
-                var color2 = color;
-                /*if (i == 0)
-                {
-                    color2 = Color.Red;
-                }
-                else if (i == starCount - 1)
-                {
-                    color2 = Color.Blue;
-                }*/
-
-                // Draw star.
-                sb.Draw(
-                    Assets.Images.UI.StarspeakStar.Asset.Value,
-                    star,
-                    null,
-                    color2,
-                    0f,
-                    Vector2.Zero,
-                    SpriteEffects.None,
-                    0
-                );
-            }
-
-            // Draw lines.
-            for (var i = 0; i < starCount - 1; i++)
-            {
-                var point1 = points[i];
-                var point2 = points[i + 1];
-
-                // center the points
-
-                var x1 = drawArea.X + (int)(point1.X * drawArea.Width);
-                var y1 = drawArea.Y + (int)(point1.Y * drawArea.Height);
-                var x2 = drawArea.X + (int)(point2.X * drawArea.Width);
-                var y2 = drawArea.Y + (int)(point2.Y * drawArea.Height);
-
-                var line = new Rectangle(
-                    x1 + (int)(thickness * scale) / 2,
-                    y1,
-                    (int)Math.Sqrt(Math.Pow(x2 - x1 + (thickness * scale / 3f), 2) + Math.Pow(y2 - y1, 2)),
-                    (int)(thickness * scale)
-                );
-                var color2 = color;
-                /*if (i == 0)
-                {
-                    color2 = Color.Red;
-                }
-                else if (i == starCount - 2)
-                {
-                    color2 = Color.Blue;
-                }*/
-                sb.Draw(
-                    Assets.Images.UI.StarspeakLine.Asset.Value,
-                    line,
-                    null,
-                    color2,
-                    (float)Math.Atan2(y2 - y1, x2 - x1),
-                    Vector2.Zero,
-                    SpriteEffects.None,
-                    0
-                );
-            }
+            DrawConstellation(sb, sentence, drawArea, thickness, new Color(0, 0, 0, color.A), scale, bold: true);
+            DrawConstellation(sb, sentence, drawArea, thickness, color, scale);
         }
 
         // Draw text.
         if (PlayerKnowsStarspeak(player)) { }
+    }
+
+    private static void DrawConstellation(
+        SpriteBatch sb,
+        Sentence sentence,
+        Rectangle drawArea,
+        float thickness,
+        Color color,
+        float scale,
+        bool bold = false
+    )
+    {
+        if (bold)
+        {
+            thickness *= 2f;
+        }
+        
+        var points = sentence.NormalPoints;
+
+        var starCount = points.Length;
+        for (var i = 0; i < starCount; i++)
+        {
+            var point = points[i];
+            var x = drawArea.X + (int)(point.X * drawArea.Width);
+            var y = drawArea.Y + (int)(point.Y * drawArea.Height);
+
+            var star = new Rectangle(x, y, (int)(thickness * scale), (int)(thickness * scale));
+            var color2 = color;
+            /*if (i == 0)
+            {
+                color2 = Color.Red;
+            }
+            else if (i == starCount - 1)
+            {
+                color2 = Color.Blue;
+            }*/
+
+            // Draw star.
+            sb.Draw(
+                Assets.Images.UI.StarspeakStar.Asset.Value,
+                star,
+                null,
+                color2,
+                0f,
+                Assets.Images.UI.StarspeakStar.Asset.Size() / 2f,
+                SpriteEffects.None,
+                0
+            );
+        }
+
+        // Draw lines.
+        for (var i = 0; i < starCount - 1; i++)
+        {
+            var point1 = points[i];
+            var point2 = points[i + 1];
+
+            // center the points
+
+            var x1 = drawArea.X + (int)(point1.X * drawArea.Width);
+            var y1 = drawArea.Y + (int)(point1.Y * drawArea.Height);
+            var x2 = drawArea.X + (int)(point2.X * drawArea.Width);
+            var y2 = drawArea.Y + (int)(point2.Y * drawArea.Height);
+
+            var line = new Rectangle(
+                x1,
+                y1,
+                (int)Math.Sqrt(Math.Pow(x2 - x1 /*+ (thickness * scale / 3f)*/, 2) + Math.Pow(y2 - y1, 2)),
+                (int)(thickness * scale)
+            );
+
+            if (bold)
+            {
+                line.Height = (int)(line.Height * 2f);
+            }
+            
+            var color2 = color;
+            /*if (i == 0)
+            {
+                color2 = Color.Red;
+            }
+            else if (i == starCount - 2)
+            {
+                color2 = Color.Blue;
+            }*/
+            sb.Draw(
+                Assets.Images.UI.StarspeakLine.Asset.Value,
+                line,
+                null,
+                color2,
+                (float)Math.Atan2(y2 - y1, x2 - x1),
+                new Vector2(0f, Assets.Images.UI.StarspeakLine.Asset.Height() / 2f),
+                SpriteEffects.None,
+                0
+            );
+        }
     }
 
     private static Sentence GetSentence(DynamicSpriteFont font, string text)
