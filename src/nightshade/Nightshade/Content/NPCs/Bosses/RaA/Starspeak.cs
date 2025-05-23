@@ -41,7 +41,7 @@ internal static class Starspeak
             )
             {
                 size = GetSize(Text, scale, out var margin);
-                if (justCheckingString || (color.R == 0 && color.G == 0 && color.B == 0))
+                if (justCheckingString || color is { R: 0, G: 0, B: 0 })
                 {
                     return true;
                 }
@@ -84,12 +84,10 @@ internal static class Starspeak
     }
 
     /// <summary>
-    ///     A 'starspeak' sentence, knowing its size and the normalized points
-    ///     in which stars may be drawn.
+    ///     A 'starspeak' sentence, knowing its normalized points.
     /// </summary>
-    /// <param name="Size">The width and height of the sentence.</param>
     /// <param name="NormalPoints">The normalized star points.</param>
-    private readonly record struct Sentence(Vector2 Size, Vector2[] NormalPoints);
+    private readonly record struct Sentence(Vector2[] NormalPoints);
 
     // Maps fonts to a hashmap of sentences denoted by a string hash.
     private static readonly ConditionalWeakTable<DynamicSpriteFont, Dictionary<string, Sentence>> font_sentence_cache = [];
@@ -110,10 +108,7 @@ internal static class Starspeak
         Player player
     )
     {
-        // temporary color fix maybe
-        // color.A = 255;
-
-        var thickness = 6f;
+        const float thickness = 6f;
 
         var sentence = GetSentence(font, text);
         var size = font.MeasureString(text) * scale;
@@ -191,8 +186,6 @@ internal static class Starspeak
             var point1 = points[i];
             var point2 = points[i + 1];
 
-            // center the points
-
             var x1 = point1.X;
             var y1 = point1.Y;
             var x2 = point2.X;
@@ -201,7 +194,7 @@ internal static class Starspeak
             var line = new Rectangle(
                 x1,
                 y1,
-                (int)Math.Sqrt(Math.Pow(x2 - x1 /*+ (thickness * scale / 3f)*/, 2) + Math.Pow(y2 - y1, 2)),
+                (int)Math.Sqrt(Math.Pow(x2 - x1, 2) + Math.Pow(y2 - y1, 2)),
                 (int)(thickness * scale)
             );
 
@@ -210,20 +203,11 @@ internal static class Starspeak
                 line.Height = (int)(line.Height * 1.75f);
             }
 
-            var color2 = color;
-            /*if (i == 0)
-            {
-                color2 = Color.Red;
-            }
-            else if (i == starCount - 2)
-            {
-                color2 = Color.Blue;
-            }*/
             sb.Draw(
                 Assets.Images.UI.StarspeakLine.Asset.Value,
                 line,
                 null,
-                color2,
+                color,
                 (float)Math.Atan2(y2 - y1, x2 - x1),
                 new Vector2(0f, Assets.Images.UI.StarspeakLine.Asset.Height() / 2f),
                 SpriteEffects.None,
@@ -255,7 +239,7 @@ internal static class Starspeak
         }
 
         var size = font.MeasureString(text);
-        return sentences[text] = new Sentence(size, GetStarPoints(size.X, text.GetHashCode()));
+        return sentences[text] = new Sentence(GetStarPoints(size.X, text.GetHashCode()));
     }
 
     private static Vector2[] GetStarPoints(float width, int seed)
