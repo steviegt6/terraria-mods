@@ -40,7 +40,7 @@ internal static class Starspeak
             )
             {
                 size = GetSize(Text, scale, out var margin);
-                if (justCheckingString)
+                if (justCheckingString || (color.R == 0 && color.G == 0 && color.B == 0))
                 {
                     return true;
                 }
@@ -111,7 +111,9 @@ internal static class Starspeak
     {
         // temporary color fix maybe
         color.A = 255;
-        
+
+        const float thickness = 6f;
+
         var sentence = GetSentence(font, text);
         var size = font.MeasureString(text) * scale;
 
@@ -133,20 +135,20 @@ internal static class Starspeak
                 var x = drawArea.X + (int)(point.X * drawArea.Width);
                 var y = drawArea.Y + (int)(point.Y * drawArea.Height);
 
-                var star = new Rectangle(x, y, (int)(6 * scale), (int)(6 * scale));
+                var star = new Rectangle(x, y, (int)(thickness * scale), (int)(thickness * scale));
                 var color2 = color;
-                if (i == 0)
+                /*if (i == 0)
                 {
                     color2 = Color.Red;
                 }
                 else if (i == starCount - 1)
                 {
                     color2 = Color.Blue;
-                }
+                }*/
 
                 // Draw star.
                 sb.Draw(
-                    TextureAssets.MagicPixel.Value,
+                    Assets.Images.UI.StarspeakStar.Asset.Value,
                     star,
                     null,
                     color2,
@@ -163,28 +165,30 @@ internal static class Starspeak
                 var point1 = points[i];
                 var point2 = points[i + 1];
 
+                // center the points
+
                 var x1 = drawArea.X + (int)(point1.X * drawArea.Width);
                 var y1 = drawArea.Y + (int)(point1.Y * drawArea.Height);
                 var x2 = drawArea.X + (int)(point2.X * drawArea.Width);
                 var y2 = drawArea.Y + (int)(point2.Y * drawArea.Height);
 
                 var line = new Rectangle(
-                    x1,
+                    x1 + (int)(thickness * scale) / 2,
                     y1,
-                    (int)Math.Sqrt(Math.Pow(x2 - x1, 2) + Math.Pow(y2 - y1, 2)),
-                    (int)(2 * scale)
+                    (int)Math.Sqrt(Math.Pow(x2 - x1 + (thickness * scale / 3f), 2) + Math.Pow(y2 - y1, 2)),
+                    (int)(thickness * scale)
                 );
                 var color2 = color;
-                if (i == 0)
+                /*if (i == 0)
                 {
                     color2 = Color.Red;
                 }
                 else if (i == starCount - 2)
                 {
                     color2 = Color.Blue;
-                }
+                }*/
                 sb.Draw(
-                    TextureAssets.MagicPixel.Value,
+                    Assets.Images.UI.StarspeakLine.Asset.Value,
                     line,
                     null,
                     color2,
@@ -227,7 +231,7 @@ internal static class Starspeak
 
         var rand = new FastRandom(seed);
 
-        var starCount = (int)(width / 10f);
+        var starCount = (int)(width / 15f);
         starCount = Math.Max(starCount, 2);
 
         var points = new Vector2[starCount];
