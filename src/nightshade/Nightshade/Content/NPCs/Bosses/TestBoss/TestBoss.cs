@@ -1,24 +1,41 @@
 using Terraria.ModLoader;
 using Terraria;
 using Terraria.ID;
-using Daybreak.Core.Hooks;
 using MonoMod.Cil;
-using System.Text.RegularExpressions;
 using Mono.Cecil.Cil;
 using System;
-using Terraria.WorldBuilding;
 using System.Collections.Generic;
+using Nightshade.Common.Utilities;
+using System.IO;
 
+internal struct ConsumerData
+{
+    public int npcID;
+}
+
+internal abstract class BossState : State<ConsumerData>
+{
+    public abstract void Broadcast(BinaryWriter writer);
+    public abstract void Listen(BinaryReader reader);
+}
 public class ConsumerOfSouls : ModNPC
 {
-    public override string Texture => Assets.Images.NPCs.TestBoss_Sheet.KEY;
+
+    private ConsumerData _data = new();
+    private StateController<ConsumerData> StateController { get; set; } = new();
+    private BossState? currentState => StateController.CurrentState as BossState;
+
+    public override string Texture => Assets.Images.NPCs.Consumer_Boss_Sheet.KEY;
+
     public override void SetStaticDefaults()
     {
-
+        base.SetDefaults();
     }
 
     public override void SetDefaults()
     {
+        base.SetDefaults();
+
         NPC.width = 50;
         NPC.height = 50;
         NPC.damage = 50;
@@ -30,91 +47,163 @@ public class ConsumerOfSouls : ModNPC
         NPC.boss = true;
         NPC.noTileCollide = true;
         NPC.noGravity = true;
+
+        _data.npcID = NPC.whoAmI;
+
+        if (!Main.dedServ)
+        {
+            Music = MusicLoader.GetMusicSlot(Mod, "Nightshade/Assets/Music/Bosses/Self-Annihilation_REPLACE"); // todo: replace with sourcegenned version later
+        }
+    }
+
+    public override void AI()
+    {
+        base.AI();
+
+        if (!StateController.Update(_data))
+        {
+            StateController.PopCurState();
+        }
+
+        _data = currentState?.stateData ?? _data;
+    }
+
+    internal void AddState(BossState state)
+    {
+        if (state is not null)
+        {
+            state.stateData = _data;
+            if (!StateController.PushState(state))
+            {
+                StateController.PopCurState();
+            }
+        }
+    }
+
+    public override void SendExtraAI(BinaryWriter writer)
+    {
+        base.SendExtraAI(writer);
+
+        currentState?.Broadcast(writer);
+    }
+
+    public override void ReceiveExtraAI(BinaryReader reader)
+    {
+        base.ReceiveExtraAI(reader);
+
+        currentState?.Listen(reader);
+    }
+}
+
+internal class InitState : BossState
+{
+    public override bool Enter(params ConsumerData[] parameters)
+    {
+        return true;
+    }
+
+    public override bool Exit(params ConsumerData[] parameters)
+    {
+        return true;
+    }
+
+    public override void Broadcast(BinaryWriter writer)
+    {
+
+    }
+    public override void Listen(BinaryReader reader)
+    {
+
+    }
+
+    public override bool Update(params ConsumerData[] parameters)
+    {
+        return true;
     }
 }
 
 public class ConsumerOfSoulsNPC : ModNPC
-{
-    public override string Texture => Assets.Images.NPCs.ConsumerSheet.KEY;
-    public override string BossHeadTexture => Assets.Images.NPCs.ConsumerHead.KEY;
-
-    public override void SetStaticDefaults()
     {
-        Main.npcFrameCount[NPC.type] = 24;
+        public override string Texture => Assets.Images.NPCs.ConsumerSheet.KEY;
+        public override string BossHeadTexture => Assets.Images.NPCs.ConsumerHead.KEY;
 
-        NPCID.Sets.ExtraFramesCount[NPC.type] = 5; // revisit later
-        NPCID.Sets.AttackFrameCount[NPC.type] = 4;
-        NPCID.Sets.DangerDetectRange[NPC.type] = 16 * 10; // length in tiles
-        NPCID.Sets.AttackType[NPC.type] = 0;
-        NPCID.Sets.AttackTime[NPC.type] = 100;
-        NPCID.Sets.AttackAverageChance[NPC.type] = 50;
-    }
-    
-    public override void SetDefaults()
-    {
-        base.SetDefaults();
-
-        NPC.townNPC = true;
-        NPC.friendly = true;
-        NPC.friendlyRegen = 10;
-
-        NPC.width = 30;
-        NPC.height = 44;
-
-        NPC.aiStyle = 7; // passive ai
-        AnimationType = NPCID.Dryad;
-
-        NPC.defense = 300;
-        NPC.damage = 300;
-
-        NPC.lifeMax = 300;
-        NPC.knockBackResist = 0.1f;
-    }
-    static List<string> chat = new List<string>
-    {
-        "My thrall was recently freed from his curse... are you the one who did it?",
-        "I can feel that one of my guardians has left this place. I'll have that old man's head.",
-        "Where did it go!? Where did it go... where did it go..."
-    };
-
-    static List<(Func<bool> predicate, string message)> SpecialInteractions = new()
-    {
-        new(() => NPC.AnyNPCs(NPCID.Clothier), "Ugh... I can still feel my connection to the host. Where is he?"),
-        new(() => NPC.AnyNPCs(NPCID.Mechanic), "Did you free our new convert? Suspicious..." ),
-        new(() => NPC.AnyNPCs(NPCID.Truffle), "The Dungeons could benefit from a faster way of cleaning a skeleton. Speaking of which..."),
-    };
-
-    public override string GetChat()
-    {
-        base.GetChat();
-
-        int randomNumber = Main.rand.Next();
-        var randomTuple = SpecialInteractions[randomNumber % SpecialInteractions.Count];
-        string chatText = randomTuple.predicate() ? randomTuple.message : chat[randomNumber % chat.Count];
-        return chatText;
-    }
-
-    public override void SetChatButtons(ref string button, ref string button2)
-    {
-        button = "Confess";
-        button2 = "Ask about the Dungeon";
-
-        base.SetChatButtons(ref button, ref button2);
-    }
-
-    public override void OnChatButtonClicked(bool firstButton, ref string shopName)
-    {
-        if (!firstButton)
+        public override void SetStaticDefaults()
         {
-            Main.npcChatText = "Why would I tell you?";
+            Main.npcFrameCount[NPC.type] = 24;
+
+            NPCID.Sets.ExtraFramesCount[NPC.type] = 5; // revisit later
+            NPCID.Sets.AttackFrameCount[NPC.type] = 4;
+            NPCID.Sets.DangerDetectRange[NPC.type] = 16 * 10; // length in tiles
+            NPCID.Sets.AttackType[NPC.type] = 0;
+            NPCID.Sets.AttackTime[NPC.type] = 100;
+            NPCID.Sets.AttackAverageChance[NPC.type] = 50;
         }
-        else
+
+        public override void SetDefaults()
         {
-            NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.position.X, (int)NPC.position.Y, ModContent.NPCType<ConsumerOfSouls>());
+            base.SetDefaults();
+
+            NPC.townNPC = true;
+            NPC.friendly = true;
+            NPC.friendlyRegen = 10;
+
+            NPC.width = 30;
+            NPC.height = 44;
+
+            NPC.aiStyle = 7; // passive ai
+            AnimationType = NPCID.Dryad;
+
+            NPC.defense = 300;
+            NPC.damage = 300;
+
+            NPC.lifeMax = 300;
+            NPC.knockBackResist = 0.1f;
         }
-        base.OnChatButtonClicked(firstButton, ref shopName);
+        static List<string> chat = new List<string>
+        {
+            "My thrall was recently freed from his curse... are you the one who did it?",
+            "I can feel that one of my guardians has left this place. I'll have that old man's head.",
+            "Where did it go!? Where did it go... where did it go..."
+        };
+
+        static List<(Func<bool> predicate, string message)> SpecialInteractions = new()
+        {
+            new(() => NPC.AnyNPCs(NPCID.Clothier), "Ugh... I can still feel my connection to the host. Where is he?"),
+            new(() => NPC.AnyNPCs(NPCID.Mechanic), "Did you free our new convert? Suspicious..."),
+            new(() => NPC.AnyNPCs(NPCID.Truffle), "The Dungeons could benefit from a faster way of cleaning a skeleton. Speaking of which..."),
+        };
+
+        public override string GetChat()
+        {
+            base.GetChat();
+
+            int randomNumber = Main.rand.Next();
+            var randomTuple = SpecialInteractions[randomNumber % SpecialInteractions.Count];
+            string chatText = randomTuple.predicate() ? randomTuple.message : chat[randomNumber % chat.Count];
+            return chatText;
+        }
+
+        public override void SetChatButtons(ref string button, ref string button2)
+        {
+            button = "Confess";
+            button2 = "Ask about the Dungeon";
+
+            base.SetChatButtons(ref button, ref button2);
+        }
+
+        public override void OnChatButtonClicked(bool firstButton, ref string shopName)
+        {
+            if (!firstButton)
+            {
+                Main.npcChatText = "Why would I tell you?";
+            }
+            else
+            {
+                NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.position.X, (int)NPC.position.Y, ModContent.NPCType<ConsumerOfSouls>());
+            }
+            base.OnChatButtonClicked(firstButton, ref shopName);
+        }
     }
-}
 
 public class Loader : ModSystem
 {

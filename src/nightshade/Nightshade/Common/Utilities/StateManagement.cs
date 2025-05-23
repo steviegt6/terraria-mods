@@ -11,6 +11,7 @@ public struct StateID
 public abstract class State<T> where T : struct
 {
     public StateID stateID;
+    public T stateData;
     internal StateController<T>? enclosingController;
 
     /// <summary>
@@ -48,7 +49,7 @@ public class StateController<T> where T : struct
     protected Stack<State<T>> States;
     public State<T>? CurrentState => States.TryPeek(out var state) ? state : null;
 
-    public delegate bool StateDelegate(StateID StateID, params T[] parameters);
+    public delegate bool StateDelegate(StateID StateID, bool success, params T[] parameters);
     public event StateDelegate? OnStatePush;
     public event StateDelegate? OnStatePop;
 
@@ -63,10 +64,9 @@ public class StateController<T> where T : struct
                 id = state.GetHashCode().ToString()
             };
 
-            newState.Enter(arguments);
             States.Push(newState);
 
-            return OnStatePush?.Invoke(newState.stateID, arguments) ?? true;
+            return OnStatePush?.Invoke(newState.stateID, newState.Enter(arguments), arguments) ?? true;
         }
 
         return false;
@@ -75,8 +75,7 @@ public class StateController<T> where T : struct
     {
         if (States.TryPop(out var state))
         {
-            state.Exit();
-            return OnStatePop?.Invoke(state.stateID) ?? true;
+            return OnStatePop?.Invoke(state.stateID, state.Exit()) ?? true;
         }
         return false;
     }
