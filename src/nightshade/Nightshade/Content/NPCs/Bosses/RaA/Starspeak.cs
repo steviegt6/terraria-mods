@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 using Microsoft.Xna.Framework;
@@ -126,8 +127,8 @@ internal static class Starspeak
 
         // Draw constellation.
         {
-            DrawConstellation(sb, sentence, drawArea, thickness, new Color(0, 0, 0, color.A), scale, bold: true);
-            DrawConstellation(sb, sentence, drawArea, thickness, color, scale);
+            DrawConstellation(sb, sentence, drawArea, thickness, new Color(0, 0, 0, color.A), scale, text.GetHashCode(), bold: true);
+            DrawConstellation(sb, sentence, drawArea, thickness, color, scale, text.GetHashCode());
         }
 
         // Draw text.
@@ -141,6 +142,7 @@ internal static class Starspeak
         float thickness,
         Color color,
         float scale,
+        int seed,
         bool bold = false
     )
     {
@@ -148,33 +150,34 @@ internal static class Starspeak
         {
             thickness *= 2f;
         }
-        
-        var points = sentence.NormalPoints;
+
+        var rand = new FastRandom(seed);
+        var points = sentence.NormalPoints.Select(
+            p =>
+            {
+                var x = drawArea.X + p.X * drawArea.Width;
+                var y = drawArea.Y + p.Y * drawArea.Height;
+
+                var reverse = rand.NextFloat() > 0.5f;
+                x += MathF.Sin(Main.GlobalTimeWrappedHourly * 2f + NextFloat(rand, -MathHelper.Pi, MathHelper.Pi)) * 0.5f * (reverse ? -1f : 1f);
+                y += MathF.Cos(Main.GlobalTimeWrappedHourly * 2f + NextFloat(rand, -MathHelper.Pi, MathHelper.Pi)) * 0.5f * (reverse ? -1f : 1f);
+
+                return new Point((int)x, (int)y);
+            }
+        ).ToArray();
 
         var starCount = points.Length;
         for (var i = 0; i < starCount; i++)
         {
             var point = points[i];
-            var x = drawArea.X + (int)(point.X * drawArea.Width);
-            var y = drawArea.Y + (int)(point.Y * drawArea.Height);
-
-            var star = new Rectangle(x, y, (int)(thickness * scale), (int)(thickness * scale));
-            var color2 = color;
-            /*if (i == 0)
-            {
-                color2 = Color.Red;
-            }
-            else if (i == starCount - 1)
-            {
-                color2 = Color.Blue;
-            }*/
+            var star = new Rectangle(point.X, point.Y, (int)(thickness * scale), (int)(thickness * scale));
 
             // Draw star.
             sb.Draw(
                 Assets.Images.UI.StarspeakStar.Asset.Value,
                 star,
                 null,
-                color2,
+                color,
                 0f,
                 Assets.Images.UI.StarspeakStar.Asset.Size() / 2f,
                 SpriteEffects.None,
@@ -190,10 +193,10 @@ internal static class Starspeak
 
             // center the points
 
-            var x1 = drawArea.X + (int)(point1.X * drawArea.Width);
-            var y1 = drawArea.Y + (int)(point1.Y * drawArea.Height);
-            var x2 = drawArea.X + (int)(point2.X * drawArea.Width);
-            var y2 = drawArea.Y + (int)(point2.Y * drawArea.Height);
+            var x1 = point1.X;
+            var y1 = point1.Y;
+            var x2 = point2.X;
+            var y2 = point2.Y;
 
             var line = new Rectangle(
                 x1,
@@ -206,7 +209,7 @@ internal static class Starspeak
             {
                 line.Height = (int)(line.Height * 2f);
             }
-            
+
             var color2 = color;
             /*if (i == 0)
             {
@@ -226,6 +229,13 @@ internal static class Starspeak
                 SpriteEffects.None,
                 0
             );
+        }
+
+        return;
+
+        static float NextFloat(FastRandom rand, float minValue, float maxValue)
+        {
+            return (float)rand.NextDouble() * (maxValue - minValue) + minValue;
         }
     }
 
@@ -288,11 +298,6 @@ internal static class Starspeak
         }
 
         return points;
-
-        static float NextFloat(FastRandom rand, float minValue, float maxValue)
-        {
-            return (float)rand.NextDouble() * (maxValue - minValue) + minValue;
-        }
     }
 
     private static bool PlayerKnowsStarspeak(Player player)
