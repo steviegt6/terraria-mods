@@ -96,7 +96,7 @@ internal static class Starspeak
 
     public static string GetBossNameTag()
     {
-        return $"[{Tag.NAME}/{Mods.Nightshade.NPCs.SlimeBoss.DisplayName.GetTextValue()}]";
+        return $"[{Tag.NAME}:{Mods.Nightshade.NPCs.SlimeBoss.DisplayName.GetTextValue()}]";
     }
 
     public static void DrawText(
