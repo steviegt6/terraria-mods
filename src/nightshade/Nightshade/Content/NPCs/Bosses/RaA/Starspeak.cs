@@ -207,7 +207,7 @@ internal static class Starspeak
 
             if (bold)
             {
-                line.Height = (int)(line.Height * 2f);
+                line.Height = (int)(line.Height * 1.75f);
             }
 
             var color2 = color;

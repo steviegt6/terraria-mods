@@ -1,59 +1,42 @@
+using System;
 using System.Linq;
 
 using Daybreak.Common.Features.Hooks;
 
+using Microsoft.Xna.Framework;
+
+using Terraria;
 using Terraria.GameContent.Bestiary;
-using Terraria.GameContent.UI.Elements;
-using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.UI;
 
 namespace Nightshade.Content.NPCs.Bosses.RaA;
 
 partial class SlimeBoss
 {
-    private sealed class ChatTagNamePlateInfoElement(string display, string key) : IBestiaryInfoElement, IProvideSearchFilterString
+    private readonly struct HoverNameOverride : IDisposable
     {
-        public UIElement ProvideUIElement(BestiaryUICollectionInfo info)
+        private static int count;
+
+        public static bool IsActive => count > 0;
+
+        public HoverNameOverride()
         {
-            UIElement text = info.UnlockState != 0 ? new UIText(display) : new UIText("???");
-            {
-                text.HAlign = 0.5f;
-                text.VAlign = 0.5f;
-                text.Top = new StyleDimension(2f, 0f);
-                text.IgnoresMouseInteraction = true;
-            }
-            
-            var element = new UIElement
-            {
-                Width = new StyleDimension(0f, 1f),
-                Height = new StyleDimension(24f, 0f),
-            };
-            {
-                element.Append(text);
-            }
-            
-            return element;
+            count++;
         }
 
-        public string? GetSearchString(ref BestiaryUICollectionInfo info)
+        public void Dispose()
         {
-            if (info.UnlockState == BestiaryEntryUnlockState.NotKnownAtAll_0)
-            {
-                return null;
-            }
-
-            return Language.GetText(key).Value;
+            count--;
         }
     }
-    
+
     // Lang.GetNPCName
     // Lang.GetNPCNameValue
     // NPC.GetTypeNetName
     // NPC.TypeName
     // NPC.GetFullnameByID
     // NPC.GetFullNetName
-    
+
     // Condition.NpcIsPresent - x
     // BestiaryEntry.Enemy
     // BestiaryEntry.TownNPC - x
@@ -62,7 +45,7 @@ partial class SlimeBoss
     // NPCDefinitionElement.GetPassedOptionElements - x
     // NPC.CountKillForBannersAndDropThem - x
     // NPC.SpawnSkeletron - x
-    
+
     // UnlockableNPCEntryIcon.GetHoverText
     // Main.MouseText_DrawBuffTooltip
     // Main.DrawInfoAccs
@@ -72,6 +55,46 @@ partial class SlimeBoss
     private static void ApplyRenderingTweaksToRenderNameAsStarspeak()
     {
         On_BestiaryEntry.Enemy += ModifyInfoItemsToUseCustomName;
+
+        On_Main.MouseText_string_string_int_byte_int_int_int_int_int_bool += ApplyHoverNameHack;
+        On_Main.HoverOverNPCs += ApplyHoverNameHack_EnableHoveringNpcs;
+    }
+
+    private static void ApplyHoverNameHack_EnableHoveringNpcs(On_Main.orig_HoverOverNPCs orig, Main self, Rectangle mouseRectangle)
+    {
+        using (new HoverNameOverride())
+        {
+            orig(self, mouseRectangle);
+        }
+    }
+
+    private static void ApplyHoverNameHack(
+        On_Main.orig_MouseText_string_string_int_byte_int_int_int_int_int_bool orig,
+        Main self,
+        string cursorText,
+        string buffTooltip,
+        int rare,
+        byte diff,
+        int hackedMouseX,
+        int hackedMouseY,
+        int hackedScreenWidth,
+        int hackedScreenHeight,
+        int pushWidthX,
+        bool noOverride
+    )
+    {
+        if (HoverNameOverride.IsActive)
+        {
+            var nameParts = cursorText.Split(':');
+            if (nameParts[0] == Mods.Nightshade.NPCs.SlimeBoss.DisplayName.GetTextValue())
+            {
+                nameParts[0] = Starspeak.GetBossNameTag() + ' ';
+            }
+
+            cursorText = string.Join(':', nameParts);
+        }
+
+        orig(self, cursorText, buffTooltip, rare, diff, hackedMouseX, hackedMouseY, hackedScreenWidth, hackedScreenHeight, pushWidthX, noOverride);
     }
 
     private static BestiaryEntry ModifyInfoItemsToUseCustomName(On_BestiaryEntry.orig_Enemy orig, int npcNetId)
@@ -88,7 +111,7 @@ partial class SlimeBoss
             // Not a key, technically, but it should work fine.
             namePlateInfoElement._key = Starspeak.GetBossNameTag();
         }
-        
+
         return entry;
     }
 }
