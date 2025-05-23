@@ -109,8 +109,10 @@ internal static class Starspeak
         Player player
     )
     {
+        // temporary color fix maybe
+        color.A = 255;
+        
         var sentence = GetSentence(font, text);
-
         var size = font.MeasureString(text) * scale;
 
         var drawArea = new Rectangle(
@@ -131,8 +133,8 @@ internal static class Starspeak
                 var x = drawArea.X + (int)(point.X * drawArea.Width);
                 var y = drawArea.Y + (int)(point.Y * drawArea.Height);
 
-                var star = new Rectangle(x, y, (int)(4 * scale), (int)(4 * scale));
-                var color2 = Color.White;
+                var star = new Rectangle(x, y, (int)(6 * scale), (int)(6 * scale));
+                var color2 = color;
                 if (i == 0)
                 {
                     color2 = Color.Red;
@@ -149,6 +151,44 @@ internal static class Starspeak
                     null,
                     color2,
                     0f,
+                    Vector2.Zero,
+                    SpriteEffects.None,
+                    0
+                );
+            }
+
+            // Draw lines.
+            for (var i = 0; i < starCount - 1; i++)
+            {
+                var point1 = points[i];
+                var point2 = points[i + 1];
+
+                var x1 = drawArea.X + (int)(point1.X * drawArea.Width);
+                var y1 = drawArea.Y + (int)(point1.Y * drawArea.Height);
+                var x2 = drawArea.X + (int)(point2.X * drawArea.Width);
+                var y2 = drawArea.Y + (int)(point2.Y * drawArea.Height);
+
+                var line = new Rectangle(
+                    x1,
+                    y1,
+                    (int)Math.Sqrt(Math.Pow(x2 - x1, 2) + Math.Pow(y2 - y1, 2)),
+                    (int)(2 * scale)
+                );
+                var color2 = color;
+                if (i == 0)
+                {
+                    color2 = Color.Red;
+                }
+                else if (i == starCount - 2)
+                {
+                    color2 = Color.Blue;
+                }
+                sb.Draw(
+                    TextureAssets.MagicPixel.Value,
+                    line,
+                    null,
+                    color2,
+                    (float)Math.Atan2(y2 - y1, x2 - x1),
                     Vector2.Zero,
                     SpriteEffects.None,
                     0
@@ -181,37 +221,36 @@ internal static class Starspeak
 
     private static Vector2[] GetStarPoints(float width, int seed)
     {
-        // Guaranteed to produce at least 2 stars (clamped at 10 for now).  One
-        // star is added per 20 pixels of text.  Points are at first uniformly
-        // distributed (aside from the first and last points), before being
-        // offset randomly horizontally and vertically.
+        // Guaranteed to produce at least 2 stars.  Points are at first
+        // uniformly distributed (aside from the first and last points), before
+        // being offset randomly horizontally and vertically.
 
         var rand = new FastRandom(seed);
 
-        var starCount = (int)(width / 20f);
-        starCount = Math.Clamp(starCount, 2, 10);
+        var starCount = (int)(width / 10f);
+        starCount = Math.Max(starCount, 2);
 
         var points = new Vector2[starCount];
         var step = width / (starCount - 1);
         for (var i = 0; i < starCount; i++)
         {
             var x = step * i;
-            var y = rand.NextFloat();
+            var y = rand.NextFloat() * 0.6f + 0.05f;
             points[i] = new Vector2(x, y);
         }
 
         // Clamp beginning and end stars so they reach the end of the sentence.
-        points[0].X = 0f;
-        points[^1].X = width;
+        // points[0].X = 0f;
+        // points[^1].X = width;
 
         // Distribute randomly horizontally.
-        if (starCount > 2)
+        /*if (starCount > 2)
         {
             for (var i = 1; i < starCount - 1; i++)
             {
                 points[i].X += NextFloat(rand, -step, step) / 2f;
             }
-        }
+        }*/
 
         // Normalize horizontal values to [0, 1]
         for (var i = 0; i < starCount; i++)
