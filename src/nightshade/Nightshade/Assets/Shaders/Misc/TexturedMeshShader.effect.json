@@ -1,0 +1,12 @@
+{
+  "uniforms": {
+    "uTransformMatrix": "matrix"
+  },
+  "passes": {
+    "StripShader": {
+      "PixelShader": "ps_3_0 pixel",
+      "VertexShader": "vs_3_0 vertex"
+    }
+  },
+  "profile": "fx_2_0"
+}
