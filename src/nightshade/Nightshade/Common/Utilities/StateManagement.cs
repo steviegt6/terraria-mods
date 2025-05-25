@@ -5,7 +5,7 @@ namespace Nightshade.Common.Utilities;
 public struct StateID
 {
     internal string name;
-    internal string id;
+    internal int id;
 }
 
 public abstract class State<T> where T : struct
@@ -33,7 +33,7 @@ public abstract class State<T> where T : struct
         if (enclosingController != null)
         {
             Exit(parameters);
-            return enclosingController.PopCurState();
+            return enclosingController.PopState(stateID);
         }
         return false;
     }
@@ -53,6 +53,7 @@ public class StateController<T> where T : struct
     public event StateDelegate? OnStatePush;
     public event StateDelegate? OnStatePop;
 
+    int id = 0;
     public bool PushState<S>(S state, params T[] arguments) where S : State<T>
     {
         if (state is State<T> newState)
@@ -61,7 +62,7 @@ public class StateController<T> where T : struct
             newState.stateID = new StateID
             {
                 name = state.GetType().Name,
-                id = state.GetHashCode().ToString()
+                id = id++
             };
 
             States.Push(newState);

@@ -14,6 +14,7 @@ namespace Nightshade.Content.NPCs.Bosses;
 
 internal struct ConsumerData
 {
+    public int bossTimer;
     public int phase;
     public ConsumerOfSouls ModNPC { get; set; }
     public NPC ThisNPC => ModNPC.NPC;
@@ -26,6 +27,8 @@ internal struct ConsumerData
 
 internal abstract class BossState : State<ConsumerData>
 {
+    protected bool activated;
+    protected int timer;
     internal static Action<SpriteBatch, Vector2>? StatelessDrawActions;
     public abstract void Broadcast(BinaryWriter writer);
     public abstract void Listen(BinaryReader reader);
@@ -63,19 +66,17 @@ public class ConsumerOfSouls : ModNPC
         NPC.lavaImmune = true;
 
 
-
         if (!Main.dedServ)
         {
             Music = MusicLoader.GetMusicSlot(Mod, "Nightshade/Assets/Music/Bosses/Self-Annihilation_REPLACE"); // todo: replace with sourcegenned version later
         }
     }
 
-    int state = -1;
     public override void AI()
     {
         base.AI();
 
-        if (state++ == -1)
+        if (_data.bossTimer++ == 0)
         {
             _data.ModNPC = this;
             StateController.PushState(new Consumer_InitTransitionState());
@@ -85,8 +86,6 @@ public class ConsumerOfSouls : ModNPC
         {
             StateController.PopCurState();
         }
-
-        _data = currentState?.stateData ?? _data;
     }
 
     internal void AddState(BossState state)
@@ -110,6 +109,11 @@ public class ConsumerOfSouls : ModNPC
         }
     }
 
+    internal void SyncState(BossState state)
+    {
+        _data = state.stateData;
+    }
+
     public override void SendExtraAI(BinaryWriter writer)
     {
         base.SendExtraAI(writer);
@@ -128,7 +132,6 @@ public class ConsumerOfSouls : ModNPC
     {
         if (currentState is not null)
         {
-            state = 0;
             SpriteEffects effects = NPC.direction == 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
             Vector2 pos = NPC.Center + new Vector2(0, 68);
 
@@ -185,10 +188,9 @@ internal class Consumer_InitTransitionState : BossState
         stateData.shouldBeDeadNow = false;
         stateData.stateDone = true;
 
-        stateData.ModNPC.SyncState();
         PopSelf();
         stateData.ModNPC.AddState(new Consumer_PhaseTransitionState());
-
+        stateData.ModNPC.SyncState(this);
 
         return true;
     }
@@ -246,7 +248,31 @@ internal class Consumer_PhaseTransitionState : BossState
 
     public override bool Update(params ConsumerData[] parameters)
     {
+        if (!activated)
+        {
+            activated = true;
+            Main.NewText("The Consumer is in a transition state.", Color.Red);
+            PopSelf();
+        }
+
         stateData.phase = (int)(4 - stateData.ThisNPC.life / (stateData.ThisNPC.lifeMax / 4f));
+
+
+
+        switch (stateData.phase)
+        {
+            case 0:
+                stateData.ModNPC.AddState(new Consumer_PhaseOneBasicTransitionState());
+                break;
+            default:
+                stateData.ModNPC.AddState(new Consumer_DeathTransitionState());
+                break;
+        }
+
+        stateData.stateDone = true;
+        stateData.ModNPC.SyncState(this);
+
+
         return true;
     }
 }
