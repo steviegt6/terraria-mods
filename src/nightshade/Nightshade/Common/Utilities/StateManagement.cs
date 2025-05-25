@@ -66,8 +66,8 @@ public class StateController<T> where T : struct
             };
 
             States.Push(newState);
-
-            return OnStatePush?.Invoke(newState.stateID, newState.Enter(arguments), arguments) ?? true;
+            var output = newState.Enter(arguments);
+            return OnStatePush?.Invoke(newState.stateID, output, arguments) ?? true;
         }
 
         return false;

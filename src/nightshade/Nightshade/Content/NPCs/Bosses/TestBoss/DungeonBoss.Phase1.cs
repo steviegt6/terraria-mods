@@ -11,6 +11,7 @@ using System.Linq;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Terraria.Utilities;
+using Terraria.Audio;
 
 namespace Nightshade.Content.NPCs.Bosses;
 
@@ -66,16 +67,24 @@ internal class Consumer_PhaseOneBasicTransitionState : BossState
         {
             random.Add(attack.Key, attack.Value);
         }
-        int numAttacks = 1 + Main.rand.Next(3);
+        int numAttacks = 4;
 
         List<AttackType> selectedAttacks = new List<AttackType>();
 
         for (int i = 0; i < numAttacks; i++)
         {
             AttackType attack = random.Get();
+            while (selectedAttacks.Contains(attack))
+            {
+                attack = random.Get();
+            }
             selectedAttacks.Add(attack);
         }
+
+        selectedAttacks.Reverse();
         Main.NewText($"The Consumer will use the following attacks: {string.Join(", ", selectedAttacks)}");
+
+        stateData.ModNPC.AddState(new Consumer_PhaseOneDoneState());
 
         foreach (var attack in selectedAttacks)
         {
@@ -95,8 +104,6 @@ internal class Consumer_PhaseOneBasicTransitionState : BossState
                     break;
             }
         }
-
-        stateData.ModNPC.AddState(new Consumer_PhaseOneDoneState());
 
         stateData.stateDone = true;
         stateData.ModNPC.SyncState(this);
@@ -127,6 +134,7 @@ internal class Consumer_PhaseOnePropelAttackState : BossState
 
     }
 
+
     public override bool Update(params ConsumerData[] parameters)
     {
         if (!activated)
@@ -145,8 +153,16 @@ internal class Consumer_PhaseOnePropelAttackState : BossState
 // The consumer summons a flurry of water bolt attacks to assail the enemy
 internal class Consumer_PhaseOneFlurryAttackState : BossState
 {
+    private const int minTime = 60;
+    private const float maxProjectileSpeed = 10.0f;
+
     public override bool Enter(params ConsumerData[] parameters)
     {
+        maxTime = minTime + (Main.rand.Next() % 15);
+        numProjectiles = 5 + (Main.rand.Next() % 5);
+
+        periodBetweenShots = maxTime / numProjectiles;
+
         return true;
     }
 
@@ -164,16 +180,78 @@ internal class Consumer_PhaseOneFlurryAttackState : BossState
 
     }
 
+    int numProjectiles;
+    int periodBetweenShots;
+    int periodBetweenShotsAdjusted;
+    int numShot;
+    Vector2 savedPosition;
+    Player target;
+
+    float angle = MathHelper.PiOver4;
     public override bool Update(params ConsumerData[] parameters)
     {
         if (!activated)
         {
             activated = true;
+
+            stateData.ThisNPC.TargetClosest();
+            target = Main.player[stateData.ThisNPC.target];
+            savedPosition = target.Center;
+
+            periodBetweenShotsAdjusted = periodBetweenShots;
+
             Main.NewText("Water Bolt!");
+            SoundEngine.PlaySound(SoundID.NPCDeath13, stateData.ThisNPC.Center);
         }
 
-        stateData.ModNPC.SyncState();
-        PopSelf();
+        if (timer++ < maxTime)
+        {
+            if (timer % periodBetweenShotsAdjusted == 0 && ++numShot <= numProjectiles)
+            {
+                Vector2 targetPosition = savedPosition; // todo: account for edge cases here
+
+                Vector2 direction = targetPosition - stateData.ThisNPC.Center;
+                direction.Normalize();
+
+                float quotient = Math.Clamp(1 - (numShot / (float)numProjectiles), 0.2f, 1.0f);
+                float speed = 10.0f * quotient;
+                direction *= speed;
+
+                angle *= quotient;
+                Vector2 projectileDirection = direction.RotatedBy(angle * -stateData.ThisNPC.direction);
+
+                var proj = Projectile.NewProjectileDirect(stateData.ThisNPC.GetSource_FromThis(), stateData.ThisNPC.Center, projectileDirection, ProjectileID.WaterBolt, 20, 1f, Main.myPlayer);
+                proj.friendly = false;
+                proj.hostile = true;
+                proj.timeLeft = 60 * 10;
+                var gProj = proj.GetGlobalProjectile<ModifyProjectiles>();
+                gProj.consumerMark = stateData.ThisNPC.whoAmI;
+                gProj.shouldDieOnHitInstantly = true;
+
+                stateData.ThisNPC.velocity += projectileDirection * -0.1f;
+
+                var id = SoundEngine.PlaySound(SoundID.DD2_DarkMageHealImpact, stateData.ThisNPC.Center);
+                var sound = SoundEngine.GetActiveSound(id) ?? throw new Exception("Failed to get sound from SoundEngine after playing it.");
+                sound.Pitch = Main.rand.NextFloat();
+                sound.Volume += .5f;
+
+                sound.Sound.dspSettings = new FAudio.F3DAUDIO_DSP_SETTINGS();
+                sound.Sound.dspSettings.DopplerFactor = 1.0f;
+
+                // todo: move this elsewhere
+                var style = sound.Style;
+                style.MaxInstances = style.MaxInstances == 0 ? 1 : style.MaxInstances;
+                sound.Style = style;
+
+                periodBetweenShotsAdjusted = Math.Max(1, periodBetweenShots / numShot);
+            }
+        }
+        else
+        {
+            Main.NewText("Flurry finished", Color.Red);
+            stateData.ModNPC.SyncState();
+            PopSelf();
+        }
 
         return true;
     }

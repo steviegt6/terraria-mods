@@ -9,6 +9,7 @@ using Nightshade.Common.Utilities;
 using System.IO;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using Terraria.DataStructures;
 
 namespace Nightshade.Content.NPCs.Bosses;
 
@@ -29,6 +30,7 @@ internal abstract class BossState : State<ConsumerData>
 {
     protected bool activated;
     protected int timer;
+    protected int maxTime;
     internal static Action<SpriteBatch, Vector2>? StatelessDrawActions;
     public abstract void Broadcast(BinaryWriter writer);
     public abstract void Listen(BinaryReader reader);
@@ -149,16 +151,76 @@ public class ConsumerOfSouls : ModNPC
         BossState.StatelessDrawActions?.Invoke(spriteBatch, screenPos);
         return false;
     }
-    public override bool PreKill()
+
+    public List<string> deathReasons = new List<string>
     {
+        "The Consumer of Souls has consumed {0}'s soul!",
+        "{0} shouldn't have fessed up.",
+        "{0} isn't strong enough to become a thrall.",
+        "{0} will become new parts for the Consumer of Souls.",
+        "{0} will serve as an undead slave forever.",
+        "Maybe {0} won't break a curse next time.",
+        "{0} will wander the halls of the Dungeon forever.",
+        "{0}, sadly, does not have a phylactery.",
+        "{0} will become a new candidate to host the next Skeletron."
+    };
+
+    public override void OnHitPlayer(Player target, Player.HurtInfo hurtInfo)
+    {
+        base.OnHitPlayer(target, hurtInfo);
+
+        hurtInfo.DamageSource = new Terraria.DataStructures.PlayerDeathReason()
+        {
+            CustomReason = Terraria.Localization.NetworkText.FromLiteral(string.Format(deathReasons[Main.rand.Next(deathReasons.Count)], target.name))
+        };
+    }
+    public override bool CheckDead()
+    {
+        base.CheckDead();
+        NPC.life = 1;
         return _data.shouldBeDeadNow;
     }
+
     public override void OnKill()
     {
-
         base.OnKill();
     }
 }
+
+public class ModifyProjectiles : GlobalProjectile
+{
+    public override bool InstancePerEntity => true;
+    public int consumerMark = -1;
+    public bool shouldDieOnHitInstantly;
+
+    public override void OnHitPlayer(Projectile proj, Player p, Player.HurtInfo hurtInfo)
+    {
+        base.OnHitPlayer(proj, p, hurtInfo);
+
+        if (consumerMark == -1)
+        {
+            return;
+        }
+        else if (Main.npc[consumerMark].ModNPC is ConsumerOfSouls consumerNPC)
+        {
+            if (shouldDieOnHitInstantly) proj.Kill();
+
+            consumerNPC.NPC.HealEffect(proj.damage, true); // todo: fix this in multiplayer!
+            consumerNPC.NPC.life += proj.damage;
+            consumerNPC.NPC.life = Math.Min(consumerNPC.NPC.life, consumerNPC.NPC.lifeMax);
+
+            Main.NewText($"Player was hit by a projectile! Consume healed by {proj.damage}", Color.Blue);
+
+            hurtInfo.DamageSource = new Terraria.DataStructures.PlayerDeathReason()
+            {
+                CustomReason = Terraria.Localization.NetworkText.FromLiteral(string.Format("The Consumer of Souls has consumed {0}'s soul!", p.name))
+            };
+
+        }
+    }
+}
+
+
 
 internal class Consumer_InitTransitionState : BossState
 {
@@ -201,6 +263,7 @@ internal class Consumer_DeathTransitionState : BossState
     public override bool Enter(params ConsumerData[] parameters)
     {
         Main.NewText("You have defeated the Consumer of Souls!", Color.Red);
+
         return true;
     }
 
@@ -220,7 +283,7 @@ internal class Consumer_DeathTransitionState : BossState
 
     public override bool Update(params ConsumerData[] parameters)
     {
-        stateData.shouldBeDeadNow = true;
+        stateData.shouldBeDeadNow = false;
         return true;
     }
 }
@@ -334,7 +397,7 @@ public class ConsumerOfSoulsNPC : ModNPC
 
         int randomNumber = Main.rand.Next();
         var randomTuple = SpecialInteractions[randomNumber % SpecialInteractions.Count];
-        string chatText = randomTuple.predicate() ? randomTuple.message : chat[randomNumber % chat.Count];
+        string chatText = randomTuple.predicate() && Main.rand.NextBool() ? randomTuple.message : chat[randomNumber % chat.Count];
         return chatText;
     }
 
