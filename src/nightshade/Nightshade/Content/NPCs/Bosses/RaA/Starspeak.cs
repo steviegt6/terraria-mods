@@ -87,7 +87,8 @@ internal static class Starspeak
     ///     A 'starspeak' sentence, knowing its normalized points.
     /// </summary>
     /// <param name="NormalPoints">The normalized star points.</param>
-    private readonly record struct Sentence(Vector2[] NormalPoints);
+    /// <param name="Connections">Whether star points are connected.</param>
+    private readonly record struct Sentence(Vector2[] NormalPoints, bool[] Connections);
 
     // Maps fonts to a hashmap of sentences denoted by a string hash.
     private static readonly ConditionalWeakTable<DynamicSpriteFont, Dictionary<string, Sentence>> font_sentence_cache = [];
@@ -181,8 +182,13 @@ internal static class Starspeak
         }
 
         // Draw lines.
-        for (var i = 0; i < starCount - 1; i++)
+        for (var i = 0; i < sentence.Connections.Length; i++)
         {
+            if (!sentence.Connections[i])
+            {
+                continue;
+            }
+
             var point1 = points[i];
             var point2 = points[i + 1];
 
@@ -239,10 +245,10 @@ internal static class Starspeak
         }
 
         var size = font.MeasureString(text);
-        return sentences[text] = new Sentence(GetStarPoints(size.X, text.GetHashCode()));
+        return sentences[text] = GetStarPoints(size.X, text.GetHashCode());
     }
 
-    private static Vector2[] GetStarPoints(float width, int seed)
+    private static Sentence GetStarPoints(float width, int seed)
     {
         // Guaranteed to produce at least 2 stars.  Points are at first
         // uniformly distributed (aside from the first and last points), before
@@ -250,25 +256,48 @@ internal static class Starspeak
 
         var rand = new FastRandom(seed);
 
-        var starCount = (int)(width / 15f);
-        starCount = Math.Max(starCount, 2);
+        var baseCount = Math.Max((int)(width / 15f), 2);
+        var points = new List<Vector2>(baseCount);
+        var connections = new List<bool>();
 
-        var points = new Vector2[starCount];
-        var step = width / (starCount - 1);
-        for (var i = 0; i < starCount; i++)
+        var step = width / (baseCount - 1);
+        var splitOccurred = false;
+
+        for (var i = 0; i < baseCount; i++)
         {
             var x = step * i;
             var y = rand.NextFloat() * 0.6f + 0.05f;
-            points[i] = new Vector2(x, y);
+            var basePoint = new Vector2(x, y);
+            points.Add(basePoint);
+
+            // Decide whether to connect to the next point
+            if (i > 0)
+            {
+                connections.Add(rand.NextFloat() < 0.85f); // 85% chance to connect
+            }
+
+            // One-time optional split
+            if (!splitOccurred && rand.NextFloat() < 0.15f)
+            {
+                splitOccurred = true;
+
+                var offset1 = new Vector2(rand.NextFloat() * 10f - 5f, rand.NextFloat() * 0.05f - 0.025f);
+                var offset2 = new Vector2(rand.NextFloat() * 10f - 5f, rand.NextFloat() * 0.05f - 0.025f);
+
+                points.Add(basePoint + offset1);
+                connections.Add(rand.NextFloat() < 0.85f);
+
+                points.Add(basePoint + offset2);
+                connections.Add(rand.NextFloat() < 0.85f);
+            }
         }
 
-        // Normalize horizontal values to [0, 1]
-        for (var i = 0; i < starCount; i++)
+        for (var i = 0; i < points.Count; i++)
         {
-            points[i].X /= width;
+            points[i] = new Vector2(points[i].X / width, points[i].Y);
         }
 
-        return points;
+        return new Sentence(points.ToArray(), connections.ToArray());
     }
 
     private static bool PlayerKnowsStarspeak(Player player)
