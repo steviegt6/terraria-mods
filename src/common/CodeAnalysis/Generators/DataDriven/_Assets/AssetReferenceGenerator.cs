@@ -1,25 +1,4 @@
 /*
-                var actualName = Path.ChangeExtension(file.Path.Replace('\\', '/'), null);
-                if (actualName.EndsWith(".effect"))
-                {
-                    actualName = actualName[..^".effect".Length];
-                }
-
-                if (!effectFiles.TryGetValue(file.Path, out var effectContents))
-                {
-                    sb.AppendLine($"#error Could not find file: {file.Path}");
-                }
-                else
-                {
-                    sb.AppendLine($"{indent}        public const string KEY = \"{actualName}\";");
-
-                    var effectData = JsonConvert.DeserializeObject<EffectFile>(effectContents);
-                    if (effectData is null)
-                    {
-                        sb.AppendLine($"#error Failed to parse effect file: {file.Path}");
-                    }
-                    else
-                    {
                         const string type = "global::Microsoft.Xna.Framework.Graphics.Effect";
 
                         sb.AppendLine($"{indent}        public sealed class Parameters : IShaderParameters");
@@ -66,7 +45,5 @@
                             sb.AppendLine($"{indent}            return new WrapperShaderData<Parameters>(Asset, \"{passName}\");");
                             sb.AppendLine($"{indent}        }}");
                         }
-                    }
-                }
 */
 

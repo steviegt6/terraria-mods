@@ -60,7 +60,7 @@ internal sealed partial class AssetGenerator : BuildTask
                     currentNode = value;
                 }
 
-                var assetFile = new AssetFile(fileName, file.RelativePath, reference);
+                var assetFile = new AssetFile(fileName, file.RelativePath, reference, file);
                 currentNode.Files.Add(assetFile);
             }
 

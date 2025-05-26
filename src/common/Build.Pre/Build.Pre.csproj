@@ -12,6 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\..\shader-reader\ShaderDecompiler.csproj"/>
         <ProjectReference Include="..\Build.Shared\Build.Shared.csproj"/>
     </ItemGroup>
 
