@@ -1,4 +1,6 @@
 using System;
+using System.IO;
+using System.Text;
 
 using Build.Shared;
 
@@ -8,7 +10,7 @@ internal interface IAssetReference
 {
     bool Eligible(ProjectFile file);
 
-    string GenerateCode(AssetFile asset, string indentation);
+    string GenerateCode(AssetFile asset, string indent);
 }
 
 internal sealed class TextureReference : IAssetReference
@@ -19,9 +21,17 @@ internal sealed class TextureReference : IAssetReference
                file.RelativePath.EndsWith(".rawimg");
     }
 
-    public string GenerateCode(AssetFile asset, string indentation)
+    public string GenerateCode(AssetFile asset, string indent)
     {
-        return $"{indentation}// TODO: {asset.Name}";
+        var sb = new StringBuilder();
+
+        sb.AppendLine($"{indent}public const string KEY = \"{Path.ChangeExtension(asset.Path.Replace('\\', '/'), null)}\";");
+        sb.AppendLine();
+        sb.AppendLine($"{indent}public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;");
+        sb.AppendLine();
+        sb.AppendLine($"{indent}private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<global::Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));");
+
+        return sb.ToString();
     }
 }
 
@@ -34,9 +44,9 @@ internal sealed class SoundReference : IAssetReference
                file.RelativePath.EndsWith(".mp3");
     }
 
-    public string GenerateCode(AssetFile asset, string indentation)
+    public string GenerateCode(AssetFile asset, string indent)
     {
-        return $"{indentation}// TODO: {asset.Name}";
+        return $"{indent}// TODO: {asset.Name}";
     }
 }
 
@@ -48,11 +58,11 @@ internal sealed class EffectReference : IAssetReference
             || file.RelativePath.EndsWith(".xnb");
     }
 
-    public string GenerateCode(AssetFile asset, string indentation)
+    public string GenerateCode(AssetFile asset, string indent)
     {
-        return $"{indentation}// TODO: {asset.Name}";
+        return $"{indent}// TODO: {asset.Name}";
     }
-    
+
     private static string GetUniformType(string uniformType)
     {
         return uniformType switch

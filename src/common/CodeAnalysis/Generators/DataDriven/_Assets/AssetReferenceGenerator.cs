@@ -1,12 +1,4 @@
 /*
-            if (file.Reference is not EffectAssetReference)
-            {
-                sb.AppendLine($"{indent}        public const string KEY = \"{Path.ChangeExtension(file.Path.Replace('\\', '/'), null)}\";");
-                sb.AppendLine($"{indent}        private static readonly Lazy<Asset<{file.Reference.QualifiedType}>> lazy = new(() => ModContent.Request<{file.Reference.QualifiedType}>(KEY));");
-                sb.AppendLine($"{indent}        public static Asset<{file.Reference.QualifiedType}> Asset => lazy.Value;");
-            }
-            else
-            {
                 var actualName = Path.ChangeExtension(file.Path.Replace('\\', '/'), null);
                 if (actualName.EndsWith(".effect"))
                 {
@@ -76,6 +68,5 @@
                         }
                     }
                 }
-            }
-            */
+*/
 
