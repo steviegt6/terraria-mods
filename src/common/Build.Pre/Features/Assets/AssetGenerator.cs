@@ -137,8 +137,14 @@ internal sealed partial class AssetGenerator : BuildTask
                 sb.AppendLine();
             }
 
+            var j = 0;
             foreach (var node in root.Nodes.Values)
             {
+                if (j++ != 0)
+                {
+                    sb.AppendLine();
+                }
+
                 sb.AppendLine(GenerateTextFromPathNode(node, depth + 1));
             }
 

@@ -74,6 +74,7 @@ internal static class AssetReferences
                     private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
                 }
             }
+
             public static class NPCs
             {
                 public static class RainbowSlime
@@ -85,6 +86,7 @@ internal static class AssetReferences
                     private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
                 }
             }
+
             public static class Particles
             {
                 public static class LiquidSplashParticle
@@ -105,6 +107,7 @@ internal static class AssetReferences
                     private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
                 }
             }
+
             public static class Projectiles
             {
                 public static class PreDigesterHeldProjSheet
@@ -125,6 +128,7 @@ internal static class AssetReferences
                     private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
                 }
             }
+
             public static class QueenSlimePalettes
             {
                 public static class RainbowSlime
@@ -136,6 +140,7 @@ internal static class AssetReferences
                     private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
                 }
             }
+
             public static class Gores
             {
                 public static class Misc
@@ -159,6 +164,7 @@ internal static class AssetReferences
                     }
                 }
             }
+
             public static class Items
             {
                 public static class Accessories
@@ -253,6 +259,7 @@ internal static class AssetReferences
                         private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
                     }
                 }
+
                 public static class Ammo
                 {
                     public static class ImpactBullet
@@ -291,6 +298,7 @@ internal static class AssetReferences
                         private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
                     }
                 }
+
                 public static class Furniture
                 {
                     public static class CoconutChest
@@ -302,6 +310,7 @@ internal static class AssetReferences
                         private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
                     }
                 }
+
                 public static class Misc
                 {
                     public static class CactusSplashJug
@@ -487,6 +496,7 @@ internal static class AssetReferences
                         }
                     }
                 }
+
                 public static class Variants
                 {
                     public static class AntlionMandible_1
@@ -1192,6 +1202,7 @@ internal static class AssetReferences
                     }
                 }
             }
+
             public static class Tiles
             {
                 public static class Furniture
@@ -1214,6 +1225,7 @@ internal static class AssetReferences
                         private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
                     }
                 }
+
                 public static class Misc
                 {
                     public static class CactusWood
@@ -1283,6 +1295,7 @@ internal static class AssetReferences
                     }
                 }
             }
+
             public static class UI
             {
                 public static class ModIcon
@@ -1404,6 +1417,7 @@ internal static class AssetReferences
                         private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
                     }
                 }
+
                 public static class ModLoader
                 {
                     public static class ButtonDeps
@@ -1452,6 +1466,7 @@ internal static class AssetReferences
                     }
                 }
             }
+
             public static class Walls
             {
                 public static class Misc
@@ -1467,6 +1482,7 @@ internal static class AssetReferences
                 }
             }
         }
+
         public static class Music
         {
             public static class JUNO_6
@@ -1479,6 +1495,7 @@ internal static class AssetReferences
                 // TODO: NIGHTSHADE - track 0
             }
         }
+
         public static class Shaders
         {
             public static class Misc
@@ -1516,6 +1533,7 @@ internal static class AssetReferences
                     }
                 }
             }
+
             public static class UI
             {
                 public static class CoolFlowerShader
@@ -1601,6 +1619,7 @@ internal static class AssetReferences
             }
         }
     }
+
     public static class Content
     {
         public static class Dusts
