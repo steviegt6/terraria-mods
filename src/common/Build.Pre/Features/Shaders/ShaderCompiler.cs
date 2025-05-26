@@ -78,8 +78,6 @@ internal sealed class ShaderCompiler : BuildTask
             UseShellExecute = false,
             CreateNoWindow = true,
         };
-        Console.WriteLine(fxcExe);
-        Console.WriteLine(pInfo.Arguments);
 
         using var process = new Process();
         process.StartInfo = pInfo;
@@ -114,6 +112,30 @@ internal sealed class ShaderCompiler : BuildTask
     {
         if (string.IsNullOrEmpty(message))
         {
+            return;
+        }
+
+        if (message.StartsWith("warning "))
+        {
+            Console.WriteLine($"{filePath}: {message}");
+            return;
+        }
+
+        if (message.Contains(": warning "))
+        {
+            Console.WriteLine(message);
+            return;
+        }
+
+        if (message.StartsWith("error "))
+        {
+            Console.Error.WriteLine($"{filePath}: {message}");
+            return;
+        }
+
+        if (message.Contains(": error "))
+        {
+            Console.Error.WriteLine(message);
             return;
         }
 
