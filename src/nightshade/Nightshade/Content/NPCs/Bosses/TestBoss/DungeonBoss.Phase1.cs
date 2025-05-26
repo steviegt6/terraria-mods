@@ -115,8 +115,10 @@ internal class Consumer_PhaseOneBasicTransitionState : BossState
 // The Consumer propels herself forward toward a target using a water attack
 internal class Consumer_PhaseOnePropelAttackState : BossState
 {
+    private const int minTime = 60;
     public override bool Enter(params ConsumerData[] parameters)
     {
+        maxTime = minTime + (Main.rand.Next() % 15);
         return true;
     }
 
@@ -134,6 +136,29 @@ internal class Consumer_PhaseOnePropelAttackState : BossState
 
     }
 
+    Vector2 Jump(NPC npc, Vector2 targetPosition, float speed, float acceleration, float time, float gravity)
+    {
+        // ugh, something is wrong here
+
+        Vector2 direction = targetPosition - npc.Center;
+        float distance = direction.Length();
+        direction.Normalize();
+
+        float angleRadians = MathHelper.ToRadians(45); // Example angle of 45 degrees
+        float gravityEffect = gravity;
+        float dragCoefficient = 0.001f; // Example drag coefficient
+
+        float initialVelocityMagnitude = (float)Math.Sqrt((distance * gravityEffect) / Math.Sin(2 * angleRadians));
+        Vector2 initialVelocity = direction * initialVelocityMagnitude;
+
+        float timeToTarget = distance / initialVelocityMagnitude;
+        initialVelocity.Y -= gravityEffect * timeToTarget / 2;
+
+        float dragFactor = (float)Math.Exp(-dragCoefficient * timeToTarget);
+        initialVelocity *= dragFactor;
+
+        return initialVelocity;
+    }
 
     public override bool Update(params ConsumerData[] parameters)
     {
@@ -141,10 +166,21 @@ internal class Consumer_PhaseOnePropelAttackState : BossState
         {
             activated = true;
             Main.NewText("Water rocket!");
+            stateData.ThisNPC.velocity += Jump(stateData.ThisNPC, Main.player[stateData.ThisNPC.target].Center, 1f, 1f, 0.5f, 0.1f);
+            stateData.ThisNPC.noGravity = true;
         }
 
-        stateData.ModNPC.SyncState();
-        PopSelf();
+        if (timer++ < maxTime)
+        {
+            // do nothing
+
+        }
+        else
+        {
+            Main.NewText("Water rocket finished", Color.Red);
+            stateData.ModNPC.SyncState();
+            PopSelf();
+        }
 
         return true;
     }

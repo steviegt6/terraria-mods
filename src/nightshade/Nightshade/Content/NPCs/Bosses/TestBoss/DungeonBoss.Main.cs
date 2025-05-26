@@ -59,11 +59,11 @@ public class ConsumerOfSouls : ModNPC
         NPC.damage = 50;
         NPC.defense = 10;
         NPC.lifeMax = 5000;
-        NPC.aiStyle = 0;
+        NPC.aiStyle = -1;
         NPC.value = Item.buyPrice(0, 10, 0, 0);
         NPC.knockBackResist = 0.5f;
         NPC.boss = true;
-        NPC.noGravity = false;
+        NPC.noGravity = true;
         NPC.npcSlots = 10f;
         NPC.lavaImmune = true;
 
@@ -77,6 +77,7 @@ public class ConsumerOfSouls : ModNPC
     public override void AI()
     {
         base.AI();
+        NPC.velocity += new Vector2(0, 0.1f); // fall down
 
         if (_data.bossTimer++ == 0)
         {
