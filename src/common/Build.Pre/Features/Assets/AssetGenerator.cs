@@ -95,8 +95,7 @@ internal sealed partial class AssetGenerator : BuildTask
               namespace {{ctx.ProjectNamespace}}.Core;
 
               // ReSharper disable InconsistentNaming
-
-              internal static partial class AssetReferences
+              internal static class AssetReferences
               {
               {{GenerateTextFromPathNode(root)}}
               }
@@ -113,7 +112,7 @@ internal sealed partial class AssetGenerator : BuildTask
 
             if (depth != 0)
             {
-                sb.AppendLine($"{indent}public static partial class {root.Name}");
+                sb.AppendLine($"{indent}public static class {root.Name}");
                 sb.AppendLine($"{indent}{{");
             }
 
@@ -121,7 +120,7 @@ internal sealed partial class AssetGenerator : BuildTask
             {
                 var file = root.Files[i];
 
-                sb.AppendLine($"{indent}    public static partial class {file.Name}");
+                sb.AppendLine($"{indent}    public static class {file.Name}");
                 sb.AppendLine($"{indent}    {{");
 
                 sb.AppendLine(file.Reference.GenerateCode(file, $"{indent}        "));
@@ -133,7 +132,7 @@ internal sealed partial class AssetGenerator : BuildTask
                     sb.AppendLine();
                 }
             }
-            
+
             if (root.Files.Count > 0 && root.Nodes.Count > 0)
             {
                 sb.AppendLine();

@@ -3,10 +3,9 @@
 namespace Daybreak.Core;
 
 // ReSharper disable InconsistentNaming
-
-internal static partial class AssetReferences
+internal static class AssetReferences
 {
-    public static partial class icon
+    public static class icon
     {
         public const string KEY = "icon";
 
@@ -15,13 +14,13 @@ internal static partial class AssetReferences
         private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<global::Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
     }
 
-    public static partial class Assets
+    public static class Assets
     {
-        public static partial class Shaders
+        public static class Shaders
         {
-            public static partial class UI
+            public static class UI
             {
-                public static partial class ModPanelShader
+                public static class ModPanelShader
                 {
                     public sealed class Parameters : IShaderParameters
                     {
@@ -69,7 +68,7 @@ internal static partial class AssetReferences
                     }
                 }
 
-                public static partial class ModPanelShaderSampler
+                public static class ModPanelShaderSampler
                 {
                     public sealed class Parameters : IShaderParameters
                     {
@@ -102,7 +101,7 @@ internal static partial class AssetReferences
                     }
                 }
 
-                public static partial class PowerfulSunIcon
+                public static class PowerfulSunIcon
                 {
                     public sealed class Parameters : IShaderParameters
                     {
