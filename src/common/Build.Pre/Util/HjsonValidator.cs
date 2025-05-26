@@ -5,35 +5,24 @@ using Build.Shared;
 
 using Hjson;
 
-namespace Build.Pre.Features.Hjson;
+namespace Build.Pre.Util;
 
-internal sealed partial class HjsonValidator : BuildTask
+internal static partial class HjsonValidator
 {
     private static readonly Regex error_regex = LineColumnErrorMessageRegex();
 
-    public override void Run(ProjectContext ctx)
-    {
-        foreach (var (_, fullPath) in ctx.EnumerateGroup("localization"))
-        {
-            /*if (!relativePath.StartsWith("Localization/") || !relativePath.EndsWith(".hjson"))
-            {
-                continue;
-            }*/
-
-            ValidateHjsonFile(fullPath);
-        }
-    }
-
-    private static void ValidateHjsonFile(string filePath)
+    public static bool ValidateHjsonFile(string filePath)
     {
         try
         {
             HjsonValue.Load(filePath);
+            return true;
         }
         catch (Exception e)
         {
             Console.Error.WriteLine(GetRichErrorMessage(filePath, e.Message));
             Environment.ExitCode = 1;
+            return false;
         }
     }
 
