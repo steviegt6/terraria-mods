@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -112,7 +111,7 @@ internal sealed partial class AssetGenerator : BuildTask
 
             if (depth != 0)
             {
-                sb.AppendLine($"{indent}public static class {root.Name}");
+                sb.AppendLine($"{indent}public static class {NormalizeName(root.Name)}");
                 sb.AppendLine($"{indent}{{");
             }
 
@@ -120,7 +119,7 @@ internal sealed partial class AssetGenerator : BuildTask
             {
                 var file = root.Files[i];
 
-                sb.AppendLine($"{indent}    public static class {file.Name}");
+                sb.AppendLine($"{indent}    public static class {NormalizeName(file.Name)}");
                 sb.AppendLine($"{indent}    {{");
 
                 sb.AppendLine(file.Reference.GenerateCode(file, $"{indent}        "));
@@ -149,6 +148,12 @@ internal sealed partial class AssetGenerator : BuildTask
             }
 
             return sb.ToString().TrimEnd();
+        }
+
+        static string NormalizeName(string name)
+        {
+            // Replace any non-alphanumeric characters with underscores
+            return NonAlphanumeric().Replace(name, "_");
         }
     }
 
@@ -197,4 +202,7 @@ internal sealed partial class AssetGenerator : BuildTask
 
     [GeneratedRegex(@"([A-Za-z]+)([\d-]+)$")]
     private static partial Regex EndNumberFinder();
+
+    [GeneratedRegex(@"[^\w]")]
+    private static partial Regex NonAlphanumeric();
 }

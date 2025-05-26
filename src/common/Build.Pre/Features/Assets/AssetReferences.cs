@@ -6,7 +6,6 @@ using System.Text;
 using Build.Shared;
 
 using ShaderDecompiler;
-using ShaderDecompiler.Structures;
 
 namespace Build.Pre.Features.Assets;
 
