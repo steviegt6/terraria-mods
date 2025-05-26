@@ -2,9 +2,6 @@
 
     <Import Project="..\..\..\tModLoader.targets"/>
 
-    <Import Project="LocalizationChecker.targets"/>
-    <Import Project="ShaderCompiler.targets"/>
-
     <PropertyGroup>
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
@@ -64,13 +61,12 @@
         <ProjectReference Include="$(MSBuildThisFileDirectory)CodeAnalysis\CodeAnalysis.csproj" OutputItemType="Analyzer"/>
     </ItemGroup>
 
-    <!-- Run PreCompiler and PostCompiler projects. -->
     <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-        <Exec Command="dotnet run --project &quot;$(MSBuildThisFileDirectory)PreBuild\PreBuild.csproj&quot;"/>
+        <Exec Command="dotnet run --project &quot;$(MSBuildThisFileDirectory)Build.Pre\Build.Pre.csproj&quot; -- &quot;$(MSBuildProjectFile)&quot;"/>
     </Target>
 
     <Target Name="PostBuild" BeforeTargets="BuildMod">
-        <Exec Command="dotnet run --project &quot;$(MSBuildThisFileDirectory)PostBuild\PostBuild.csproj&quot;"/>
+        <Exec Command="dotnet run --project &quot;$(MSBuildThisFileDirectory)Build.Post\Build.Post.csproj&quot; -- &quot;$(MSBuildProjectFile)&quot;"/>
     </Target>
 
 </Project>

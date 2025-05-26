@@ -8,7 +8,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Features\Shaders\" />
+        <Folder Include="Features\Shaders\"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Hjson" Version="3.0.0"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Build.Shared\Build.Shared.csproj"/>
     </ItemGroup>
 
 </Project>

@@ -2,11 +2,11 @@
   "solution": {
     "path": "Tomat.TML.sln",
     "projects": [
+      "common\\Build.Post\\Build.Post.csproj",
+      "common\\Build.Pre\\Build.Pre.csproj",
+      "common\\Build.Shared\\Build.Shared.csproj",
       "common\\CodeAnalysis\\CodeAnalysis.csproj",
       "common\\DaybreakHookGenerator\\DaybreakHookGenerator.csproj",
-      "common\\LocalizationChecker\\LocalizationChecker.csproj",
-      "common\\PostBuild\\PostBuild.csproj",
-      "common\\PreBuild\\PreBuild.csproj",
       "common\\ShaderCompiler\\ShaderCompiler.csproj",
       "common\\SourceGenerator\\SourceGenerator.csproj",
       "libs\\Daybreak\\Daybreak.csproj",

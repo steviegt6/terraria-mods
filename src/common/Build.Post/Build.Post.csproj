@@ -8,7 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Hjson" Version="3.0.0"/>
+        <ProjectReference Include="..\Build.Shared\Build.Shared.csproj"/>
     </ItemGroup>
 
 </Project>
