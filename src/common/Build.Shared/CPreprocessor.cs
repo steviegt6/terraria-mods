@@ -7,7 +7,7 @@ namespace Build.Shared;
 
 public static partial class CPreprocessor
 {
-    private static readonly Regex include_regex = MyRegex();
+    private static readonly Regex include_regex = IncludeRegex();
 
     public static bool IsOutOfDate(string compilationUnitPath, string binaryPath)
     {
@@ -71,5 +71,5 @@ public static partial class CPreprocessor
         ^\s*#\s*include\s*"([^"]+)"
         """
     )]
-    private static partial Regex MyRegex();
+    private static partial Regex IncludeRegex();
 }

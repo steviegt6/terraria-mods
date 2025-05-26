@@ -69,11 +69,11 @@
     </ItemGroup>
 
     <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-        <Exec Command="dotnet run --project &quot;$(MSBuildThisFileDirectory)Build.Pre\Build.Pre.csproj&quot; -- &quot;$(MSBuildProjectFile)&quot; &quot;localization=@(LocalizationCompile, ';')&quot; &quot;shaders=@(ShaderCompile, ';')&quot;"/>
+        <Exec Command="dotnet run --project &quot;$(MSBuildThisFileDirectory)Build.Pre\Build.Pre.csproj&quot; -- &quot;$(RootNamespace)&quot; &quot;$(AssemblyName)&quot; &quot;localization=@(LocalizationCompile, ';')&quot; &quot;shaders=@(ShaderCompile, ';')&quot;"/>
     </Target>
 
     <Target Name="PostBuild" BeforeTargets="BuildMod">
-        <Exec Command="dotnet run --project &quot;$(MSBuildThisFileDirectory)Build.Post\Build.Post.csproj&quot; -- &quot;$(MSBuildProjectFile)&quot;"/>
+        <Exec Command="dotnet run --project &quot;$(MSBuildThisFileDirectory)Build.Post\Build.Post.csproj&quot; -- &quot;$(RootNamespace)&quot; &quot;$(AssemblyName)&quot;"/>
     </Target>
 
 </Project>
