@@ -13,12 +13,12 @@ internal sealed partial class HjsonValidator : BuildTask
 
     public override void Run(ProjectContext ctx)
     {
-        foreach (var (relativePath, fullPath) in ctx.EnumerateProjectFiles())
+        foreach (var (_, fullPath) in ctx.EnumerateGroup("localization"))
         {
-            if (!relativePath.StartsWith("Localization/") || !relativePath.EndsWith(".hjson"))
+            /*if (!relativePath.StartsWith("Localization/") || !relativePath.EndsWith(".hjson"))
             {
                 continue;
-            }
+            }*/
 
             ValidateHjsonFile(fullPath);
         }

@@ -61,8 +61,15 @@
         <ProjectReference Include="$(MSBuildThisFileDirectory)CodeAnalysis\CodeAnalysis.csproj" OutputItemType="Analyzer"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <LocalizationCompile Include="**/*.hjson"/>
+
+        <ShaderCompile Include="**/*.hlsl"/>
+        <ShaderCompile Include="**/*.fx"/>
+    </ItemGroup>
+
     <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-        <Exec Command="dotnet run --project &quot;$(MSBuildThisFileDirectory)Build.Pre\Build.Pre.csproj&quot; -- &quot;$(MSBuildProjectFile)&quot;"/>
+        <Exec Command="dotnet run --project &quot;$(MSBuildThisFileDirectory)Build.Pre\Build.Pre.csproj&quot; -- &quot;$(MSBuildProjectFile)&quot; &quot;localization=@(LocalizationCompile, ';')&quot; &quot;shaders=@(ShaderCompile, ';')&quot;"/>
     </Target>
 
     <Target Name="PostBuild" BeforeTargets="BuildMod">

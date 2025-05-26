@@ -7,7 +7,6 @@
       "common\\Build.Shared\\Build.Shared.csproj",
       "common\\CodeAnalysis\\CodeAnalysis.csproj",
       "common\\DaybreakHookGenerator\\DaybreakHookGenerator.csproj",
-      "common\\ShaderCompiler\\ShaderCompiler.csproj",
       "common\\SourceGenerator\\SourceGenerator.csproj",
       "libs\\Daybreak\\Daybreak.csproj",
       "nightshade\\Nightshade\\Nightshade.csproj",

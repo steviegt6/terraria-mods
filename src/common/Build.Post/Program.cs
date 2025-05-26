@@ -8,7 +8,7 @@ internal static class Program
 {
     public static void Main(string[] args)
     {
-        var projectCtx = new ProjectContext(Directory.GetCurrentDirectory(), args[0]);
+        var projectCtx = ProjectContext.Create(Directory.GetCurrentDirectory(), args);
         TaskManager.RunTasks(TaskManager.InitializeTasks(typeof(Program).Assembly), projectCtx);
     }
 }
