@@ -1,4 +1,4 @@
-#include "../pixelation.hlsl"
+#include "../pixelation.h"
 
 sampler uImage0 : register(s0);
 sampler uImage1 : register(s1);
