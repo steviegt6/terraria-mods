@@ -1,7 +1,8 @@
-#undef TECHNIQUES
-#include "VanillaVertexStripShader.effect.uniforms.hlsl"
+#include "../pixelation.h"
 
-#include "../pixelation.hlsl"
+float uPixel;
+float uColorResolution;
+float2 uSize;
 
 sampler uImage0 : register(s0);
 
@@ -13,5 +14,12 @@ float4 main(float4 sampleColor : COLOR0, float2 coords : TEXCOORD0) : COLOR0
     return quantize_color_with_alpha(color, uColorResolution);
 }
 
-#define TECHNIQUES
-#include "VanillaVertexStripShader.effect.uniforms.hlsl"
+#ifdef FX
+technique Technique1
+{
+    pass StripShader
+    {
+        PixelShader = compile ps_3_0 main();
+    }
+}
+#endif // FX

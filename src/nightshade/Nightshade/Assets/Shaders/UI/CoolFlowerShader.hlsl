@@ -8,12 +8,15 @@
 // carefully.
 // You can find the original author here: <paperu.net>.
 
-#undef TECHNIQUES
-#include "CoolFlowerShader.effect.uniforms.hlsl"
+#include "../common.h"
+#include "../raymarching.h"
+#include "../glsl.h"
 
-#include "../common.hlsl"
-#include "../raymarching.hlsl"
-#include "../glsl.hlsl"
+sampler uImage0 : register(s0);
+
+float4 uSource;
+float uTime;
+float uPixel;
 
 struct rmRes
 {
@@ -259,5 +262,12 @@ float4 main(float2 coords : SV_POSITION, float2 tex_coords : TEXCOORD0) : COLOR0
     return float4(color, 0.0f);
 }
 
-#define TECHNIQUES
-#include "CoolFlowerShader.effect.uniforms.hlsl"
+#ifdef FX
+technique Technique1
+{
+    pass FlowerShader
+    {
+        PixelShader = compile ps_3_0 main();
+    }
+}
+#endif // FX
