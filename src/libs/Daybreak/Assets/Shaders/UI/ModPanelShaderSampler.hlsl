@@ -1,6 +1,10 @@
-#undef TECHNIQUES
-#include "ModPanelShaderSampler.effect.uniforms.hlsl"
-#include "../pixelation.hlsl"
+#include "../pixelation.h"
+
+sampler uImage0 : register(s0);
+sampler uImage1 : register(s1);
+
+float uTime;
+float4 uSource;
 
 float4 main(float2 coords : SV_POSITION, float2 tex_coords : TEXCOORD0) : COLOR0
 {
@@ -24,5 +28,12 @@ float4 main(float2 coords : SV_POSITION, float2 tex_coords : TEXCOORD0) : COLOR0
     return float4(finalCol, alpha);
 }
 
-#define TECHNIQUES
-#include "ModPanelShader.effect.uniforms.hlsl"
+#ifdef FX
+technique Technique1
+{
+    pass PanelShader
+    {
+        PixelShader = compile ps_3_0 main();
+    }
+}
+#endif // FX

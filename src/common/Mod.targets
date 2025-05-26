@@ -2,13 +2,10 @@
 
     <Import Project="..\..\..\tModLoader.targets"/>
 
-    <Import Project="LocalizationChecker.targets"/>
-    <Import Project="ShaderCompiler.targets"/>
-
     <PropertyGroup>
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
-        
+
         <DefineConstants>$(DefineConstants);INCLUDE_ANNOTATIONS;INCLUDE_METADATA</DefineConstants>
     </PropertyGroup>
 
@@ -63,5 +60,20 @@
              Takes care of some common tasks. -->
         <ProjectReference Include="$(MSBuildThisFileDirectory)CodeAnalysis\CodeAnalysis.csproj" OutputItemType="Analyzer"/>
     </ItemGroup>
+
+    <ItemGroup>
+        <LocalizationCompile Include="**/*.hjson"/>
+
+        <ShaderCompile Include="**/*.hlsl"/>
+        <ShaderCompile Include="**/*.fx"/>
+    </ItemGroup>
+
+    <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+        <Exec Command="dotnet run --project &quot;$(MSBuildThisFileDirectory)Build.Pre\Build.Pre.csproj&quot; -- &quot;$(RootNamespace)&quot; &quot;$(AssemblyName)&quot; &quot;localization=@(LocalizationCompile, ';')&quot; &quot;shaders=@(ShaderCompile, ';')&quot;"/>
+    </Target>
+
+    <Target Name="PostBuild" BeforeTargets="BuildMod">
+        <Exec Command="dotnet run --project &quot;$(MSBuildThisFileDirectory)Build.Post\Build.Post.csproj&quot; -- &quot;$(RootNamespace)&quot; &quot;$(AssemblyName)&quot;"/>
+    </Target>
 
 </Project>
