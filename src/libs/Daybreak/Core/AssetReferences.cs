@@ -7,11 +7,11 @@ internal static class AssetReferences
 {
     public static class icon
     {
-        public const string KEY = "icon";
+        public const string KEY = "Daybreak/icon";
 
         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
-        private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<global::Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
+        private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
     }
 
     public static class Assets
@@ -56,7 +56,7 @@ internal static class AssetReferences
                         }
                     }
 
-                    public const string KEY = "Assets/Shaders/UI/ModPanelShader";
+                    public const string KEY = "Daybreak/Assets/Shaders/UI/ModPanelShader";
 
                     public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Effect> Asset => lazy.Value;
 
@@ -89,7 +89,7 @@ internal static class AssetReferences
                         }
                     }
 
-                    public const string KEY = "Assets/Shaders/UI/ModPanelShaderSampler";
+                    public const string KEY = "Daybreak/Assets/Shaders/UI/ModPanelShaderSampler";
 
                     public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Effect> Asset => lazy.Value;
 
@@ -137,7 +137,7 @@ internal static class AssetReferences
                         }
                     }
 
-                    public const string KEY = "Assets/Shaders/UI/PowerfulSunIcon";
+                    public const string KEY = "Daybreak/Assets/Shaders/UI/PowerfulSunIcon";
 
                     public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Effect> Asset => lazy.Value;
 

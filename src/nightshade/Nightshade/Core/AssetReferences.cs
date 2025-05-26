@@ -7,7 +7,7 @@ internal static class AssetReferences
 {
     public static class icon
     {
-        public const string KEY = "icon";
+        public const string KEY = "Nightshade/icon";
 
         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -16,7 +16,7 @@ internal static class AssetReferences
 
     public static class icon_small
     {
-        public const string KEY = "icon_small";
+        public const string KEY = "Nightshade/icon_small";
 
         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -29,7 +29,7 @@ internal static class AssetReferences
         {
             public static class Achievement1
             {
-                public const string KEY = "Assets/Images/Achievement1";
+                public const string KEY = "Nightshade/Assets/Images/Achievement1";
 
                 public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -38,7 +38,7 @@ internal static class AssetReferences
 
             public static class Achievement2
             {
-                public const string KEY = "Assets/Images/Achievement2";
+                public const string KEY = "Nightshade/Assets/Images/Achievement2";
 
                 public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -47,7 +47,7 @@ internal static class AssetReferences
 
             public static class Achievement3
             {
-                public const string KEY = "Assets/Images/Achievement3";
+                public const string KEY = "Nightshade/Assets/Images/Achievement3";
 
                 public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -56,7 +56,7 @@ internal static class AssetReferences
 
             public static class Categories
             {
-                public const string KEY = "Assets/Images/Categories";
+                public const string KEY = "Nightshade/Assets/Images/Categories";
 
                 public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -67,7 +67,7 @@ internal static class AssetReferences
             {
                 public static class DotDropletDust
                 {
-                    public const string KEY = "Assets/Images/Dusts/DotDropletDust";
+                    public const string KEY = "Nightshade/Assets/Images/Dusts/DotDropletDust";
 
                     public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -79,7 +79,7 @@ internal static class AssetReferences
             {
                 public static class RainbowSlime
                 {
-                    public const string KEY = "Assets/Images/NPCs/RainbowSlime";
+                    public const string KEY = "Nightshade/Assets/Images/NPCs/RainbowSlime";
 
                     public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -91,7 +91,7 @@ internal static class AssetReferences
             {
                 public static class LiquidSplashParticle
                 {
-                    public const string KEY = "Assets/Images/Particles/LiquidSplashParticle";
+                    public const string KEY = "Nightshade/Assets/Images/Particles/LiquidSplashParticle";
 
                     public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -100,7 +100,7 @@ internal static class AssetReferences
 
                 public static class RingGlow
                 {
-                    public const string KEY = "Assets/Images/Particles/RingGlow";
+                    public const string KEY = "Nightshade/Assets/Images/Particles/RingGlow";
 
                     public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -112,7 +112,7 @@ internal static class AssetReferences
             {
                 public static class PreDigesterHeldProjSheet
                 {
-                    public const string KEY = "Assets/Images/Projectiles/PreDigesterHeldProjSheet";
+                    public const string KEY = "Nightshade/Assets/Images/Projectiles/PreDigesterHeldProjSheet";
 
                     public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -121,7 +121,7 @@ internal static class AssetReferences
 
                 public static class StarFragmentSpawner
                 {
-                    public const string KEY = "Assets/Images/Projectiles/StarFragmentSpawner";
+                    public const string KEY = "Nightshade/Assets/Images/Projectiles/StarFragmentSpawner";
 
                     public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -133,7 +133,7 @@ internal static class AssetReferences
             {
                 public static class RainbowSlime
                 {
-                    public const string KEY = "Assets/Images/QueenSlimePalettes/RainbowSlime";
+                    public const string KEY = "Nightshade/Assets/Images/QueenSlimePalettes/RainbowSlime";
 
                     public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -147,7 +147,7 @@ internal static class AssetReferences
                 {
                     public static class CactusPotGore1
                     {
-                        public const string KEY = "Assets/Images/Gores/Misc/CactusPotGore1";
+                        public const string KEY = "Nightshade/Assets/Images/Gores/Misc/CactusPotGore1";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -156,7 +156,7 @@ internal static class AssetReferences
 
                     public static class CactusPotGore2
                     {
-                        public const string KEY = "Assets/Images/Gores/Misc/CactusPotGore2";
+                        public const string KEY = "Nightshade/Assets/Images/Gores/Misc/CactusPotGore2";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -171,7 +171,7 @@ internal static class AssetReferences
                 {
                     public static class BarbaricCuffs
                     {
-                        public const string KEY = "Assets/Images/Items/Accessories/BarbaricCuffs";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Accessories/BarbaricCuffs";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -180,7 +180,7 @@ internal static class AssetReferences
 
                     public static class BarbaricCuffs_HandsOn
                     {
-                        public const string KEY = "Assets/Images/Items/Accessories/BarbaricCuffs_HandsOn";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Accessories/BarbaricCuffs_HandsOn";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -189,7 +189,7 @@ internal static class AssetReferences
 
                     public static class HandOfCreationStool
                     {
-                        public const string KEY = "Assets/Images/Items/Accessories/HandOfCreationStool";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Accessories/HandOfCreationStool";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -198,7 +198,7 @@ internal static class AssetReferences
 
                     public static class MechanicalBeetle
                     {
-                        public const string KEY = "Assets/Images/Items/Accessories/MechanicalBeetle";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Accessories/MechanicalBeetle";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -207,7 +207,7 @@ internal static class AssetReferences
 
                     public static class RejuvenationAmulet
                     {
-                        public const string KEY = "Assets/Images/Items/Accessories/RejuvenationAmulet";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Accessories/RejuvenationAmulet";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -216,7 +216,7 @@ internal static class AssetReferences
 
                     public static class RejuvenationAmulet_Neck
                     {
-                        public const string KEY = "Assets/Images/Items/Accessories/RejuvenationAmulet_Neck";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Accessories/RejuvenationAmulet_Neck";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -225,7 +225,7 @@ internal static class AssetReferences
 
                     public static class SpikedCuffs
                     {
-                        public const string KEY = "Assets/Images/Items/Accessories/SpikedCuffs";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Accessories/SpikedCuffs";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -234,7 +234,7 @@ internal static class AssetReferences
 
                     public static class SpikedCuffs_HandsOn
                     {
-                        public const string KEY = "Assets/Images/Items/Accessories/SpikedCuffs_HandsOn";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Accessories/SpikedCuffs_HandsOn";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -243,7 +243,7 @@ internal static class AssetReferences
 
                     public static class StarTalisman
                     {
-                        public const string KEY = "Assets/Images/Items/Accessories/StarTalisman";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Accessories/StarTalisman";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -252,7 +252,7 @@ internal static class AssetReferences
 
                     public static class StarTalisman_Neck
                     {
-                        public const string KEY = "Assets/Images/Items/Accessories/StarTalisman_Neck";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Accessories/StarTalisman_Neck";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -264,7 +264,7 @@ internal static class AssetReferences
                 {
                     public static class ImpactBullet
                     {
-                        public const string KEY = "Assets/Images/Items/Ammo/ImpactBullet";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Ammo/ImpactBullet";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -273,7 +273,7 @@ internal static class AssetReferences
 
                     public static class ImpactBulletProjectile
                     {
-                        public const string KEY = "Assets/Images/Items/Ammo/ImpactBulletProjectile";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Ammo/ImpactBulletProjectile";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -282,7 +282,7 @@ internal static class AssetReferences
 
                     public static class RiptideArrow
                     {
-                        public const string KEY = "Assets/Images/Items/Ammo/RiptideArrow";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Ammo/RiptideArrow";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -291,7 +291,7 @@ internal static class AssetReferences
 
                     public static class RiptideArrowProjectile
                     {
-                        public const string KEY = "Assets/Images/Items/Ammo/RiptideArrowProjectile";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Ammo/RiptideArrowProjectile";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -303,7 +303,7 @@ internal static class AssetReferences
                 {
                     public static class CoconutChest
                     {
-                        public const string KEY = "Assets/Images/Items/Furniture/CoconutChest";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Furniture/CoconutChest";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -315,7 +315,7 @@ internal static class AssetReferences
                 {
                     public static class CactusSplashJug
                     {
-                        public const string KEY = "Assets/Images/Items/Misc/CactusSplashJug";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Misc/CactusSplashJug";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -324,7 +324,7 @@ internal static class AssetReferences
 
                     public static class CactusWoodBlock
                     {
-                        public const string KEY = "Assets/Images/Items/Misc/CactusWoodBlock";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Misc/CactusWoodBlock";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -333,7 +333,7 @@ internal static class AssetReferences
 
                     public static class LivingBorealLeafWand
                     {
-                        public const string KEY = "Assets/Images/Items/Misc/LivingBorealLeafWand";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Misc/LivingBorealLeafWand";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -342,7 +342,7 @@ internal static class AssetReferences
 
                     public static class LivingBorealWoodWand
                     {
-                        public const string KEY = "Assets/Images/Items/Misc/LivingBorealWoodWand";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Misc/LivingBorealWoodWand";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -351,7 +351,7 @@ internal static class AssetReferences
 
                     public static class LivingCactusBlock
                     {
-                        public const string KEY = "Assets/Images/Items/Misc/LivingCactusBlock";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Misc/LivingCactusBlock";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -360,7 +360,7 @@ internal static class AssetReferences
 
                     public static class LivingCactusWand
                     {
-                        public const string KEY = "Assets/Images/Items/Misc/LivingCactusWand";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Misc/LivingCactusWand";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -369,7 +369,7 @@ internal static class AssetReferences
 
                     public static class LivingCactusWoodWallBlock
                     {
-                        public const string KEY = "Assets/Images/Items/Misc/LivingCactusWoodWallBlock";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Misc/LivingCactusWoodWallBlock";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -378,7 +378,7 @@ internal static class AssetReferences
 
                     public static class LivingCactusWoodWand
                     {
-                        public const string KEY = "Assets/Images/Items/Misc/LivingCactusWoodWand";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Misc/LivingCactusWoodWand";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -387,7 +387,7 @@ internal static class AssetReferences
 
                     public static class LivingPalmLeafBlock
                     {
-                        public const string KEY = "Assets/Images/Items/Misc/LivingPalmLeafBlock";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Misc/LivingPalmLeafBlock";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -396,7 +396,7 @@ internal static class AssetReferences
 
                     public static class LivingPalmWoodBlock
                     {
-                        public const string KEY = "Assets/Images/Items/Misc/LivingPalmWoodBlock";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Misc/LivingPalmWoodBlock";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -405,7 +405,7 @@ internal static class AssetReferences
 
                     public static class LivingPalmWoodWand
                     {
-                        public const string KEY = "Assets/Images/Items/Misc/LivingPalmWoodWand";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Misc/LivingPalmWoodWand";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -414,7 +414,7 @@ internal static class AssetReferences
 
                     public static class PalmLeafWand
                     {
-                        public const string KEY = "Assets/Images/Items/Misc/PalmLeafWand";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Misc/PalmLeafWand";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -423,7 +423,7 @@ internal static class AssetReferences
 
                     public static class PreDigester
                     {
-                        public const string KEY = "Assets/Images/Items/Misc/PreDigester";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Misc/PreDigester";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -432,7 +432,7 @@ internal static class AssetReferences
 
                     public static class PreDigesterSheet
                     {
-                        public const string KEY = "Assets/Images/Items/Misc/PreDigesterSheet";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Misc/PreDigesterSheet";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -441,7 +441,7 @@ internal static class AssetReferences
 
                     public static class StarFragment_1
                     {
-                        public const string KEY = "Assets/Images/Items/Misc/StarFragment_1";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Misc/StarFragment_1";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -450,7 +450,7 @@ internal static class AssetReferences
 
                     public static class StarFragment_2
                     {
-                        public const string KEY = "Assets/Images/Items/Misc/StarFragment_2";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Misc/StarFragment_2";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -459,7 +459,7 @@ internal static class AssetReferences
 
                     public static class StarFragment_3
                     {
-                        public const string KEY = "Assets/Images/Items/Misc/StarFragment_3";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Misc/StarFragment_3";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -468,7 +468,7 @@ internal static class AssetReferences
 
                     public static class StarFragment_4
                     {
-                        public const string KEY = "Assets/Images/Items/Misc/StarFragment_4";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Misc/StarFragment_4";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -477,7 +477,7 @@ internal static class AssetReferences
 
                     public static class StarFragment_5
                     {
-                        public const string KEY = "Assets/Images/Items/Misc/StarFragment_5";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Misc/StarFragment_5";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -488,7 +488,7 @@ internal static class AssetReferences
                     {
                         public static class CactusWoodPlatformBlock
                         {
-                            public const string KEY = "Assets/Images/Items/Misc/CactusWoodFurniture/CactusWoodPlatformBlock";
+                            public const string KEY = "Nightshade/Assets/Images/Items/Misc/CactusWoodFurniture/CactusWoodPlatformBlock";
 
                             public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -501,7 +501,7 @@ internal static class AssetReferences
                 {
                     public static class AntlionMandible_1
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/AntlionMandible_1";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/AntlionMandible_1";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -510,7 +510,7 @@ internal static class AssetReferences
 
                     public static class AntlionMandible_2
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/AntlionMandible_2";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/AntlionMandible_2";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -519,7 +519,7 @@ internal static class AssetReferences
 
                     public static class AshGrassSeeds_1
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/AshGrassSeeds_1";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/AshGrassSeeds_1";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -528,7 +528,7 @@ internal static class AssetReferences
 
                     public static class AshGrassSeeds_2
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/AshGrassSeeds_2";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/AshGrassSeeds_2";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -537,7 +537,7 @@ internal static class AssetReferences
 
                     public static class BlinkrootSeeds_1
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/BlinkrootSeeds_1";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/BlinkrootSeeds_1";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -546,7 +546,7 @@ internal static class AssetReferences
 
                     public static class BlinkrootSeeds_2
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/BlinkrootSeeds_2";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/BlinkrootSeeds_2";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -555,7 +555,7 @@ internal static class AssetReferences
 
                     public static class Bone_1
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/Bone_1";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/Bone_1";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -564,7 +564,7 @@ internal static class AssetReferences
 
                     public static class Bone_2
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/Bone_2";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/Bone_2";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -573,7 +573,7 @@ internal static class AssetReferences
 
                     public static class Bone_3
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/Bone_3";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/Bone_3";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -582,7 +582,7 @@ internal static class AssetReferences
 
                     public static class CorruptSeeds_1
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/CorruptSeeds_1";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/CorruptSeeds_1";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -591,7 +591,7 @@ internal static class AssetReferences
 
                     public static class CorruptSeeds_2
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/CorruptSeeds_2";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/CorruptSeeds_2";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -600,7 +600,7 @@ internal static class AssetReferences
 
                     public static class CrimsonSeeds_1
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/CrimsonSeeds_1";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/CrimsonSeeds_1";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -609,7 +609,7 @@ internal static class AssetReferences
 
                     public static class CrimsonSeeds_2
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/CrimsonSeeds_2";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/CrimsonSeeds_2";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -618,7 +618,7 @@ internal static class AssetReferences
 
                     public static class CrystalShard_1
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/CrystalShard_1";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/CrystalShard_1";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -627,7 +627,7 @@ internal static class AssetReferences
 
                     public static class CrystalShard_2
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/CrystalShard_2";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/CrystalShard_2";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -636,7 +636,7 @@ internal static class AssetReferences
 
                     public static class CursedFlame_1
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/CursedFlame_1";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/CursedFlame_1";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -645,7 +645,7 @@ internal static class AssetReferences
 
                     public static class CursedFlame_2
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/CursedFlame_2";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/CursedFlame_2";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -654,7 +654,7 @@ internal static class AssetReferences
 
                     public static class DaybloomSeeds_1
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/DaybloomSeeds_1";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/DaybloomSeeds_1";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -663,7 +663,7 @@ internal static class AssetReferences
 
                     public static class DaybloomSeeds_2
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/DaybloomSeeds_2";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/DaybloomSeeds_2";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -672,7 +672,7 @@ internal static class AssetReferences
 
                     public static class DeathweedSeeds_1
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/DeathweedSeeds_1";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/DeathweedSeeds_1";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -681,7 +681,7 @@ internal static class AssetReferences
 
                     public static class DeathweedSeeds_2
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/DeathweedSeeds_2";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/DeathweedSeeds_2";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -690,7 +690,7 @@ internal static class AssetReferences
 
                     public static class Ectoplasm_1
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/Ectoplasm_1";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/Ectoplasm_1";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -699,7 +699,7 @@ internal static class AssetReferences
 
                     public static class Ectoplasm_2
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/Ectoplasm_2";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/Ectoplasm_2";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -708,7 +708,7 @@ internal static class AssetReferences
 
                     public static class Ectoplasm_3
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/Ectoplasm_3";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/Ectoplasm_3";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -717,7 +717,7 @@ internal static class AssetReferences
 
                     public static class Feather_1
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/Feather_1";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/Feather_1";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -726,7 +726,7 @@ internal static class AssetReferences
 
                     public static class Feather_2
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/Feather_2";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/Feather_2";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -735,7 +735,7 @@ internal static class AssetReferences
 
                     public static class Feather_3
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/Feather_3";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/Feather_3";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -744,7 +744,7 @@ internal static class AssetReferences
 
                     public static class FireblossomSeeds_1
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/FireblossomSeeds_1";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/FireblossomSeeds_1";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -753,7 +753,7 @@ internal static class AssetReferences
 
                     public static class FireblossomSeeds_2
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/FireblossomSeeds_2";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/FireblossomSeeds_2";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -762,7 +762,7 @@ internal static class AssetReferences
 
                     public static class FragmentNebula_1
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/FragmentNebula_1";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/FragmentNebula_1";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -771,7 +771,7 @@ internal static class AssetReferences
 
                     public static class FragmentNebula_2
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/FragmentNebula_2";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/FragmentNebula_2";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -780,7 +780,7 @@ internal static class AssetReferences
 
                     public static class FragmentSolar_1
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/FragmentSolar_1";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/FragmentSolar_1";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -789,7 +789,7 @@ internal static class AssetReferences
 
                     public static class FragmentSolar_2
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/FragmentSolar_2";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/FragmentSolar_2";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -798,7 +798,7 @@ internal static class AssetReferences
 
                     public static class FragmentStardust_1
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/FragmentStardust_1";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/FragmentStardust_1";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -807,7 +807,7 @@ internal static class AssetReferences
 
                     public static class FragmentStardust_2
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/FragmentStardust_2";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/FragmentStardust_2";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -816,7 +816,7 @@ internal static class AssetReferences
 
                     public static class FragmentVortex_1
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/FragmentVortex_1";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/FragmentVortex_1";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -825,7 +825,7 @@ internal static class AssetReferences
 
                     public static class FragmentVortex_2
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/FragmentVortex_2";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/FragmentVortex_2";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -834,7 +834,7 @@ internal static class AssetReferences
 
                     public static class GrassSeeds_1
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/GrassSeeds_1";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/GrassSeeds_1";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -843,7 +843,7 @@ internal static class AssetReferences
 
                     public static class GrassSeeds_2
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/GrassSeeds_2";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/GrassSeeds_2";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -852,7 +852,7 @@ internal static class AssetReferences
 
                     public static class HallowedSeeds_1
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/HallowedSeeds_1";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/HallowedSeeds_1";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -861,7 +861,7 @@ internal static class AssetReferences
 
                     public static class HallowedSeeds_2
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/HallowedSeeds_2";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/HallowedSeeds_2";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -870,7 +870,7 @@ internal static class AssetReferences
 
                     public static class Ichor_1
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/Ichor_1";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/Ichor_1";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -879,7 +879,7 @@ internal static class AssetReferences
 
                     public static class Ichor_2
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/Ichor_2";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/Ichor_2";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -888,7 +888,7 @@ internal static class AssetReferences
 
                     public static class JungleGrassSeeds_1
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/JungleGrassSeeds_1";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/JungleGrassSeeds_1";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -897,7 +897,7 @@ internal static class AssetReferences
 
                     public static class JungleGrassSeeds_2
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/JungleGrassSeeds_2";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/JungleGrassSeeds_2";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -906,7 +906,7 @@ internal static class AssetReferences
 
                     public static class JungleSpores_1
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/JungleSpores_1";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/JungleSpores_1";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -915,7 +915,7 @@ internal static class AssetReferences
 
                     public static class JungleSpores_2
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/JungleSpores_2";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/JungleSpores_2";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -924,7 +924,7 @@ internal static class AssetReferences
 
                     public static class Lens_1
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/Lens_1";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/Lens_1";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -933,7 +933,7 @@ internal static class AssetReferences
 
                     public static class Lens_2
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/Lens_2";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/Lens_2";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -942,7 +942,7 @@ internal static class AssetReferences
 
                     public static class Lens_CataractEye
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/Lens_CataractEye";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/Lens_CataractEye";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -951,7 +951,7 @@ internal static class AssetReferences
 
                     public static class Lens_CataractEye_1
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/Lens_CataractEye_1";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/Lens_CataractEye_1";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -960,7 +960,7 @@ internal static class AssetReferences
 
                     public static class Lens_CataractEye_2
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/Lens_CataractEye_2";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/Lens_CataractEye_2";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -969,7 +969,7 @@ internal static class AssetReferences
 
                     public static class MoonglowSeeds_1
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/MoonglowSeeds_1";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/MoonglowSeeds_1";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -978,7 +978,7 @@ internal static class AssetReferences
 
                     public static class MoonglowSeeds_2
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/MoonglowSeeds_2";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/MoonglowSeeds_2";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -987,7 +987,7 @@ internal static class AssetReferences
 
                     public static class MushroomGrassSeeds_1
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/MushroomGrassSeeds_1";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/MushroomGrassSeeds_1";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -996,7 +996,7 @@ internal static class AssetReferences
 
                     public static class MushroomGrassSeeds_2
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/MushroomGrassSeeds_2";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/MushroomGrassSeeds_2";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -1005,7 +1005,7 @@ internal static class AssetReferences
 
                     public static class RottenChunk_1
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/RottenChunk_1";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/RottenChunk_1";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -1014,7 +1014,7 @@ internal static class AssetReferences
 
                     public static class RottenChunk_2
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/RottenChunk_2";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/RottenChunk_2";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -1023,7 +1023,7 @@ internal static class AssetReferences
 
                     public static class ShiverthornSeeds_1
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/ShiverthornSeeds_1";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/ShiverthornSeeds_1";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -1032,7 +1032,7 @@ internal static class AssetReferences
 
                     public static class ShiverthornSeeds_2
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/ShiverthornSeeds_2";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/ShiverthornSeeds_2";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -1041,7 +1041,7 @@ internal static class AssetReferences
 
                     public static class Stinger_BigMossHornet
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/Stinger_BigMossHornet";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/Stinger_BigMossHornet";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -1050,7 +1050,7 @@ internal static class AssetReferences
 
                     public static class Stinger_GiantMossHornet
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/Stinger_GiantMossHornet";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/Stinger_GiantMossHornet";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -1059,7 +1059,7 @@ internal static class AssetReferences
 
                     public static class Stinger_HornetHoney
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/Stinger_HornetHoney";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/Stinger_HornetHoney";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -1068,7 +1068,7 @@ internal static class AssetReferences
 
                     public static class Stinger_HornetLeafy
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/Stinger_HornetLeafy";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/Stinger_HornetLeafy";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -1077,7 +1077,7 @@ internal static class AssetReferences
 
                     public static class Stinger_HornetSpikey
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/Stinger_HornetSpikey";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/Stinger_HornetSpikey";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -1086,7 +1086,7 @@ internal static class AssetReferences
 
                     public static class Stinger_HornetStingy
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/Stinger_HornetStingy";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/Stinger_HornetStingy";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -1095,7 +1095,7 @@ internal static class AssetReferences
 
                     public static class Stinger_LittleMossHornet
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/Stinger_LittleMossHornet";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/Stinger_LittleMossHornet";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -1104,7 +1104,7 @@ internal static class AssetReferences
 
                     public static class Stinger_MossHornet
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/Stinger_MossHornet";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/Stinger_MossHornet";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -1113,7 +1113,7 @@ internal static class AssetReferences
 
                     public static class Stinger_SpikedJungleSlime
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/Stinger_SpikedJungleSlime";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/Stinger_SpikedJungleSlime";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -1122,7 +1122,7 @@ internal static class AssetReferences
 
                     public static class Stinger_TinyMossHornet
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/Stinger_TinyMossHornet";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/Stinger_TinyMossHornet";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -1131,7 +1131,7 @@ internal static class AssetReferences
 
                     public static class TatteredCloth_1
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/TatteredCloth_1";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/TatteredCloth_1";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -1140,7 +1140,7 @@ internal static class AssetReferences
 
                     public static class TatteredCloth_2
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/TatteredCloth_2";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/TatteredCloth_2";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -1149,7 +1149,7 @@ internal static class AssetReferences
 
                     public static class Vertebrae_1
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/Vertebrae_1";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/Vertebrae_1";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -1158,7 +1158,7 @@ internal static class AssetReferences
 
                     public static class Vertebrae_2
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/Vertebrae_2";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/Vertebrae_2";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -1167,7 +1167,7 @@ internal static class AssetReferences
 
                     public static class Vine_1
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/Vine_1";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/Vine_1";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -1176,7 +1176,7 @@ internal static class AssetReferences
 
                     public static class Vine_2
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/Vine_2";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/Vine_2";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -1185,7 +1185,7 @@ internal static class AssetReferences
 
                     public static class WaterleafSeeds_1
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/WaterleafSeeds_1";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/WaterleafSeeds_1";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -1194,7 +1194,7 @@ internal static class AssetReferences
 
                     public static class WaterleafSeeds_2
                     {
-                        public const string KEY = "Assets/Images/Items/Variants/WaterleafSeeds_2";
+                        public const string KEY = "Nightshade/Assets/Images/Items/Variants/WaterleafSeeds_2";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -1209,7 +1209,7 @@ internal static class AssetReferences
                 {
                     public static class CoconutChestTile
                     {
-                        public const string KEY = "Assets/Images/Tiles/Furniture/CoconutChestTile";
+                        public const string KEY = "Nightshade/Assets/Images/Tiles/Furniture/CoconutChestTile";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -1218,7 +1218,7 @@ internal static class AssetReferences
 
                     public static class CoconutChestTile_Highlight
                     {
-                        public const string KEY = "Assets/Images/Tiles/Furniture/CoconutChestTile_Highlight";
+                        public const string KEY = "Nightshade/Assets/Images/Tiles/Furniture/CoconutChestTile_Highlight";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -1230,7 +1230,7 @@ internal static class AssetReferences
                 {
                     public static class CactusWood
                     {
-                        public const string KEY = "Assets/Images/Tiles/Misc/CactusWood";
+                        public const string KEY = "Nightshade/Assets/Images/Tiles/Misc/CactusWood";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -1239,7 +1239,7 @@ internal static class AssetReferences
 
                     public static class LivingCactus
                     {
-                        public const string KEY = "Assets/Images/Tiles/Misc/LivingCactus";
+                        public const string KEY = "Nightshade/Assets/Images/Tiles/Misc/LivingCactus";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -1248,7 +1248,7 @@ internal static class AssetReferences
 
                     public static class LivingCactusPot
                     {
-                        public const string KEY = "Assets/Images/Tiles/Misc/LivingCactusPot";
+                        public const string KEY = "Nightshade/Assets/Images/Tiles/Misc/LivingCactusPot";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -1257,7 +1257,7 @@ internal static class AssetReferences
 
                     public static class LivingCactusWood
                     {
-                        public const string KEY = "Assets/Images/Tiles/Misc/LivingCactusWood";
+                        public const string KEY = "Nightshade/Assets/Images/Tiles/Misc/LivingCactusWood";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -1266,7 +1266,7 @@ internal static class AssetReferences
 
                     public static class LivingPalmLeaf
                     {
-                        public const string KEY = "Assets/Images/Tiles/Misc/LivingPalmLeaf";
+                        public const string KEY = "Nightshade/Assets/Images/Tiles/Misc/LivingPalmLeaf";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -1275,7 +1275,7 @@ internal static class AssetReferences
 
                     public static class LivingPalmWood
                     {
-                        public const string KEY = "Assets/Images/Tiles/Misc/LivingPalmWood";
+                        public const string KEY = "Nightshade/Assets/Images/Tiles/Misc/LivingPalmWood";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -1286,7 +1286,7 @@ internal static class AssetReferences
                     {
                         public static class CactusWoodPlatform
                         {
-                            public const string KEY = "Assets/Images/Tiles/Misc/CactusWoodFurniture/CactusWoodPlatform";
+                            public const string KEY = "Nightshade/Assets/Images/Tiles/Misc/CactusWoodFurniture/CactusWoodPlatform";
 
                             public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -1302,7 +1302,7 @@ internal static class AssetReferences
                 {
                     public static class BabyBlueSheep
                     {
-                        public const string KEY = "Assets/Images/UI/ModIcon/BabyBlueSheep";
+                        public const string KEY = "Nightshade/Assets/Images/UI/ModIcon/BabyBlueSheep";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -1311,7 +1311,7 @@ internal static class AssetReferences
 
                     public static class Citrus
                     {
-                        public const string KEY = "Assets/Images/UI/ModIcon/Citrus";
+                        public const string KEY = "Nightshade/Assets/Images/UI/ModIcon/Citrus";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -1320,7 +1320,7 @@ internal static class AssetReferences
 
                     public static class Ebonfly
                     {
-                        public const string KEY = "Assets/Images/UI/ModIcon/Ebonfly";
+                        public const string KEY = "Nightshade/Assets/Images/UI/ModIcon/Ebonfly";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -1329,7 +1329,7 @@ internal static class AssetReferences
 
                     public static class Icon
                     {
-                        public const string KEY = "Assets/Images/UI/ModIcon/Icon";
+                        public const string KEY = "Nightshade/Assets/Images/UI/ModIcon/Icon";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -1338,7 +1338,7 @@ internal static class AssetReferences
 
                     public static class Icon_Dots
                     {
-                        public const string KEY = "Assets/Images/UI/ModIcon/Icon_Dots";
+                        public const string KEY = "Nightshade/Assets/Images/UI/ModIcon/Icon_Dots";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -1347,7 +1347,7 @@ internal static class AssetReferences
 
                     public static class Math2
                     {
-                        public const string KEY = "Assets/Images/UI/ModIcon/Math2";
+                        public const string KEY = "Nightshade/Assets/Images/UI/ModIcon/Math2";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -1356,7 +1356,7 @@ internal static class AssetReferences
 
                     public static class OneThree
                     {
-                        public const string KEY = "Assets/Images/UI/ModIcon/OneThree";
+                        public const string KEY = "Nightshade/Assets/Images/UI/ModIcon/OneThree";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -1365,7 +1365,7 @@ internal static class AssetReferences
 
                     public static class Sixtydegrees
                     {
-                        public const string KEY = "Assets/Images/UI/ModIcon/Sixtydegrees";
+                        public const string KEY = "Nightshade/Assets/Images/UI/ModIcon/Sixtydegrees";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -1374,7 +1374,7 @@ internal static class AssetReferences
 
                     public static class Taco
                     {
-                        public const string KEY = "Assets/Images/UI/ModIcon/Taco";
+                        public const string KEY = "Nightshade/Assets/Images/UI/ModIcon/Taco";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -1383,7 +1383,7 @@ internal static class AssetReferences
 
                     public static class Tomat
                     {
-                        public const string KEY = "Assets/Images/UI/ModIcon/Tomat";
+                        public const string KEY = "Nightshade/Assets/Images/UI/ModIcon/Tomat";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -1392,7 +1392,7 @@ internal static class AssetReferences
 
                     public static class Triangle
                     {
-                        public const string KEY = "Assets/Images/UI/ModIcon/Triangle";
+                        public const string KEY = "Nightshade/Assets/Images/UI/ModIcon/Triangle";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -1401,7 +1401,7 @@ internal static class AssetReferences
 
                     public static class Tyeski
                     {
-                        public const string KEY = "Assets/Images/UI/ModIcon/Tyeski";
+                        public const string KEY = "Nightshade/Assets/Images/UI/ModIcon/Tyeski";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -1410,7 +1410,7 @@ internal static class AssetReferences
 
                     public static class Wymsical
                     {
-                        public const string KEY = "Assets/Images/UI/ModIcon/Wymsical";
+                        public const string KEY = "Nightshade/Assets/Images/UI/ModIcon/Wymsical";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -1422,7 +1422,7 @@ internal static class AssetReferences
                 {
                     public static class ButtonDeps
                     {
-                        public const string KEY = "Assets/Images/UI/ModLoader/ButtonDeps";
+                        public const string KEY = "Nightshade/Assets/Images/UI/ModLoader/ButtonDeps";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -1431,7 +1431,7 @@ internal static class AssetReferences
 
                     public static class ButtonModConfig
                     {
-                        public const string KEY = "Assets/Images/UI/ModLoader/ButtonModConfig";
+                        public const string KEY = "Nightshade/Assets/Images/UI/ModLoader/ButtonModConfig";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -1440,7 +1440,7 @@ internal static class AssetReferences
 
                     public static class ButtonModConfig_ConciseModsList
                     {
-                        public const string KEY = "Assets/Images/UI/ModLoader/ButtonModConfig_ConciseModsList";
+                        public const string KEY = "Nightshade/Assets/Images/UI/ModLoader/ButtonModConfig_ConciseModsList";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -1449,7 +1449,7 @@ internal static class AssetReferences
 
                     public static class ButtonModInfo
                     {
-                        public const string KEY = "Assets/Images/UI/ModLoader/ButtonModInfo";
+                        public const string KEY = "Nightshade/Assets/Images/UI/ModLoader/ButtonModInfo";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -1458,7 +1458,7 @@ internal static class AssetReferences
 
                     public static class InnerPanelBackground
                     {
-                        public const string KEY = "Assets/Images/UI/ModLoader/InnerPanelBackground";
+                        public const string KEY = "Nightshade/Assets/Images/UI/ModLoader/InnerPanelBackground";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -1473,7 +1473,7 @@ internal static class AssetReferences
                 {
                     public static class LivingCactusWoodWall
                     {
-                        public const string KEY = "Assets/Images/Walls/Misc/LivingCactusWoodWall";
+                        public const string KEY = "Nightshade/Assets/Images/Walls/Misc/LivingCactusWoodWall";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -1521,7 +1521,7 @@ internal static class AssetReferences
                         }
                     }
 
-                    public const string KEY = "Assets/Shaders/Misc/VanillaVertexStripShader";
+                    public const string KEY = "Nightshade/Assets/Shaders/Misc/VanillaVertexStripShader";
 
                     public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Effect> Asset => lazy.Value;
 
@@ -1557,7 +1557,7 @@ internal static class AssetReferences
                         }
                     }
 
-                    public const string KEY = "Assets/Shaders/UI/CoolFlowerShader";
+                    public const string KEY = "Nightshade/Assets/Shaders/UI/CoolFlowerShader";
 
                     public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Effect> Asset => lazy.Value;
 
@@ -1605,7 +1605,7 @@ internal static class AssetReferences
                         }
                     }
 
-                    public const string KEY = "Assets/Shaders/UI/ModPanelShader";
+                    public const string KEY = "Nightshade/Assets/Shaders/UI/ModPanelShader";
 
                     public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Effect> Asset => lazy.Value;
 
@@ -1626,7 +1626,7 @@ internal static class AssetReferences
         {
             public static class ItemTextureDust
             {
-                public const string KEY = "Content/Dusts/ItemTextureDust";
+                public const string KEY = "Nightshade/Content/Dusts/ItemTextureDust";
 
                 public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 

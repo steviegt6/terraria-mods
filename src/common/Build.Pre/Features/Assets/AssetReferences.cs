@@ -13,7 +13,7 @@ internal interface IAssetReference
 {
     bool Eligible(ProjectFile file);
 
-    string GenerateCode(AssetFile asset, string indent);
+    string GenerateCode(ProjectContext ctx, AssetFile asset, string indent);
 }
 
 internal sealed class TextureReference : IAssetReference
@@ -24,11 +24,11 @@ internal sealed class TextureReference : IAssetReference
                file.RelativePath.EndsWith(".rawimg");
     }
 
-    public string GenerateCode(AssetFile asset, string indent)
+    public string GenerateCode(ProjectContext ctx, AssetFile asset, string indent)
     {
         var sb = new StringBuilder();
 
-        sb.AppendLine($"{indent}public const string KEY = \"{Path.ChangeExtension(asset.Path.Replace('\\', '/'), null)}\";");
+        sb.AppendLine($"{indent}public const string KEY = \"{ctx.ModName}/{Path.ChangeExtension(asset.Path.Replace('\\', '/'), null)}\";");
         sb.AppendLine();
         sb.AppendLine($"{indent}public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;");
         sb.AppendLine();
@@ -47,7 +47,7 @@ internal sealed class SoundReference : IAssetReference
                file.RelativePath.EndsWith(".mp3");
     }
 
-    public string GenerateCode(AssetFile asset, string indent)
+    public string GenerateCode(ProjectContext ctx, AssetFile asset, string indent)
     {
         return $"{indent}// TODO: {asset.Name}";
     }
@@ -61,7 +61,7 @@ internal sealed class EffectReference : IAssetReference
             || file.RelativePath.EndsWith(".xnb");
     }
 
-    public string GenerateCode(AssetFile asset, string indent)
+    public string GenerateCode(ProjectContext ctx, AssetFile asset, string indent)
     {
         const string type = "Microsoft.Xna.Framework.Graphics.Effect";
 
@@ -89,7 +89,7 @@ internal sealed class EffectReference : IAssetReference
 
         sb.AppendLine($"{indent}}}");
         sb.AppendLine();
-        sb.AppendLine($"{indent}public const string KEY = \"{Path.ChangeExtension(asset.Path.Replace('\\', '/'), null)}\";");
+        sb.AppendLine($"{indent}public const string KEY = \"{ctx.ModName}/{Path.ChangeExtension(asset.Path.Replace('\\', '/'), null)}\";");
         sb.AppendLine();
         sb.AppendLine($"{indent}public static ReLogic.Content.Asset<{type}> Asset => lazy.Value;");
         sb.AppendLine();
