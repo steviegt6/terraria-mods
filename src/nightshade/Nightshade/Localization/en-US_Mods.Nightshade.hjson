@@ -185,7 +185,7 @@ Achievements: {
 
 NPCs: {
 	SlimeBoss: {
-		DisplayName: Reductio ad Astra
+		DisplayName: "[starspeak:Reductio ad Astra]"
 		FullBossName: "{0}, {1}"
 		BossName: Reductio ad {0}
 		BossSubtitle: Dream {0}

@@ -88,11 +88,6 @@ internal static class Starspeak
     // Maps fonts to a hashmap of sentences denoted by a string hash.
     private static readonly ConditionalWeakTable<DynamicSpriteFont, Dictionary<string, Sentence>> font_sentence_cache = [];
 
-    public static string GetBossNameTag()
-    {
-        return $"[{Tag.NAME}:{Mods.Nightshade.NPCs.SlimeBoss.DisplayName.GetTextValue()}]";
-    }
-
     public static void DrawText(
         SpriteBatch sb,
         DynamicSpriteFont font,
@@ -118,8 +113,8 @@ internal static class Starspeak
 
         // Draw constellation.
         {
-            DrawConstellation(sb, sentence, drawArea, thickness, new Color(0, 0, 0, color.A), scale, text.GetHashCode(), bold: true);
-            DrawConstellation(sb, sentence, drawArea, thickness, color, scale, text.GetHashCode());
+            DrawConstellation(sb, sentence, drawArea, thickness, new Color(0, 0, 0, color.A), scale, GetDeterministicHashCodeOrdinalIgnoreCase(text), bold: true);
+            DrawConstellation(sb, sentence, drawArea, thickness, color, scale, GetDeterministicHashCodeOrdinalIgnoreCase(text));
         }
 
         // Draw text.
@@ -235,7 +230,7 @@ internal static class Starspeak
         }
 
         var size = font.MeasureString(text);
-        return sentences[text] = GetStarPoints(size.X, text.GetHashCode());
+        return sentences[text] = GetStarPoints(size.X, GetDeterministicHashCodeOrdinalIgnoreCase(text));
     }
 
     private static Sentence GetStarPoints(float width, int seed)
@@ -346,5 +341,14 @@ internal static class Starspeak
     {
         // TODO
         return true;
+    }
+
+    private static readonly Dictionary<string, int> hashes = [];
+
+    private static int GetDeterministicHashCodeOrdinalIgnoreCase(string text)
+    {
+        return hashes.TryGetValue(text, out var hash)
+            ? hash
+            : hashes[text] = unchecked(text.Aggregate(17, (current, c) => current * 31 + char.ToLowerInvariant(c)));
     }
 }
