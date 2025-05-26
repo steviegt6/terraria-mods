@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
+using Build.Pre.Util;
 using Build.Shared;
 
 using Hjson;
@@ -32,9 +33,16 @@ internal sealed partial class LocalizationGenerator : BuildTask
         var keys = new HashSet<(string key, string value)>();
 
         foreach (var file in files)
-        foreach (var key in GetKeysFromFile(file))
         {
-            keys.Add(key);
+            if (!HjsonValidator.ValidateHjsonFile(file.FullPath))
+            {
+                continue;
+            }
+
+            foreach (var key in GetKeysFromFile(file))
+            {
+                keys.Add(key);
+            }
         }
 
         var root = new LocalizationNode("", [], []);
