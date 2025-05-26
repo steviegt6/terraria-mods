@@ -7,6 +7,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Terraria;
 using Daybreak.Common.Rendering;
+
+using Nightshade.Core;
+
 using Terraria.Graphics;
 using Terraria.ID;
 using Terraria.ModLoader;

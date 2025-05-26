@@ -3,7 +3,7 @@
   "profiles": {
     "Generators": {
       "commandName": "DebugRoslynComponent",
-      "targetProject": "../VanillaNetworking/VanillaNetworking.csproj"
+      "targetProject": "../../nightshade/Nightshade/Nightshade.csproj"
     }
   }
 }
