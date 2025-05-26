@@ -83,12 +83,7 @@ internal static class Starspeak
         }
     }
 
-    /// <summary>
-    ///     A 'starspeak' sentence, knowing its normalized points.
-    /// </summary>
-    /// <param name="NormalPoints">The normalized star points.</param>
-    /// <param name="Connections">Whether star points are connected.</param>
-    private readonly record struct Sentence(Vector2[] NormalPoints, bool[] Connections);
+    private readonly record struct Sentence(Vector2[] Points, (int from, int to)[] Connections);
 
     // Maps fonts to a hashmap of sentences denoted by a string hash.
     private static readonly ConditionalWeakTable<DynamicSpriteFont, Dictionary<string, Sentence>> font_sentence_cache = [];
@@ -148,7 +143,7 @@ internal static class Starspeak
         }
 
         var rand = new FastRandom(seed);
-        var points = sentence.NormalPoints.Select(
+        var points = sentence.Points.Select(
             p =>
             {
                 var x = drawArea.X + p.X * drawArea.Width;
@@ -182,15 +177,10 @@ internal static class Starspeak
         }
 
         // Draw lines.
-        for (var i = 0; i < sentence.Connections.Length; i++)
+        foreach (var (fromIdx, toIdx) in sentence.Connections)
         {
-            if (!sentence.Connections[i])
-            {
-                continue;
-            }
-
-            var point1 = points[i];
-            var point2 = points[i + 1];
+            var point1 = points[fromIdx];
+            var point2 = points[toIdx];
 
             var x1 = point1.X;
             var y1 = point1.Y;
@@ -200,7 +190,7 @@ internal static class Starspeak
             var line = new Rectangle(
                 x1,
                 y1,
-                (int)Math.Sqrt(Math.Pow(x2 - x1, 2) + Math.Pow(y2 - y1, 2)),
+                (int)Math.Sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)),
                 (int)(thickness * scale)
             );
 
@@ -250,51 +240,103 @@ internal static class Starspeak
 
     private static Sentence GetStarPoints(float width, int seed)
     {
-        // Guaranteed to produce at least 2 stars.  Points are at first
-        // uniformly distributed (aside from the first and last points), before
-        // being offset randomly horizontally and vertically.
-
         var rand = new FastRandom(seed);
 
         var baseCount = Math.Max((int)(width / 15f), 2);
-        var points = new List<Vector2>(baseCount);
-        var connections = new List<bool>();
+        var points = new List<Vector2>();
+        var connections = new List<(int from, int to)>();
 
         var step = width / (baseCount - 1);
-        var splitOccurred = false;
+        var nextIndex = 0;
+        int? lastIndex = null;
 
         for (var i = 0; i < baseCount; i++)
         {
             var x = step * i;
-            var y = rand.NextFloat() * 0.6f + 0.05f;
-            var basePoint = new Vector2(x, y);
-            points.Add(basePoint);
+            var y = rand.NextFloat() * 0.6f + 0.2f;
 
-            // Decide whether to connect to the next point
-            if (i > 0)
+            var canFork = i > 0 && i < baseCount - 1;
+            var shouldFork = canFork && rand.NextFloat() < 0.075f;
+
+            if (shouldFork)
             {
-                connections.Add(rand.NextFloat() < 0.85f); // 85% chance to connect
+                var forkBaseY = y;
+                var minSeparation = 0.35f; // Minimum vertical distance between fork points.
+                var variance = rand.NextFloat() * 0.1f;
+
+                var upY = Math.Clamp(forkBaseY - (minSeparation / 2f + variance), 0.05f, 0.95f);
+                var downY = Math.Clamp(forkBaseY + (minSeparation / 2f + variance), 0.05f, 0.95f);
+
+                // Randomize which one is added first to avoid same bias.
+                var forkPoints = rand.NextFloat() < 0.5f
+                    ? new[] { new Vector2(x, upY), new Vector2(x, downY) }
+                    : new[] { new Vector2(x, downY), new Vector2(x, upY) };
+
+                var forkA = nextIndex++;
+                var forkB = nextIndex++;
+                points.Add(forkPoints[0]);
+                points.Add(forkPoints[1]);
+
+                if (lastIndex is { } from)
+                {
+                    if (rand.NextFloat() > 0.35f)
+                    {
+                        connections.Add((from, forkA));
+                    }
+
+                    if (rand.NextFloat() > 0.35f)
+                    {
+                        connections.Add((from, forkB));
+                    }
+                }
+
+                lastIndex = null;
+
+                // Add a single star after the fork and connect both fork points to it.
+                // TODO: Continue into two more stars?
+                if (i + 1 < baseCount)
+                {
+                    var nextX = step * (i + 1);
+                    var nextY = rand.NextFloat() * 0.6f + 0.2f;
+                    var next = new Vector2(nextX, nextY);
+                    var nextStarIndex = nextIndex++;
+
+                    points.Add(next);
+
+                    if (rand.NextFloat() > 0.35f)
+                    {
+                        connections.Add((forkA, nextStarIndex));
+                    }
+
+                    if (rand.NextFloat() > 0.35f)
+                    {
+                        connections.Add((forkB, nextStarIndex));
+                    }
+
+                    lastIndex = nextStarIndex;
+                    i++; // Skip the already-used next base point.
+                }
             }
-
-            // One-time optional split
-            if (!splitOccurred && rand.NextFloat() < 0.15f)
+            else
             {
-                splitOccurred = true;
+                var thisIndex = nextIndex++;
+                points.Add(new Vector2(x, y));
 
-                var offset1 = new Vector2(rand.NextFloat() * 10f - 5f, rand.NextFloat() * 0.05f - 0.025f);
-                var offset2 = new Vector2(rand.NextFloat() * 10f - 5f, rand.NextFloat() * 0.05f - 0.025f);
+                if (lastIndex is { } from && rand.NextFloat() > 0.2f)
+                {
+                    connections.Add((from, thisIndex));
+                }
 
-                points.Add(basePoint + offset1);
-                connections.Add(rand.NextFloat() < 0.85f);
-
-                points.Add(basePoint + offset2);
-                connections.Add(rand.NextFloat() < 0.85f);
+                lastIndex = thisIndex;
             }
         }
 
         for (var i = 0; i < points.Count; i++)
         {
-            points[i] = new Vector2(points[i].X / width, points[i].Y);
+            points[i] = new Vector2(
+                points[i].X / width,
+                Math.Clamp(points[i].Y * 0.8f + 0.1f, 0.1f, 0.90f)
+            );
         }
 
         return new Sentence(points.ToArray(), connections.ToArray());
