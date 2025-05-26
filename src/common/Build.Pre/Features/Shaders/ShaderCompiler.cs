@@ -70,6 +70,12 @@ internal sealed class ShaderCompiler : BuildTask
     {
         var fxcOutput = Path.ChangeExtension(filePath, ".fxc");
 
+        // Skip building if we can assume the shader is up-to-date.
+        if (!CPreprocessor.IsOutOfDate(filePath, fxcOutput))
+        {
+            return;
+        }
+
         var pInfo = new ProcessStartInfo
         {
             FileName = fxcExe,
