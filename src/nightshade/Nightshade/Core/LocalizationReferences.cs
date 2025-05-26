@@ -2641,6 +2641,679 @@ internal static class LocalizationReferences
                     }
                 }
             }
+
+            public static class NPCs
+            {
+                public const string KEY = "Mods.Nightshade.NPCs";
+
+                public static LocalizedText GetChildText(string childKey)
+                {
+                    return Language.GetText(KEY + '.' + childKey);
+                }
+
+                public static string GetChildTextValue(string childKey, params object?[] values)
+                {
+                    return Language.GetTextValue(KEY + '.' + childKey, values);
+                }
+
+                public static class SlimeBoss
+                {
+                    public const string KEY = "Mods.Nightshade.NPCs.SlimeBoss";
+
+                    public static LocalizedText GetChildText(string childKey)
+                    {
+                        return Language.GetText(KEY + '.' + childKey);
+                    }
+
+                    public static string GetChildTextValue(string childKey, params object?[] values)
+                    {
+                        return Language.GetTextValue(KEY + '.' + childKey, values);
+                    }
+
+                    public static class DisplayName
+                    {
+                        public const string KEY = "Mods.Nightshade.NPCs.SlimeBoss.DisplayName";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+
+                    public static class FullBossName
+                    {
+                        public const string KEY = "Mods.Nightshade.NPCs.SlimeBoss.FullBossName";
+                        public const int ARG_COUNT = 2;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue(object? arg0, object? arg1)
+                        {
+                            return Language.GetTextValue(KEY, arg0, arg1);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+
+                    public static class BossName
+                    {
+                        public const string KEY = "Mods.Nightshade.NPCs.SlimeBoss.BossName";
+                        public const int ARG_COUNT = 1;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue(object? arg0)
+                        {
+                            return Language.GetTextValue(KEY, arg0);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+
+                    public static class BossSubtitle
+                    {
+                        public const string KEY = "Mods.Nightshade.NPCs.SlimeBoss.BossSubtitle";
+                        public const int ARG_COUNT = 1;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue(object? arg0)
+                        {
+                            return Language.GetTextValue(KEY, arg0);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+
+                    public static class BossTitle
+                    {
+                        public const string KEY = "Mods.Nightshade.NPCs.SlimeBoss.BossTitle";
+                        public const int ARG_COUNT = 1;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue(object? arg0)
+                        {
+                            return Language.GetTextValue(KEY, arg0);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+
+                    public static class BossNames
+                    {
+                        public const string KEY = "Mods.Nightshade.NPCs.SlimeBoss.BossNames";
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+
+                        public static class _0
+                        {
+                            public const string KEY = "Mods.Nightshade.NPCs.SlimeBoss.BossNames.0";
+                            public const int ARG_COUNT = 0;
+
+                            public static LocalizedText GetText()
+                            {
+                                return Language.GetText(KEY);
+                            }
+
+                            public static string GetTextValue()
+                            {
+                                return Language.GetTextValue(KEY);
+                            }
+
+                            public static LocalizedText GetChildText(string childKey)
+                            {
+                                return Language.GetText(KEY + '.' + childKey);
+                            }
+
+                            public static string GetChildTextValue(string childKey, params object?[] values)
+                            {
+                                return Language.GetTextValue(KEY + '.' + childKey, values);
+                            }
+                        }
+
+                        public static class _1
+                        {
+                            public const string KEY = "Mods.Nightshade.NPCs.SlimeBoss.BossNames.1";
+                            public const int ARG_COUNT = 0;
+
+                            public static LocalizedText GetText()
+                            {
+                                return Language.GetText(KEY);
+                            }
+
+                            public static string GetTextValue()
+                            {
+                                return Language.GetTextValue(KEY);
+                            }
+
+                            public static LocalizedText GetChildText(string childKey)
+                            {
+                                return Language.GetText(KEY + '.' + childKey);
+                            }
+
+                            public static string GetChildTextValue(string childKey, params object?[] values)
+                            {
+                                return Language.GetTextValue(KEY + '.' + childKey, values);
+                            }
+                        }
+
+                        public static class _2
+                        {
+                            public const string KEY = "Mods.Nightshade.NPCs.SlimeBoss.BossNames.2";
+                            public const int ARG_COUNT = 0;
+
+                            public static LocalizedText GetText()
+                            {
+                                return Language.GetText(KEY);
+                            }
+
+                            public static string GetTextValue()
+                            {
+                                return Language.GetTextValue(KEY);
+                            }
+
+                            public static LocalizedText GetChildText(string childKey)
+                            {
+                                return Language.GetText(KEY + '.' + childKey);
+                            }
+
+                            public static string GetChildTextValue(string childKey, params object?[] values)
+                            {
+                                return Language.GetTextValue(KEY + '.' + childKey, values);
+                            }
+                        }
+
+                        public static class _3
+                        {
+                            public const string KEY = "Mods.Nightshade.NPCs.SlimeBoss.BossNames.3";
+                            public const int ARG_COUNT = 0;
+
+                            public static LocalizedText GetText()
+                            {
+                                return Language.GetText(KEY);
+                            }
+
+                            public static string GetTextValue()
+                            {
+                                return Language.GetTextValue(KEY);
+                            }
+
+                            public static LocalizedText GetChildText(string childKey)
+                            {
+                                return Language.GetText(KEY + '.' + childKey);
+                            }
+
+                            public static string GetChildTextValue(string childKey, params object?[] values)
+                            {
+                                return Language.GetTextValue(KEY + '.' + childKey, values);
+                            }
+                        }
+
+                        public static class _4
+                        {
+                            public const string KEY = "Mods.Nightshade.NPCs.SlimeBoss.BossNames.4";
+                            public const int ARG_COUNT = 0;
+
+                            public static LocalizedText GetText()
+                            {
+                                return Language.GetText(KEY);
+                            }
+
+                            public static string GetTextValue()
+                            {
+                                return Language.GetTextValue(KEY);
+                            }
+
+                            public static LocalizedText GetChildText(string childKey)
+                            {
+                                return Language.GetText(KEY + '.' + childKey);
+                            }
+
+                            public static string GetChildTextValue(string childKey, params object?[] values)
+                            {
+                                return Language.GetTextValue(KEY + '.' + childKey, values);
+                            }
+                        }
+
+                        public static class _5
+                        {
+                            public const string KEY = "Mods.Nightshade.NPCs.SlimeBoss.BossNames.5";
+                            public const int ARG_COUNT = 0;
+
+                            public static LocalizedText GetText()
+                            {
+                                return Language.GetText(KEY);
+                            }
+
+                            public static string GetTextValue()
+                            {
+                                return Language.GetTextValue(KEY);
+                            }
+
+                            public static LocalizedText GetChildText(string childKey)
+                            {
+                                return Language.GetText(KEY + '.' + childKey);
+                            }
+
+                            public static string GetChildTextValue(string childKey, params object?[] values)
+                            {
+                                return Language.GetTextValue(KEY + '.' + childKey, values);
+                            }
+                        }
+                    }
+
+                    public static class BossTitles
+                    {
+                        public const string KEY = "Mods.Nightshade.NPCs.SlimeBoss.BossTitles";
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+
+                        public static class _0
+                        {
+                            public const string KEY = "Mods.Nightshade.NPCs.SlimeBoss.BossTitles.0";
+                            public const int ARG_COUNT = 0;
+
+                            public static LocalizedText GetText()
+                            {
+                                return Language.GetText(KEY);
+                            }
+
+                            public static string GetTextValue()
+                            {
+                                return Language.GetTextValue(KEY);
+                            }
+
+                            public static LocalizedText GetChildText(string childKey)
+                            {
+                                return Language.GetText(KEY + '.' + childKey);
+                            }
+
+                            public static string GetChildTextValue(string childKey, params object?[] values)
+                            {
+                                return Language.GetTextValue(KEY + '.' + childKey, values);
+                            }
+                        }
+
+                        public static class _1
+                        {
+                            public const string KEY = "Mods.Nightshade.NPCs.SlimeBoss.BossTitles.1";
+                            public const int ARG_COUNT = 0;
+
+                            public static LocalizedText GetText()
+                            {
+                                return Language.GetText(KEY);
+                            }
+
+                            public static string GetTextValue()
+                            {
+                                return Language.GetTextValue(KEY);
+                            }
+
+                            public static LocalizedText GetChildText(string childKey)
+                            {
+                                return Language.GetText(KEY + '.' + childKey);
+                            }
+
+                            public static string GetChildTextValue(string childKey, params object?[] values)
+                            {
+                                return Language.GetTextValue(KEY + '.' + childKey, values);
+                            }
+                        }
+                    }
+
+                    public static class BossSubtitles
+                    {
+                        public const string KEY = "Mods.Nightshade.NPCs.SlimeBoss.BossSubtitles";
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+
+                        public static class _0
+                        {
+                            public const string KEY = "Mods.Nightshade.NPCs.SlimeBoss.BossSubtitles.0";
+                            public const int ARG_COUNT = 0;
+
+                            public static LocalizedText GetText()
+                            {
+                                return Language.GetText(KEY);
+                            }
+
+                            public static string GetTextValue()
+                            {
+                                return Language.GetTextValue(KEY);
+                            }
+
+                            public static LocalizedText GetChildText(string childKey)
+                            {
+                                return Language.GetText(KEY + '.' + childKey);
+                            }
+
+                            public static string GetChildTextValue(string childKey, params object?[] values)
+                            {
+                                return Language.GetTextValue(KEY + '.' + childKey, values);
+                            }
+                        }
+
+                        public static class _1
+                        {
+                            public const string KEY = "Mods.Nightshade.NPCs.SlimeBoss.BossSubtitles.1";
+                            public const int ARG_COUNT = 0;
+
+                            public static LocalizedText GetText()
+                            {
+                                return Language.GetText(KEY);
+                            }
+
+                            public static string GetTextValue()
+                            {
+                                return Language.GetTextValue(KEY);
+                            }
+
+                            public static LocalizedText GetChildText(string childKey)
+                            {
+                                return Language.GetText(KEY + '.' + childKey);
+                            }
+
+                            public static string GetChildTextValue(string childKey, params object?[] values)
+                            {
+                                return Language.GetTextValue(KEY + '.' + childKey, values);
+                            }
+                        }
+
+                        public static class _2
+                        {
+                            public const string KEY = "Mods.Nightshade.NPCs.SlimeBoss.BossSubtitles.2";
+                            public const int ARG_COUNT = 0;
+
+                            public static LocalizedText GetText()
+                            {
+                                return Language.GetText(KEY);
+                            }
+
+                            public static string GetTextValue()
+                            {
+                                return Language.GetTextValue(KEY);
+                            }
+
+                            public static LocalizedText GetChildText(string childKey)
+                            {
+                                return Language.GetText(KEY + '.' + childKey);
+                            }
+
+                            public static string GetChildTextValue(string childKey, params object?[] values)
+                            {
+                                return Language.GetTextValue(KEY + '.' + childKey, values);
+                            }
+                        }
+
+                        public static class _3
+                        {
+                            public const string KEY = "Mods.Nightshade.NPCs.SlimeBoss.BossSubtitles.3";
+                            public const int ARG_COUNT = 0;
+
+                            public static LocalizedText GetText()
+                            {
+                                return Language.GetText(KEY);
+                            }
+
+                            public static string GetTextValue()
+                            {
+                                return Language.GetTextValue(KEY);
+                            }
+
+                            public static LocalizedText GetChildText(string childKey)
+                            {
+                                return Language.GetText(KEY + '.' + childKey);
+                            }
+
+                            public static string GetChildTextValue(string childKey, params object?[] values)
+                            {
+                                return Language.GetTextValue(KEY + '.' + childKey, values);
+                            }
+                        }
+
+                        public static class _4
+                        {
+                            public const string KEY = "Mods.Nightshade.NPCs.SlimeBoss.BossSubtitles.4";
+                            public const int ARG_COUNT = 0;
+
+                            public static LocalizedText GetText()
+                            {
+                                return Language.GetText(KEY);
+                            }
+
+                            public static string GetTextValue()
+                            {
+                                return Language.GetTextValue(KEY);
+                            }
+
+                            public static LocalizedText GetChildText(string childKey)
+                            {
+                                return Language.GetText(KEY + '.' + childKey);
+                            }
+
+                            public static string GetChildTextValue(string childKey, params object?[] values)
+                            {
+                                return Language.GetTextValue(KEY + '.' + childKey, values);
+                            }
+                        }
+
+                        public static class _5
+                        {
+                            public const string KEY = "Mods.Nightshade.NPCs.SlimeBoss.BossSubtitles.5";
+                            public const int ARG_COUNT = 0;
+
+                            public static LocalizedText GetText()
+                            {
+                                return Language.GetText(KEY);
+                            }
+
+                            public static string GetTextValue()
+                            {
+                                return Language.GetTextValue(KEY);
+                            }
+
+                            public static LocalizedText GetChildText(string childKey)
+                            {
+                                return Language.GetText(KEY + '.' + childKey);
+                            }
+
+                            public static string GetChildTextValue(string childKey, params object?[] values)
+                            {
+                                return Language.GetTextValue(KEY + '.' + childKey, values);
+                            }
+                        }
+
+                        public static class _6
+                        {
+                            public const string KEY = "Mods.Nightshade.NPCs.SlimeBoss.BossSubtitles.6";
+                            public const int ARG_COUNT = 0;
+
+                            public static LocalizedText GetText()
+                            {
+                                return Language.GetText(KEY);
+                            }
+
+                            public static string GetTextValue()
+                            {
+                                return Language.GetTextValue(KEY);
+                            }
+
+                            public static LocalizedText GetChildText(string childKey)
+                            {
+                                return Language.GetText(KEY + '.' + childKey);
+                            }
+
+                            public static string GetChildTextValue(string childKey, params object?[] values)
+                            {
+                                return Language.GetTextValue(KEY + '.' + childKey, values);
+                            }
+                        }
+
+                        public static class _7
+                        {
+                            public const string KEY = "Mods.Nightshade.NPCs.SlimeBoss.BossSubtitles.7";
+                            public const int ARG_COUNT = 0;
+
+                            public static LocalizedText GetText()
+                            {
+                                return Language.GetText(KEY);
+                            }
+
+                            public static string GetTextValue()
+                            {
+                                return Language.GetTextValue(KEY);
+                            }
+
+                            public static LocalizedText GetChildText(string childKey)
+                            {
+                                return Language.GetText(KEY + '.' + childKey);
+                            }
+
+                            public static string GetChildTextValue(string childKey, params object?[] values)
+                            {
+                                return Language.GetTextValue(KEY + '.' + childKey, values);
+                            }
+                        }
+
+                        public static class _8
+                        {
+                            public const string KEY = "Mods.Nightshade.NPCs.SlimeBoss.BossSubtitles.8";
+                            public const int ARG_COUNT = 0;
+
+                            public static LocalizedText GetText()
+                            {
+                                return Language.GetText(KEY);
+                            }
+
+                            public static string GetTextValue()
+                            {
+                                return Language.GetTextValue(KEY);
+                            }
+
+                            public static LocalizedText GetChildText(string childKey)
+                            {
+                                return Language.GetText(KEY + '.' + childKey);
+                            }
+
+                            public static string GetChildTextValue(string childKey, params object?[] values)
+                            {
+                                return Language.GetTextValue(KEY + '.' + childKey, values);
+                            }
+                        }
+
+                        public static class _9
+                        {
+                            public const string KEY = "Mods.Nightshade.NPCs.SlimeBoss.BossSubtitles.9";
+                            public const int ARG_COUNT = 0;
+
+                            public static LocalizedText GetText()
+                            {
+                                return Language.GetText(KEY);
+                            }
+
+                            public static string GetTextValue()
+                            {
+                                return Language.GetTextValue(KEY);
+                            }
+
+                            public static LocalizedText GetChildText(string childKey)
+                            {
+                                return Language.GetText(KEY + '.' + childKey);
+                            }
+
+                            public static string GetChildTextValue(string childKey, params object?[] values)
+                            {
+                                return Language.GetTextValue(KEY + '.' + childKey, values);
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
