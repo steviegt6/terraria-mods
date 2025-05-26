@@ -35,13 +35,13 @@ public sealed class AssetReferenceGenerator : IIncrementalGenerator
             static (x, ctx) =>
             {
                 x.AddSource("AssetReferences.g.cs", Generate(x, ctx.Left.Left.Left, ctx.Left.Left.Right, ctx.Left.Right, ctx.Right));
-                x.AddSource("AssetCommon.g.cs",     GenerateCommon(x, ctx.Left.Right));
+                x.AddSource("AssetCommon.g.cs", GenerateCommon(x, ctx.Left.Right));
             }
         );
     }
 
     private static string GenerateCommon(
-        SourceProductionContext       ctx,
+        SourceProductionContext ctx,
         AnalyzerConfigOptionsProvider options
     )
     {
@@ -83,10 +83,10 @@ internal sealed class WrapperShaderData<TParameters> : ShaderData
     }
 
     private static string Generate(
-        SourceProductionContext                        ctx,
-        Compilation                                    compilation,
-        ImmutableArray<string>                         fileNames,
-        AnalyzerConfigOptionsProvider                  options,
+        SourceProductionContext ctx,
+        Compilation compilation,
+        ImmutableArray<string> fileNames,
+        AnalyzerConfigOptionsProvider options,
         ImmutableArray<(string path, string contents)> effectFiles
     )
     {
@@ -95,7 +95,7 @@ internal sealed class WrapperShaderData<TParameters> : ShaderData
             return "#error Failed to find root namespace";
         }
 
-        var refs  = default_references.ToDictionary(x => x.Extension, x => x);
+        var refs = default_references.ToDictionary(x => x.Extension, x => x);
         var files = fileNames.Where(x => refs.ContainsKey(Path.GetExtension(x))).Concat(effectFiles.Select(x => x.path)).ToArray();
 
         var assemblyName = GeneratorUtil.GetAssemblyName(compilation);
@@ -113,10 +113,10 @@ internal sealed class WrapperShaderData<TParameters> : ShaderData
 
     private static string GenerateAssetReferences(
         Dictionary<string, IAssetReference> referencesByExtension,
-        string[]                            filePaths,
-        string                              rootNamespace,
-        string                              assemblyName,
-        Dictionary<string, string>          effectFiles
+        string[] filePaths,
+        string rootNamespace,
+        string assemblyName,
+        Dictionary<string, string> effectFiles
     )
     {
         var sb = new StringBuilder();
@@ -219,7 +219,7 @@ internal sealed class WrapperShaderData<TParameters> : ShaderData
                         {
                             sb.AppendLine($"{indent}                parameters[\"{name}\"]?.SetValue({name});");
                         }
-                        
+
                         // special case for uTime
                         sb.AppendLine($"{indent}                parameters[\"uTime\"]?.SetValue(global::Terraria.Main.GlobalTimeWrappedHourly);");
                         sb.AppendLine($"{indent}            }}");
@@ -319,7 +319,7 @@ internal sealed class WrapperShaderData<TParameters> : ShaderData
                 }
 
                 var assetReference = referencesByExtension[extension];
-                var assetFile      = new AssetFile(fileName, path, assetReference);
+                var assetFile = new AssetFile(fileName, path, assetReference);
 
                 currentNode.Files.Add(assetFile);
             }
@@ -351,8 +351,9 @@ internal sealed class WrapperShaderData<TParameters> : ShaderData
             "float4" => "global::Microsoft.Xna.Framework.Vector4",
             "float3" => "global::Microsoft.Xna.Framework.Vector3",
             "float2" => "global::Microsoft.Xna.Framework.Vector2",
-            "float"  => "float",
-            _        => throw new InvalidOperationException(),
+            "float" => "float",
+            "matrix" => "global::Microsoft.Xna.Framework.Matrix",
+            _ => throw new InvalidOperationException("Unsupported uniform type: " + uniformType),
         };
     }
 }

@@ -2,6 +2,9 @@
 using Nightshade.Common.Features;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
+using Daybreak.Common.Rendering;
+using Nightshade.Core;
+using Terraria.Graphics;
 using Terraria.ID;
 using Terraria.ModLoader;
 
