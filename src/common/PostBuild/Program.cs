@@ -1,4 +1,4 @@
-﻿namespace PostCompiler;
+﻿namespace PostBuild;
 
 internal static class Program
 {

@@ -5,12 +5,12 @@
       "common\\CodeAnalysis\\CodeAnalysis.csproj",
       "common\\DaybreakHookGenerator\\DaybreakHookGenerator.csproj",
       "common\\LocalizationChecker\\LocalizationChecker.csproj",
+      "common\\PostBuild\\PostBuild.csproj",
+      "common\\PreBuild\\PreBuild.csproj",
       "common\\ShaderCompiler\\ShaderCompiler.csproj",
       "common\\SourceGenerator\\SourceGenerator.csproj",
       "libs\\Daybreak\\Daybreak.csproj",
       "nightshade\\Nightshade\\Nightshade.csproj",
-      "PostCompiler\\PostCompiler.csproj",
-      "PreCompiler\\PreCompiler.csproj",
       "shader-reader\\ShaderDecompiler.csproj"
     ]
   }

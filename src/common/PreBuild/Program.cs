@@ -1,4 +1,4 @@
-﻿namespace PreCompiler;
+﻿namespace PreBuild;
 
 internal static class Program
 {

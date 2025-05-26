@@ -8,7 +8,7 @@
     <PropertyGroup>
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
-        
+
         <DefineConstants>$(DefineConstants);INCLUDE_ANNOTATIONS;INCLUDE_METADATA</DefineConstants>
     </PropertyGroup>
 
@@ -63,5 +63,14 @@
              Takes care of some common tasks. -->
         <ProjectReference Include="$(MSBuildThisFileDirectory)CodeAnalysis\CodeAnalysis.csproj" OutputItemType="Analyzer"/>
     </ItemGroup>
+
+    <!-- Run PreCompiler and PostCompiler projects. -->
+    <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+        <Exec Command="dotnet run --project &quot;$(MSBuildThisFileDirectory)PreBuild\PreBuild.csproj&quot;"/>
+    </Target>
+
+    <Target Name="PostBuild" BeforeTargets="BuildMod">
+        <Exec Command="dotnet run --project &quot;$(MSBuildThisFileDirectory)PostBuild\PostBuild.csproj&quot;"/>
+    </Target>
 
 </Project>
