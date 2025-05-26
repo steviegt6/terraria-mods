@@ -79,6 +79,15 @@ public class ConsumerOfSouls : ModNPC
         base.AI();
         NPC.velocity += new Vector2(0, 0.1f); // fall down
 
+        // todo: find a better way to do this and then remove
+        bool tileBelow = Main.tileSolid[(int)Main.tile[(int)(NPC.position.X / 16), (int)((NPC.position.Y + 23) / 16)].TileType] ||
+                         Main.tileSolidTop[(int)Main.tile[(int)(NPC.position.X / 16), (int)((NPC.position.Y + 23) / 16)].TileType];
+
+        if (NPC.collideY)
+        {
+            NPC.velocity.X *= 0.9f;
+        }
+
         if (_data.bossTimer++ == 0)
         {
             _data.ModNPC = this;
@@ -90,6 +99,7 @@ public class ConsumerOfSouls : ModNPC
             StateController.PopCurState();
         }
     }
+
 
     internal void AddState(BossState state)
     {

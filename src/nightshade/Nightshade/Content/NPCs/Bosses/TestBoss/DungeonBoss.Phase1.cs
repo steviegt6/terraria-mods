@@ -47,9 +47,9 @@ internal class Consumer_PhaseOneBasicTransitionState : BossState
     private Dictionary<AttackType, float> attackList = new()
     {
         { AttackType.Propel, 0.25f },
-        { AttackType.Flurry, 0.25f },
+        { AttackType.Flurry, 0.25f }, // todo: rain
         { AttackType.BookOfSkulls, 0.25f },
-        { AttackType.MaggotBall, 0.25f }
+        { AttackType.MaggotBall, 0.25f } // todo: do
     };
 
     public override bool Update(params ConsumerData[] parameters)
@@ -178,6 +178,13 @@ internal class Consumer_PhaseOnePropelAttackState : BossState
             {
                 SoundEngine.PlaySound(SoundID.ShimmerWeak1, stateData.ThisNPC.Center);
             }
+            else if (timer % (maxTime / 8) == 0)
+            {
+                // todo: replace with actual visual
+                Dust.NewDustPerfect(stateData.ThisNPC.Center, DustID.DungeonWater);
+            }
+
+            stateData.ThisNPC.rotation = 0f;
         }
         else
         {
@@ -305,7 +312,7 @@ internal class Consumer_PhaseOneBookOfSkullsAttackState : BossState
 
     public override bool Enter(params ConsumerData[] parameters)
     {
-        maxTime = minTime + (Main.rand.Next() % 15);
+        maxTime = minTime + (Main.rand.Next() % 15) - 200;
         numProjectiles = 5 + (Main.rand.Next() % 5);
 
         periodBetweenShots = maxTime / numProjectiles;
@@ -361,24 +368,24 @@ internal class Consumer_PhaseOneBookOfSkullsAttackState : BossState
                 direction.Normalize();
 
                 float quotient = Math.Clamp(1 - (numShot / (float)numProjectiles), 0.2f, 1.0f);
-                float speed = 10.0f * quotient;
+                float speed = 10.0f;
                 direction *= speed;
 
+                Vector2 position = stateData.ThisNPC.Center + ((Vector2.One * stateData.ThisNPC.direction).RotatedBy((MathHelper.TwoPi / numProjectiles) * numShot) * 64f);
                 angle *= quotient;
-                Vector2 projectileDirection = direction.RotatedBy(angle * -stateData.ThisNPC.direction);
+                Vector2 projectileDirection = direction;
 
-                var proj = Projectile.NewProjectileDirect(stateData.ThisNPC.GetSource_FromThis(), stateData.ThisNPC.Center, projectileDirection, ProjectileID.BookOfSkullsSkull, 20, 1f, 0);
+                var proj = Projectile.NewProjectileDirect(stateData.ThisNPC.GetSource_FromThis(), position, projectileDirection, ProjectileID.BookOfSkullsSkull, 20, 1f, 0);
                 proj.friendly = false;
                 proj.hostile = true;
+                proj.tileCollide = false;
                 proj.timeLeft = 60 * 10;
                 var gProj = proj.GetGlobalProjectile<ModifyProjectiles>();
                 gProj.consumerMark = stateData.ThisNPC.whoAmI;
                 gProj.shouldDieOnHitInstantly = true;
                 gProj.target = target.whoAmI;
 
-                stateData.ThisNPC.velocity += projectileDirection * -0.1f;
-
-                var id = SoundEngine.PlaySound(SoundID.DD2_SkeletonSummoned, stateData.ThisNPC.Center);
+                var id = SoundEngine.PlaySound(SoundID.DD2_GhastlyGlaiveImpactGhost, stateData.ThisNPC.Center);
                 var sound = SoundEngine.GetActiveSound(id) ?? throw new Exception("Failed to get sound from SoundEngine after playing it.");
                 sound.Pitch = Main.rand.NextFloat();
                 sound.Volume += .5f;
