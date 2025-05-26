@@ -193,7 +193,27 @@ public class ModifyProjectiles : GlobalProjectile
     public override bool InstancePerEntity => true;
     public int consumerMark = -1;
     public bool shouldDieOnHitInstantly;
+    public int target;
 
+    public override void AI(Projectile projectile)
+    {
+        base.AI(projectile);
+
+        if (consumerMark == -1)
+        {
+            return;
+        }
+
+        if (Main.npc[consumerMark].ModNPC is ConsumerOfSouls consumerNPC)
+        {
+            if (!consumerNPC.NPC.active)
+            {
+                return;
+            }
+
+            // do book of skulls homing behavior here
+        }
+    }
     public override void OnHitPlayer(Projectile proj, Player p, Player.HurtInfo hurtInfo)
     {
         base.OnHitPlayer(proj, p, hurtInfo);

@@ -144,15 +144,14 @@ internal class Consumer_PhaseOnePropelAttackState : BossState
         float distance = direction.Length();
         direction.Normalize();
 
-        float angleRadians = MathHelper.ToRadians(45); // Example angle of 45 degrees
-        float gravityEffect = gravity;
-        float dragCoefficient = 0.001f; // Example drag coefficient
+        float angleRadians = MathHelper.ToRadians(45); // angle, generalize later
+        float dragCoefficient = 0.00f; // generalize later
 
-        float initialVelocityMagnitude = (float)Math.Sqrt((distance * gravityEffect) / Math.Sin(2 * angleRadians));
+        float initialVelocityMagnitude = (float)Math.Sqrt((distance * gravity) / Math.Sin(2 * angleRadians));
         Vector2 initialVelocity = direction * initialVelocityMagnitude;
 
         float timeToTarget = distance / initialVelocityMagnitude;
-        initialVelocity.Y -= gravityEffect * timeToTarget / 2;
+        initialVelocity.Y -= gravity * timeToTarget / 2;
 
         float dragFactor = (float)Math.Exp(-dragCoefficient * timeToTarget);
         initialVelocity *= dragFactor;
@@ -168,12 +167,17 @@ internal class Consumer_PhaseOnePropelAttackState : BossState
             Main.NewText("Water rocket!");
             stateData.ThisNPC.velocity += Jump(stateData.ThisNPC, Main.player[stateData.ThisNPC.target].Center, 1f, 1f, 0.5f, 0.1f);
             stateData.ThisNPC.noGravity = true;
+
+            SoundEngine.PlaySound(SoundID.AbigailCry, stateData.ThisNPC.Center);
         }
 
         if (timer++ < maxTime)
         {
             // do nothing
-
+            if (timer % (maxTime / 4) == 0)
+            {
+                SoundEngine.PlaySound(SoundID.ShimmerWeak1, stateData.ThisNPC.Center);
+            }
         }
         else
         {
@@ -237,7 +241,7 @@ internal class Consumer_PhaseOneFlurryAttackState : BossState
             periodBetweenShotsAdjusted = periodBetweenShots;
 
             Main.NewText("Water Bolt!");
-            SoundEngine.PlaySound(SoundID.NPCDeath13, stateData.ThisNPC.Center);
+            SoundEngine.PlaySound(SoundID.AbigailUpgrade, stateData.ThisNPC.Center);
         }
 
         if (timer++ < maxTime)
@@ -279,7 +283,7 @@ internal class Consumer_PhaseOneFlurryAttackState : BossState
                 style.MaxInstances = style.MaxInstances == 0 ? 1 : style.MaxInstances;
                 sound.Style = style;
 
-                periodBetweenShotsAdjusted = Math.Max(1, periodBetweenShots / numShot);
+                periodBetweenShotsAdjusted = Math.Max(12, periodBetweenShots / numShot);
             }
         }
         else
@@ -296,8 +300,16 @@ internal class Consumer_PhaseOneFlurryAttackState : BossState
 // The consumer summons book of skulls projectiles around her to home in on the player
 internal class Consumer_PhaseOneBookOfSkullsAttackState : BossState
 {
+    private const int minTime = 360;
+    private const float maxProjectileSpeed = 10.0f;
+
     public override bool Enter(params ConsumerData[] parameters)
     {
+        maxTime = minTime + (Main.rand.Next() % 15);
+        numProjectiles = 5 + (Main.rand.Next() % 5);
+
+        periodBetweenShots = maxTime / numProjectiles;
+
         return true;
     }
 
@@ -315,16 +327,77 @@ internal class Consumer_PhaseOneBookOfSkullsAttackState : BossState
 
     }
 
+    int numProjectiles;
+    int periodBetweenShots;
+    int periodBetweenShotsAdjusted;
+    int numShot;
+    Vector2 savedPosition;
+    Player target;
+
+    float angle = MathHelper.PiOver4;
     public override bool Update(params ConsumerData[] parameters)
     {
         if (!activated)
         {
             activated = true;
+
+            stateData.ThisNPC.TargetClosest();
+            target = Main.player[stateData.ThisNPC.target];
+            savedPosition = target.Center;
+
+            periodBetweenShotsAdjusted = periodBetweenShots;
+
             Main.NewText("Book of Skulls!");
+            SoundEngine.PlaySound(SoundID.AbigailUpgrade, stateData.ThisNPC.Center);
         }
 
-        stateData.ModNPC.SyncState();
-        PopSelf();
+        if (timer++ < maxTime)
+        {
+            if (timer % periodBetweenShotsAdjusted == 0 && ++numShot <= numProjectiles)
+            {
+                Vector2 targetPosition = savedPosition; // todo: account for edge cases here
+
+                Vector2 direction = targetPosition - stateData.ThisNPC.Center;
+                direction.Normalize();
+
+                float quotient = Math.Clamp(1 - (numShot / (float)numProjectiles), 0.2f, 1.0f);
+                float speed = 10.0f * quotient;
+                direction *= speed;
+
+                angle *= quotient;
+                Vector2 projectileDirection = direction.RotatedBy(angle * -stateData.ThisNPC.direction);
+
+                var proj = Projectile.NewProjectileDirect(stateData.ThisNPC.GetSource_FromThis(), stateData.ThisNPC.Center, projectileDirection, ProjectileID.BookOfSkullsSkull, 20, 1f, 0);
+                proj.friendly = false;
+                proj.hostile = true;
+                proj.timeLeft = 60 * 10;
+                var gProj = proj.GetGlobalProjectile<ModifyProjectiles>();
+                gProj.consumerMark = stateData.ThisNPC.whoAmI;
+                gProj.shouldDieOnHitInstantly = true;
+                gProj.target = target.whoAmI;
+
+                stateData.ThisNPC.velocity += projectileDirection * -0.1f;
+
+                var id = SoundEngine.PlaySound(SoundID.DD2_SkeletonSummoned, stateData.ThisNPC.Center);
+                var sound = SoundEngine.GetActiveSound(id) ?? throw new Exception("Failed to get sound from SoundEngine after playing it.");
+                sound.Pitch = Main.rand.NextFloat();
+                sound.Volume += .5f;
+
+                sound.Sound.dspSettings = new FAudio.F3DAUDIO_DSP_SETTINGS();
+                sound.Sound.dspSettings.DopplerFactor = 1.0f;
+
+                // todo: move this elsewhere
+                var style = sound.Style;
+                style.MaxInstances = style.MaxInstances == 0 ? 1 : style.MaxInstances;
+                sound.Style = style;
+            }
+        }
+        else
+        {
+            Main.NewText("Book of Skulls finished", Color.Red);
+            stateData.ModNPC.SyncState();
+            PopSelf();
+        }
 
         return true;
     }
