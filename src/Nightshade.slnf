@@ -9,6 +9,8 @@
       "common\\SourceGenerator\\SourceGenerator.csproj",
       "libs\\Daybreak\\Daybreak.csproj",
       "nightshade\\Nightshade\\Nightshade.csproj",
+      "PostCompiler\\PostCompiler.csproj",
+      "PreCompiler\\PreCompiler.csproj",
       "shader-reader\\ShaderDecompiler.csproj"
     ]
   }
