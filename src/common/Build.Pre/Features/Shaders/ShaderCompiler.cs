@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 
 using Build.Shared;
@@ -94,7 +95,7 @@ internal sealed class ShaderCompiler : BuildTask
             return;
         }
 
-        Console.Error.WriteLine($"{filePath}: error SHADERC: fxc.exe exited with code {process.ExitCode}");
+        // Console.Error.WriteLine($"{filePath}: error SHADERC: fxc.exe exited with code {process.ExitCode}");
         Environment.ExitCode = process.ExitCode;
     }
 
@@ -105,12 +106,22 @@ internal sealed class ShaderCompiler : BuildTask
             return;
         }
 
+        if (IgnorableMessage(message))
+        {
+            return;
+        }
+
         Console.WriteLine(message);
     }
 
     private static void PrintError(string? message, string filePath)
     {
         if (string.IsNullOrEmpty(message))
+        {
+            return;
+        }
+
+        if (IgnorableMessage(message))
         {
             return;
         }
@@ -140,5 +151,28 @@ internal sealed class ShaderCompiler : BuildTask
         }
 
         Console.Error.WriteLine($"{filePath}: error SHADERC: {message}");
+    }
+
+    private static bool IgnorableMessage(string message)
+    {
+        // Ignore warning X4717 "Effects deprecated for D3DCompiler_47"
+        if (message.Contains("X4717") && message.Contains("Effects deprecated for D3DCompiler_47"))
+        {
+            return true;
+        }
+
+        // Ignore annoying startup messages about copyright.
+        if (message.StartsWith("Microsoft (R)") || message.StartsWith("Copyright (C)"))
+        {
+            return true;
+        }
+
+        // Ignore save success messages.
+        if (message.StartsWith("compilation object save succeeded"))
+        {
+            return true;
+        }
+
+        return false;
     }
 }
