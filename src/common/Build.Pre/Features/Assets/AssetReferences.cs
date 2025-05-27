@@ -83,6 +83,12 @@ internal sealed class EffectReference : IAssetReference
         sb.AppendLine($"{indent}    {{");
         foreach (var param in effect.Parameters)
         {
+            if (param.Value.Name == "uTime")
+            {
+                sb.AppendLine($"{indent}        parameters[\"{param.Value.Name}\"]?.SetValue(Terraria.Main.GlobalTimeWrappedHourly);");
+                continue;
+            }
+
             sb.AppendLine($"{indent}        parameters[\"{param.Value.Name}\"]?.SetValue({param.Value.Name});");
         }
         sb.AppendLine($"{indent}    }}");

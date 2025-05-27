@@ -1552,7 +1552,7 @@ internal static class AssetReferences
                         {
                             parameters["uImage0"]?.SetValue(uImage0);
                             parameters["uSource"]?.SetValue(uSource);
-                            parameters["uTime"]?.SetValue(uTime);
+                            parameters["uTime"]?.SetValue(Terraria.Main.GlobalTimeWrappedHourly);
                             parameters["uPixel"]?.SetValue(uPixel);
                         }
                     }
@@ -1594,7 +1594,7 @@ internal static class AssetReferences
                         public void Apply(Microsoft.Xna.Framework.Graphics.EffectParameterCollection parameters)
                         {
                             parameters["uImage0"]?.SetValue(uImage0);
-                            parameters["uTime"]?.SetValue(uTime);
+                            parameters["uTime"]?.SetValue(Terraria.Main.GlobalTimeWrappedHourly);
                             parameters["uSource"]?.SetValue(uSource);
                             parameters["uHoverIntensity"]?.SetValue(uHoverIntensity);
                             parameters["uPixel"]?.SetValue(uPixel);
