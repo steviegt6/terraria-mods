@@ -46,9 +46,9 @@ internal class Consumer_PhaseOneBasicTransitionState : BossState
 
     private Dictionary<AttackType, float> attackList = new()
     {
-        { AttackType.Propel, 0.25f },
+        { AttackType.Propel, 0.25f }, // todo: visuals, slam attack maybe?
         { AttackType.Flurry, 0.25f }, // todo: rain
-        { AttackType.BookOfSkulls, 0.25f },
+        { AttackType.BookOfSkulls, 0.25f }, // todo: book functionality
         { AttackType.MaggotBall, 0.25f } // todo: do
     };
 
@@ -58,7 +58,7 @@ internal class Consumer_PhaseOneBasicTransitionState : BossState
         {
             activated = true;
             Main.NewText("The Consumer is transitioning to Phase One!");
-            PopSelf(); // make it so we are fated to die!
+            PopSelf(); // make it so we are fated to die! 
         }
 
         WeightedRandom<AttackType> random = new WeightedRandom<AttackType>();
@@ -136,44 +136,95 @@ internal class Consumer_PhaseOnePropelAttackState : BossState
 
     }
 
-    Vector2 Jump(NPC npc, Vector2 targetPosition, float speed, float acceleration, float time, float gravity)
+    Vector2 Jump(NPC npc, Vector2 targetPosition, float gravity, float angle, float? specifiedTimeToTarget = null)
     {
-        // ugh, something is wrong here
-
         Vector2 direction = targetPosition - npc.Center;
         float distance = direction.Length();
         direction.Normalize();
 
-        float angleRadians = MathHelper.ToRadians(45); // angle, generalize later
-        float dragCoefficient = 0.00f; // generalize later
+        float angleRadians = angle;
 
-        float initialVelocityMagnitude = (float)Math.Sqrt((distance * gravity) / Math.Sin(2 * angleRadians));
+        float timeToTarget = specifiedTimeToTarget ?? (float)Math.Sqrt((2 * distance) / gravity);
+        float initialVelocityMagnitude = distance / timeToTarget;
         Vector2 initialVelocity = direction * initialVelocityMagnitude;
 
-        float timeToTarget = distance / initialVelocityMagnitude;
         initialVelocity.Y -= gravity * timeToTarget / 2;
 
-        float dragFactor = (float)Math.Exp(-dragCoefficient * timeToTarget);
-        initialVelocity *= dragFactor;
+        Vector2 position = npc.Center;
+        Vector2 velocity = initialVelocity;
+        float timeStep = 1f / 60f;
+
+        for (float t = 0; t < timeToTarget; t += timeStep)
+        {
+            position += velocity * timeStep;
+            velocity.Y += gravity * timeStep;
+
+            if (Collision.SolidCollision(position, 1, 1))
+            {
+                return Vector2.Zero; // stop fucking hiding!!!!!!!!!!!!!!!!!!!!!!!
+            }
+        }
 
         return initialVelocity;
+    }
+
+    float FindLaunchAngle(NPC npc, Vector2 targetPosition, float gravity)
+    {
+        Vector2 direction = targetPosition - npc.Center;
+        float distance = direction.Length();
+        float heightDifference = npc.Center.Y - targetPosition.Y;
+
+        float velocitySquared = (distance * gravity) / MathF.Sin(MathHelper.PiOver4);
+        if (velocitySquared <= 0) return MathHelper.PiOver4;
+
+        float velocity = MathF.Sqrt(velocitySquared);
+
+        float discriminant = (velocity * velocity * velocity * velocity) - gravity * (gravity * distance * distance - 2 * heightDifference * velocity * velocity);
+        if (discriminant < 0) return MathHelper.PiOver4; // no solution
+
+        float angle1 = MathF.Atan((velocity * velocity + MathF.Sqrt(discriminant)) / (gravity * distance));
+        float angle2 = MathF.Atan((velocity * velocity - MathF.Sqrt(discriminant)) / (gravity * distance));
+
+        if (float.IsNaN(angle1) || float.IsNaN(angle2))
+        {
+            return MathHelper.PiOver4; // what are we doing here?
+        }
+
+        return MathF.Abs(MathF.Max(angle1, angle2));
     }
 
     public override bool Update(params ConsumerData[] parameters)
     {
         if (!activated)
         {
+
             activated = true;
+            stateData.ThisNPC.TargetClosest();
+            ConsumerOfSouls.gravity = 0.2f;
+            float gravity = ConsumerOfSouls.gravity;
             Main.NewText("Water rocket!");
-            stateData.ThisNPC.velocity += Jump(stateData.ThisNPC, Main.player[stateData.ThisNPC.target].Center, 1f, 1f, 0.5f, 0.1f);
-            stateData.ThisNPC.noGravity = true;
+            float angle = FindLaunchAngle(stateData.ThisNPC, Main.player[stateData.ThisNPC.target].Center, gravity);
+            Main.NewText($"Calculated launch angle: {MathHelper.ToDegrees(angle)} degrees", Color.Green);
+
+
+            if ((stateData.ThisNPC.velocity = Jump(stateData.ThisNPC, Main.player[stateData.ThisNPC.target].Center, gravity, angle, 120f)) != Vector2.Zero)
+            {
+                Main.NewText("Jump is possible", Color.Green);
+
+            }
+            else
+            {
+                Main.NewText("Jump is impossible", Color.Red);
+
+                // todo: teleport
+                stateData.ThisNPC.position = Main.player[stateData.ThisNPC.target].Center + new Vector2(0, -stateData.ThisNPC.height);
+            }
 
             SoundEngine.PlaySound(SoundID.AbigailCry, stateData.ThisNPC.Center);
         }
 
         if (timer++ < maxTime)
         {
-            // do nothing
             if (timer % (maxTime / 4) == 0)
             {
                 SoundEngine.PlaySound(SoundID.ShimmerWeak1, stateData.ThisNPC.Center);
@@ -188,6 +239,11 @@ internal class Consumer_PhaseOnePropelAttackState : BossState
         }
         else
         {
+            if (stateData.ThisNPC.velocity.Y != 0f && !stateData.ThisNPC.collideY)
+            {
+                return true;
+            }
+            SoundEngine.PlaySound(SoundID.DD2_SkeletonDeath, stateData.ThisNPC.Center);
             Main.NewText("Water rocket finished", Color.Red);
             stateData.ModNPC.SyncState();
             PopSelf();
@@ -307,12 +363,12 @@ internal class Consumer_PhaseOneFlurryAttackState : BossState
 // The consumer summons book of skulls projectiles around her to home in on the player
 internal class Consumer_PhaseOneBookOfSkullsAttackState : BossState
 {
-    private const int minTime = 360;
+    private const int minTime = 60;
     private const float maxProjectileSpeed = 10.0f;
 
     public override bool Enter(params ConsumerData[] parameters)
     {
-        maxTime = minTime + (Main.rand.Next() % 15) - 200;
+        maxTime = minTime + (Main.rand.Next() % 15);
         numProjectiles = 5 + (Main.rand.Next() % 5);
 
         periodBetweenShots = maxTime / numProjectiles;
@@ -368,10 +424,10 @@ internal class Consumer_PhaseOneBookOfSkullsAttackState : BossState
                 direction.Normalize();
 
                 float quotient = Math.Clamp(1 - (numShot / (float)numProjectiles), 0.2f, 1.0f);
-                float speed = 10.0f;
+                float speed = 2.0f;
                 direction *= speed;
 
-                Vector2 position = stateData.ThisNPC.Center + ((Vector2.One * stateData.ThisNPC.direction).RotatedBy((MathHelper.TwoPi / numProjectiles) * numShot) * 64f);
+                Vector2 position = stateData.ThisNPC.Center + ((Vector2.One * stateData.ThisNPC.direction).RotatedBy((MathHelper.TwoPi / (numProjectiles)) * numShot) * 64f);
                 angle *= quotient;
                 Vector2 projectileDirection = direction;
 
@@ -397,6 +453,7 @@ internal class Consumer_PhaseOneBookOfSkullsAttackState : BossState
                 var style = sound.Style;
                 style.MaxInstances = style.MaxInstances == 0 ? 1 : style.MaxInstances;
                 sound.Style = style;
+
             }
         }
         else

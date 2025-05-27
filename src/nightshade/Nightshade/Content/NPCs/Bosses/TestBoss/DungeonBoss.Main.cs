@@ -38,6 +38,7 @@ internal abstract class BossState : State<ConsumerData>
 
 public class ConsumerOfSouls : ModNPC
 {
+    internal static float gravity = 1f;
     private ConsumerData _data = new();
     private StateController<ConsumerData> StateController { get; set; } = new();
     private BossState? currentState => StateController.CurrentState as BossState;
@@ -77,7 +78,7 @@ public class ConsumerOfSouls : ModNPC
     public override void AI()
     {
         base.AI();
-        NPC.velocity += new Vector2(0, 0.1f); // fall down
+        NPC.velocity += new Vector2(0, gravity); // fall down
 
         // todo: find a better way to do this and then remove
         bool tileBelow = Main.tileSolid[(int)Main.tile[(int)(NPC.position.X / 16), (int)((NPC.position.Y + 23) / 16)].TileType] ||
