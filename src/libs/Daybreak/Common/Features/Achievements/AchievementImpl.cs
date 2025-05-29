@@ -473,17 +473,17 @@ internal sealed class AchievementImpl : ModSystem
             [NotNullWhen(returnValue: true)] out string? subName
         )
         {
-            try
-            {
-                ModContent.SplitName(name, out domain, out subName);
-                return true;
-            }
-            catch
+            var length = name.IndexOfAny(ModContent.nameSplitters);
+            if (length < 0)
             {
                 domain = null;
                 subName = null;
                 return false;
             }
+
+            domain = name[..length];
+            subName = name[(length + 1)..];
+            return true;
         }
     }
 
