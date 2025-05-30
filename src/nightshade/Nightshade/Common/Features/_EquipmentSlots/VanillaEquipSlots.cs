@@ -7,19 +7,14 @@ using Terraria.GameContent;
 using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.Localization;
+using Terraria.ModLoader;
 using Terraria.UI;
 
 namespace Nightshade.Common.Features;
 
+[Autoload(false)]
 internal abstract class VanillaEquipSlot : EquipSlot
 {
-    public override CustomItemSlotContext GetContext()
-    {
-        return CustomItemSlotContext.CreateVanillaContext(GetVanillaContext());
-    }
-
-    protected abstract int GetVanillaContext();
-
     public override void HandleToggle(ref Texture2D toggleButton, Rectangle toggleRect, Point mouseLoc, ref string? hoverText, ref bool toggleHovered)
     {
         if (IsEffectHidden)
@@ -71,7 +66,7 @@ internal sealed class PetSlot : VanillaEquipSlot
 
     public override bool IsEffectHidden => Main.LocalPlayer.hideMisc[0];
 
-    protected override int GetVanillaContext()
+    public override int GetContext()
     {
         return ItemSlot.Context.EquipPet;
     }
@@ -95,7 +90,7 @@ internal sealed class LightPetSlot : VanillaEquipSlot
 
     public override bool IsEffectHidden => Main.LocalPlayer.hideMisc[1];
 
-    protected override int GetVanillaContext()
+    public override int GetContext()
     {
         return ItemSlot.Context.EquipLight;
     }
@@ -117,7 +112,7 @@ internal sealed class MinecartSlot : VanillaEquipSlot
 {
     public override bool CanBeToggled => Main.LocalPlayer.unlockedSuperCart;
 
-    protected override int GetVanillaContext()
+    public override int GetContext()
     {
         return ItemSlot.Context.EquipMinecart;
     }
@@ -175,7 +170,7 @@ internal sealed class MinecartSlot : VanillaEquipSlot
 
 internal sealed class MountSlot : VanillaEquipSlot
 {
-    protected override int GetVanillaContext()
+    public override int GetContext()
     {
         return ItemSlot.Context.EquipMount;
     }
@@ -188,7 +183,7 @@ internal sealed class MountSlot : VanillaEquipSlot
 
 internal sealed class HookSlot : VanillaEquipSlot
 {
-    protected override int GetVanillaContext()
+    public override int GetContext()
     {
         return ItemSlot.Context.EquipGrapple;
     }

@@ -1,38 +1,25 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-
-using Terraria;
-using Terraria.UI;
+using Terraria.ModLoader;
 
 namespace Nightshade.Common.Features;
 
-public static class CustomItemSlot
+internal abstract class CustomItemSlot : ModType
 {
-    public static CustomItemSlotContext? CurrentContext { get; private set; }
+    public int Type { get; internal set; }
 
-    public static void Handle(ref Item inv, CustomItemSlotContext context)
+    protected sealed override void Register()
     {
-        try
-        {
-            CurrentContext = context;
-            ItemSlot.Handle(ref inv, context.VanillaContext);
-        }
-        finally
-        {
-            CurrentContext = null;
-        }
+        ItemSlotLoader.Register(this);
     }
 
-    public static void Draw(SpriteBatch spriteBatch, ref Item inv, CustomItemSlotContext context, Vector2 position, Color lightColor = default)
+    protected sealed override void InitTemplateInstance()
     {
-        try
-        {
-            CurrentContext = context;
-            ItemSlot.Draw(spriteBatch, ref inv, context.VanillaContext, position, lightColor);
-        }
-        finally
-        {
-            CurrentContext = null;
-        }
+        base.InitTemplateInstance();
+    }
+
+    public sealed override void SetupContent()
+    {
+        base.SetupContent();
+
+        SetStaticDefaults();
     }
 }

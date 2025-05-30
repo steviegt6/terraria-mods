@@ -26,7 +26,7 @@ internal sealed class EquipSlotLoader : ModSystem
 
     public static EquipSlot Hook { get; } = new HookSlot();
 
-    private readonly List<EquipSlot> slots =
+    internal static readonly List<EquipSlot> SLOTS =
     [
         Pet,
         LightPet,
@@ -42,7 +42,7 @@ internal sealed class EquipSlotLoader : ModSystem
         IL_Main.DrawInventory += DrawInventory_ReplaceVanillaMiscSlotDrawing;
     }
 
-    private void DrawInventory_ReplaceVanillaMiscSlotDrawing(ILContext il)
+    private static void DrawInventory_ReplaceVanillaMiscSlotDrawing(ILContext il)
     {
         var c = new ILCursor(il);
 
@@ -75,7 +75,7 @@ internal sealed class EquipSlotLoader : ModSystem
     }
 
     // Modified from Main::DrawInventory.
-    private void ManuallyDrawMiscSlots()
+    private static void ManuallyDrawMiscSlots()
     {
         var mouseLoc = new Point(Main.mouseX, Main.mouseY);
 
@@ -88,16 +88,16 @@ internal sealed class EquipSlotLoader : ModSystem
         {
             backPanelSize.X = xPos + i * -47;
 
-            for (var slot = 0; slot < slots.Count; slot++)
+            for (var slot = 0; slot < SLOTS.Count; slot++)
             {
-                var context = slots[slot].GetContext();
-                var canBeToggled = slots[slot].CanBeToggled;
+                var context = SLOTS[slot].GetContext();
+                var canBeToggled = SLOTS[slot].CanBeToggled;
 
-                ref var item = ref slots[slot].GetItem(i == 1);
+                ref var item = ref SLOTS[slot].GetItem(i == 1);
 
                 if (i == 1)
                 {
-                    context = CustomItemSlotContext.CreateVanillaContext(ItemSlot.Context.EquipMiscDye);
+                    context = ItemSlot.Context.EquipMiscDye;
                     canBeToggled = false;
                 }
 
@@ -109,26 +109,26 @@ internal sealed class EquipSlotLoader : ModSystem
                 var hoverText = default(string);
                 if (canBeToggled)
                 {
-                    slots[slot].HandleToggle(ref toggleButton, toggleRect, mouseLoc, ref hoverText, ref toggleHovered);
+                    SLOTS[slot].HandleToggle(ref toggleButton, toggleRect, mouseLoc, ref hoverText, ref toggleHovered);
                 }
 
                 if (backPanelSize.Contains(mouseLoc) && !toggleHovered && !PlayerInput.IgnoreMouseInterface)
                 {
                     Main.LocalPlayer.mouseInterface = true;
                     Main.armorHide = true;
-                    CustomItemSlot.Handle(ref item, context);
+                    ItemSlot.Handle(ref item, context);
                 }
 
-                CustomItemSlot.Draw(Main.spriteBatch, ref item, context, backPanelSize.TopLeft());
+                ItemSlot.Draw(Main.spriteBatch, ref item, context, backPanelSize.TopLeft());
 
                 if (canBeToggled)
                 {
-                    slots[slot].DrawToggle(hoverText, toggleButton, toggleRect);
+                    SLOTS[slot].DrawToggle(hoverText, toggleButton, toggleRect);
                 }
             }
         }
 
-        yPos += 247;
+        yPos += 47 * SLOTS.Count + 12;
         xPos += 8;
 
         var buffsDrawn = 0;
