@@ -1674,6 +1674,36 @@ internal static class AssetReferences
         {
             public static class Misc
             {
+                public static class BasicPixelizationShader
+                {
+                    public sealed class Parameters : IShaderParameters
+                    {
+                        public float uPixel { get; set; }
+
+                        public Microsoft.Xna.Framework.Vector2 uSize { get; set; }
+
+                        public Microsoft.Xna.Framework.Graphics.Texture2D? uImage0 { get; set; }
+
+                        public void Apply(Microsoft.Xna.Framework.Graphics.EffectParameterCollection parameters)
+                        {
+                            parameters["uPixel"]?.SetValue(uPixel);
+                            parameters["uSize"]?.SetValue(uSize);
+                            parameters["uImage0"]?.SetValue(uImage0);
+                        }
+                    }
+
+                    public const string KEY = "Nightshade/Assets/Shaders/Misc/BasicPixelizationShader";
+
+                    public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Effect> Asset => lazy.Value;
+
+                    private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Effect>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Effect>(KEY));
+
+                    public static WrapperShaderData<Parameters> CreateStripShader()
+                    {
+                        return new WrapperShaderData<Parameters>(Asset, "StripShader");
+                    }
+                }
+
                 public static class VanillaVertexStripShader
                 {
                     public sealed class Parameters : IShaderParameters

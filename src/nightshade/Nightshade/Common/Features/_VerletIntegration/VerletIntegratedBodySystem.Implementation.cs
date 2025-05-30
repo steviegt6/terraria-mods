@@ -18,12 +18,12 @@ internal partial class VerletIntegratedBodySystem : ModSystem
         {
             if (body.IsActive)
             {
-#region Update
                 for (int i = 0; i < body.Links.Count; i++)
                 {
                     VerletIntegratedBody.Link link = body.Links[i];
                     VerletIntegratedBody.Link newLink = link;
 
+                    #region Solve constraints
                     for (int j = 0; j < constraint_iteration_amount; j++)
                     {
                         Vector2 difference = body.Points[newLink.FirstPointIndex].Position - body.Points[newLink.SecondPointIndex].Position;
@@ -42,6 +42,7 @@ internal partial class VerletIntegratedBodySystem : ModSystem
                         newSecondPoint.Position -= difference * secondScalar * distanceScalar;
                         body.Points[newLink.SecondPointIndex] = newSecondPoint;
                     }
+                    #endregion
 
                     link = newLink;
                 }
@@ -50,21 +51,24 @@ internal partial class VerletIntegratedBodySystem : ModSystem
                     VerletIntegratedBody.Point point = body.Points[i];
                     VerletIntegratedBody.Point newPoint = point;
 
+                    #region Point gravity
                     newPoint.Acceleration = body.GravityForce;// * point.Mass / point.Mass;
 
                     Vector2 velocity = newPoint.Position - newPoint.PreviousPosition;
                     velocity *= newPoint.DampingAmount;
                     newPoint.PreviousPosition = newPoint.Position;
                     newPoint.Position = newPoint.Position + velocity + newPoint.Acceleration * 0.5f;
+                    #endregion
 
+                    #region Pin points
                     if (newPoint.IsPinned)
                     {
                         newPoint.Position = newPoint.PreviousPosition = newPoint.PinnedPosition;
                     }
+                    #endregion
 
                     point = newPoint;
                 }
-#endregion
             }
         }
     }
