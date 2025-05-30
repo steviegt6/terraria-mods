@@ -7,6 +7,7 @@ using Terraria.GameContent;
 using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.Localization;
+using Terraria.UI;
 
 namespace Nightshade.Common.Features;
 
@@ -65,7 +66,7 @@ internal sealed class PetSlot : VanillaEquipSlot
 
     public override int GetContext()
     {
-        return 19;
+        return ItemSlot.Context.EquipPet;
     }
 
     protected override void OnToggle()
@@ -84,7 +85,7 @@ internal sealed class LightPetSlot : VanillaEquipSlot
 
     public override int GetContext()
     {
-        return 20;
+        return ItemSlot.Context.EquipLight;
     }
 
     protected override void OnToggle()
@@ -101,7 +102,7 @@ internal sealed class MinecartSlot : VanillaEquipSlot
 
     public override int GetContext()
     {
-        return 18;
+        return ItemSlot.Context.EquipMinecart;
     }
 
     public override void HandleToggle(ref Texture2D toggleButton, Rectangle toggleRect, Point mouseLoc, ref string? hoverText, ref bool toggleHovered)
@@ -154,7 +155,7 @@ internal sealed class MountSlot : VanillaEquipSlot
 {
     public override int GetContext()
     {
-        return 17;
+        return ItemSlot.Context.EquipMount;
     }
 }
 
@@ -162,6 +163,6 @@ internal sealed class HookSlot : VanillaEquipSlot
 {
     public override int GetContext()
     {
-        return 16;
+        return ItemSlot.Context.EquipGrapple;
     }
 }
