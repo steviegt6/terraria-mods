@@ -50,6 +50,11 @@ internal sealed class VanityCursorSlot : EquipSlot
             // TODO
             // context = vanilla_context;
 
+            if (checkItem.type == ItemID.None || VanityCursorSets.IsVanityCursor[checkItem.type])
+            {
+                return 1;
+            }
+
             return base.PrePickItemMovementAction(item, ref context, checkItem);
         }
 
@@ -89,24 +94,16 @@ internal sealed class VanityCursorSlot : EquipSlot
             Main.hoverItemName = Mods.Nightshade.UI.VanityCursor.GetTextValue();
         }
 
-        public override bool PreSwapEquip(Item item, ref int context)
+        public override bool TryHandleSwap(ref Item item, int incomingContext, Player player)
         {
-            var player = Main.LocalPlayer;
-
-            if (ItemSlot.isEquipLocked(item.type) || item.IsAir)
-            {
-                return false;
-            }
-
-            item = ItemSlot.EquipSwap(item, player.GetModPlayer<VanityCursorPlayer>().Vanity, 0, out var success);
+            item = ItemSlot.EquipSwap(item, Main.LocalPlayer.GetModPlayer<VanityCursorPlayer>().Vanity, 0, out var success);
             if (success)
             {
                 Main.EquipPageSelected = 2;
                 AchievementsHelper.HandleOnEquip(player, item, Type);
             }
 
-            Recipe.FindRecipes();
-            return false;
+            return base.TryHandleSwap(ref item, incomingContext, player);
         }
     }
 

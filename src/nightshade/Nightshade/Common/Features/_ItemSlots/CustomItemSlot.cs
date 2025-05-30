@@ -97,4 +97,9 @@ internal abstract class CustomItemSlot : ModType
     }
 
     public virtual void PostOverrideHover(Item item, int context) { }
+
+    public virtual bool TryHandleSwap(ref Item item, int incomingContext, Player player)
+    {
+        return false;
+    }
 }

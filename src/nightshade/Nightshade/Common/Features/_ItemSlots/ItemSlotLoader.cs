@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -7,6 +8,8 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoMod.Cil;
 
 using Terraria;
+using Terraria.GameContent.Achievements;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
 
@@ -255,7 +258,7 @@ internal sealed class ItemSlotLoader : ModSystem
         var itemSlot = GetItemSlot(context);
         if (itemSlot is null)
         {
-            orig(inv, context, slot);
+            SwapEquipWithOurAdditionalHook(inv, context, slot);
             return;
         }
 
@@ -264,8 +267,103 @@ internal sealed class ItemSlotLoader : ModSystem
             return;
         }
 
-        orig(inv, context, slot);
+        SwapEquipWithOurAdditionalHook(inv, context, slot);
         itemSlot.PostSwapEquip(inv[slot], context);
+
+        return;
+
+        static void SwapEquipWithOurAdditionalHook(Item[] inv, int context, int slot)
+        {
+            var player = Main.player[Main.myPlayer];
+            if (ItemSlot.isEquipLocked(inv[slot].type) || inv[slot].IsAir)
+            {
+                return;
+            }
+
+            var success = false;
+            if (inv[slot].dye > 0)
+            {
+                inv[slot] = ItemSlot.DyeSwap(inv[slot], out success);
+                if (success)
+                {
+                    Main.EquipPageSelected = 0;
+                    AchievementsHelper.HandleOnEquip(player, inv[slot], 12);
+                }
+            }
+            else if (Main.projHook[inv[slot].shoot])
+            {
+                inv[slot] = ItemSlot.EquipSwap(inv[slot], player.miscEquips, 4, out success);
+                if (success)
+                {
+                    Main.EquipPageSelected = 2;
+                    AchievementsHelper.HandleOnEquip(player, inv[slot], 16);
+                }
+            }
+            else if (inv[slot].mountType != -1 && !MountID.Sets.Cart[inv[slot].mountType])
+            {
+                inv[slot] = ItemSlot.EquipSwap(inv[slot], player.miscEquips, 3, out success);
+                if (success)
+                {
+                    Main.EquipPageSelected = 2;
+                    AchievementsHelper.HandleOnEquip(player, inv[slot], 17);
+                }
+            }
+            else if (inv[slot].mountType != -1 && MountID.Sets.Cart[inv[slot].mountType])
+            {
+                inv[slot] = ItemSlot.EquipSwap(inv[slot], player.miscEquips, 2, out success);
+                if (success)
+                {
+                    Main.EquipPageSelected = 2;
+                }
+            }
+            else if (inv[slot].buffType > 0 && Main.lightPet[inv[slot].buffType])
+            {
+                inv[slot] = ItemSlot.EquipSwap(inv[slot], player.miscEquips, 1, out success);
+                if (success)
+                {
+                    Main.EquipPageSelected = 2;
+                }
+            }
+            else if (inv[slot].buffType > 0 && Main.vanityPet[inv[slot].buffType])
+            {
+                inv[slot] = ItemSlot.EquipSwap(inv[slot], player.miscEquips, 0, out success);
+                if (success)
+                {
+                    Main.EquipPageSelected = 2;
+                }
+            }
+            else
+            {
+                foreach (var customSlot in item_slots)
+                {
+                    if (!customSlot.TryHandleSwap(ref inv[slot], context, player))
+                    {
+                        continue;
+                    }
+
+                    success = true;
+                    break;
+                }
+
+                if (!success)
+                {
+                    var item = inv[slot];
+                    inv[slot] = ItemSlot.ArmorSwap(inv[slot], out success);
+                    if (success)
+                    {
+                        Main.EquipPageSelected = 0;
+                        AchievementsHelper.HandleOnEquip(player, item, (item.accessory ? 10 : 8) * Math.Sign(context));
+                    }
+                }
+            }
+
+            Recipe.FindRecipes();
+
+            if (context == 3 && Main.netMode == NetmodeID.MultiplayerClient)
+            {
+                NetMessage.SendData(MessageID.SyncChestItem, -1, -1, null, player.chest, slot);
+            }
+        }
     }
 
     private static void OverrideHover(On_ItemSlot.orig_OverrideHover_ItemArray_int_int orig, Item[] inv, int context, int slot)
