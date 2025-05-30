@@ -45,14 +45,25 @@ internal sealed class MiscSlotLoader : ModSystem
             x => x.MatchLdcI4((int)EquipmentPageId.Misc)
         );
 
+        c.GotoNext(MoveType.Before, x => x.MatchLdloca(out _));
+        c.EmitDelegate(ManuallyDrawMiscSlots);
+
+        var pos = c.Index;
+
+        // Find the label needed to escape the if-else chain by going to the
+        // next, shorter clause.
+        c.GotoNext(
+            x => x.MatchLdsfld<Main>(nameof(Main.EquipPage)),
+            x => x.MatchLdcI4(1)
+        );
+
         ILLabel? label = null;
-        c.GotoNext(x => x.MatchBneUn(out label));
+        c.GotoNext(x => x.MatchBr(out label));
         {
             Debug.Assert(label is not null);
         }
 
-        c.GotoNext(MoveType.Before, x => x.MatchLdloca(out _));
-        c.EmitDelegate(ManuallyDrawMiscSlots);
+        c.Index = pos;
 
         c.EmitBr(label);
     }
