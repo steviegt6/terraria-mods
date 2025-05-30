@@ -1,5 +1,8 @@
+using Daybreak.Common.Features.Hooks;
+
 using Nightshade.Common.Features;
 
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -7,6 +10,8 @@ namespace Nightshade.Content.Items._Cursors;
 
 internal abstract class HairDyeCursor(int hairDye) : ModItem
 {
+    private readonly int hairDye = hairDye;
+
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
@@ -27,6 +32,20 @@ internal abstract class HairDyeCursor(int hairDye) : ModItem
         Item.hasVanityEffects = true;
 
         Item.maxStack = 1;
+    }
+
+    [OnLoad]
+    private static void UpdateVisibleAccessories()
+    {
+        On_Player.UpdateVisibleAccessory += (orig, self, slot, item, modded) =>
+        {
+            orig(self, slot, item, modded);
+
+            if (item.ModItem is HairDyeCursor hairDyeCursor)
+            {
+                self.GetModPlayer<VanityCursorPlayer>().HairDye = hairDyeCursor.hairDye;
+            }
+        };
     }
 }
 

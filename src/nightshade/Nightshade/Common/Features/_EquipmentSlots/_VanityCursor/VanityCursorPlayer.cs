@@ -15,12 +15,27 @@ public sealed class VanityCursorPlayer : ModPlayer
     public Item?[] Cursor = new Item?[2];
     public Item?[] Trail = new Item?[2];
 
+    public int Dye { get; set; }
+
+    public int HairDye { get; set; }
+
     public override void Initialize()
     {
         base.Initialize();
 
         Cursor = [new Item(), new Item()];
         Trail = [new Item(), new Item()];
+
+        Dye = -1;
+        HairDye = -1;
+    }
+
+    public override void ResetEffects()
+    {
+        base.ResetEffects();
+
+        Dye = -1;
+        HairDye = -1;
     }
 
     public override void SaveData(TagCompound tag)

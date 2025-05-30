@@ -96,7 +96,6 @@ internal sealed class VanityCursorSlot : EquipSlot
 
         public override bool TryHandleSwap(ref Item item, int incomingContext, Player player)
         {
-            Main.NewText("a");
             if (!VanityCursorSets.IsVanityCursor[item.type])
             {
                 return false;
