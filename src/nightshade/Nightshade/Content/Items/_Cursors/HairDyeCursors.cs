@@ -10,8 +10,6 @@ namespace Nightshade.Content.Items._Cursors;
 
 internal abstract class HairDyeCursor(int hairDye) : ModItem
 {
-    private readonly int hairDye = hairDye;
-
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
@@ -43,7 +41,7 @@ internal abstract class HairDyeCursor(int hairDye) : ModItem
 
             if (item.ModItem is HairDyeCursor hairDyeCursor)
             {
-                self.GetModPlayer<VanityCursorPlayer>().HairDye = hairDyeCursor.hairDye;
+                self.GetModPlayer<VanityCursorPlayer>().HairDye = hairDyeCursor.Item.hairDye;
             }
         };
     }

@@ -1,7 +1,15 @@
 using System.Diagnostics;
 using System.Linq;
 
+using Daybreak.Common.Rendering;
+
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+
 using Terraria;
+using Terraria.DataStructures;
+using Terraria.GameContent;
+using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -15,9 +23,92 @@ public sealed class VanityCursorPlayer : ModPlayer
     public Item?[] Cursor = new Item?[2];
     public Item?[] Trail = new Item?[2];
 
-    public int Dye { get; set; }
-
     public int HairDye { get; set; }
+
+    public override void Load()
+    {
+        base.Load();
+
+        On_Main.DrawThickCursor += DrawThickCursorWithEffects;
+        On_Main.DrawCursor += DrawCursorWithEffects;
+    }
+
+    private static Vector2 DrawThickCursorWithEffects(On_Main.orig_DrawThickCursor orig, bool smart)
+    {
+        ApplyEffect();
+        var res = orig(smart);
+        UnapplyEffect();
+
+        return res;
+    }
+
+    private static void DrawCursorWithEffects(On_Main.orig_DrawCursor orig, Vector2 bonus, bool smart)
+    {
+        ApplyEffect();
+        orig(bonus, smart);
+        UnapplyEffect();
+    }
+
+    private static Color origCursorColor;
+    private static SpriteBatchSnapshot? snapshot;
+
+    private static void ApplyEffect()
+    {
+        origCursorColor = Main.cursorColor;
+
+        // Could be in the main menu, etc.
+        if (!Main.LocalPlayer.TryGetModPlayer<VanityCursorPlayer>(out var player))
+        {
+            return;
+        }
+
+        var hasHairDye = player.HairDye > -1;
+        var hasDye = player.Cursor[1] is { IsAir: false, dye: > 0 };
+
+        if (hasHairDye || hasDye)
+        {
+            Main.spriteBatch.End(out var ss);
+            {
+                snapshot = ss;
+            }
+            
+            Main.spriteBatch.Begin(snapshot.Value with { SortMode = SpriteSortMode.Immediate });
+        }
+
+        var fakeDrawData = new DrawData
+        {
+            sourceRect = new Rectangle(0, 0, 24, 24),
+            position = Main.MouseScreen,
+            texture = TextureAssets.Cursors[0].Value,
+        };
+
+        if (hasHairDye)
+        {
+            var oldHairColor = Main.LocalPlayer.hairColor;
+            Main.LocalPlayer.hairColor = Color.White;
+            Main.cursorColor = GameShaders.Hair.GetColor(player.HairDye, Main.LocalPlayer, Color.White);
+            Main.LocalPlayer.hairColor = oldHairColor;
+            GameShaders.Hair.Apply(player.HairDye, Main.LocalPlayer, fakeDrawData);
+        }
+        
+        if (player.Cursor[1] is { IsAir: false, dye: > 0 } dyeItem)
+        {
+            Main.NewText(dyeItem.dye);
+            GameShaders.Armor.Apply(dyeItem.dye, Main.LocalPlayer, fakeDrawData);
+        }
+    }
+
+    private static void UnapplyEffect()
+    {
+        if (snapshot.HasValue)
+        {
+            Main.spriteBatch.Restart(snapshot.Value);
+            snapshot = null;
+        }
+        
+        Main.cursorColor = origCursorColor;
+        Main.pixelShader.CurrentTechnique.Passes[0].Apply();
+    }
 
     public override void Initialize()
     {
@@ -26,7 +117,6 @@ public sealed class VanityCursorPlayer : ModPlayer
         Cursor = [new Item(), new Item()];
         Trail = [new Item(), new Item()];
 
-        Dye = -1;
         HairDye = -1;
     }
 
@@ -34,7 +124,6 @@ public sealed class VanityCursorPlayer : ModPlayer
     {
         base.ResetEffects();
 
-        Dye = -1;
         HairDye = -1;
     }
 
