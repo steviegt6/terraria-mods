@@ -139,6 +139,92 @@ Items: {
 		Tooltip: ""
 	}
 
+	FourLeafClover: {
+		DisplayName: Four-Leaf Clover
+		Tooltip: Increases luck
+	}
+
+	RainbowHorseshoe: {
+		DisplayName: Rainbow Horseshoe
+		Tooltip:
+			'''
+			Increases jump height
+			Increases luck
+			Negates fall damage
+			'Magically delicious!'
+			'''
+	}
+
+	HallowedCharm: {
+		DisplayName: Hallowed Charm
+		Tooltip:
+			'''
+			Increases jump height and movement speed
+			Increases luck
+			Negates fall damage
+			Charge at full speed
+			'It's called clopping, dad'
+			'''
+	}
+
+	RabbitsFoot: {
+		DisplayName: Rabbit's Foot
+		Tooltip:
+			'''
+			The wearer can run faster
+			Increases luck
+			'''
+	}
+
+	TemporalVestige: {
+		DisplayName: Temporal Vestige
+		Tooltip:
+			'''
+			Allows the holder to do an improved double jump
+			Buffs last longer
+			'''
+	}
+
+	DriftersBoots: {
+		DisplayName: Drifter's Boots
+		Tooltip:
+			'''
+			The wearer can run super fast, and even faster on sand
+			Allows the wearer to quadruple jump
+			Buffs last longer
+			'''
+	}
+
+	SunGodEye: {
+		DisplayName: Eye of a Sun God
+		Tooltip: Inflicted debuffs deal more damage
+	}
+
+	RaBoots: {
+		DisplayName: Ra Boots
+		Tooltip:
+			'''
+			The wearer can run super fast, and even faster on sand
+			Allows the wearer to sextuple jump
+			Inflicted debuffs deal more damage
+			Buffs last longer
+			'''
+	}
+
+	Godspeed: {
+		DisplayName: Godspeed
+		Tooltip:
+			'''
+			The wearer can run super fast, and even faster on sand
+			Allows the wearer to septuple jump
+			Inflicted debuffs deal more damage
+			Buffs last longer
+			Increases jump height and movement speed
+			Increases luck
+			Allows flight and slow fall
+			'''
+	}
+
 	CactusSplashJug: {
 		DisplayName: Succulent Splash
 		Tooltip:
