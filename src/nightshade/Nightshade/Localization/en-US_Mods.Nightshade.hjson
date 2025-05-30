@@ -19,6 +19,8 @@ UI: {
 			BabyBlueSheep: babybluesheep
 		}
 	}
+
+	VanityCursor: Vanity Cursor
 }
 
 Items: {
