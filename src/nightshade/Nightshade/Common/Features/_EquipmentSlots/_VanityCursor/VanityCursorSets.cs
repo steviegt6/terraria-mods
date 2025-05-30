@@ -7,11 +7,16 @@ public sealed class VanityCursorSets : ModSystem
 {
     public static bool[] IsVanityCursor { get; private set; } = [];
 
+    public static bool[] IsCursorTrail { get; private set; } = [];
+
     public override void ResizeArrays()
     {
         base.ResizeArrays();
 
         IsVanityCursor = ItemID.Sets.Factory.CreateNamedSet("IsVanityCursor")
                                .RegisterBoolSet(ItemID.RainbowCursor);
+
+        IsCursorTrail = ItemID.Sets.Factory.CreateNamedSet("IsCursorTrail")
+                              .RegisterBoolSet();
     }
 }

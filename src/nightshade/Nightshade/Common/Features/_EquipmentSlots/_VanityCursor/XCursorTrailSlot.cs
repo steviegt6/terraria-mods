@@ -11,9 +11,10 @@ using Terraria.UI;
 
 namespace Nightshade.Common.Features;
 
-internal sealed class VanityCursorSlot : EquipSlot
+// X for forcing sorting
+internal sealed class XCursorTrailSlot : EquipSlot
 {
-    private sealed class VanityCursorSlotContext : CustomItemSlot
+    private sealed class CursorTrailSlotContext : CustomItemSlot
     {
         private const int vanilla_context = ItemSlot.Context.EquipGrapple;
 
@@ -50,7 +51,7 @@ internal sealed class VanityCursorSlot : EquipSlot
             // TODO
             // context = vanilla_context;
 
-            if (checkItem.type == ItemID.None || VanityCursorSets.IsVanityCursor[checkItem.type])
+            if (checkItem.type == ItemID.None || VanityCursorSets.IsCursorTrail[checkItem.type])
             {
                 return 1;
             }
@@ -74,7 +75,7 @@ internal sealed class VanityCursorSlot : EquipSlot
 
         public override bool ModifyIcon(SpriteBatch spriteBatch, ref Texture2D texture, ref Vector2 position, ref Rectangle? sourceRectangle, ref Color color, ref float rotation, ref Vector2 origin, ref float scale, ref SpriteEffects effects)
         {
-            texture = Assets.Images.UI.Cursor_Slot.Asset.Value;
+            texture = Assets.Images.UI.CursorTrail_Slot.Asset.Value;
             sourceRectangle = null;
 
             return base.ModifyIcon(spriteBatch, ref texture, ref position, ref sourceRectangle, ref color, ref rotation, ref origin, ref scale, ref effects);
@@ -91,12 +92,12 @@ internal sealed class VanityCursorSlot : EquipSlot
         {
             base.PostMouseHover(item, context);
 
-            Main.hoverItemName = Mods.Nightshade.UI.VanityCursor.GetTextValue();
+            Main.hoverItemName = Mods.Nightshade.UI.VanityCursorTrail.GetTextValue();
         }
 
         public override bool TryHandleSwap(ref Item item, int incomingContext, Player player)
         {
-            item = ItemSlot.EquipSwap(item, Main.LocalPlayer.GetModPlayer<VanityCursorPlayer>().Cursor, 0, out var success);
+            item = ItemSlot.EquipSwap(item, Main.LocalPlayer.GetModPlayer<VanityCursorPlayer>().Trail, 0, out var success);
             if (success)
             {
                 Main.EquipPageSelected = 2;
@@ -110,11 +111,11 @@ internal sealed class VanityCursorSlot : EquipSlot
     public override ref Item GetItem(bool dye)
     {
         var vanityCursorPlayer = Main.LocalPlayer.GetModPlayer<VanityCursorPlayer>();
-        return ref vanityCursorPlayer.Cursor[dye ? 1 : 0]!;
+        return ref vanityCursorPlayer.Trail[dye ? 1 : 0]!;
     }
 
     public override int GetContext()
     {
-        return ModContent.GetInstance<VanityCursorSlotContext>().Type;
+        return ModContent.GetInstance<CursorTrailSlotContext>().Type;
     }
 }

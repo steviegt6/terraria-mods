@@ -143,6 +143,15 @@ internal static class AssetReferences
 
             public static class UI
             {
+                public static class CursorTrail_Slot
+                {
+                    public const string KEY = "Nightshade/Assets/Images/UI/CursorTrail_Slot";
+
+                    public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
+
+                    private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
+                }
+
                 public static class Cursor_Slot
                 {
                     public const string KEY = "Nightshade/Assets/Images/UI/Cursor_Slot";

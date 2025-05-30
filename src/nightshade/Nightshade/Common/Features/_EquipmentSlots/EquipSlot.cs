@@ -1,3 +1,5 @@
+using JetBrains.Annotations;
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -6,6 +8,7 @@ using Terraria.ModLoader;
 
 namespace Nightshade.Common.Features;
 
+[UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature, ImplicitUseTargetFlags.WithInheritors)]
 internal abstract class EquipSlot : ModType
 {
     public virtual bool CanBeToggled => false;
