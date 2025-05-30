@@ -152,6 +152,46 @@ Items: {
 		DisplayName: Living Cactus Wood Wall Block
 		Tooltip: ""
 	}
+
+	BiomeCursor: {
+		DisplayName: Biome Cursor
+		Tooltip: ""
+	}
+
+	DepthCursor: {
+		DisplayName: Depth Cursor
+		Tooltip: ""
+	}
+
+	LifeCursor: {
+		DisplayName: Life Cursor
+		Tooltip: ""
+	}
+
+	ManaCursor: {
+		DisplayName: Mana Cursor
+		Tooltip: ""
+	}
+
+	MoneyCursor: {
+		DisplayName: Money Cursor
+		Tooltip: ""
+	}
+
+	PartyCursor: {
+		DisplayName: Party Cursor
+		Tooltip: ""
+	}
+
+	SpeedCursor: {
+		DisplayName: Speed Cursor
+		Tooltip: ""
+	}
+
+	TimeCursor: {
+		DisplayName: Time Cursor
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
