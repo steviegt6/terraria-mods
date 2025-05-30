@@ -93,7 +93,6 @@ public sealed class VanityCursorPlayer : ModPlayer
         
         if (player.Cursor[1] is { IsAir: false, dye: > 0 } dyeItem)
         {
-            Main.NewText(dyeItem.dye);
             GameShaders.Armor.Apply(dyeItem.dye, Main.LocalPlayer, fakeDrawData);
         }
     }
