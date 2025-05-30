@@ -2,16 +2,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
 using MonoMod.Cil;
 
 using Terraria;
-using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameInput;
-using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.UI;
 using Terraria.UI.Gamepad;
@@ -101,10 +97,9 @@ internal sealed class EquipSlotLoader : ModSystem
 
             backPanelSize.X = xPos + i * -47;
 
-            var slotCtx = i == 0 ? EquipmentSlotContext.Functional : EquipmentSlotContext.Dye;
             for (var slot = 0; slot < slots.Count; slot++)
             {
-                var context = slots[slot].GetContext(slotCtx);
+                var context = slots[slot].GetContext();
                 var canBeToggled = slots[slot].CanBeToggled;
 
                 if (i == 1)
@@ -135,7 +130,7 @@ internal sealed class EquipSlotLoader : ModSystem
 
                 if (canBeToggled)
                 {
-                    slots[slot].DrawExtras(hoverText, toggleButton, toggleRect);
+                    slots[slot].DrawToggle(hoverText, toggleButton, toggleRect);
                 }
             }
         }

@@ -10,18 +10,65 @@ using Terraria.Localization;
 
 namespace Nightshade.Common.Features;
 
-internal sealed class PetSlot : EquipSlot
+internal abstract class VanillaEquipSlot : EquipSlot
+{
+    public override void HandleToggle(ref Texture2D toggleButton, Rectangle toggleRect, Point mouseLoc, ref string? hoverText, ref bool toggleHovered)
+    {
+        if (IsEffectHidden)
+        {
+            toggleButton = TextureAssets.InventoryTickOff.Value;
+        }
+
+        if (!toggleRect.Contains(mouseLoc) || PlayerInput.IgnoreMouseInterface)
+        {
+            return;
+        }
+
+        Main.LocalPlayer.mouseInterface = true;
+        toggleHovered = true;
+        if (Main.mouseLeft && Main.mouseLeftRelease)
+        {
+            OnToggle();
+
+            Main.mouseLeftRelease = false;
+            SoundEngine.PlaySound(SoundID.MenuTick);
+            if (Main.netMode == NetmodeID.MultiplayerClient)
+            {
+                NetMessage.SendData(MessageID.SyncPlayer, -1, -1, null, Main.myPlayer);
+            }
+        }
+
+        var inter = !IsEffectHidden ? 1 : 2;
+        hoverText = Lang.inter[58 + inter].Value;
+    }
+
+    public override void DrawToggle(string? hoverText, Texture2D toggleButton, Rectangle toggleRect)
+    {
+        Main.spriteBatch.Draw(toggleButton, toggleRect.TopLeft(), Color.White * 0.7f);
+        if (hoverText is null)
+        {
+            return;
+        }
+
+        Main.HoverItem = new Item();
+        Main.hoverItemName = hoverText;
+    }
+
+    protected virtual void OnToggle() { }
+}
+
+internal sealed class PetSlot : VanillaEquipSlot
 {
     public override bool CanBeToggled => true;
 
     public override bool IsEffectHidden => Main.LocalPlayer.hideMisc[0];
 
-    public override int GetContext(EquipmentSlotContext slotCtx)
+    public override int GetContext()
     {
         return 19;
     }
 
-    public override void OnToggle()
+    protected override void OnToggle()
     {
         base.OnToggle();
 
@@ -29,18 +76,18 @@ internal sealed class PetSlot : EquipSlot
     }
 }
 
-internal sealed class LightPetSlot : EquipSlot
+internal sealed class LightPetSlot : VanillaEquipSlot
 {
     public override bool CanBeToggled => true;
 
     public override bool IsEffectHidden => Main.LocalPlayer.hideMisc[1];
 
-    public override int GetContext(EquipmentSlotContext slotCtx)
+    public override int GetContext()
     {
         return 20;
     }
 
-    public override void OnToggle()
+    protected override void OnToggle()
     {
         base.OnToggle();
 
@@ -48,19 +95,17 @@ internal sealed class LightPetSlot : EquipSlot
     }
 }
 
-internal sealed class MinecartSlot : EquipSlot
+internal sealed class MinecartSlot : VanillaEquipSlot
 {
     public override bool CanBeToggled => Main.LocalPlayer.unlockedSuperCart;
 
-    public override int GetContext(EquipmentSlotContext slotCtx)
+    public override int GetContext()
     {
         return 18;
     }
 
     public override void HandleToggle(ref Texture2D toggleButton, Rectangle toggleRect, Point mouseLoc, ref string? hoverText, ref bool toggleHovered)
     {
-        // base.HandleToggle(ref toggleButton, toggleRect, mouseLoc, ref hoverText, ref toggleHovered);
-        
         toggleButton = TextureAssets.Extra[255].Value;
         if (!Main.LocalPlayer.enabledSuperCart)
         {
@@ -73,7 +118,7 @@ internal sealed class MinecartSlot : EquipSlot
         {
             return;
         }
-        
+
         Main.LocalPlayer.mouseInterface = true;
         toggleHovered = true;
         if (Main.mouseLeft && Main.mouseLeftRelease)
@@ -82,19 +127,18 @@ internal sealed class MinecartSlot : EquipSlot
             Main.NewText(Main.LocalPlayer.enabledSuperCart);
             Main.mouseLeftRelease = false;
             SoundEngine.PlaySound(SoundID.MenuTick);
+
             if (Main.netMode == NetmodeID.MultiplayerClient)
             {
-                NetMessage.SendData(4, -1, -1, null, Main.myPlayer);
+                NetMessage.SendData(MessageID.SyncPlayer, -1, -1, null, Main.myPlayer);
             }
         }
 
         hoverText = Language.GetTextValue(Main.LocalPlayer.enabledSuperCart ? "GameUI.SuperCartEnabled" : "GameUI.SuperCartDisabled");
     }
 
-    public override void DrawExtras(string? hoverText, Texture2D toggleButton, Rectangle toggleRect)
+    public override void DrawToggle(string? hoverText, Texture2D toggleButton, Rectangle toggleRect)
     {
-        base.DrawExtras(hoverText, toggleButton, toggleRect);
-        
         Main.spriteBatch.Draw(toggleButton, toggleRect.TopLeft(), Color.White);
 
         if (hoverText is null)
@@ -106,17 +150,17 @@ internal sealed class MinecartSlot : EquipSlot
     }
 }
 
-internal sealed class MountSlot : EquipSlot
+internal sealed class MountSlot : VanillaEquipSlot
 {
-    public override int GetContext(EquipmentSlotContext slotCtx)
+    public override int GetContext()
     {
         return 17;
     }
 }
 
-internal sealed class HookSlot : EquipSlot
+internal sealed class HookSlot : VanillaEquipSlot
 {
-    public override int GetContext(EquipmentSlotContext slotCtx)
+    public override int GetContext()
     {
         return 16;
     }
