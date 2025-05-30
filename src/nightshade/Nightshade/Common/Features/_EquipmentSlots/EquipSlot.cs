@@ -1,6 +1,8 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
+using Terraria;
+
 namespace Nightshade.Common.Features;
 
 internal abstract class EquipSlot
@@ -9,7 +11,9 @@ internal abstract class EquipSlot
 
     public virtual bool IsEffectHidden => false;
 
-    public abstract int GetContext();
+    public abstract ref Item GetItem(bool dye);
+
+    public abstract CustomItemSlotContext GetContext();
 
     public virtual void HandleToggle(ref Texture2D toggleButton, Rectangle toggleRect, Point mouseLoc, ref string? hoverText, ref bool toggleHovered) { }
 

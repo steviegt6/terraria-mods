@@ -13,6 +13,13 @@ namespace Nightshade.Common.Features;
 
 internal abstract class VanillaEquipSlot : EquipSlot
 {
+    public override CustomItemSlotContext GetContext()
+    {
+        return CustomItemSlotContext.CreateVanillaContext(GetVanillaContext());
+    }
+
+    protected abstract int GetVanillaContext();
+
     public override void HandleToggle(ref Texture2D toggleButton, Rectangle toggleRect, Point mouseLoc, ref string? hoverText, ref bool toggleHovered)
     {
         if (IsEffectHidden)
@@ -64,9 +71,14 @@ internal sealed class PetSlot : VanillaEquipSlot
 
     public override bool IsEffectHidden => Main.LocalPlayer.hideMisc[0];
 
-    public override int GetContext()
+    protected override int GetVanillaContext()
     {
         return ItemSlot.Context.EquipPet;
+    }
+
+    public override ref Item GetItem(bool dye)
+    {
+        return ref dye ? ref Main.LocalPlayer.miscDyes[0] : ref Main.LocalPlayer.miscEquips[0];
     }
 
     protected override void OnToggle()
@@ -83,9 +95,14 @@ internal sealed class LightPetSlot : VanillaEquipSlot
 
     public override bool IsEffectHidden => Main.LocalPlayer.hideMisc[1];
 
-    public override int GetContext()
+    protected override int GetVanillaContext()
     {
         return ItemSlot.Context.EquipLight;
+    }
+
+    public override ref Item GetItem(bool dye)
+    {
+        return ref dye ? ref Main.LocalPlayer.miscDyes[1] : ref Main.LocalPlayer.miscEquips[1];
     }
 
     protected override void OnToggle()
@@ -100,9 +117,14 @@ internal sealed class MinecartSlot : VanillaEquipSlot
 {
     public override bool CanBeToggled => Main.LocalPlayer.unlockedSuperCart;
 
-    public override int GetContext()
+    protected override int GetVanillaContext()
     {
         return ItemSlot.Context.EquipMinecart;
+    }
+
+    public override ref Item GetItem(bool dye)
+    {
+        return ref dye ? ref Main.LocalPlayer.miscDyes[2] : ref Main.LocalPlayer.miscEquips[2];
     }
 
     public override void HandleToggle(ref Texture2D toggleButton, Rectangle toggleRect, Point mouseLoc, ref string? hoverText, ref bool toggleHovered)
@@ -153,16 +175,26 @@ internal sealed class MinecartSlot : VanillaEquipSlot
 
 internal sealed class MountSlot : VanillaEquipSlot
 {
-    public override int GetContext()
+    protected override int GetVanillaContext()
     {
         return ItemSlot.Context.EquipMount;
+    }
+
+    public override ref Item GetItem(bool dye)
+    {
+        return ref dye ? ref Main.LocalPlayer.miscDyes[3] : ref Main.LocalPlayer.miscEquips[3];
     }
 }
 
 internal sealed class HookSlot : VanillaEquipSlot
 {
-    public override int GetContext()
+    protected override int GetVanillaContext()
     {
         return ItemSlot.Context.EquipGrapple;
+    }
+
+    public override ref Item GetItem(bool dye)
+    {
+        return ref dye ? ref Main.LocalPlayer.miscDyes[4] : ref Main.LocalPlayer.miscEquips[4];
     }
 }

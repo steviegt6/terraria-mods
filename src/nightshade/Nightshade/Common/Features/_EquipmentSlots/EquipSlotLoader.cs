@@ -81,20 +81,11 @@ internal sealed class EquipSlotLoader : ModSystem
 
         var backPanelSize = new Rectangle(0, 0, (int)(TextureAssets.InventoryBack.Width() * Main.inventoryScale), (int)(TextureAssets.InventoryBack.Height() * Main.inventoryScale));
 
-        Item[] miscEquips = Main.LocalPlayer.miscEquips;
-
         var xPos = Main.screenWidth - 92;
         var yPos = Main.mH + 174;
 
         for (var i = 0; i < 2; i++)
         {
-            miscEquips = i switch
-            {
-                0 => Main.LocalPlayer.miscEquips,
-                1 => Main.LocalPlayer.miscDyes,
-                _ => miscEquips,
-            };
-
             backPanelSize.X = xPos + i * -47;
 
             for (var slot = 0; slot < slots.Count; slot++)
@@ -102,9 +93,11 @@ internal sealed class EquipSlotLoader : ModSystem
                 var context = slots[slot].GetContext();
                 var canBeToggled = slots[slot].CanBeToggled;
 
+                ref var item = ref slots[slot].GetItem(i == 1);
+
                 if (i == 1)
                 {
-                    context = 33;
+                    context = CustomItemSlotContext.CreateVanillaContext(ItemSlot.Context.EquipMiscDye);
                     canBeToggled = false;
                 }
 
@@ -123,10 +116,10 @@ internal sealed class EquipSlotLoader : ModSystem
                 {
                     Main.LocalPlayer.mouseInterface = true;
                     Main.armorHide = true;
-                    ItemSlot.Handle(miscEquips, context, slot);
+                    CustomItemSlot.Handle(ref item, context);
                 }
 
-                ItemSlot.Draw(Main.spriteBatch, miscEquips, context, slot, backPanelSize.TopLeft());
+                CustomItemSlot.Draw(Main.spriteBatch, ref item, context, backPanelSize.TopLeft());
 
                 if (canBeToggled)
                 {
