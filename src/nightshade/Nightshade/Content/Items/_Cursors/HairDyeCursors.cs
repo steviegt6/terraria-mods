@@ -22,6 +22,11 @@ internal abstract class HairDyeCursor(int hairDye) : ModItem
 
         Item.value *= 5;
         Item.consumable = false;
+
+        Item.vanity = true;
+        Item.hasVanityEffects = true;
+
+        Item.maxStack = 1;
     }
 }
 

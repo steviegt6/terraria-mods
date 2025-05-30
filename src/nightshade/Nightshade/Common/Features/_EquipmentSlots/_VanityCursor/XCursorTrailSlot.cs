@@ -97,6 +97,11 @@ internal sealed class XCursorTrailSlot : EquipSlot
 
         public override bool TryHandleSwap(ref Item item, int incomingContext, Player player)
         {
+            if (!VanityCursorSets.IsCursorTrail[item.type])
+            {
+                return false;
+            }
+            
             item = ItemSlot.EquipSwap(item, Main.LocalPlayer.GetModPlayer<VanityCursorPlayer>().Trail, 0, out var success);
             if (success)
             {
