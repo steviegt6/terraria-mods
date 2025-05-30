@@ -54,4 +54,17 @@ public sealed class VanityCursorPlayer : ModPlayer
             Trail[i] = ItemIO.Load(trail[i]);
         }
     }
+
+    public override void UpdateVisibleVanityAccessories()
+    {
+        base.UpdateVisibleVanityAccessories();
+
+        foreach (var item in new[] { Cursor[0], Trail[0] })
+        {
+            if (!Player.ItemIsVisuallyIncompatible(item))
+            {
+                Player.UpdateVisibleAccessory(0, item, modded: true);
+            }
+        }
+    }
 }
