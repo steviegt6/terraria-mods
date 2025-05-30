@@ -142,7 +142,6 @@ internal sealed class MinecartSlot : VanillaEquipSlot
         if (Main.mouseLeft && Main.mouseLeftRelease)
         {
             Main.LocalPlayer.enabledSuperCart = !Main.LocalPlayer.enabledSuperCart;
-            Main.NewText(Main.LocalPlayer.enabledSuperCart);
             Main.mouseLeftRelease = false;
             SoundEngine.PlaySound(SoundID.MenuTick);
 
