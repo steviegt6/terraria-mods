@@ -62,6 +62,21 @@ internal abstract class CustomItemSlot : ModType
 
     public virtual void PostDraw(SpriteBatch spriteBatch, Item item, int context, Vector2 position, Color lightColor) { }
 
+    public virtual bool ModifyIcon(
+        SpriteBatch spriteBatch,
+        ref Texture2D texture,
+        ref Vector2 position,
+        ref Rectangle? sourceRectangle,
+        ref Color color,
+        ref float rotation,
+        ref Vector2 origin,
+        ref float scale,
+        ref SpriteEffects effects
+    )
+    {
+        return true;
+    }
+
     public virtual bool PreMouseHover(Item item, ref int context)
     {
         return true;

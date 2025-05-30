@@ -26,7 +26,7 @@ internal sealed class VanityCursorSlot : EquipSlot
 
         public override bool PreOverrideHover(Item item, ref int context)
         {
-            // context = vanilla_context;
+            context = vanilla_context;
 
             return base.PreOverrideHover(item, ref context);
         }
@@ -62,7 +62,17 @@ internal sealed class VanityCursorSlot : EquipSlot
 
         public override bool PreDraw(SpriteBatch spriteBatch, Item item, ref int context, Vector2 position, Color lightColor)
         {
+            context = vanilla_context;
+
             return base.PreDraw(spriteBatch, item, ref context, position, lightColor);
+        }
+
+        public override bool ModifyIcon(SpriteBatch spriteBatch, ref Texture2D texture, ref Vector2 position, ref Rectangle? sourceRectangle, ref Color color, ref float rotation, ref Vector2 origin, ref float scale, ref SpriteEffects effects)
+        {
+            texture = Assets.Images.UI.Cursor_Slot.Asset.Value;
+            sourceRectangle = null;
+
+            return base.ModifyIcon(spriteBatch, ref texture, ref position, ref sourceRectangle, ref color, ref rotation, ref origin, ref scale, ref effects);
         }
 
         public override bool PreMouseHover(Item item, ref int context)
