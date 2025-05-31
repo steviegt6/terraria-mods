@@ -127,6 +127,8 @@ public sealed class VanityCursorPlayer : ModPlayer
             }
 
             // var mouseBorderColor = Main.MouseBorderColor;
+            // Purposefully don't apply hair dye colors here so there's some
+            // visual distinction.
 
             // Ignore cursor color if any shaders are being applied, I guess.
             // TODO: Let's not do this; render to an RT later.
