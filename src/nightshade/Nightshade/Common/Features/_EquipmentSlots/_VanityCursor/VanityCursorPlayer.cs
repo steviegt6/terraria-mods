@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 
+using Daybreak.Common.Features.Hooks;
 using Daybreak.Common.Rendering;
 
 using Microsoft.Xna.Framework;
@@ -249,6 +250,7 @@ public sealed class VanityCursorPlayer : ModPlayer
         );
     }*/
 
+    [OnLoad]
     private static void HookDropItems()
     {
         MonoModHooks.Add(
