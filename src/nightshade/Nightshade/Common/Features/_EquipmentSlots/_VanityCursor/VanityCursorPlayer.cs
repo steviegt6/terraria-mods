@@ -14,6 +14,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.GameInput;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -101,72 +102,239 @@ public sealed class VanityCursorPlayer : ModPlayer
     {
         base.Load();
 
-        On_Main.DrawThickCursor += DrawThickCursorWithEffects;
-        On_Main.DrawCursor += DrawCursorWithEffects;
+        On_Main.DrawThickCursor += DrawThickCursor_WithEffects;
+        On_Main.DrawCursor += DrawCursor_WithEffects;
     }
 
-    private static Vector2 DrawThickCursorWithEffects(On_Main.orig_DrawThickCursor orig, bool smart)
+    private static Vector2 DrawThickCursor_WithEffects(On_Main.orig_DrawThickCursor orig, bool smart)
     {
-        ApplyEffect();
-        var res = orig(smart);
-        UnapplyEffect();
-
-        return res;
-    }
-
-    private static void DrawCursorWithEffects(On_Main.orig_DrawCursor orig, Vector2 bonus, bool smart)
-    {
-        ApplyEffect();
-        orig(bonus, smart);
-        UnapplyEffect();
-    }
-
-    private static Color origCursorColor;
-    private static SpriteBatchSnapshot? snapshot;
-
-    private static void ApplyEffect()
-    {
-        origCursorColor = Main.cursorColor;
-
-        // Could be in the main menu, etc.
-        if (!Main.LocalPlayer.TryGetModPlayer<VanityCursorPlayer>(out var player))
+        if (!Main.ThickMouse || PlayerInput.SettingsForUI.ShowGamepadCursor)
         {
+            return orig(smart);
+        }
+
+        try
+        {
+            var shader = ApplyEffect();
+            if (shader == -1)
+            {
+                return orig(smart);
+            }
+
+            if (Main.gameMenu && Main.alreadyGrabbingSunOrMoon)
+            {
+                return Vector2.Zero;
+            }
+
+            // var mouseBorderColor = Main.MouseBorderColor;
+
+            // Ignore cursor color if any shaders are being applied, I guess.
+            // TODO: Let's not do this; render to an RT later.
+            var mouseBorderColor = Color.White;
+
+            var cursorIndex = 11;
+            cursorIndex += smart.ToInt();
+
+            for (var i = 0; i < 4; i++)
+            {
+                var offset = i switch
+                {
+                    0 => new Vector2(0f, 1f),
+                    1 => new Vector2(1f, 0f),
+                    2 => new Vector2(0f, -1f),
+                    3 => new Vector2(-1f, 0f),
+                    _ => Vector2.Zero,
+                };
+
+                // offset *= 1f;
+                offset += Vector2.One * 2f;
+
+                var origin = new Vector2(2f);
+                var sourceRectangle = default(Rectangle?);
+                var scale = Main.cursorScale * 1.1f;
+
+                Draw(
+                    new DrawData(
+                        TextureAssets.Cursors[cursorIndex].Value,
+                        new Vector2(Main.mouseX, Main.mouseY) + offset,
+                        sourceRectangle,
+                        mouseBorderColor,
+                        0f,
+                        origin,
+                        scale,
+                        SpriteEffects.None
+                    )
+                    {
+                        shader = shader,
+                    }
+                );
+            }
+
+            return Vector2.One * 2f;
+        }
+        finally
+        {
+            UnapplyEffect();
+        }
+    }
+
+    private static void DrawCursor_WithEffects(On_Main.orig_DrawCursor orig, Vector2 bonus, bool smart)
+    {
+        if (PlayerInput.SettingsForUI.ShowGamepadCursor)
+        {
+            orig(bonus, smart);
             return;
         }
 
-        var hasHairDye = player.HairDye > -1;
-        var hasDye = player.Cursor[1] is { IsAir: false, dye: > 0 };
-
-        if (hasHairDye || hasDye)
+        try
         {
-            Main.spriteBatch.End(out var ss);
+            var shader = ApplyEffect();
+            if (shader == -1)
             {
-                snapshot = ss;
+                orig(bonus, smart);
+                return;
             }
 
-            Main.spriteBatch.Begin(snapshot.Value with { SortMode = SpriteSortMode.Immediate });
+            if (Main.gameMenu && Main.alreadyGrabbingSunOrMoon)
+            {
+                return;
+            }
+
+            if (Main.LocalPlayer.dead || Main.LocalPlayer.mouseInterface)
+            {
+                Main.ClearSmartInteract();
+                Main.TileInteractionLX = -1;
+                Main.TileInteractionHX = -1;
+                Main.TileInteractionLY = -1;
+                Main.TileInteractionHY = -1;
+            }
+
+            /*var color = Main.cursorColor;
+            if (!Main.gameMenu && Main.LocalPlayer.hasRainbowCursor)
+            {
+                color = Main.hslToRgb(Main.GlobalTimeWrappedHourly * 0.25f % 1f, 1f, 0.5f);
+            }*/
+
+            // Ignore cursor color if any shaders are being applied, I guess.
+            // TODO: Let's not do this; render to an RT later.
+            var color = Color.White;
+
+            PlayerDrawHelper.UnpackShader(shader, out var localShaderIndex, out var shaderType);
+            if (shaderType == PlayerDrawHelper.ShaderConfiguration.HairShader)
+            {
+                var oldHairColor = Main.LocalPlayer.hairColor;
+                Main.LocalPlayer.hairColor = Color.White;
+                color = GameShaders.Hair.GetColor(localShaderIndex, Main.LocalPlayer, Color.White);
+                Main.LocalPlayer.hairColor = oldHairColor;
+            }
+
+            var cursorIndex = smart.ToInt();
+
+            Draw(
+                new DrawData(
+                    TextureAssets.Cursors[cursorIndex].Value,
+                    new Vector2(Main.mouseX, Main.mouseY) + bonus + Vector2.One,
+                    null,
+                    new Color((int)(color.R * 0.2f), (int)(color.G * 0.2f), (int)(color.B * 0.2f), (int)(color.A * 0.5f)),
+                    0f,
+                    default(Vector2),
+                    Main.cursorScale * 1.1f,
+                    SpriteEffects.None
+                )
+                {
+                    shader = shader,
+                }
+            );
+
+            Draw(
+                new DrawData(
+                    TextureAssets.Cursors[cursorIndex].Value,
+                    new Vector2(Main.mouseX, Main.mouseY) + bonus,
+                    null,
+                    color,
+                    0f,
+                    default(Vector2),
+                    Main.cursorScale,
+                    SpriteEffects.None
+                )
+                {
+                    shader = shader,
+                }
+            );
+        }
+        finally
+        {
+            UnapplyEffect();
+        }
+    }
+
+    private static void Draw(DrawData drawData)
+    {
+        var dd = drawData;
+        dd.sourceRect ??= dd.texture.Frame();
+
+        var oldHead = Main.LocalPlayer.head;
+        Main.LocalPlayer.head = Main.LocalPlayer.head != 0 ? Main.LocalPlayer.head : 1;
+        {
+            PlayerDrawHelper.SetShaderForData(Main.LocalPlayer, 0, ref dd);
+        }
+        Main.LocalPlayer.head = oldHead;
+
+        if (dd.texture is not null)
+        {
+            dd.Draw(Main.spriteBatch);
+        }
+    }
+
+    // private static DrawData ApplyFlatColoredData()
+
+    private static SpriteBatchSnapshot? snapshot;
+
+    private static int ApplyEffect()
+    {
+        // Could be in the main menu, etc.
+        if (!Main.LocalPlayer.TryGetModPlayer<VanityCursorPlayer>(out var player))
+        {
+            return -1;
         }
 
-        var fakeDrawData = new DrawData
+        var hasHairDye = player.HairDye > -1;
+        // var hasDye = player.Cursor[1] is { IsAir: false, dye: > 0 };
+
+        Main.spriteBatch.End(out var ss);
+        {
+            snapshot = ss;
+        }
+
+        Main.spriteBatch.Begin(snapshot.Value with { SortMode = SpriteSortMode.Immediate });
+
+        /*var fakeDrawData = new DrawData
         {
             sourceRect = new Rectangle(0, 0, 24, 24),
             position = Main.MouseScreen,
             texture = TextureAssets.Cursors[0].Value,
-        };
+        };*/
+
+        // TODO: Merge with dye-stacking system when we make it.
 
         if (hasHairDye)
         {
-            var oldHairColor = Main.LocalPlayer.hairColor;
+            /*var oldHairColor = Main.LocalPlayer.hairColor;
             Main.LocalPlayer.hairColor = Color.White;
             Main.cursorColor = GameShaders.Hair.GetColor(player.HairDye, Main.LocalPlayer, Color.White);
             Main.LocalPlayer.hairColor = oldHairColor;
-            GameShaders.Hair.Apply(player.HairDye, Main.LocalPlayer, fakeDrawData);
+            GameShaders.Hair.Apply(player.HairDye, Main.LocalPlayer, fakeDrawData);*/
+
+            return PlayerDrawHelper.PackShader(player.HairDye, PlayerDrawHelper.ShaderConfiguration.HairShader);
         }
 
         if (player.Cursor[1] is { IsAir: false, dye: > 0 } dyeItem)
         {
-            GameShaders.Armor.Apply(dyeItem.dye, Main.LocalPlayer, fakeDrawData);
+            // GameShaders.Armor.Apply(dyeItem.dye, Main.LocalPlayer, fakeDrawData);
+            return PlayerDrawHelper.PackShader(dyeItem.dye, PlayerDrawHelper.ShaderConfiguration.ArmorShader);
         }
+
+        return -1;
     }
 
     private static void UnapplyEffect()
@@ -177,7 +345,7 @@ public sealed class VanityCursorPlayer : ModPlayer
             snapshot = null;
         }
 
-        Main.cursorColor = origCursorColor;
+        // Main.cursorColor = origCursorColor;
         Main.pixelShader.CurrentTechnique.Passes[0].Apply();
     }
 
@@ -322,7 +490,7 @@ public sealed class VanityCursorPlayer : ModPlayer
     public override void SendClientChanges(ModPlayer clientPlayer)
     {
         base.SendClientChanges(clientPlayer);
-        
+
         if (clientPlayer is not VanityCursorPlayer clientInv)
         {
             return;
