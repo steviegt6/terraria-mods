@@ -90,7 +90,7 @@ internal sealed class PartyCursor() : HairDyeCursor(ItemID.PartyHairDye)
         {
             orig(self, slot, item, modded);
 
-            if (Main.netMode == NetmodeID.Server || Main.gamePaused || /*self.dead ||*/ self.ghost /*|| self.stoned || self.frozen*/)
+            if (Main.netMode == NetmodeID.Server || self.whoAmI != Main.myPlayer || Main.gamePaused || /*self.dead ||*/ self.ghost /*|| self.stoned || self.frozen*/)
             {
                 return;
             }
