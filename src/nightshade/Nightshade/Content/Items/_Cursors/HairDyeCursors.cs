@@ -1,5 +1,3 @@
-using Daybreak.Common.Features.Hooks;
-
 using Microsoft.Xna.Framework;
 
 using Nightshade.Common.Features;

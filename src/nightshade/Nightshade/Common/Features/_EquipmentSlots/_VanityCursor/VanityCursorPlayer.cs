@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 
@@ -14,6 +15,7 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Default;
 using Terraria.ModLoader.IO;
@@ -22,6 +24,71 @@ namespace Nightshade.Common.Features;
 
 public sealed class VanityCursorPlayer : ModPlayer
 {
+    internal static class NetHandler
+    {
+        public static void SendSlot(int toWho, int plr, int slot, Item item)
+        {
+            var p = ModImpl.GetPacket(ModLoaderMod.AccessorySlotPacket);
+
+            if (Main.netMode == NetmodeID.Server)
+            {
+                p.Write((byte)plr);
+            }
+
+            p.Write((byte)slot);
+
+            ItemIO.Send(item, p, true);
+            p.Send(toWho, plr);
+        }
+
+        private static void HandleSlot(BinaryReader r, int fromWho)
+        {
+            if (Main.netMode == NetmodeID.MultiplayerClient)
+            {
+                fromWho = r.ReadByte();
+            }
+
+            var player = Main.player[fromWho].GetModPlayer<VanityCursorPlayer>();
+
+            var slot = r.ReadByte();
+            var item = ItemIO.Receive(r, true);
+
+            SetSlot(slot, item, player);
+
+            if (Main.netMode == NetmodeID.Server)
+            {
+                SendSlot(-1, fromWho, slot, item);
+            }
+        }
+
+        public static void HandlePacket(BinaryReader r, int fromWho)
+        {
+            HandleSlot(r, fromWho);
+        }
+
+        public static void SetSlot(byte slot, Item item, VanityCursorPlayer player)
+        {
+            switch (slot)
+            {
+                case 0:
+                    player.Cursor[0] = item;
+                    break;
+
+                case 1:
+                    player.Cursor[1] = item;
+                    break;
+
+                case 2:
+                    player.Trail[0] = item;
+                    break;
+
+                case 3:
+                    player.Trail[1] = item;
+                    break;
+            }
+        }
+    }
+
     private const string cursor_key = "Cursor";
     private const string trail_key = "Trail";
 
@@ -227,28 +294,82 @@ public sealed class VanityCursorPlayer : ModPlayer
         Player.DropItem(itemSource, pos, ref Trail[1]);
     }
 
+    public override void CopyClientState(ModPlayer targetCopy)
+    {
+        base.CopyClientState(targetCopy);
+
+        if (targetCopy is not VanityCursorPlayer defaultInv)
+        {
+            return;
+        }
+
+        for (var i = 0; i < 4; i++)
+        {
+            GetItem(i).CopyNetStateTo(defaultInv.GetItem(i));
+        }
+    }
+
+    public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
+    {
+        base.SyncPlayer(toWho, fromWho, newPlayer);
+
+        for (var i = 0; i < 4; i++)
+        {
+            NetHandler.SendSlot(toWho, Player.whoAmI, i, GetItem(i));
+        }
+    }
+
+    public override void SendClientChanges(ModPlayer clientPlayer)
+    {
+        base.SendClientChanges(clientPlayer);
+        
+        if (clientPlayer is not VanityCursorPlayer clientInv)
+        {
+            return;
+        }
+
+        for (var i = 0; i < 4; i++)
+        {
+            if (GetItem(i).IsNetStateDifferent(clientInv.GetItem(i)))
+            {
+                NetHandler.SendSlot(-1, Player.whoAmI, i, GetItem(i));
+            }
+        }
+    }
+
     private IEnumerable<Item> GetItems()
     {
         yield return Cursor[0]!;
         yield return Trail[0]!;
     }
 
-    /*[OnLoad]
-    private static void HookUpdateDyes()
+    private IEnumerable<Item> GetAllItems()
     {
-        MonoModHooks.Add(
-            typeof(ModAccessorySlotPlayer).GetMethod(nameof(ModAccessorySlotPlayer.UpdateDyes), BindingFlags.Public | BindingFlags.Instance),
-            (Action<ModAccessorySlotPlayer, bool> orig, ModAccessorySlotPlayer self, bool socialSlots) =>
-            {
-                orig(self, socialSlots);
+        yield return Cursor[0]!;
+        yield return Cursor[1]!;
+        yield return Trail[0]!;
+        yield return Trail[1]!;
+    }
 
-                if (!socialSlots)
-                {
-                    self.Player.GetModPlayer<VanityCursorPlayer>().UpdateDyes();
-                }
-            }
-        );
-    }*/
+    private ref Item GetItem(int i)
+    {
+        switch (i)
+        {
+            case 0:
+                return ref Cursor[0]!;
+
+            case 1:
+                return ref Cursor[1]!;
+
+            case 2:
+                return ref Trail[0]!;
+
+            case 3:
+                return ref Trail[1]!;
+        }
+
+        throw new Exception();
+    }
 
     [OnLoad]
     private static void HookDropItems()
