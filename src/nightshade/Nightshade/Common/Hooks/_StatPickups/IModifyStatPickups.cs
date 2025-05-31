@@ -1,6 +1,5 @@
 using Daybreak.Common.CIL;
 using Daybreak.Common.Features.Hooks;
-using Daybreak.Core.Hooks;
 
 using MonoMod.Cil;
 

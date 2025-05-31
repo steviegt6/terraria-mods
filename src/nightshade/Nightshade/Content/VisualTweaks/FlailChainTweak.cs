@@ -13,7 +13,6 @@ using Terraria.Graphics;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Nightshade.Common.Features.VerletIntegratedBodySystem;
-using static Nightshade.Core.AssetReferences;
 
 namespace Nightshade.Content.VisualTweaks;
 

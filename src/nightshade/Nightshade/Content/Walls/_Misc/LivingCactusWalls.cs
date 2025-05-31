@@ -1,10 +1,5 @@
-using System.Collections.Generic;
-
 using Microsoft.Xna.Framework;
 
-using Nightshade.Content.Items;
-
-using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 

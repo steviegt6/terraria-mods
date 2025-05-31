@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Collections;
 using System.Collections.Generic;
-using Terraria;
+
 using Terraria.ModLoader;
 using static Nightshade.Common.Features.VerletIntegratedBody;
 
