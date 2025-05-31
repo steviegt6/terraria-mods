@@ -1,5 +1,8 @@
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 
 using Daybreak.Common.Rendering;
 
@@ -11,6 +14,7 @@ using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
+using Terraria.ModLoader.Default;
 using Terraria.ModLoader.IO;
 
 namespace Nightshade.Common.Features;
@@ -71,7 +75,7 @@ public sealed class VanityCursorPlayer : ModPlayer
             {
                 snapshot = ss;
             }
-            
+
             Main.spriteBatch.Begin(snapshot.Value with { SortMode = SpriteSortMode.Immediate });
         }
 
@@ -90,7 +94,7 @@ public sealed class VanityCursorPlayer : ModPlayer
             Main.LocalPlayer.hairColor = oldHairColor;
             GameShaders.Hair.Apply(player.HairDye, Main.LocalPlayer, fakeDrawData);
         }
-        
+
         if (player.Cursor[1] is { IsAir: false, dye: > 0 } dyeItem)
         {
             GameShaders.Armor.Apply(dyeItem.dye, Main.LocalPlayer, fakeDrawData);
@@ -104,7 +108,7 @@ public sealed class VanityCursorPlayer : ModPlayer
             Main.spriteBatch.Restart(snapshot.Value);
             snapshot = null;
         }
-        
+
         Main.cursorColor = origCursorColor;
         Main.pixelShader.CurrentTechnique.Passes[0].Apply();
     }
@@ -158,16 +162,103 @@ public sealed class VanityCursorPlayer : ModPlayer
         }
     }
 
+    public override void UpdateVisibleAccessories()
+    {
+        base.UpdateVisibleAccessories();
+
+        foreach (var item in GetItems())
+        {
+            Player.UpdateVisibleAccessory(0, item, modded: true);
+        }
+    }
+
     public override void UpdateVisibleVanityAccessories()
     {
         base.UpdateVisibleVanityAccessories();
 
-        foreach (var item in new[] { Cursor[0], Trail[0] })
+        foreach (var item in GetItems())
         {
             if (!Player.ItemIsVisuallyIncompatible(item))
             {
                 Player.UpdateVisibleAccessory(0, item, modded: true);
             }
         }
+    }
+
+    public override void UpdateDyes()
+    {
+        base.UpdateDyes();
+
+        if (Cursor[0] is not null && Cursor[1] is { IsAir: false })
+        {
+            Player.UpdateItemDye(isNotInVanitySlot: true, isSetToHidden: false, Cursor[0], Cursor[1]);
+        }
+
+        if (Trail[0] is not null && Trail[1] is { IsAir: false })
+        {
+            Player.UpdateItemDye(isNotInVanitySlot: true, isSetToHidden: false, Trail[0], Trail[1]);
+        }
+    }
+
+    public override void UpdateEquips()
+    {
+        base.UpdateEquips();
+
+        foreach (var item in GetItems())
+        {
+            if (item.accessory)
+            {
+                Player.GrantPrefixBenefits(item);
+            }
+
+            Player.GrantArmorBenefits(item);
+            Player.ApplyEquipFunctional(item, hideVisual: false);
+            // Player.ApplyEquipVanity(item);
+        }
+    }
+
+    public void DropItems(IEntitySource itemSource)
+    {
+        var pos = Player.position + Player.Size / 2f;
+        Player.DropItem(itemSource, pos, ref Cursor[0]);
+        Player.DropItem(itemSource, pos, ref Cursor[1]);
+        Player.DropItem(itemSource, pos, ref Trail[0]);
+        Player.DropItem(itemSource, pos, ref Trail[1]);
+    }
+
+    private IEnumerable<Item> GetItems()
+    {
+        yield return Cursor[0]!;
+        yield return Trail[0]!;
+    }
+
+    /*[OnLoad]
+    private static void HookUpdateDyes()
+    {
+        MonoModHooks.Add(
+            typeof(ModAccessorySlotPlayer).GetMethod(nameof(ModAccessorySlotPlayer.UpdateDyes), BindingFlags.Public | BindingFlags.Instance),
+            (Action<ModAccessorySlotPlayer, bool> orig, ModAccessorySlotPlayer self, bool socialSlots) =>
+            {
+                orig(self, socialSlots);
+
+                if (!socialSlots)
+                {
+                    self.Player.GetModPlayer<VanityCursorPlayer>().UpdateDyes();
+                }
+            }
+        );
+    }*/
+
+    private static void HookDropItems()
+    {
+        MonoModHooks.Add(
+            typeof(ModAccessorySlotPlayer).GetMethod(nameof(ModAccessorySlotPlayer.DropItems), BindingFlags.Public | BindingFlags.Instance),
+            (Action<ModAccessorySlotPlayer, IEntitySource> orig, ModAccessorySlotPlayer self, IEntitySource itemSource) =>
+            {
+                orig(self, itemSource);
+
+                self.Player.GetModPlayer<VanityCursorPlayer>().DropItems(itemSource);
+            }
+        );
     }
 }
