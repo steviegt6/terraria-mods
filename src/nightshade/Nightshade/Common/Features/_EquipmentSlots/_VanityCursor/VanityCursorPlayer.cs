@@ -166,6 +166,11 @@ public sealed class VanityCursorPlayer : ModPlayer
 
     private static Vector2 DrawThickCursor_WithEffects(On_Main.orig_DrawThickCursor orig, bool smart)
     {
+        if (Main.gameMenu)
+        {
+            return orig(smart);
+        }
+        
         if (!Main.ThickMouse || PlayerInput.SettingsForUI.ShowGamepadCursor)
         {
             return orig(smart);
@@ -185,8 +190,16 @@ public sealed class VanityCursorPlayer : ModPlayer
             }
 
             var mouseBorderColor = Main.MouseBorderColor;
-            // Purposefully don't apply hair dye colors here so there's some
-            // visual distinction.
+            
+            PlayerDrawHelper.UnpackShader(shader, out var localShaderIndex, out var shaderType);
+            var player = Main.LocalPlayer.GetModPlayer<VanityCursorPlayer>();
+            if (shaderType == PlayerDrawHelper.ShaderConfiguration.HairShader && player.FunctionalVisibility is CursorVisibility.Outline or CursorVisibility.Both)
+            {
+                var oldHairColor = Main.LocalPlayer.hairColor;
+                Main.LocalPlayer.hairColor = Color.White;
+                mouseBorderColor = GameShaders.Hair.GetColor(localShaderIndex, Main.LocalPlayer, Color.White);
+                Main.LocalPlayer.hairColor = oldHairColor;
+            }
 
             DrawThickCursorTarget(Main.instance.GraphicsDevice, Main.spriteBatch, smart, mouseBorderColor);
 
@@ -235,6 +248,12 @@ public sealed class VanityCursorPlayer : ModPlayer
 
     private static void DrawCursor_WithEffects(On_Main.orig_DrawCursor orig, Vector2 bonus, bool smart)
     {
+        if (Main.gameMenu)
+        {
+            orig(bonus, smart);
+            return;
+        }
+        
         if (PlayerInput.SettingsForUI.ShowGamepadCursor)
         {
             orig(bonus, smart);
@@ -271,7 +290,8 @@ public sealed class VanityCursorPlayer : ModPlayer
             }
 
             PlayerDrawHelper.UnpackShader(shader, out var localShaderIndex, out var shaderType);
-            if (shaderType == PlayerDrawHelper.ShaderConfiguration.HairShader)
+            var player = Main.LocalPlayer.GetModPlayer<VanityCursorPlayer>();
+            if (shaderType == PlayerDrawHelper.ShaderConfiguration.HairShader && player.FunctionalVisibility is CursorVisibility.Cursor or CursorVisibility.Both)
             {
                 var oldHairColor = Main.LocalPlayer.hairColor;
                 Main.LocalPlayer.hairColor = Color.White;
@@ -372,18 +392,11 @@ public sealed class VanityCursorPlayer : ModPlayer
 
         if (hasHairDye && (player.FunctionalVisibility == mode || player.FunctionalVisibility == CursorVisibility.Both))
         {
-            /*var oldHairColor = Main.LocalPlayer.hairColor;
-            Main.LocalPlayer.hairColor = Color.White;
-            Main.cursorColor = GameShaders.Hair.GetColor(player.HairDye, Main.LocalPlayer, Color.White);
-            Main.LocalPlayer.hairColor = oldHairColor;
-            GameShaders.Hair.Apply(player.HairDye, Main.LocalPlayer, fakeDrawData);*/
-
             return PlayerDrawHelper.PackShader(player.HairDye, PlayerDrawHelper.ShaderConfiguration.HairShader);
         }
 
         if (player.Cursor[1] is { IsAir: false, dye: > 0 } dyeItem && (player.DyeVisibility == mode || player.DyeVisibility == CursorVisibility.Both))
         {
-            // GameShaders.Armor.Apply(dyeItem.dye, Main.LocalPlayer, fakeDrawData);
             return PlayerDrawHelper.PackShader(dyeItem.dye, PlayerDrawHelper.ShaderConfiguration.ArmorShader);
         }
 
