@@ -1,16 +1,15 @@
+using Daybreak.Common.Features.Hooks;
+using Daybreak.Common.Rendering;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Nightshade.Common.Rendering;
+using Nightshade.Core.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-
-using Daybreak.Common.Features.Hooks;
-using Daybreak.Common.Rendering;
-
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent;
@@ -102,11 +101,58 @@ public sealed class VanityCursorPlayer : ModPlayer
     {
         base.Load();
 
-        On_Main.DrawThickCursor += DrawThickCursor_WithEffects;
+        Main.QueueMainThreadAction(delegate
+        {
+            var gd = Main.instance.GraphicsDevice;
+			cursorTarget = new RenderTarget2D(gd, 60, 60, false, gd.PresentationParameters.BackBufferFormat, DepthFormat.None, 0, RenderTargetUsage.PreserveContents);
+			thickCursorTarget = new RenderTarget2D(gd, 60, 60, false, gd.PresentationParameters.BackBufferFormat, DepthFormat.None, 0, RenderTargetUsage.PreserveContents);
+		});
+
+		On_Main.DrawThickCursor += DrawThickCursor_WithEffects;
         On_Main.DrawCursor += DrawCursor_WithEffects;
     }
 
-    private static Vector2 DrawThickCursor_WithEffects(On_Main.orig_DrawThickCursor orig, bool smart)
+    [InitializedInLoad]
+    private static RenderTarget2D? cursorTarget;
+
+	[InitializedInLoad]
+	private static RenderTarget2D? thickCursorTarget;
+
+    private static void DrawCursorTarget(GraphicsDevice device, SpriteBatch spriteBatch, bool smart, Color color)
+	{
+		var bindings = RtContentPreserver.GetAndPreserveMainRTs();
+
+		device.SetRenderTarget(cursorTarget);
+        device.Clear(Color.Transparent);
+
+        Texture2D asset = TextureAssets.Cursors[smart ? 1 : 0].Value;
+		spriteBatch.End(out var ss);
+		spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.SamplerStateForCursor, DepthStencilState.None, Main.Rasterizer, null);
+        spriteBatch.Draw(asset, Vector2.Zero, color);
+		spriteBatch.End();
+
+		device.SetRenderTargets(bindings);
+		spriteBatch.Begin(ss);
+	}
+
+    private static void DrawThickCursorTarget(GraphicsDevice device, SpriteBatch spriteBatch, bool smart, Color color)
+    {
+        var bindings = RtContentPreserver.GetAndPreserveMainRTs();
+
+        device.SetRenderTarget(thickCursorTarget);
+        device.Clear(Color.Transparent);
+
+        Texture2D asset = TextureAssets.Cursors[smart ? 12 : 11].Value;
+		spriteBatch.End(out var ss);
+		spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.SamplerStateForCursor, DepthStencilState.None, Main.Rasterizer, null);
+        spriteBatch.Draw(asset, Vector2.Zero, Main.mouseColor);
+		spriteBatch.End();
+
+		device.SetRenderTargets(bindings);
+        spriteBatch.Begin(ss);
+	}
+
+	private static Vector2 DrawThickCursor_WithEffects(On_Main.orig_DrawThickCursor orig, bool smart)
     {
         if (!Main.ThickMouse || PlayerInput.SettingsForUI.ShowGamepadCursor)
         {
@@ -126,18 +172,16 @@ public sealed class VanityCursorPlayer : ModPlayer
                 return Vector2.Zero;
             }
 
-            // var mouseBorderColor = Main.MouseBorderColor;
+            var mouseBorderColor = Main.MouseBorderColor;
             // Purposefully don't apply hair dye colors here so there's some
             // visual distinction.
-
-            // Ignore cursor color if any shaders are being applied, I guess.
-            // TODO: Let's not do this; render to an RT later.
-            var mouseBorderColor = Color.White;
 
             var cursorIndex = 11;
             cursorIndex += smart.ToInt();
 
-            for (var i = 0; i < 4; i++)
+			DrawThickCursorTarget(Main.instance.GraphicsDevice, Main.spriteBatch, smart, mouseBorderColor);
+
+			for (var i = 0; i < 4; i++)
             {
                 var offset = i switch
                 {
@@ -155,23 +199,23 @@ public sealed class VanityCursorPlayer : ModPlayer
                 var sourceRectangle = default(Rectangle?);
                 var scale = Main.cursorScale * 1.1f;
 
-                Draw(
-                    new DrawData(
-                        TextureAssets.Cursors[cursorIndex].Value,
-                        new Vector2(Main.mouseX, Main.mouseY) + offset,
-                        sourceRectangle,
-                        mouseBorderColor,
-                        0f,
-                        origin,
-                        scale,
-                        SpriteEffects.None
-                    )
-                    {
-                        shader = shader,
-                    }
-                );
-            }
-
+                    var cursorAsset = thickCursorTarget;
+			        Draw(
+				        new DrawData(
+					        cursorAsset,
+					        new Vector2(Main.mouseX, Main.mouseY) + offset,
+					        sourceRectangle,
+					        Color.White,
+					        0f,
+					        origin,
+					        scale,
+					        SpriteEffects.None
+				        )
+				        {
+					        shader = shader,
+				        }
+			        );
+	        }
             return Vector2.One * 2f;
         }
         finally
@@ -211,15 +255,11 @@ public sealed class VanityCursorPlayer : ModPlayer
                 Main.TileInteractionHY = -1;
             }
 
-            /*var color = Main.cursorColor;
+            var color = Main.cursorColor;
             if (!Main.gameMenu && Main.LocalPlayer.hasRainbowCursor)
             {
                 color = Main.hslToRgb(Main.GlobalTimeWrappedHourly * 0.25f % 1f, 1f, 0.5f);
-            }*/
-
-            // Ignore cursor color if any shaders are being applied, I guess.
-            // TODO: Let's not do this; render to an RT later.
-            var color = Color.White;
+            }
 
             PlayerDrawHelper.UnpackShader(shader, out var localShaderIndex, out var shaderType);
             if (shaderType == PlayerDrawHelper.ShaderConfiguration.HairShader)
@@ -230,30 +270,32 @@ public sealed class VanityCursorPlayer : ModPlayer
                 Main.LocalPlayer.hairColor = oldHairColor;
             }
 
-            var cursorIndex = smart.ToInt();
+            DrawCursorTarget(Main.instance.GraphicsDevice, Main.spriteBatch, smart, color);
+			
+			var cursorTargetAsset = cursorTarget;
 
-            Draw(
-                new DrawData(
-                    TextureAssets.Cursors[cursorIndex].Value,
-                    new Vector2(Main.mouseX, Main.mouseY) + bonus + Vector2.One,
-                    null,
-                    new Color((int)(color.R * 0.2f), (int)(color.G * 0.2f), (int)(color.B * 0.2f), (int)(color.A * 0.5f)),
-                    0f,
-                    default(Vector2),
-                    Main.cursorScale * 1.1f,
-                    SpriteEffects.None
-                )
-                {
-                    shader = shader,
-                }
+			Draw(
+	            new DrawData(
+					cursorTargetAsset,
+		            new Vector2(Main.mouseX, Main.mouseY) + bonus + Vector2.One,
+		            null,
+		            Color.White,
+		            0f,
+		            default(Vector2),
+		            Main.cursorScale * 1.1f,
+		            SpriteEffects.None
+	            )
+                //{
+                //    shader = shader,
+                //}
             );
 
-            Draw(
+			Draw(
                 new DrawData(
-                    TextureAssets.Cursors[cursorIndex].Value,
+					cursorTargetAsset,
                     new Vector2(Main.mouseX, Main.mouseY) + bonus,
                     null,
-                    color,
+					Color.White,
                     0f,
                     default(Vector2),
                     Main.cursorScale,
@@ -263,7 +305,8 @@ public sealed class VanityCursorPlayer : ModPlayer
                     shader = shader,
                 }
             );
-        }
+			
+		}
         finally
         {
             UnapplyEffect();
