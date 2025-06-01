@@ -232,6 +232,7 @@ internal sealed class VanityCursorSlot : EquipSlot
         var frame = toggleButton.Frame(1, 4, 0, (int)visibility);
         var pos = toggleRect.TopLeft();
         pos.X -= 4;
+        pos.Y -= 2;
         Main.spriteBatch.Draw(toggleButton, pos, frame, Color.White);
 
         if (hoverText is null)
