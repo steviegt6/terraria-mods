@@ -215,6 +215,13 @@ internal sealed class VanityCursorSlot : EquipSlot
             }
             */
         }
+        else if (Main.mouseRight && Main.mouseRightRelease)
+        {
+            SetVisibility(player, kind, DecrementVisibility(visibility));
+
+            Main.mouseRightRelease = false;
+            SoundEngine.PlaySound(SoundID.MenuTick);
+        }
 
         hoverText = Mods.Nightshade.UI.VanityCursorAppliesTo.GetChildTextValue(visibility.ToString());
     }
@@ -279,6 +286,20 @@ internal sealed class VanityCursorSlot : EquipSlot
         else
         {
             visibility++;
+        }
+
+        return visibility;
+    }
+    
+    private static CursorVisibility DecrementVisibility(CursorVisibility visibility)
+    {
+        if (visibility <= CursorVisibility.None)
+        {
+            visibility = CursorVisibility.Both;
+        }
+        else
+        {
+            visibility--;
         }
 
         return visibility;
