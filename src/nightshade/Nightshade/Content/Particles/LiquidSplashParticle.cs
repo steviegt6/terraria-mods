@@ -1,7 +1,9 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+
 using Nightshade.Common.Features;
-using System;
 
 using Terraria;
 using Terraria.Graphics.Renderers;
@@ -50,24 +52,30 @@ public class LiquidSplashParticle : BaseParticle
 		Velocity.Y += (float)LifeTime / MaxLifeTime;
 
 		if (Collision.SolidTiles(Position - new Vector2(4), 8, 8))
+		{
 			LifeTime += 2;
+		}
 
 		if (++LifeTime >= MaxLifeTime)
+		{
 			ShouldBeRemovedFromRenderer = true;
+		}
 	}
 
 	public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spritebatch)
 	{
-		float progress = (float)LifeTime / MaxLifeTime;
+		var progress = (float)LifeTime / MaxLifeTime;
 
-		Texture2D texture = Assets.Images.Particles.LiquidSplashParticle.Asset.Value;
-		Rectangle frame = texture.Frame(7, 5, (int)MathF.Floor(MathF.Sin(progress * MathHelper.PiOver2 * 0.95f) * 7f), Variant % 5);
+		var texture = Assets.Images.Particles.LiquidSplashParticle.Asset.Value;
+		var frame = texture.Frame(7, 5, (int)MathF.Floor(MathF.Sin(progress * MathHelper.PiOver2 * 0.95f) * 7f), Variant % 5);
 		SpriteEffects spriteEffects = 0;
 		if (Variant > 1)
+		{
 			spriteEffects = SpriteEffects.FlipHorizontally;
+		}
 
-		float drawScale = Scale * MathF.Cbrt(progress);
-		Color drawColor = (Lighted ? Lighting.GetColor((int)(Position.X / 16), (int)(Position.Y / 16)).MultiplyRGBA(ColorTint) : ColorTint) * Utils.GetLerpValue(MaxLifeTime, MaxLifeTime / 2, LifeTime, true);
+		var drawScale = Scale * MathF.Cbrt(progress);
+		var drawColor = (Lighted ? Lighting.GetColor((int)(Position.X / 16), (int)(Position.Y / 16)).MultiplyRGBA(ColorTint) : ColorTint) * Utils.GetLerpValue(MaxLifeTime, MaxLifeTime / 2, LifeTime, true);
 
 		spritebatch.Draw(texture, Position + settings.AnchorPosition, frame, drawColor, Rotation, frame.Size() / 2, drawScale, spriteEffects, 0);
 	}

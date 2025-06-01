@@ -1,6 +1,6 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Daybreak.Common.Features.Hooks;
 
-using Daybreak.Common.Features.Hooks;
+using Microsoft.Xna.Framework.Graphics;
 
 using Terraria;
 using Terraria.Graphics.Renderers;

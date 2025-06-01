@@ -1,17 +1,21 @@
-﻿using Daybreak.Common.Rendering;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+
+using Daybreak.Common.Rendering;
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Nightshade.Common.Features;
+
 using Nightshade.Common.Rendering;
 using Nightshade.Core;
 using Nightshade.Core.Attributes;
-using System.Collections.Generic;
-using System.Diagnostics;
+
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.Graphics;
 using Terraria.ID;
 using Terraria.ModLoader;
+
 using static Nightshade.Common.Features.VerletIntegratedBodySystem;
 
 namespace Nightshade.Content.VisualTweaks;
@@ -19,19 +23,19 @@ namespace Nightshade.Content.VisualTweaks;
 [Autoload(Side = ModSide.Client)]
 internal class FlailChainTweak : GlobalProjectile
 {
-    private static Dictionary<short, ChainInitializationParameters> flailValues = new Dictionary<short, ChainInitializationParameters>()
+    private static Dictionary<short, ChainInitializationParameters> flailValues = new Dictionary<short, ChainInitializationParameters>
     {
-        { ProjectileID.BallOHurt,  new ChainInitializationParameters()
+        { ProjectileID.BallOHurt,  new ChainInitializationParameters
         {
             PointAmount = 10,
         } },
-        { ProjectileID.BlueMoon, new ChainInitializationParameters()
+        { ProjectileID.BlueMoon, new ChainInitializationParameters
         {
             PointAmount = 10,
         } },
     };
 
-    public VerletIntegratedBodyHandle? Handler { get; set; } = null;
+    public VerletIntegratedBodyHandle? Handler { get; set; }
 
     [InitializedInLoad]
     private static WrapperShaderData<Assets.Shaders.Misc.BasicPixelizationShader.Parameters>? pixelizationShader;
@@ -87,7 +91,7 @@ internal class FlailChainTweak : GlobalProjectile
             Debug.Assert(managedRenderTarget is not null);
             Debug.Assert(managedRenderTarget.Value is not null);
 
-            SpriteBatchSnapshot snapshot = new SpriteBatchSnapshot(Main.spriteBatch);
+            var snapshot = new SpriteBatchSnapshot(Main.spriteBatch);
             Main.spriteBatch.End();
 
             var renderTargets = Main.instance.GraphicsDevice.GetRenderTargets();
@@ -98,18 +102,18 @@ internal class FlailChainTweak : GlobalProjectile
 
             Main.spriteBatch.Begin(in snapshot);
 
-            Vector2[] positions = new Vector2[Handler.Value.PointAmount];
-            float[] rotations = new float[Handler.Value.PointAmount];
-            for (int i = 0; i < Handler.Value.PointAmount; i++)
+            var positions = new Vector2[Handler.Value.PointAmount];
+            var rotations = new float[Handler.Value.PointAmount];
+            for (var i = 0; i < Handler.Value.PointAmount; i++)
             {
-                VerletIntegratedBody.Point point = Handler.Value[i];
+                var point = Handler.Value[i];
                 positions[i] = point.Position;
                 rotations[i] = (point.Position - point.PreviousPosition).ToRotation();
             }
             vertexStrip.PrepareStrip(
                 positions, rotations,
-                (float progress) => Color.White,
-                (float progress) => 1f,
+                progress => Color.White,
+                progress => 1f,
                 -Main.screenPosition,
                 Handler.Value.PointAmount
             );
@@ -142,14 +146,14 @@ internal class FlailChainTweak : GlobalProjectile
     {
         base.OnSpawn(projectile, source);
 
-        Handler = VerletIntegratedBodySystem.RequestHandler();
+        Handler = RequestHandler();
         if (Handler.HasValue)
         {
-            Player player = Main.player[projectile.owner];
-            Vector2 playerArmPosition = Main.GetPlayerArmPosition(projectile);
+            var player = Main.player[projectile.owner];
+            var playerArmPosition = Main.GetPlayerArmPosition(projectile);
             playerArmPosition -= Vector2.UnitY * player.gfxOffY;
 
-            ChainInitializationParameters parameters = flailValues[(short)projectile.type];
+            var parameters = flailValues[(short)projectile.type];
             parameters.StartingPosition = playerArmPosition;
             parameters.EndingPosition = projectile.Center;
 

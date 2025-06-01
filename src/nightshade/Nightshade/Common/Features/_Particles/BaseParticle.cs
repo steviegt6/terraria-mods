@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
+
 using Terraria.Graphics.Renderers;
 
 namespace Nightshade.Common.Features;

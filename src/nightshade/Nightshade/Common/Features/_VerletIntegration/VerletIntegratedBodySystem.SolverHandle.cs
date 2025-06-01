@@ -1,8 +1,10 @@
-﻿using Microsoft.Xna.Framework;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 
+using Microsoft.Xna.Framework;
+
 using Terraria.ModLoader;
+
 using static Nightshade.Common.Features.VerletIntegratedBody;
 
 namespace Nightshade.Common.Features;
@@ -24,8 +26,8 @@ internal partial class VerletIntegratedBodySystem : ModSystem
 
         public ChainInitializationParameters(Vector2 startingPosition, Vector2 endingPosition)
         {
-            this.StartingPosition = startingPosition;
-            this.EndingPosition = endingPosition;
+            StartingPosition = startingPosition;
+            EndingPosition = endingPosition;
         }
     }
 
@@ -42,14 +44,14 @@ internal partial class VerletIntegratedBodySystem : ModSystem
 
         public void InitializeAsChain(ChainInitializationParameters parameters)
         {
-            VerletIntegratedBody body = VerletBodies[this.index];
+            var body = VerletBodies[index];
 
             body.Points.Clear();
             body.Links.Clear();
 
-            for (int i = 0; i < parameters.PointAmount; i++)
+            for (var i = 0; i < parameters.PointAmount; i++)
             {
-                VerletIntegratedBody.Point point = new VerletIntegratedBody.Point(Vector2.Lerp(parameters.StartingPosition, parameters.EndingPosition, (float)i / (parameters.PointAmount - 1)))
+                var point = new VerletIntegratedBody.Point(Vector2.Lerp(parameters.StartingPosition, parameters.EndingPosition, (float)i / (parameters.PointAmount - 1)))
                 {
                     Mass = parameters.PointMass,
                     DampingAmount = parameters.PointDampingAmount,
@@ -58,9 +60,9 @@ internal partial class VerletIntegratedBodySystem : ModSystem
                 body.Points[i] = point;
             }
 
-            for (int i = 0; i < parameters.PointAmount - 1; i++)
+            for (var i = 0; i < parameters.PointAmount - 1; i++)
             {
-                Link link = new Link(i, i + 1)
+                var link = new Link(i, i + 1)
                 {
                     RestingDistance = parameters.LinkRestingDistance,
                     Stiffness = parameters.LinkStiffness,
@@ -71,21 +73,21 @@ internal partial class VerletIntegratedBodySystem : ModSystem
             body.GravityForce = parameters.Gravity;
             body.IsActive = true;
 
-            VerletBodies[this.index] = body;
+            VerletBodies[index] = body;
         }
 
         public void Deinitialize()
         {
-            VerletIntegratedBody body = VerletBodies[this.index];
+            var body = VerletBodies[index];
             body.IsActive = true;
-            VerletBodies[this.index] = body;
+            VerletBodies[index] = body;
         }
 
         public VerletIntegratedBody.Point this[int i]
         {
             get
             {
-                VerletIntegratedBody body = VerletBodies[this.index];
+                var body = VerletBodies[index];
                 return body.Points[i];
             }
         }
@@ -94,12 +96,12 @@ internal partial class VerletIntegratedBodySystem : ModSystem
         {
             get
             {
-                VerletIntegratedBody body = VerletBodies[this.index];
+                var body = VerletBodies[index];
                 return body.Points.Count;
             }
         }
 
-        public IEnumerator<VerletIntegratedBody.Point> GetEnumerator() => VerletBodies[this.index].Points.GetEnumerator();
+        public IEnumerator<VerletIntegratedBody.Point> GetEnumerator() => VerletBodies[index].Points.GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator()
         {
@@ -109,9 +111,9 @@ internal partial class VerletIntegratedBodySystem : ModSystem
 
     public static VerletIntegratedBodyHandle? RequestHandler()
     {
-        for (int i = 0; i < VerletBodies.Length; i++)
+        for (var i = 0; i < VerletBodies.Length; i++)
         {
-            VerletIntegratedBody body = VerletBodies[i];
+            var body = VerletBodies[i];
             if (!body.IsActive)
             {
                 return new VerletIntegratedBodyHandle(i);
@@ -124,7 +126,7 @@ internal partial class VerletIntegratedBodySystem : ModSystem
     {
         base.Load();
 
-        for (int n = 0; n < 1000; n++)
+        for (var n = 0; n < 1000; n++)
         {
             VerletBodies[n] = new VerletIntegratedBody();
         }

@@ -1,3 +1,10 @@
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+
 using Daybreak.Common.Features.Hooks;
 using Daybreak.Common.Rendering;
 
@@ -6,13 +13,6 @@ using Microsoft.Xna.Framework.Graphics;
 
 using Nightshade.Common.Rendering;
 using Nightshade.Core.Attributes;
-
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Reflection;
 
 using Terraria;
 using Terraria.DataStructures;

@@ -1,5 +1,7 @@
-using Microsoft.Xna.Framework;
 using System;
+
+using Microsoft.Xna.Framework;
+
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -72,7 +74,7 @@ public sealed class DriftersBoots : ModItem
                     return;
 				}
 
-				float maxJump = Player.jumpHeight * ModContent.GetInstance<DrifterBootsJump>().GetDurationMultiplier(self);
+				var maxJump = Player.jumpHeight * ModContent.GetInstance<DrifterBootsJump>().GetDurationMultiplier(self);
 
 				if (self.controlUp)
 				{
@@ -90,15 +92,17 @@ public sealed class DriftersBoots : ModItem
 				self.jump--;
 				self.velocity.Y = MathHelper.Lerp(self.velocity.Y, -4f, 0.05f);
 
-				for (int i = 0; i < 12; i++)
+				for (var i = 0; i < 12; i++)
 				{
-					Vector2 dustPos = self.RotatedRelativePoint(self.Bottom + Main.rand.NextVector2Circular(16, 8));
-					Dust d = Dust.NewDustPerfect(dustPos, DustID.SandstormInABottle, self.velocity * Main.rand.NextFloat(), Scale: Main.rand.NextFloat(0.5f, 1f));
+					var dustPos = self.RotatedRelativePoint(self.Bottom + Main.rand.NextVector2Circular(16, 8));
+					var d = Dust.NewDustPerfect(dustPos, DustID.SandstormInABottle, self.velocity * Main.rand.NextFloat(), Scale: Main.rand.NextFloat(0.5f, 1f));
 					d.noGravity = true;
 				}
 			}
 			else
+			{
 				orig(self);
+			}
 		}
 	}
 

@@ -11,13 +11,15 @@ namespace Nightshade.Content.Projectiles.Held
     internal class PreDigesterHeldProj : ModProjectile
     {
         public override string Texture => Assets.Images.Projectiles.PreDigesterHeldProjSheet.KEY;
-        Texture2D tex;
-        Player player;
-        float sackScale;
-        float sackRot;
+
+        private Texture2D? tex;
+        private Player? player;
+        private float sackScale;
+        private float sackRot;
+
         public override void SetDefaults()
         {
-            tex = ModContent.Request<Texture2D>(Assets.Images.Projectiles.PreDigesterHeldProjSheet.KEY, ReLogic.Content.AssetRequestMode.AsyncLoad).Value;
+            tex = ModContent.Request<Texture2D>(Assets.Images.Projectiles.PreDigesterHeldProjSheet.KEY).Value;
             Projectile.friendly = true;
             Projectile.tileCollide = false;
             Projectile.penetrate = -1;
@@ -27,15 +29,17 @@ namespace Nightshade.Content.Projectiles.Held
             sackScale = 1f;
         }
 
-        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) { }
-        public override void OnHitPlayer(Player target, Player.HurtInfo info) { }
+        public override bool? CanCutTiles()
+        {
+            return false;
+        }
 
         public override void AI()
         {
             player = Main.player[Projectile.owner];
             player.heldProj = Projectile.whoAmI;
 
-            Vector2 holdCenter = player.RotatedRelativePoint(player.MountedCenter);
+            var holdCenter = player.RotatedRelativePoint(player.MountedCenter);
             Projectile.Center = new Vector2((int)holdCenter.X, (int)holdCenter.Y) + new Vector2(7 * player.direction, 7);
 
             if (player.itemAnimation == 1)
@@ -44,7 +48,10 @@ namespace Nightshade.Content.Projectiles.Held
                 Projectile.ai[0] = 0;
                 SoundEngine.PlaySound(SoundID.NPCHit31, holdCenter);
             }
-            if (!player.channel) Projectile.ai[1] = 2;
+            if (!player.channel)
+            {
+                Projectile.ai[1] = 2;
+            }
 
             //Rotate Up
             if (Projectile.ai[1] == 0)
@@ -60,7 +67,10 @@ namespace Nightshade.Content.Projectiles.Held
                 Projectile.rotation = MathHelper.Lerp(Projectile.rotation, 1f, 0.1f);
                 sackScale = MathHelper.Lerp(sackScale, 0.6f, 0.1f);
                 sackRot = MathHelper.Lerp(sackRot, -1f, 0.1f);
-                if (Projectile.ai[0] >= 5) Projectile.ai[1] = 0;
+                if (Projectile.ai[0] >= 5)
+                {
+                    Projectile.ai[1] = 0;
+                }
             }
             //Go Down and Disappear
             else
@@ -69,7 +79,10 @@ namespace Nightshade.Content.Projectiles.Held
                 sackScale = MathHelper.Lerp(sackScale, 1f, 0.1f);
                 sackRot = MathHelper.Lerp(sackRot, 1f, 0.1f);
                 Projectile.Opacity -= 0.2f;
-                if (Projectile.Opacity <= 0f) Projectile.Kill();
+                if (Projectile.Opacity <= 0f)
+                {
+                    Projectile.Kill();
+                }
             }
 
             Projectile.ai[0]++;
@@ -77,6 +90,11 @@ namespace Nightshade.Content.Projectiles.Held
 
         public override bool PreDraw(ref Color lightColor)
         {
+            if (player is null)
+            {
+                return false;
+            }
+
             //Sack
             Main.EntitySpriteDraw(
                 tex,
@@ -86,17 +104,21 @@ namespace Nightshade.Content.Projectiles.Held
                 (Projectile.rotation + sackRot) * player.direction,
                 new Vector2(player.direction == 1 ? 14 : 8, 4),
                 Projectile.scale * sackScale,
-                player.direction == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally);
-            //Top Boddy
+                player.direction == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally
+            );
+            
+            //Top Body
             Main.EntitySpriteDraw(
                 tex,
                 Projectile.Center - Main.screenPosition,
-                new Rectangle(Projectile.ai[1] == 1? 28 : 0, 0, 26, 26),
+                new Rectangle(Projectile.ai[1] == 1 ? 28 : 0, 0, 26, 26),
                 lightColor * Projectile.Opacity,
                 Projectile.rotation * player.direction,
                 new Vector2(player.direction == 1 ? 6 : 20, 24),
                 Projectile.scale,
-                player.direction == 1? SpriteEffects.None : SpriteEffects.FlipHorizontally);
+                player.direction == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally
+            );
+
             return false;
         }
     }
