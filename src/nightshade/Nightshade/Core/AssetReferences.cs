@@ -161,6 +161,15 @@ internal static class AssetReferences
                     private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
                 }
 
+                public static class Cursor_Visibility
+                {
+                    public const string KEY = "Nightshade/Assets/Images/UI/Cursor_Visibility";
+
+                    public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
+
+                    private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
+                }
+
                 public static class ModIcon
                 {
                     public static class BabyBlueSheep

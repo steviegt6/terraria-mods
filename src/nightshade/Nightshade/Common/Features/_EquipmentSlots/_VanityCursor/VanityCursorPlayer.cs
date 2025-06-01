@@ -95,11 +95,17 @@ public sealed class VanityCursorPlayer : ModPlayer
 
     private const string cursor_key = "Cursor";
     private const string trail_key = "Trail";
+    private const string functional_visibility_key = "FunctionalVisibility";
+    private const string dye_visibility_key = "DyeVisibility";
 
     public Item?[] Cursor = new Item?[2];
     public Item?[] Trail = new Item?[2];
 
     public int HairDye { get; set; }
+
+    public CursorVisibility FunctionalVisibility { get; set; } = CursorVisibility.Cursor;
+
+    public CursorVisibility DyeVisibility { get; set; } = CursorVisibility.Both;
 
     public override void Load()
     {
@@ -404,6 +410,9 @@ public sealed class VanityCursorPlayer : ModPlayer
         Trail = [new Item(), new Item()];
 
         HairDye = -1;
+
+        FunctionalVisibility = CursorVisibility.Cursor;
+        DyeVisibility = CursorVisibility.Both;
     }
 
     public override void ResetEffects()
@@ -422,6 +431,9 @@ public sealed class VanityCursorPlayer : ModPlayer
 
         var trail = Trail.Select(ItemIO.Save).ToArray();
         tag.Add(trail_key, trail);
+        
+        tag.Add(functional_visibility_key, (byte)FunctionalVisibility);
+        tag.Add(dye_visibility_key, (byte)DyeVisibility);
     }
 
     public override void LoadData(TagCompound tag)
@@ -443,6 +455,9 @@ public sealed class VanityCursorPlayer : ModPlayer
 
             Trail[i] = ItemIO.Load(trail[i]);
         }
+
+        FunctionalVisibility = (CursorVisibility)tag.GetByte(functional_visibility_key);
+        DyeVisibility = (CursorVisibility)tag.GetByte(dye_visibility_key);
     }
 
     public override void UpdateVisibleAccessories()

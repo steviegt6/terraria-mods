@@ -75,6 +75,7 @@ internal sealed class ItemSlotLoader : ModSystem
 
         On_ItemSlot.OverrideHover_ItemArray_int_int += OverrideHover;
         On_ItemSlot.LeftClick_ItemArray_int_int += LeftClick;
+        On_ItemSlot.RightClick_ItemArray_int_int += RightClick;
         On_ItemSlot.GetOverrideInstructions += GetOverrideInstructions;
         On_ItemSlot.PickItemMovementAction += PickItemMovementAction;
         On_ItemSlot.SwapVanityEquip += SwapVanityEquip;
@@ -142,6 +143,33 @@ internal sealed class ItemSlotLoader : ModSystem
 
             orig(inv, context, slot);
             itemSlot.PostLeftClick(inv[slot], context);
+        }
+        finally
+        {
+            originalContext = -1;
+        }
+    }
+
+    private static void RightClick(On_ItemSlot.orig_RightClick_ItemArray_int_int orig, Item[] inv, int context, int slot)
+    {
+        try
+        {
+            originalContext = context;
+
+            var itemSlot = GetItemSlot(context);
+            if (itemSlot is null)
+            {
+                orig(inv, context, slot);
+                return;
+            }
+
+            if (!itemSlot.PreRightClick(inv[slot], ref context))
+            {
+                return;
+            }
+
+            orig(inv, context, slot);
+            itemSlot.PostRightClick(inv[slot], context);
         }
         finally
         {

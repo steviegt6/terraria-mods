@@ -1,8 +1,12 @@
+using System;
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent.Achievements;
+using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
@@ -98,7 +102,7 @@ internal sealed class VanityCursorSlot : EquipSlot
             {
                 return false;
             }
-            
+
             item = ItemSlot.EquipSwap(item, Main.LocalPlayer.GetModPlayer<VanityCursorPlayer>().Cursor, 0, out var success);
             if (success)
             {
@@ -110,14 +114,172 @@ internal sealed class VanityCursorSlot : EquipSlot
         }
     }
 
-    public override ref Item GetItem(bool dye)
+    /*private sealed class VanityCursorDyeSlotContext : CustomItemSlot
     {
-        var vanityCursorPlayer = Main.LocalPlayer.GetModPlayer<VanityCursorPlayer>();
-        return ref vanityCursorPlayer.Cursor[dye ? 1 : 0]!;
+        private const int vanilla_context = ItemSlot.Context.EquipMiscDye;
+
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+
+            ItemSlot.canShareAt[Type] = true;
+        }
+
+        public override bool PreOverrideHover(Item item, ref int context)
+        {
+            context = vanilla_context;
+
+            return base.PreOverrideHover(item, ref context);
+        }
+
+        public override bool PreLeftClick(Item item, ref int context)
+        {
+            context = vanilla_context;
+
+            return base.PreLeftClick(item, ref context);
+        }
+
+        public override int? PrePickItemMovementAction(Item item, ref int context, Item checkItem)
+        {
+            context = vanilla_context;
+
+            return base.PrePickItemMovementAction(item, ref context, checkItem);
+        }
+
+        override
+    }*/
+
+    public override int GetContext(EquipSlotKind kind)
+    {
+        return kind switch
+        {
+            EquipSlotKind.Functional => ModContent.GetInstance<VanityCursorSlotContext>().Type,
+            EquipSlotKind.Dye => ItemSlot.Context.EquipMiscDye,
+            _ => throw new ArgumentOutOfRangeException(nameof(kind), kind, null)
+        };
     }
 
-    public override int GetContext()
+    public override ref Item GetItem(EquipSlotKind kind)
     {
-        return ModContent.GetInstance<VanityCursorSlotContext>().Type;
+        var vanityCursorPlayer = Main.LocalPlayer.GetModPlayer<VanityCursorPlayer>();
+
+        switch (kind)
+        {
+            case EquipSlotKind.Functional:
+                return ref vanityCursorPlayer.Cursor[0]!;
+
+            case EquipSlotKind.Dye:
+                return ref vanityCursorPlayer.Cursor[1]!;
+
+            default:
+                throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
+        }
+    }
+
+    public override bool CanBeToggled(EquipSlotKind kind)
+    {
+        return true;
+    }
+
+    public override void HandleToggle(ref Texture2D toggleButton, Rectangle toggleRect, Point mouseLoc, ref string? hoverText, ref bool toggleHovered, EquipSlotKind kind)
+    {
+        if (kind != EquipSlotKind.Functional && kind != EquipSlotKind.Dye)
+        {
+            return;
+        }
+
+        toggleButton = Assets.Images.UI.Cursor_Visibility.Asset.Value;
+
+        if (!toggleRect.Contains(mouseLoc) || PlayerInput.IgnoreMouseInterface)
+        {
+            return;
+        }
+
+        Main.LocalPlayer.mouseInterface = true;
+        toggleHovered = true;
+
+        var player = Main.LocalPlayer.GetModPlayer<VanityCursorPlayer>();
+        var visibility = GetVisibility(player, kind);
+        if (Main.mouseLeft && Main.mouseLeftRelease)
+        {
+            SetVisibility(player, kind, IncrementVisibility(visibility));
+
+            Main.mouseLeftRelease = false;
+            SoundEngine.PlaySound(SoundID.MenuTick);
+
+            // No need to sync (for now?).
+            /*
+            if (Main.netMode == NetmodeID.MultiplayerClient)
+            {
+                NetMessage.SendData(MessageID.SyncPlayer, -1, -1, null, Main.myPlayer);
+            }
+            */
+        }
+
+        hoverText = Mods.Nightshade.UI.VanityCursorAppliesTo.GetChildTextValue(visibility.ToString());
+    }
+
+    public override void DrawToggle(string? hoverText, Texture2D toggleButton, Rectangle toggleRect, EquipSlotKind kind)
+    {
+        if (kind != EquipSlotKind.Functional && kind != EquipSlotKind.Dye)
+        {
+            return;
+        }
+
+        var player = Main.LocalPlayer.GetModPlayer<VanityCursorPlayer>();
+        var visibility = GetVisibility(player, kind);
+
+        var frame = toggleButton.Frame(1, 4, 0, (int)visibility);
+        var pos = toggleRect.TopLeft();
+        pos.X -= 4;
+        Main.spriteBatch.Draw(toggleButton, pos, frame, Color.White);
+
+        if (hoverText is null)
+        {
+            return;
+        }
+        Main.HoverItem = new Item();
+        Main.hoverItemName = hoverText;
+    }
+
+    private static CursorVisibility GetVisibility(VanityCursorPlayer player, EquipSlotKind kind)
+    {
+        return kind switch
+        {
+            EquipSlotKind.Functional => player.FunctionalVisibility,
+            EquipSlotKind.Dye => player.DyeVisibility,
+            _ => throw new ArgumentOutOfRangeException(nameof(kind), kind, null),
+        };
+    }
+
+    private static void SetVisibility(VanityCursorPlayer player, EquipSlotKind kind, CursorVisibility visibility)
+    {
+        switch (kind)
+        {
+            case EquipSlotKind.Functional:
+                player.FunctionalVisibility = visibility;
+                break;
+
+            case EquipSlotKind.Dye:
+                player.DyeVisibility = visibility;
+                break;
+
+            default:
+                throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
+        }
+    }
+
+    private static CursorVisibility IncrementVisibility(CursorVisibility visibility)
+    {
+        if (visibility >= CursorVisibility.Both)
+        {
+            visibility = CursorVisibility.None;
+        }
+        else
+        {
+            visibility++;
+        }
+
+        return visibility;
     }
 }

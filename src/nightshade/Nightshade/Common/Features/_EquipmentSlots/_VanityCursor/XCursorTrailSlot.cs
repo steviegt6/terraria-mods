@@ -1,3 +1,5 @@
+using System;
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -111,14 +113,30 @@ internal sealed class XCursorTrailSlot : EquipSlot
         }
     }
 
-    public override ref Item GetItem(bool dye)
+    public override int GetContext(EquipSlotKind kind)
+    {
+        return kind switch
+        {
+            EquipSlotKind.Functional => ModContent.GetInstance<CursorTrailSlotContext>().Type,
+            EquipSlotKind.Dye => ItemSlot.Context.EquipMiscDye,
+            _ => throw new ArgumentOutOfRangeException(nameof(kind), kind, null)
+        };
+    }
+    
+    public override ref Item GetItem(EquipSlotKind kind)
     {
         var vanityCursorPlayer = Main.LocalPlayer.GetModPlayer<VanityCursorPlayer>();
-        return ref vanityCursorPlayer.Trail[dye ? 1 : 0]!;
-    }
+        
+        switch (kind)
+        {
+            case EquipSlotKind.Functional:
+                return ref vanityCursorPlayer.Trail[0]!;
 
-    public override int GetContext()
-    {
-        return ModContent.GetInstance<CursorTrailSlotContext>().Type;
+            case EquipSlotKind.Dye:
+                return ref vanityCursorPlayer.Trail[1]!;
+
+            default:
+                throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
+        }
     }
 }

@@ -34,6 +34,13 @@ internal abstract class CustomItemSlot : ModType
 
     public virtual void PostLeftClick(Item item, int context) { }
 
+    public virtual bool PreRightClick(Item item, ref int context)
+    {
+        return true;
+    }
+    
+    public virtual void PostRightClick(Item item, int context) { }
+
     public virtual int? PrePickItemMovementAction(Item item, ref int context, Item checkItem)
     {
         return null;

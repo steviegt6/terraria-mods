@@ -22,6 +22,13 @@ UI: {
 
 	VanityCursor: Vanity Cursor
 	VanityCursorTrail: Cursor Trail
+
+	VanityCursorAppliesTo: {
+		None: None
+		Cursor: Cursor
+		Outline: Outline
+		Both: Both
+	}
 }
 
 Items: {

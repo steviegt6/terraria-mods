@@ -1,3 +1,5 @@
+using System;
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -15,8 +17,15 @@ namespace Nightshade.Common.Features;
 [Autoload(false)]
 internal abstract class VanillaEquipSlot : EquipSlot
 {
-    public override void HandleToggle(ref Texture2D toggleButton, Rectangle toggleRect, Point mouseLoc, ref string? hoverText, ref bool toggleHovered)
+    protected virtual bool IsEffectHidden => false;
+
+    public override void HandleToggle(ref Texture2D toggleButton, Rectangle toggleRect, Point mouseLoc, ref string? hoverText, ref bool toggleHovered, EquipSlotKind kind)
     {
+        if (kind != EquipSlotKind.Functional)
+        {
+            return;
+        }
+
         if (IsEffectHidden)
         {
             toggleButton = TextureAssets.InventoryTickOff.Value;
@@ -45,8 +54,13 @@ internal abstract class VanillaEquipSlot : EquipSlot
         hoverText = Lang.inter[58 + inter].Value;
     }
 
-    public override void DrawToggle(string? hoverText, Texture2D toggleButton, Rectangle toggleRect)
+    public override void DrawToggle(string? hoverText, Texture2D toggleButton, Rectangle toggleRect, EquipSlotKind kind)
     {
+        if (kind != EquipSlotKind.Functional)
+        {
+            return;
+        }
+
         Main.spriteBatch.Draw(toggleButton, toggleRect.TopLeft(), Color.White * 0.7f);
         if (hoverText is null)
         {
@@ -62,18 +76,36 @@ internal abstract class VanillaEquipSlot : EquipSlot
 
 internal sealed class PetSlot : VanillaEquipSlot
 {
-    public override bool CanBeToggled => true;
+    protected override bool IsEffectHidden => Main.LocalPlayer.hideMisc[0];
 
-    public override bool IsEffectHidden => Main.LocalPlayer.hideMisc[0];
-
-    public override int GetContext()
+    public override int GetContext(EquipSlotKind kind)
     {
-        return ItemSlot.Context.EquipPet;
+        return kind switch
+        {
+            EquipSlotKind.Functional => ItemSlot.Context.EquipPet,
+            EquipSlotKind.Dye => ItemSlot.Context.EquipMiscDye,
+            _ => throw new ArgumentOutOfRangeException(nameof(kind)),
+        };
     }
 
-    public override ref Item GetItem(bool dye)
+    public override bool CanBeToggled(EquipSlotKind kind)
     {
-        return ref dye ? ref Main.LocalPlayer.miscDyes[0] : ref Main.LocalPlayer.miscEquips[0];
+        return kind == EquipSlotKind.Functional;
+    }
+
+    public override ref Item GetItem(EquipSlotKind kind)
+    {
+        switch (kind)
+        {
+            case EquipSlotKind.Functional:
+                return ref Main.LocalPlayer.miscEquips[0];
+
+            case EquipSlotKind.Dye:
+                return ref Main.LocalPlayer.miscDyes[0];
+
+            default:
+                throw new ArgumentOutOfRangeException(nameof(kind));
+        }
     }
 
     protected override void OnToggle()
@@ -86,18 +118,36 @@ internal sealed class PetSlot : VanillaEquipSlot
 
 internal sealed class LightPetSlot : VanillaEquipSlot
 {
-    public override bool CanBeToggled => true;
+    protected override bool IsEffectHidden => Main.LocalPlayer.hideMisc[1];
 
-    public override bool IsEffectHidden => Main.LocalPlayer.hideMisc[1];
-
-    public override int GetContext()
+    public override int GetContext(EquipSlotKind kind)
     {
-        return ItemSlot.Context.EquipLight;
+        return kind switch
+        {
+            EquipSlotKind.Functional => ItemSlot.Context.EquipLight,
+            EquipSlotKind.Dye => ItemSlot.Context.EquipMiscDye,
+            _ => throw new ArgumentOutOfRangeException(nameof(kind)),
+        };
     }
 
-    public override ref Item GetItem(bool dye)
+    public override bool CanBeToggled(EquipSlotKind kind)
     {
-        return ref dye ? ref Main.LocalPlayer.miscDyes[1] : ref Main.LocalPlayer.miscEquips[1];
+        return kind == EquipSlotKind.Functional;
+    }
+
+    public override ref Item GetItem(EquipSlotKind kind)
+    {
+        switch (kind)
+        {
+            case EquipSlotKind.Functional:
+                return ref Main.LocalPlayer.miscEquips[1];
+
+            case EquipSlotKind.Dye:
+                return ref Main.LocalPlayer.miscDyes[1];
+
+            default:
+                throw new ArgumentOutOfRangeException(nameof(kind));
+        }
     }
 
     protected override void OnToggle()
@@ -110,20 +160,43 @@ internal sealed class LightPetSlot : VanillaEquipSlot
 
 internal sealed class MinecartSlot : VanillaEquipSlot
 {
-    public override bool CanBeToggled => Main.LocalPlayer.unlockedSuperCart;
-
-    public override int GetContext()
+    public override int GetContext(EquipSlotKind kind)
     {
-        return ItemSlot.Context.EquipMinecart;
+        return kind switch
+        {
+            EquipSlotKind.Functional => ItemSlot.Context.EquipMinecart,
+            EquipSlotKind.Dye => ItemSlot.Context.EquipMiscDye,
+            _ => throw new ArgumentOutOfRangeException(nameof(kind)),
+        };
     }
 
-    public override ref Item GetItem(bool dye)
+    public override bool CanBeToggled(EquipSlotKind kind)
     {
-        return ref dye ? ref Main.LocalPlayer.miscDyes[2] : ref Main.LocalPlayer.miscEquips[2];
+        return kind == EquipSlotKind.Functional && Main.LocalPlayer.unlockedSuperCart;
     }
 
-    public override void HandleToggle(ref Texture2D toggleButton, Rectangle toggleRect, Point mouseLoc, ref string? hoverText, ref bool toggleHovered)
+    public override ref Item GetItem(EquipSlotKind kind)
     {
+        switch (kind)
+        {
+            case EquipSlotKind.Functional:
+                return ref Main.LocalPlayer.miscEquips[2];
+
+            case EquipSlotKind.Dye:
+                return ref Main.LocalPlayer.miscDyes[2];
+
+            default:
+                throw new ArgumentOutOfRangeException(nameof(kind));
+        }
+    }
+
+    public override void HandleToggle(ref Texture2D toggleButton, Rectangle toggleRect, Point mouseLoc, ref string? hoverText, ref bool toggleHovered, EquipSlotKind kind)
+    {
+        if (kind != EquipSlotKind.Functional)
+        {
+            return;
+        }
+
         toggleButton = TextureAssets.Extra[255].Value;
         if (!Main.LocalPlayer.enabledSuperCart)
         {
@@ -154,8 +227,13 @@ internal sealed class MinecartSlot : VanillaEquipSlot
         hoverText = Language.GetTextValue(Main.LocalPlayer.enabledSuperCart ? "GameUI.SuperCartEnabled" : "GameUI.SuperCartDisabled");
     }
 
-    public override void DrawToggle(string? hoverText, Texture2D toggleButton, Rectangle toggleRect)
+    public override void DrawToggle(string? hoverText, Texture2D toggleButton, Rectangle toggleRect, EquipSlotKind kind)
     {
+        if (kind != EquipSlotKind.Functional)
+        {
+            return;
+        }
+
         Main.spriteBatch.Draw(toggleButton, toggleRect.TopLeft(), Color.White);
 
         if (hoverText is null)
@@ -169,26 +247,56 @@ internal sealed class MinecartSlot : VanillaEquipSlot
 
 internal sealed class MountSlot : VanillaEquipSlot
 {
-    public override int GetContext()
+    public override int GetContext(EquipSlotKind kind)
     {
-        return ItemSlot.Context.EquipMount;
+        return kind switch
+        {
+            EquipSlotKind.Functional => ItemSlot.Context.EquipMount,
+            EquipSlotKind.Dye => ItemSlot.Context.EquipMiscDye,
+            _ => throw new ArgumentOutOfRangeException(nameof(kind)),
+        };
     }
 
-    public override ref Item GetItem(bool dye)
+    public override ref Item GetItem(EquipSlotKind kind)
     {
-        return ref dye ? ref Main.LocalPlayer.miscDyes[3] : ref Main.LocalPlayer.miscEquips[3];
+        switch (kind)
+        {
+            case EquipSlotKind.Functional:
+                return ref Main.LocalPlayer.miscEquips[3];
+
+            case EquipSlotKind.Dye:
+                return ref Main.LocalPlayer.miscDyes[3];
+
+            default:
+                throw new ArgumentOutOfRangeException(nameof(kind));
+        }
     }
 }
 
 internal sealed class HookSlot : VanillaEquipSlot
 {
-    public override int GetContext()
+    public override int GetContext(EquipSlotKind kind)
     {
-        return ItemSlot.Context.EquipGrapple;
+        return kind switch
+        {
+            EquipSlotKind.Functional => ItemSlot.Context.EquipGrapple,
+            EquipSlotKind.Dye => ItemSlot.Context.EquipMiscDye,
+            _ => throw new ArgumentOutOfRangeException(nameof(kind)),
+        };
     }
 
-    public override ref Item GetItem(bool dye)
+    public override ref Item GetItem(EquipSlotKind kind)
     {
-        return ref dye ? ref Main.LocalPlayer.miscDyes[4] : ref Main.LocalPlayer.miscEquips[4];
+        switch (kind)
+        {
+            case EquipSlotKind.Functional:
+                return ref Main.LocalPlayer.miscEquips[4];
+
+            case EquipSlotKind.Dye:
+                return ref Main.LocalPlayer.miscDyes[4];
+
+            default:
+                throw new ArgumentOutOfRangeException(nameof(kind));
+        }
     }
 }

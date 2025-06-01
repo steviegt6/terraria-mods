@@ -11,10 +11,6 @@ namespace Nightshade.Common.Features;
 [UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature, ImplicitUseTargetFlags.WithInheritors)]
 internal abstract class EquipSlot : ModType
 {
-    public virtual bool CanBeToggled => false;
-
-    public virtual bool IsEffectHidden => false;
-
     protected sealed override void Register()
     {
         EquipSlotLoader.SLOTS.Add(this);
@@ -25,11 +21,16 @@ internal abstract class EquipSlot : ModType
         base.InitTemplateInstance();
     }
 
-    public abstract ref Item GetItem(bool dye);
+    public abstract ref Item GetItem(EquipSlotKind kind);
 
-    public abstract int GetContext();
+    public abstract int GetContext(EquipSlotKind kind);
 
-    public virtual void HandleToggle(ref Texture2D toggleButton, Rectangle toggleRect, Point mouseLoc, ref string? hoverText, ref bool toggleHovered) { }
+    public virtual bool CanBeToggled(EquipSlotKind kind)
+    {
+        return false;
+    }
 
-    public virtual void DrawToggle(string? hoverText, Texture2D toggleButton, Rectangle toggleRect) { }
+    public virtual void HandleToggle(ref Texture2D toggleButton, Rectangle toggleRect, Point mouseLoc, ref string? hoverText, ref bool toggleHovered, EquipSlotKind kind) { }
+
+    public virtual void DrawToggle(string? hoverText, Texture2D toggleButton, Rectangle toggleRect, EquipSlotKind kind) { }
 }

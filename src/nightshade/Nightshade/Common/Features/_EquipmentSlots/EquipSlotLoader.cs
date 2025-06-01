@@ -86,20 +86,24 @@ internal sealed class EquipSlotLoader : ModSystem
 
         for (var i = 0; i < 2; i++)
         {
+            var slotKind = (EquipSlotKind)i;
+            
             backPanelSize.X = xPos + i * -47;
 
             for (var slot = 0; slot < SLOTS.Count; slot++)
             {
-                var context = SLOTS[slot].GetContext();
-                var canBeToggled = SLOTS[slot].CanBeToggled;
+                var equipSlot = SLOTS[slot];
+                var context = equipSlot.GetContext(slotKind);
+                var canBeToggled = equipSlot.CanBeToggled(slotKind);
 
-                ref var item = ref SLOTS[slot].GetItem(i == 1);
+                ref var item = ref equipSlot.GetItem(slotKind);
 
-                if (i == 1)
+                // Logic moved to EquipSlot.
+                /*if (i == 1)
                 {
-                    context = ItemSlot.Context.EquipMiscDye;
+                    context = equipSlot.GetVanityContext();
                     canBeToggled = false;
-                }
+                }*/
 
                 backPanelSize.Y = yPos + slot * 47;
                 var toggleButton = TextureAssets.InventoryTickOn.Value;
@@ -109,7 +113,7 @@ internal sealed class EquipSlotLoader : ModSystem
                 var hoverText = default(string);
                 if (canBeToggled)
                 {
-                    SLOTS[slot].HandleToggle(ref toggleButton, toggleRect, mouseLoc, ref hoverText, ref toggleHovered);
+                    equipSlot.HandleToggle(ref toggleButton, toggleRect, mouseLoc, ref hoverText, ref toggleHovered, slotKind);
                 }
 
                 if (backPanelSize.Contains(mouseLoc) && !toggleHovered && !PlayerInput.IgnoreMouseInterface)
@@ -123,7 +127,7 @@ internal sealed class EquipSlotLoader : ModSystem
 
                 if (canBeToggled)
                 {
-                    SLOTS[slot].DrawToggle(hoverText, toggleButton, toggleRect);
+                    equipSlot.DrawToggle(hoverText, toggleButton, toggleRect, slotKind);
                 }
             }
         }
