@@ -173,7 +173,7 @@ public sealed class VanityCursorPlayer : ModPlayer
 
         try
         {
-            var shader = ApplyEffect();
+            var shader = ApplyEffect(CursorVisibility.Outline);
             if (shader == -1)
             {
                 return orig(smart);
@@ -243,7 +243,7 @@ public sealed class VanityCursorPlayer : ModPlayer
 
         try
         {
-            var shader = ApplyEffect();
+            var shader = ApplyEffect(CursorVisibility.Cursor);
             if (shader == -1)
             {
                 orig(bonus, smart);
@@ -343,7 +343,7 @@ public sealed class VanityCursorPlayer : ModPlayer
 
     private static SpriteBatchSnapshot? snapshot;
 
-    private static int ApplyEffect()
+    private static int ApplyEffect(CursorVisibility mode)
     {
         // Could be in the main menu, etc.
         if (!Main.LocalPlayer.TryGetModPlayer<VanityCursorPlayer>(out var player))
@@ -370,7 +370,7 @@ public sealed class VanityCursorPlayer : ModPlayer
 
         // TODO: Merge with dye-stacking system when we make it.
 
-        if (hasHairDye)
+        if (hasHairDye && (player.FunctionalVisibility == mode || player.FunctionalVisibility == CursorVisibility.Both))
         {
             /*var oldHairColor = Main.LocalPlayer.hairColor;
             Main.LocalPlayer.hairColor = Color.White;
@@ -381,7 +381,7 @@ public sealed class VanityCursorPlayer : ModPlayer
             return PlayerDrawHelper.PackShader(player.HairDye, PlayerDrawHelper.ShaderConfiguration.HairShader);
         }
 
-        if (player.Cursor[1] is { IsAir: false, dye: > 0 } dyeItem)
+        if (player.Cursor[1] is { IsAir: false, dye: > 0 } dyeItem && (player.DyeVisibility == mode || player.DyeVisibility == CursorVisibility.Both))
         {
             // GameShaders.Armor.Apply(dyeItem.dye, Main.LocalPlayer, fakeDrawData);
             return PlayerDrawHelper.PackShader(dyeItem.dye, PlayerDrawHelper.ShaderConfiguration.ArmorShader);
