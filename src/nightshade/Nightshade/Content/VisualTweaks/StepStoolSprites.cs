@@ -1,6 +1,5 @@
 using Daybreak.Common.Assets;
 using Daybreak.Common.Features.Hooks;
-using Daybreak.Core.Hooks;
 
 using Terraria;
 using Terraria.Graphics.Renderers;

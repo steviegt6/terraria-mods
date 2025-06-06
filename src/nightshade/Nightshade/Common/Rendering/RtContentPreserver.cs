@@ -1,5 +1,4 @@
 using Daybreak.Common.Features.Hooks;
-using Daybreak.Core.Hooks;
 
 using Microsoft.Xna.Framework.Graphics;
 
@@ -9,6 +8,14 @@ namespace Nightshade.Common.Rendering;
 
 internal static class RtContentPreserver
 {
+    public static RenderTargetBinding[] GetAndPreserveMainRTs()
+    {
+        var bindings = Main.instance.GraphicsDevice.GetRenderTargets();
+        ApplyToBindings(bindings);
+
+		return bindings;
+	}
+
     public static void ApplyToBindings(RenderTargetBinding[] bindings)
     {
         foreach (var binding in bindings)

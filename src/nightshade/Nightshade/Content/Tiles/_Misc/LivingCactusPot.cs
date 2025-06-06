@@ -1,9 +1,11 @@
+using System;
+using System.Collections.Generic;
+
 using Microsoft.Xna.Framework;
 
 using Nightshade.Content.Gores;
 using Nightshade.Content.Items;
-using System;
-using System.Collections.Generic;
+
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -46,10 +48,14 @@ internal sealed class LivingCactusPot : AbstractPot
 	public override IEnumerable<Item> GetItemDrops(int i, int j)
 	{
 		if (WorldGen.genRand.NextBool(45))
+		{
 			return [new Item(ItemID.RegenerationPotion)];
+		}
 
 		if (WorldGen.genRand.NextBool(45))
+		{
 			return [new Item(ItemID.ThornsPotion)];
+		}
 
 		switch (Main.rand.Next(6))
 		{
@@ -60,7 +66,7 @@ internal sealed class LivingCactusPot : AbstractPot
 			case 2: return [new Item(ModContent.ItemType<CactusSplashJug>(), WorldGen.genRand.Next(5, 10))];
 
 			default:
-				int moneyAmount = WorldGen.genRand.Next(100, 301);
+				var moneyAmount = WorldGen.genRand.Next(100, 301);
 
 				// In vanilla, money dropped from pots has a lot of funny logic thats all embedded in a single function.
 				// Tmod has no support for pot drop logic either.

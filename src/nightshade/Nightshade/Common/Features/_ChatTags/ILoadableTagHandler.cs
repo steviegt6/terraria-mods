@@ -1,5 +1,3 @@
-using Daybreak.Core.Hooks;
-
 using Terraria.ModLoader;
 using Terraria.UI.Chat;
 

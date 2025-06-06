@@ -85,30 +85,6 @@ internal static class AssetReferences
 
                     private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
                 }
-
-                public static class Bosses
-                {
-                    public static class RaA
-                    {
-                        public static class SlimeBoss
-                        {
-                            public const string KEY = "Nightshade/Assets/Images/NPCs/Bosses/RaA/SlimeBoss";
-
-                            public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
-
-                            private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
-                        }
-
-                        public static class SlimeBossBrain
-                        {
-                            public const string KEY = "Nightshade/Assets/Images/NPCs/Bosses/RaA/SlimeBossBrain";
-
-                            public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
-
-                            private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
-                        }
-                    }
-                }
             }
 
             public static class Particles
@@ -167,18 +143,27 @@ internal static class AssetReferences
 
             public static class UI
             {
-                public static class StarspeakLine
+                public static class CursorTrail_Slot
                 {
-                    public const string KEY = "Nightshade/Assets/Images/UI/StarspeakLine";
+                    public const string KEY = "Nightshade/Assets/Images/UI/CursorTrail_Slot";
 
                     public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
                     private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
                 }
 
-                public static class StarspeakStar
+                public static class Cursor_Slot
                 {
-                    public const string KEY = "Nightshade/Assets/Images/UI/StarspeakStar";
+                    public const string KEY = "Nightshade/Assets/Images/UI/Cursor_Slot";
+
+                    public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
+
+                    private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
+                }
+
+                public static class Cursor_Visibility
+                {
+                    public const string KEY = "Nightshade/Assets/Images/UI/Cursor_Visibility";
 
                     public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -400,6 +385,42 @@ internal static class AssetReferences
                         private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
                     }
 
+                    public static class DriftersBoots
+                    {
+                        public const string KEY = "Nightshade/Assets/Images/Items/Accessories/DriftersBoots";
+
+                        public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
+
+                        private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
+                    }
+
+                    public static class FourLeafClover
+                    {
+                        public const string KEY = "Nightshade/Assets/Images/Items/Accessories/FourLeafClover";
+
+                        public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
+
+                        private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
+                    }
+
+                    public static class Godspeed
+                    {
+                        public const string KEY = "Nightshade/Assets/Images/Items/Accessories/Godspeed";
+
+                        public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
+
+                        private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
+                    }
+
+                    public static class HallowedCharm
+                    {
+                        public const string KEY = "Nightshade/Assets/Images/Items/Accessories/HallowedCharm";
+
+                        public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
+
+                        private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
+                    }
+
                     public static class HandOfCreationStool
                     {
                         public const string KEY = "Nightshade/Assets/Images/Items/Accessories/HandOfCreationStool";
@@ -412,6 +433,33 @@ internal static class AssetReferences
                     public static class MechanicalBeetle
                     {
                         public const string KEY = "Nightshade/Assets/Images/Items/Accessories/MechanicalBeetle";
+
+                        public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
+
+                        private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
+                    }
+
+                    public static class RabbitsFoot
+                    {
+                        public const string KEY = "Nightshade/Assets/Images/Items/Accessories/RabbitsFoot";
+
+                        public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
+
+                        private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
+                    }
+
+                    public static class RaBoots
+                    {
+                        public const string KEY = "Nightshade/Assets/Images/Items/Accessories/RaBoots";
+
+                        public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
+
+                        private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
+                    }
+
+                    public static class RainbowHorseshoe
+                    {
+                        public const string KEY = "Nightshade/Assets/Images/Items/Accessories/RainbowHorseshoe";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -470,6 +518,99 @@ internal static class AssetReferences
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
                         private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
+                    }
+
+                    public static class SunGodEye
+                    {
+                        public const string KEY = "Nightshade/Assets/Images/Items/Accessories/SunGodEye";
+
+                        public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
+
+                        private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
+                    }
+
+                    public static class TemporalVestige
+                    {
+                        public const string KEY = "Nightshade/Assets/Images/Items/Accessories/TemporalVestige";
+
+                        public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
+
+                        private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
+                    }
+
+                    public static class Cursors
+                    {
+                        public static class BiomeCursor
+                        {
+                            public const string KEY = "Nightshade/Assets/Images/Items/Accessories/Cursors/BiomeCursor";
+
+                            public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
+
+                            private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
+                        }
+
+                        public static class DepthCursor
+                        {
+                            public const string KEY = "Nightshade/Assets/Images/Items/Accessories/Cursors/DepthCursor";
+
+                            public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
+
+                            private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
+                        }
+
+                        public static class LifeCursor
+                        {
+                            public const string KEY = "Nightshade/Assets/Images/Items/Accessories/Cursors/LifeCursor";
+
+                            public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
+
+                            private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
+                        }
+
+                        public static class ManaCursor
+                        {
+                            public const string KEY = "Nightshade/Assets/Images/Items/Accessories/Cursors/ManaCursor";
+
+                            public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
+
+                            private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
+                        }
+
+                        public static class MoneyCursor
+                        {
+                            public const string KEY = "Nightshade/Assets/Images/Items/Accessories/Cursors/MoneyCursor";
+
+                            public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
+
+                            private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
+                        }
+
+                        public static class PartyCursor
+                        {
+                            public const string KEY = "Nightshade/Assets/Images/Items/Accessories/Cursors/PartyCursor";
+
+                            public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
+
+                            private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
+                        }
+
+                        public static class SpeedCursor
+                        {
+                            public const string KEY = "Nightshade/Assets/Images/Items/Accessories/Cursors/SpeedCursor";
+
+                            public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
+
+                            private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
+                        }
+
+                        public static class TimeCursor
+                        {
+                            public const string KEY = "Nightshade/Assets/Images/Items/Accessories/Cursors/TimeCursor";
+
+                            public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
+
+                            private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
+                        }
                     }
                 }
 
@@ -1542,6 +1683,36 @@ internal static class AssetReferences
         {
             public static class Misc
             {
+                public static class BasicPixelizationShader
+                {
+                    public sealed class Parameters : IShaderParameters
+                    {
+                        public float uPixel { get; set; }
+
+                        public Microsoft.Xna.Framework.Vector2 uSize { get; set; }
+
+                        public Microsoft.Xna.Framework.Graphics.Texture2D? uImage0 { get; set; }
+
+                        public void Apply(Microsoft.Xna.Framework.Graphics.EffectParameterCollection parameters)
+                        {
+                            parameters["uPixel"]?.SetValue(uPixel);
+                            parameters["uSize"]?.SetValue(uSize);
+                            parameters["uImage0"]?.SetValue(uImage0);
+                        }
+                    }
+
+                    public const string KEY = "Nightshade/Assets/Shaders/Misc/BasicPixelizationShader";
+
+                    public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Effect> Asset => lazy.Value;
+
+                    private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Effect>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Effect>(KEY));
+
+                    public static WrapperShaderData<Parameters> CreateStripShader()
+                    {
+                        return new WrapperShaderData<Parameters>(Asset, "StripShader");
+                    }
+                }
+
                 public static class VanillaVertexStripShader
                 {
                     public sealed class Parameters : IShaderParameters

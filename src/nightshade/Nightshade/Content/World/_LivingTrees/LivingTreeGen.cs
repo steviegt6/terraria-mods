@@ -3,6 +3,7 @@
 using Microsoft.Xna.Framework;
 
 using MonoMod.Cil;
+
 using Nightshade.Common.Utilities;
 
 using Terraria;
@@ -90,10 +91,10 @@ internal sealed class LivingTreeGen : ModSystem
             LivingCactusCount *= 22;
         }
 
-        int fallback = 0;
+        var fallback = 0;
         float currentCactusCount = 0;
 
-        LivingCactusBiome cactus = GenVars.configuration.CreateBiome<LivingCactusBiome>();
+        var cactus = GenVars.configuration.CreateBiome<LivingCactusBiome>();
         while (currentCactusCount < LivingCactusCount && fallback < 20000)
         {
             cactus.Round = WorldGen.genRand.NextBool();
@@ -101,7 +102,7 @@ internal sealed class LivingTreeGen : ModSystem
             if (cactus.Place(WorldGen.RandomRectanglePoint(GenVars.desertHiveLeft + 25, GenVars.desertHiveHigh + 100, GenVars.desertHiveRight - 25, GenVars.desertHiveLow - 50), GenVars.structures))
             {
                 currentCactusCount++;
-                progress.Set((float)currentCactusCount / LivingCactusCount);
+                progress.Set(currentCactusCount / LivingCactusCount);
             }
 
             fallback++;
@@ -109,7 +110,7 @@ internal sealed class LivingTreeGen : ModSystem
 
         // if (WorldGen.genRand.NextBool(20))
 
-        int locationX = WorldGen.genRand.NextBool() ? GenVars.desertHiveRight : GenVars.desertHiveLeft;
+        var locationX = WorldGen.genRand.NextBool() ? GenVars.desertHiveRight : GenVars.desertHiveLeft;
         cactus.Place(new Point(locationX, GenVars.desertHiveHigh), GenVars.structures);
     }
 
@@ -121,7 +122,7 @@ internal sealed class LivingTreeGen : ModSystem
             return false;
         }
 
-        float terrainSlope = NightshadeGenUtil.GetAverageSurfaceSlope(x, y, 15);
+        var terrainSlope = NightshadeGenUtil.GetAverageSurfaceSlope(x, y, 15);
         if (Math.Abs(terrainSlope) > 0.2f)
         {
             return false;

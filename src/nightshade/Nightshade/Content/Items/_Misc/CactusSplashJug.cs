@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
+
 using Nightshade.Content.Projectiles._Friendly;
+
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
