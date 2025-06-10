@@ -63,6 +63,15 @@ internal static class AssetReferences
                 private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
             }
 
+            public static class Empty
+            {
+                public const string KEY = "Nightshade/Assets/Images/Empty";
+
+                public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
+
+                private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
+            }
+
             public static class Dusts
             {
                 public static class DotDropletDust
@@ -80,6 +89,15 @@ internal static class AssetReferences
                 public static class RainbowSlime
                 {
                     public const string KEY = "Nightshade/Assets/Images/NPCs/RainbowSlime";
+
+                    public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
+
+                    private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
+                }
+
+                public static class ThawBoss_Orb
+                {
+                    public const string KEY = "Nightshade/Assets/Images/NPCs/ThawBoss_Orb";
 
                     public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
