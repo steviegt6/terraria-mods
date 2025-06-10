@@ -285,6 +285,16 @@ Items: {
 		DisplayName: Time Cursor
 		Tooltip: ""
 	}
+
+	LivingPalmLeafWand: {
+		DisplayName: Living Palm Leaf Wand
+		Tooltip: ""
+	}
+
+	LivingPalmWoodWand: {
+		DisplayName: Living Palm Wood Wand
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
@@ -298,6 +308,10 @@ Projectiles: {
 	StarFragmentProjSpawner.DisplayName: Star Fragment Proj Spawner
 	PreDigesterHeldProj.DisplayName: Pre Digester Held Proj
 	CactusSplashJugThrown.DisplayName: Cactus Splash Jug Thrown
+}
+
+Tiles: {
+	CoconutChestTile: Coconut Chest
 }
 
 Configs.DummyConfig.DisplayName: Dummy Config

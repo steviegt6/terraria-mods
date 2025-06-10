@@ -23,7 +23,7 @@ internal sealed class LivingCactusBiome : MicroBiome
 
     private static ushort PlatformType => (ushort)ModContent.TileType<CactusWoodPlatform>();
 
-    private static ushort WoodWallType => (ushort)ModContent.WallType<LivingCactusWoodWall>();
+    private static ushort WallType => (ushort)ModContent.WallType<LivingCactusWoodWall>();
 
 	private static ushort PotType => (ushort)ModContent.TileType<LivingCactusPot>();
 
@@ -70,7 +70,7 @@ internal sealed class LivingCactusBiome : MicroBiome
 
     private static bool CanPlaceCactusOutline(int x, int y, int thickness, bool checkCorners)
     {
-		var onOutside = Main.tile[x, y].WallType != WoodWallType && Main.tile[x, y].TileType != WoodType;
+		var onOutside = Main.tile[x, y].WallType != WallType && Main.tile[x, y].TileType != WoodType;
         var onEdge = false;
         for (var i = x - thickness; i <= x + thickness; i++)
         {
@@ -163,7 +163,7 @@ internal sealed class LivingCactusBiome : MicroBiome
 					Main.tile[x + i + offX, y - j].ClearTile();
 				}
 
-				Main.tile[x + i + offX, y - j].WallType = WoodWallType;
+				Main.tile[x + i + offX, y - j].WallType = WallType;
 			}
 		}
 
@@ -275,7 +275,7 @@ internal sealed class LivingCactusBiome : MicroBiome
                     Main.tile[x + i + offX, y - j].ClearTile();
                 }
 
-                Main.tile[x + i + offX, y - j].WallType = WoodWallType;
+                Main.tile[x + i + offX, y - j].WallType = WallType;
 
                 if (placeWide)
                 {
@@ -284,7 +284,7 @@ internal sealed class LivingCactusBiome : MicroBiome
                         Main.tile[x + i + stalkXOffsets[j] - Math.Sign(i), y - j].ClearTile();
                     }
 
-                    Main.tile[x + i + stalkXOffsets[j] - Math.Sign(i), y - j].WallType = WoodWallType;
+                    Main.tile[x + i + stalkXOffsets[j] - Math.Sign(i), y - j].WallType = WallType;
                 }
             }
         }
@@ -359,7 +359,7 @@ internal sealed class LivingCactusBiome : MicroBiome
                     }
 
 					var place = Math.Abs(j - passage_height / 2) > 1;
-                    if (place && Main.tile[x - i * direction, y - j].WallType != WoodWallType)
+                    if (place && Main.tile[x - i * direction, y - j].WallType != WallType)
                     {
                         Main.tile[x - i * direction, y - j].ResetToType(WoodType);
                     }
@@ -370,7 +370,7 @@ internal sealed class LivingCactusBiome : MicroBiome
                             Main.tile[x - i * direction, y - j].ClearTile();
                         }
 
-                        Main.tile[x - i * direction, y - j].WallType = WoodWallType;
+                        Main.tile[x - i * direction, y - j].WallType = WallType;
                     }
                 }
             }
@@ -418,7 +418,7 @@ internal sealed class LivingCactusBiome : MicroBiome
                     }
                 }
 
-                if (place && Main.tile[x + i + offX, y - j].WallType != WoodWallType)
+                if (place && Main.tile[x + i + offX, y - j].WallType != WallType)
                 {
                     Main.tile[x + i + offX, y - j].ResetToType(WoodType);
                 }
@@ -427,7 +427,7 @@ internal sealed class LivingCactusBiome : MicroBiome
                     Main.tile[x + i + offX, y - j].ClearTile();
                 }
 
-                Main.tile[x + i + offX, y - j].WallType = WoodWallType;
+                Main.tile[x + i + offX, y - j].WallType = WallType;
 
                 if (placeWide)
                 {
@@ -436,7 +436,7 @@ internal sealed class LivingCactusBiome : MicroBiome
                         Main.tile[x + i + armXOffsets[j], y - j].ClearTile();
                     }
 
-                    Main.tile[x + i + armXOffsets[j], y - j].WallType = WoodWallType;
+                    Main.tile[x + i + armXOffsets[j], y - j].WallType = WallType;
                 }
             }
         }
@@ -526,7 +526,7 @@ internal sealed class LivingCactusBiome : MicroBiome
         var r = 0;
         while (true)
         {
-            if (!Main.tile[x + r * direction, y].HasTile && Main.tile[x + r * direction, y].WallType == WoodWallType)
+            if (!Main.tile[x + r * direction, y].HasTile && Main.tile[x + r * direction, y].WallType == WallType)
             {
                 validCount++;
             }
@@ -570,7 +570,7 @@ internal sealed class LivingCactusBiome : MicroBiome
 			TryPlacePlatform(x, y, -1, width / 2 + 1);
 		}
 
-		var index = WorldGen.PlaceChest(x - 1 + WorldGen.genRand.Next(-width / 2 + 1, width / 2), y - 1, style: 10);
+		int index = WorldGen.PlaceChest(x - 1 + WorldGen.genRand.Next(-width / 2 + 1, width / 2), y - 1, style: 10);
         if (index < 0)
         {
             return;

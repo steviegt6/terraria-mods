@@ -3253,6 +3253,140 @@ internal static class LocalizationReferences
                         }
                     }
                 }
+
+                public static class LivingPalmLeafWand
+                {
+                    public const string KEY = "Mods.Nightshade.Items.LivingPalmLeafWand";
+
+                    public static LocalizedText GetChildText(string childKey)
+                    {
+                        return Language.GetText(KEY + '.' + childKey);
+                    }
+
+                    public static string GetChildTextValue(string childKey, params object?[] values)
+                    {
+                        return Language.GetTextValue(KEY + '.' + childKey, values);
+                    }
+
+                    public static class DisplayName
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.LivingPalmLeafWand.DisplayName";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+
+                    public static class Tooltip
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.LivingPalmLeafWand.Tooltip";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+                }
+
+                public static class LivingPalmWoodWand
+                {
+                    public const string KEY = "Mods.Nightshade.Items.LivingPalmWoodWand";
+
+                    public static LocalizedText GetChildText(string childKey)
+                    {
+                        return Language.GetText(KEY + '.' + childKey);
+                    }
+
+                    public static string GetChildTextValue(string childKey, params object?[] values)
+                    {
+                        return Language.GetTextValue(KEY + '.' + childKey, values);
+                    }
+
+                    public static class DisplayName
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.LivingPalmWoodWand.DisplayName";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+
+                    public static class Tooltip
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.LivingPalmWoodWand.Tooltip";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+                }
             }
 
             public static class Projectiles

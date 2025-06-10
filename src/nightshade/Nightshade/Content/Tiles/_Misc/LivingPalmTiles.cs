@@ -1,5 +1,6 @@
+using Microsoft.Xna.Framework;
 using Nightshade.Content.Items;
-
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -17,8 +18,6 @@ internal sealed class LivingPalmWood : ModTile
         Main.tileSolid[Type] = true;
         Main.tileBlockLight[Type] = true;
 
-        RegisterItemDrop(ModContent.ItemType<LivingPalmWoodBlock>());
-
         TileID.Sets.ChecksForMerge[Type] = true;
         Main.tileMerge[Type][ModContent.TileType<LivingPalmLeaf>()] = true;
         Main.tileMerge[Type][TileID.Sand] = true;
@@ -32,11 +31,16 @@ internal sealed class LivingPalmWood : ModTile
         Main.tileMerge[Type][TileID.Grass] = true;
         Main.tileMerge[TileID.Grass][Type] = true;
 
-        DustType = DustID.PalmWood;
-        HitSound = SoundID.Grass;
-    }
+		RegisterItemDrop(ItemID.PalmWood);
 
-    public override void ModifyFrameMerge(int i, int j, ref int up, ref int down, ref int left, ref int right, ref int upLeft, ref int upRight, ref int downLeft, ref int downRight)
+		DustType = DustID.PalmWood;
+
+        AddMapEntry(new Color(204, 167, 108));
+	}
+
+	public override IEnumerable<Item> GetItemDrops(int i, int j) => [new Item(ItemID.PalmWood)];
+
+	public override void ModifyFrameMerge(int i, int j, ref int up, ref int down, ref int left, ref int right, ref int upLeft, ref int upRight, ref int downLeft, ref int downRight)
     {
         base.ModifyFrameMerge(i, j, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
 
@@ -54,8 +58,6 @@ internal sealed class LivingPalmLeaf : ModTile
 
         Main.tileSolid[Type] = true;
 
-        RegisterItemDrop(ModContent.ItemType<LivingPalmWoodBlock>());
-
         TileID.Sets.ChecksForMerge[Type] = true;
         Main.tileMerge[Type][ModContent.TileType<LivingPalmWood>()] = true;
         Main.tileMerge[Type][TileID.Sand] = true;
@@ -70,7 +72,11 @@ internal sealed class LivingPalmLeaf : ModTile
         Main.tileMerge[TileID.Grass][Type] = true;
         Main.tileBlockLight[Type] = true;
 
-        DustType = DustID.PalmWood;
+        DustType = DustID.JungleGrass;
         HitSound = SoundID.Grass;
-    }
+
+		AddMapEntry(new Color(107, 182, 0));
+	}
+
+	public override IEnumerable<Item> GetItemDrops(int i, int j) => [];
 }

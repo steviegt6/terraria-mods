@@ -23,7 +23,7 @@ internal sealed class LivingCactusPot : AbstractPot
 		base.SetStaticDefaults();
 
 		AddMapEntry(new Color(47, 79, 79), Language.GetText("MapObject.Pot")); // dark slate gray
-		DustType = 29;
+		DustType = DustID.OasisCactus;
 	}
 
 	public override void KillMultiTile(int i, int j, int frameX, int frameY)
@@ -83,7 +83,7 @@ internal sealed class LivingCactusPot : AbstractPot
 
 internal sealed class LivingCactusPotPlacer : ModItem
 {
-	public override string Texture => Assets.Images.Items.Misc.LivingPalmWoodBlock.KEY;
+	public override string Texture => Assets.Images.Items.Misc.LivingCactusWand.KEY;
 
 	public override void SetDefaults()
 	{
