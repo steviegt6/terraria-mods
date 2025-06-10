@@ -15,21 +15,13 @@ internal sealed class LivingPalmWood : ModTile
     {
         base.SetStaticDefaults();
 
-        Main.tileSolid[Type] = true;
-        Main.tileBlockLight[Type] = true;
+		Main.tileSolid[Type] = true;
+		Main.tileBrick[Type] = true;
+		Main.tileBlockLight[Type] = true;
 
-        TileID.Sets.ChecksForMerge[Type] = true;
-        Main.tileMerge[Type][ModContent.TileType<LivingPalmLeaf>()] = true;
-        Main.tileMerge[Type][TileID.Sand] = true;
-        Main.tileMerge[TileID.Sand][Type] = true;
-        Main.tileMerge[Type][TileID.Sandstone] = true;
-        Main.tileMerge[TileID.Sandstone][Type] = true;
-        Main.tileMerge[Type][TileID.HardenedSand] = true;
-        Main.tileMerge[TileID.HardenedSand][Type] = true;
-        Main.tileMerge[Type][TileID.Dirt] = true;
-        Main.tileMerge[TileID.Dirt][Type] = true;
-        Main.tileMerge[Type][TileID.Grass] = true;
-        Main.tileMerge[TileID.Grass][Type] = true;
+		TileID.Sets.ChecksForMerge[Type] = true;
+		Main.tileMerge[Type][ModContent.TileType<LivingPalmWood>()] = true;
+		Main.tileBlockLight[Type] = true;
 
 		RegisterItemDrop(ItemID.PalmWood);
 
@@ -56,23 +48,19 @@ internal sealed class LivingPalmLeaf : ModTile
     {
         base.SetStaticDefaults();
 
-        Main.tileSolid[Type] = true;
+		Main.tileSolid[Type] = true;
+		Main.tileBlockLight[Type] = true;
 
-        TileID.Sets.ChecksForMerge[Type] = true;
-        Main.tileMerge[Type][ModContent.TileType<LivingPalmWood>()] = true;
-        Main.tileMerge[Type][TileID.Sand] = true;
-        Main.tileMerge[TileID.Sand][Type] = true;
-        Main.tileMerge[Type][TileID.Sandstone] = true;
-        Main.tileMerge[TileID.Sandstone][Type] = true;
-        Main.tileMerge[Type][TileID.HardenedSand] = true;
-        Main.tileMerge[TileID.HardenedSand][Type] = true;
-        Main.tileMerge[Type][TileID.Dirt] = true;
-        Main.tileMerge[TileID.Dirt][Type] = true;
-        Main.tileMerge[Type][TileID.Grass] = true;
-        Main.tileMerge[TileID.Grass][Type] = true;
-        Main.tileBlockLight[Type] = true;
+		TileID.Sets.ChecksForMerge[Type] = true;
+		Main.tileMerge[Type][ModContent.TileType<LivingPalmWood>()] = true;
+		Main.tileMerge[Type][TileID.Sand] = true;
+		Main.tileMerge[TileID.Sand][Type] = true;
+		Main.tileMerge[Type][TileID.Sandstone] = true;
+		Main.tileMerge[TileID.Sandstone][Type] = true;
+		Main.tileMerge[Type][TileID.HardenedSand] = true;
+		Main.tileMerge[TileID.HardenedSand][Type] = true;
 
-        DustType = DustID.JungleGrass;
+		DustType = DustID.JungleGrass;
         HitSound = SoundID.Grass;
 
 		AddMapEntry(new Color(107, 182, 0));

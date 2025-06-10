@@ -3814,6 +3814,47 @@ internal static class LocalizationReferences
                 }
             }
 
+            public static class Tiles
+            {
+                public const string KEY = "Mods.Nightshade.Tiles";
+
+                public static LocalizedText GetChildText(string childKey)
+                {
+                    return Language.GetText(KEY + '.' + childKey);
+                }
+
+                public static string GetChildTextValue(string childKey, params object?[] values)
+                {
+                    return Language.GetTextValue(KEY + '.' + childKey, values);
+                }
+
+                public static class CoconutChestTile
+                {
+                    public const string KEY = "Mods.Nightshade.Tiles.CoconutChestTile";
+                    public const int ARG_COUNT = 0;
+
+                    public static LocalizedText GetText()
+                    {
+                        return Language.GetText(KEY);
+                    }
+
+                    public static string GetTextValue()
+                    {
+                        return Language.GetTextValue(KEY);
+                    }
+
+                    public static LocalizedText GetChildText(string childKey)
+                    {
+                        return Language.GetText(KEY + '.' + childKey);
+                    }
+
+                    public static string GetChildTextValue(string childKey, params object?[] values)
+                    {
+                        return Language.GetTextValue(KEY + '.' + childKey, values);
+                    }
+                }
+            }
+
             public static class Configs
             {
                 public const string KEY = "Mods.Nightshade.Configs";

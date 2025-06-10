@@ -49,11 +49,13 @@ internal sealed class LivingTreeGen : ModSystem
                 var y = description.Surface[x];
 
                 // if below ground, travel up
-                while (Main.tile[x, y - 1].HasTile)
+                int airThreshold = 5;
+                while (Main.tile[x, y - 1].HasTile && airThreshold > 0)
                 {
                     y--;
+                    airThreshold--;
 
-                    if (y < description.Desert.Y)
+					if (y < description.Desert.Y)
                     {
                         break;
                     }
@@ -72,18 +74,21 @@ internal sealed class LivingTreeGen : ModSystem
     }
 
 	private static int LivingCactusCount { get; set; }
+	private static int LivingPalmCount { get; set; }
+	private static int LivingBorealCount { get; set; }
 
     private static void GenLivingTrees(WorldGen.orig_GenPassDetour orig, object self, GenerationProgress progress, GameConfiguration configuration)
-    {
-        GenCacti(progress);
+	{
+		progress.Message = Lang.gen[76].Value + ".. More Living Trees";
+
+		GenCacti(progress);
+        GenPalms(progress);
 
         orig(self, progress, configuration);
     }
 
     private static void GenCacti(GenerationProgress progress)
     {
-        progress.Message = Lang.gen[76].Value + ".. More Living Trees";
-
         LivingCactusCount = WorldGen.genRand.Next(1, 5) + WorldGen.GetWorldSize() * 2;
 
         if (WorldGen.drunkWorldGen)
@@ -133,4 +138,37 @@ internal sealed class LivingTreeGen : ModSystem
         cactus.WithWater = false;
         return cactus.Place(new Point(x, y), GenVars.structures);
     }
+
+    private static void GenPalms(GenerationProgress progress)
+    {
+        LivingPalmCount = (!WorldGen.genRand.NextBool(4)).ToInt();
+
+        if (Main.drunkWorld)
+        {
+			LivingPalmCount = 4;
+		}
+
+        float count = 0;
+        int fallback = 100;
+        LivingPalmBiome palm = GenVars.configuration.CreateBiome<LivingPalmBiome>();
+
+        bool flipSide = WorldGen.genRand.NextBool();
+		while (count < LivingPalmCount && fallback > 0)
+		{
+			palm.StartCurl = WorldGen.genRand.NextFloat(-0.4f, 0.4f);
+			palm.CurlStrength = WorldGen.genRand.NextFloat(0.7f, 1f) * WorldGen.genRand.NextBool().ToDirectionInt();
+
+            int left = flipSide ? Main.maxTilesX - WorldGen.beachDistance : 0;
+            int right = flipSide ? Main.maxTilesX : WorldGen.beachDistance;
+
+            if (palm.Place(new Point(WorldGen.genRand.Next(left, right), (int)(Main.worldSurface) - 300), GenVars.structures))
+            {
+                count++;
+			    progress.Set(count / LivingPalmCount);
+            }
+
+            flipSide = !flipSide;
+			fallback--;
+        }
+	}
 }

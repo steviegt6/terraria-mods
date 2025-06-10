@@ -310,10 +310,7 @@ Projectiles: {
 	CactusSplashJugThrown.DisplayName: Cactus Splash Jug Thrown
 }
 
-Tiles: {
-	CoconutChestTile: Coconut Chest
-}
-
+Tiles.CoconutChestTile: Coconut Chest
 Configs.DummyConfig.DisplayName: Dummy Config
 
 Achievements: {

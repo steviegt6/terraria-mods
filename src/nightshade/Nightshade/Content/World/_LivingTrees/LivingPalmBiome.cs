@@ -1,33 +1,15 @@
 ﻿using Microsoft.Xna.Framework;
+using Nightshade.Common.Utilities;
 using Nightshade.Content.Tiles;
 using System;
 using Terraria;
+using Terraria.GameContent.Generation;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.WorldBuilding;
 
 namespace Nightshade.Content.World;
 
-public sealed class GenTreeCommand : ModCommand
-{
-	public override string Command => "gentree";
-
-	public override CommandType Type => CommandType.Chat;
-
-	public override void Action(CommandCaller caller, string input, string[] args)
-	{
-		LivingPalmBiome livingPalmTreeBiome = new LivingPalmBiome();
-		Point origin = Main.MouseWorld.ToTileCoordinates();
-		livingPalmTreeBiome.Place(origin, GenVars.structures);
-		Rectangle structureRect = new Rectangle(origin.X - 22, origin.Y - 38, 44, 100);
-		Dust.QuickBox(structureRect.TopLeft() * 16, structureRect.BottomRight() * 16, 100, Color.Red, null);
-		for (int i = 0; i < 20; i++)
-		{
-			Dust d = Dust.NewDustPerfect(Main.MouseWorld, DustID.WaterCandle, new Vector2(3, 0).RotatedBy(i / 20f * MathHelper.TwoPi), Scale: 2f);
-			d.noGravity = true;
-		}
-	}
-}
 public sealed class LivingPalmBiome : MicroBiome
 {
 	private static ushort WoodType => (ushort)ModContent.TileType<LivingPalmWood>();
@@ -36,34 +18,47 @@ public sealed class LivingPalmBiome : MicroBiome
 
 	private static ushort WallType => (ushort)WallID.LivingWoodUnsafe;
 
+	public float StartCurl { get; set; }
+
+	public float CurlStrength { get; set; }
+
 	public override bool Place(Point origin, StructureMap structures)
 	{
+		if (!WorldUtils.Find(origin, Searches.Chain(new Searches.Down(300),
+			new Conditions.IsSolid()), out origin))
+			return false;
+
+		if (!WorldUtils.Find(origin, Searches.Chain(new Searches.Rectangle(400, 20), 
+			new Conditions.IsTile(TileID.Sand), new NightshadeGenUtil.Conditions.IsSolidSurface()), out origin))
+			return false;
+
 		PlaceStem(origin, out Point headPosition, out float curl);
 		PlaceHead(curl * 0.2f, headPosition);
+
+		int left = Math.Min(origin.X, headPosition.X) - 35;
+		int top = headPosition.Y - 20;
+		int height = Math.Abs(headPosition.Y - origin.Y) + 35;
+		structures.AddProtectedStructure(new Rectangle(left, top, 70, height));
 
 		return true;
 	}
 
-	private static void PlaceStem(Point origin, out Point headPosition, out float finalCurl)
+	private void PlaceStem(Point origin, out Point headPosition, out float finalCurl)
 	{
 		headPosition = origin;
 
 		Vector2 curPos = origin.ToVector2();
 
 		float length = 30;
-		float halfSize = 4f;
-
-		float startCurl = WorldGen.genRand.NextFloat(-0.3f, 0.3f);
-		float curlStrength = WorldGen.genRand.NextFloat(0.5f, 1f) * WorldGen.genRand.NextBool().ToDirectionInt();
+		float halfSize = 4.5f;
 
 		float curl = 0f;
 
 		for (float k = 0; k <= length; k++)
 		{
-			int size = (int)(halfSize - MathF.Sqrt(k / length));
+			int size = (int)(halfSize - MathF.Cbrt(k / length) * 2);
 
-			Vector2 nextPos = curPos + new Vector2(0, -1).RotatedBy(curl - startCurl);
-			float angle = curPos.AngleTo(nextPos);
+			Vector2 nextPos = curPos + new Vector2(0, -1).RotatedBy(curl - StartCurl);
 
 			for (int i = -size; i <= size; i++)
 			{
@@ -75,83 +70,80 @@ public sealed class LivingPalmBiome : MicroBiome
 					if (!WorldGen.InWorld(x, y))
 						continue;
 
-					float distance = MathF.Sqrt(i * i + j * j);
-					if (distance <= size)
+					float distance = MathF.Sqrt(i * i * 1.1f + j * j);
+					if (distance < size)
 					{
-						if (distance >= size - 1.8)
-						{
-							if (Main.tile[x, y].WallType != WallType)
-								Main.tile[x, y].ResetToType(WoodType);
-						}
-						else
-							Main.tile[x, y].ClearEverything();
-
-						if (distance <= size - 1)
-							Main.tile[x, y].WallType = WallType;
-
-						WorldGen.SquareTileFrame(x, y);
-						WorldGen.SquareWallFrame(x, y);
+						if (Main.tile[x, y].WallType != WallType)
+							Main.tile[x, y].ResetToType(WoodType);
 					}
 				}
 			}
 
 			curPos = nextPos;
 
-			curl += 0.04f / (2f - k / length) * curlStrength;
+			curl += 0.04f / (2f - k / length) * CurlStrength;
+		}
+
+		for (int i = 0; i < 3; i++)
+		{
+			WorldUtils.Gen(origin, new ShapeRoot(MathHelper.Pi / 5f * (i - 1) + MathHelper.PiOver2, 17, 3, 1), new Actions.SetTile(WoodType));
 		}
 
 		headPosition = curPos.ToPoint();
-		finalCurl = startCurl + curl;
+		finalCurl = StartCurl + curl;
 	}
 
-	private static void PlaceHead(float rotation, Point origin)
+	private void PlaceHead(float rotation, Point origin)
 	{
 		const int chamberSize = 5;
 		for (int i = -chamberSize; i <= chamberSize; i++)
 		{
-			for (int j = -chamberSize; j < chamberSize; j++)
+			for (int j = -chamberSize; j <= chamberSize; j++)
 			{
+				int modI = i >= 0 ? i + 1 : i;
+				int modJ = j >= 0 ? j + 1 : j;
 				int x = (int)(origin.X + i);
 				int y = (int)(origin.Y + j);
 				if (!WorldGen.InWorld(x, y))
 					continue;
 
-				float distance = MathF.Sqrt(i * i + j * j);
-				if (distance <= chamberSize)
+				float distance = MathF.Sqrt(modI * modI + modJ * modJ);
+				if (distance < chamberSize)
 				{
-					if (distance > chamberSize - 1.5)
+					if (distance >= chamberSize - 2.1f)
 					{
 						if (Main.tile[x, y].TileType != WoodType)
 							Main.tile[x, y].ResetToType(WoodType);
 					}
 					else
-						Main.tile[x, y].ClearEverything();
-
-					WorldGen.SquareTileFrame(x, y);
+					{
+						Main.tile[x, y].ClearTile();
+						Main.tile[x, y].WallType = WallType;
+					}
 				}
 			}
 		}
 
-		PlaceLootChest(origin.X, origin.Y + chamberSize - 1);
+		PlaceLootChest(origin.X, origin.Y + chamberSize - 3);
 
-		origin.Y -= chamberSize;
+		origin.Y -= chamberSize - 1;
 
-		//int leafCount = WorldGen.genRand.Next(5, 8);
-		//for (int i = 0; i < leafCount; i++)
-		//{
-		//	Vector2 direction = new Vector2(0, -1f).RotatedBy((float)i / leafCount * MathHelper.TwoPi + WorldGen.genRand.NextFloat(-0.15f, 0.15f));
-		//	direction.Y *= WorldGen.genRand.NextFloat(0.3f, 0.6f);
-		//	GenerateLeaf(origin, direction.RotatedBy(rotation), 3, 20f, Math.Sign(rotation) * 0.02f);
-		//}
+		int leafCount = WorldGen.genRand.Next(5, 8);
+		for (int i = 0; i < leafCount; i++)
+		{
+			Vector2 direction = new Vector2(0, -1f).RotatedBy((float)i / leafCount * MathHelper.TwoPi + WorldGen.genRand.NextFloat(-0.35f, 0.35f));
+			direction.Y *= WorldGen.genRand.NextFloat(0.5f, 0.8f);
+			direction.Y -= 0.1f;
+			GenerateLeaf(origin, direction.RotatedBy(rotation), 3, 20f, Math.Sign(rotation) * 0.02f);
+		}
 	}
 
 	private static void PlaceLootChest(int x, int y)
 	{
+		Main.tileShine[(ushort)ModContent.TileType<CoconutChestTile>()] = 1200;
 		int index = WorldGen.PlaceChest(x - 1, y - 1, type: (ushort)ModContent.TileType<CoconutChestTile>());
 		if (index < 0)
-		{
 			return;
-		}
 	}
 
 	private static void GenerateLeaf(Point origin, Vector2 direction, float halfSize, float length, float curl)
@@ -179,15 +171,13 @@ public sealed class LivingPalmBiome : MicroBiome
 					{
 						if (Main.tile[x, y].TileType != WoodType && Main.tile[x, y].WallType != WallType)
 							Main.tile[x, y].ResetToType(LeafType);
-
-						WorldGen.SquareTileFrame(x, y);
 					}
 				}
 			}
 
 			curPos = nextPos;
 			direction += new Vector2(0, curl).RotatedBy(angle);
-			direction += new Vector2(0, WorldGen.genRand.NextFloat(0.02f, 0.04f));
+			direction += new Vector2(0, WorldGen.genRand.NextFloat(0.03f, 0.05f));
 		}
 	}
 }

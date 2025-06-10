@@ -1,11 +1,35 @@
 ﻿using Microsoft.Xna.Framework;
 
 using Terraria;
+using Terraria.WorldBuilding;
 
 namespace Nightshade.Common.Utilities;
 
-internal static class NightshadeGenUtil
+public static class NightshadeGenUtil
 {
+	public static class Conditions
+	{
+		public sealed class IsSolidSurface(bool allowWet = false) : GenCondition
+		{
+			protected override bool CheckValidity(int x, int y)
+			{
+				if (!WorldGen.InWorld(x, y, 5))
+					return false;
+
+				if (Main.tile[x, y].HasTile)
+				{
+					bool hasAir = Main.tileSolid[Main.tile[x, y].TileType] && !Main.tile[x, y - 1].HasTile && !Main.tile[x, y - 2].HasTile;
+					if (allowWet)
+						return hasAir;
+
+					return hasAir && Main.tile[x, y - 1].LiquidAmount < 1 && Main.tile[x, y - 2].LiquidAmount < 1;
+				}
+
+				return false;
+			}
+		}
+	}
+
 	public static int GetNearestSolidHeight(int x, int y, int maxDistance)
 	{
 		var i = 0;
