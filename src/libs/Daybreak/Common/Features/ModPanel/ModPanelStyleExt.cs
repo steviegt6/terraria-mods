@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader.UI;
+using Terraria.UI;
 
 namespace Daybreak.Common.Features.ModPanel;
 
@@ -31,6 +32,10 @@ public abstract class ModPanelStyleExt : ModPanelStyle
     public sealed override UIImage? ModifyModIcon(UIPanel element, UIImage modIcon, ref int modIconAdjust)
     {
         return ModifyModIcon((UIModItem)element, modIcon, ref modIconAdjust);
+    }
+    public override string ModifyEnabledText(string text, bool enabled)
+    {
+        return text;
     }
 
     public sealed override UIText ModifyModName(UIPanel element, UIText modName)

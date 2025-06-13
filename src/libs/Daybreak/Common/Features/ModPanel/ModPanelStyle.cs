@@ -14,6 +14,7 @@ using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.UI;
+using Terraria.UI;
 
 namespace Daybreak.Common.Features.ModPanel;
 
@@ -186,6 +187,10 @@ public abstract class ModPanelStyle : ModType
     {
         return modName;
     }
+    public virtual string ModifyEnabledText(string text, bool enabled)
+    {
+        return text;
+    }
 
     /// <summary>
     ///     Invoked before hover colors are set.
@@ -221,7 +226,11 @@ public abstract class ModPanelStyle : ModType
     {
         return true;
     }
-
+    public virtual bool PreDrawModStateTextPanel(UIElement self, bool enabled)
+    {
+        return true;
+    }
+    public virtual void PostDrawModStateTextPanel(UIElement self, bool enabled) { }
     /// <summary>
     ///     Invoked specifically after the panel is drawn, assuming
     ///     <see cref="PreDraw"/> returned <see langword="true"/>.

@@ -201,7 +201,7 @@ internal sealed class NightshadePanelStyle : ModPanelStyleExt
     public override void PostInitialize(UIModItem element)
     {
         base.PostInitialize(element);
-
+        
         if (ModLoader.HasMod("ConciseModList") && element._configButton is not null)
         {
             element._configButton._texture = Assets.Images.UI.ModLoader.ButtonModConfig_ConciseModsList.Asset;

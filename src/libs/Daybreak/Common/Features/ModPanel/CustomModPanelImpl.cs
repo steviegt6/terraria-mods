@@ -25,11 +25,8 @@ internal sealed class CustomModPanelImpl : ILoad, IUnload
     // REMEMBER TO USE DUMBWORKAROUND IN HOOKS FOR DRAW/DRAWSELF
     // TODO : 
     // ModStateUIText:
-    // string ModifyModStateText(string text, bool enabled), (get_DisplayText), if fsr this breaks, also modify Recalculate()
     // bool PreDrawModStateText(string text, bool enabled)
     // void PostDrawModStateText(string text, bool enabled)
-    // bool PreDrawModStatePanel(bool enabled)
-    // void PostDrawModStatePanel(bool enabled)
     // UIModItem:
     // Custom hover tooltip text setting
     // Custom hover tooltip panel / text drawing
@@ -37,6 +34,7 @@ internal sealed class CustomModPanelImpl : ILoad, IUnload
     // Swap UIImage for Config/More info buttons
     // Modify ReloadRequiredText
     // PreDraw ReloadRequiredText / PostDrawReloadRequiredText
+    // adjust dependency button position
     private sealed class DumbWorkaround : UIModItem
     {
         public DumbWorkaround(LocalMod mod) : base(mod) { }
@@ -48,7 +46,6 @@ internal sealed class CustomModPanelImpl : ILoad, IUnload
                 base.Draw(spriteBatch);
                 return;
             }
-
             using (style.OverrideTextures())
             {
                 currentMod = mod;
@@ -63,6 +60,11 @@ internal sealed class CustomModPanelImpl : ILoad, IUnload
 
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
+            if (!ModLoader.TryGetMod(_mod.Name, out var mod))
+            {
+                //return;
+            }
+            currentMod = mod;
             var ptr = typeof(UIPanel).GetMethod("DrawSelf", BindingFlags.NonPublic | BindingFlags.Instance)!.MethodHandle.GetFunctionPointer();
             var baseDrawSelf = (Action<SpriteBatch>)Activator.CreateInstance(typeof(Action<SpriteBatch>), this, ptr)!;
             bool drawPanelDivider = false;
@@ -213,6 +215,13 @@ internal sealed class CustomModPanelImpl : ILoad, IUnload
             typeof(UIModStateText).GetMethod(nameof(UIModStateText.DrawEnabledText), BindingFlags.NonPublic | BindingFlags.Instance),
             DrawCustomColoredEnabledText
         );
+        MonoModHooks.Modify(
+            typeof(UIModStateText).GetProperty("DisplayText", BindingFlags.NonPublic | BindingFlags.Instance)!.GetGetMethod(true),
+            ModifyEnabledText
+        );
+        MonoModHooks.Add(typeof(UIModStateText).GetMethod("DrawPanel", BindingFlags.NonPublic | BindingFlags.Instance)!,
+            DrawModStatePanel
+        );
         return;
 
         static MethodInfo GetMethod(string name)
@@ -308,6 +317,7 @@ internal sealed class CustomModPanelImpl : ILoad, IUnload
     }
     private static void OnInitialize(Action<UIModItem> orig, UIModItem self)
     {
+
         if (!ModLoader.TryGetMod(self._mod.Name, out currentMod) || !TryGetPanelStyle(currentMod, out var style))
         {
             orig(self);
@@ -361,7 +371,28 @@ internal sealed class CustomModPanelImpl : ILoad, IUnload
                 : style.ModifyModName(self, originalText)
             );
         }
-
+        // Modify the mod state text.
+        {
+            /*c.GotoNext(MoveType.Before, x => x.MatchLdarg0(),
+                x => x.MatchLdfld<UIModItem>(nameof(UIModItem._uiModStateText)),
+                x => x.MatchLdarg0(),
+                x => x.MatchLdftn<UIModItem>("ToggleEnabled"));
+            c.EmitLdarg0(); // push this
+            c.EmitLdarg0();
+            c.EmitLdfld(typeof(UIModItem).GetField(nameof(UIModItem._uiModStateText), BindingFlags.NonPublic | BindingFlags.Instance)); // push the already initialized mod state text
+            c.EmitDelegate(static (UIModItem self, UIModStateText text) =>
+            {
+                if (!ModLoader.TryGetMod(self.ModName, out var mod) || !TryGetPanelStyle(mod, out var style))
+                {
+                    return text;
+                }
+                else
+                {
+                    UIElement stateText = style.ModifyEnabledText(text);
+                    return stateText is null ? text : stateText;
+                }
+            });*/
+        }
         // Modify the info buttons.
         {
             // Move into the actual block that handles this.
@@ -405,7 +436,21 @@ internal sealed class CustomModPanelImpl : ILoad, IUnload
             c.MarkLabel(label);
         }
     }
-
+    private static void DrawModStatePanel(Action<UIModStateText, SpriteBatch> orig, UIModStateText self, SpriteBatch sb)
+    {
+        var modName = ((UIModItem)self.Parent)._mod.Name;
+        ModLoader.TryGetMod(modName, out var mod);
+        if (!TryGetPanelStyle(mod, out var style))
+        {
+            orig(self, sb);
+            return;
+        }
+        if (style.PreDrawModStateTextPanel(self, self._enabled))
+        {
+            orig(self, sb);
+        }
+        style.PostDrawModStateTextPanel(self, self._enabled);
+    } 
     // TODO: Don't remember if we can use currentMod here, but I'd rather
     // minimize its usage in cases where we actually can determine the context.
     private static void SetHoverColors(
@@ -486,5 +531,29 @@ internal sealed class CustomModPanelImpl : ILoad, IUnload
                 return style.ModifyEnabledTextColor(self._enabled, displayColor);
             }
         );
+    }
+    private static void ModifyEnabledText(ILContext il)
+    {
+        ILCursor c = new ILCursor(il);
+        c.EmitLdarg0();
+        c.EmitDelegate(static (UIModStateText self) =>
+        {
+            string text = self._enabled ? Language.GetTextValue("GameUI.Enabled") : Language.GetTextValue("GameUI.Disabled");
+            var modName = ((UIModItem)self.Parent)._mod.Name;
+            if(!ModLoader.TryGetMod(modName, out var mod))
+            {
+                return text;
+            }
+            if (!TryGetPanelStyle(mod, out var style))
+            {
+                return text;
+            }
+            else
+            {
+                text = style.ModifyEnabledText(text, self._enabled);
+                return text;
+            }
+        });
+        c.EmitRet();
     }
 }
