@@ -226,6 +226,11 @@ public abstract class ModPanelStyle : ModType
     {
         return true;
     }
+    public virtual bool PreDrawModStateText(UIElement self, bool enabled)
+    {
+        return true;
+    }
+    public virtual void PostDrawModStateText(UIElement self, bool enabled) { }
     public virtual bool PreDrawModStateTextPanel(UIElement self, bool enabled)
     {
         return true;

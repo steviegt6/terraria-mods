@@ -24,9 +24,6 @@ internal sealed class CustomModPanelImpl : ILoad, IUnload
 {
     // REMEMBER TO USE DUMBWORKAROUND IN HOOKS FOR DRAW/DRAWSELF
     // TODO : 
-    // ModStateUIText:
-    // bool PreDrawModStateText(string text, bool enabled)
-    // void PostDrawModStateText(string text, bool enabled)
     // UIModItem:
     // Custom hover tooltip text setting
     // Custom hover tooltip panel / text drawing
@@ -211,6 +208,7 @@ internal sealed class CustomModPanelImpl : ILoad, IUnload
             GetMethod(nameof(UIModItem.SetHoverColors)),
             SetHoverColors
         );
+        // UIModStateText
         MonoModHooks.Modify(
             typeof(UIModStateText).GetMethod(nameof(UIModStateText.DrawEnabledText), BindingFlags.NonPublic | BindingFlags.Instance),
             DrawCustomColoredEnabledText
@@ -221,6 +219,9 @@ internal sealed class CustomModPanelImpl : ILoad, IUnload
         );
         MonoModHooks.Add(typeof(UIModStateText).GetMethod("DrawPanel", BindingFlags.NonPublic | BindingFlags.Instance)!,
             DrawModStatePanel
+        );
+        MonoModHooks.Add(typeof(UIModStateText).GetMethod("DrawEnabledText", BindingFlags.NonPublic | BindingFlags.Instance)!,
+            DrawModStateText
         );
         return;
 
@@ -435,6 +436,21 @@ internal sealed class CustomModPanelImpl : ILoad, IUnload
             c.GotoNext(MoveType.After, x => x.MatchBlt(out _));
             c.MarkLabel(label);
         }
+    }
+    private static void DrawModStateText(Action<UIModStateText, SpriteBatch> orig, UIModStateText self, SpriteBatch sb)
+    {
+        var modName = ((UIModItem)self.Parent)._mod.Name;
+        ModLoader.TryGetMod(modName, out var mod);
+        if (!TryGetPanelStyle(mod, out var style))
+        {
+            orig(self, sb);
+            return;
+        }
+        if (style.PreDrawModStateText(self, self._enabled))
+        {
+            orig(self, sb);
+        }
+        style.PostDrawModStateText(self, self._enabled);
     }
     private static void DrawModStatePanel(Action<UIModStateText, SpriteBatch> orig, UIModStateText self, SpriteBatch sb)
     {
