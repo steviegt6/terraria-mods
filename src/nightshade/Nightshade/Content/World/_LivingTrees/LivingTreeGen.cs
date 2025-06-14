@@ -141,7 +141,7 @@ internal sealed class LivingTreeGen : ModSystem
 
     private static void GenPalms(GenerationProgress progress)
     {
-        LivingPalmCount = (!WorldGen.genRand.NextBool(4)).ToInt();
+        LivingPalmCount = (!WorldGen.genRand.NextBool(4)).ToInt() + 1;
 
         if (Main.drunkWorld)
         {
@@ -155,8 +155,9 @@ internal sealed class LivingTreeGen : ModSystem
         bool flipSide = WorldGen.genRand.NextBool();
 		while (count < LivingPalmCount && fallback > 0)
 		{
-			palm.StartCurl = WorldGen.genRand.NextFloat(-0.4f, 0.4f);
-			palm.CurlStrength = WorldGen.genRand.NextFloat(0.7f, 1f) * WorldGen.genRand.NextBool().ToDirectionInt();
+            int direction = WorldGen.genRand.NextBool().ToDirectionInt();
+			palm.StartCurl = WorldGen.genRand.NextFloat(0.2f) * -direction;
+			palm.CurlStrength = WorldGen.genRand.NextFloat(0.5f, 1f) * direction;
 
             int left = flipSide ? Main.maxTilesX - WorldGen.beachDistance : 0;
             int right = flipSide ? Main.maxTilesX : WorldGen.beachDistance;

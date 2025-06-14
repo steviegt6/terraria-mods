@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Nightshade.Common.Utilities;
 using Nightshade.Content.Items;
 using Nightshade.Content.Tiles;
+using Nightshade.Content.Tiles.Furniture;
 using Nightshade.Content.Walls;
 
 using Terraria;

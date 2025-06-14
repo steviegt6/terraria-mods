@@ -1564,6 +1564,24 @@ internal static class AssetReferences
                         private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
                     }
 
+                    public static class FallingCoconutProjectile
+                    {
+                        public const string KEY = "Nightshade/Assets/Images/Tiles/Misc/FallingCoconutProjectile";
+
+                        public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
+
+                        private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
+                    }
+
+                    public static class HangingCoconut
+                    {
+                        public const string KEY = "Nightshade/Assets/Images/Tiles/Misc/HangingCoconut";
+
+                        public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
+
+                        private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
+                    }
+
                     public static class LivingCactus
                     {
                         public const string KEY = "Nightshade/Assets/Images/Tiles/Misc/LivingCactus";

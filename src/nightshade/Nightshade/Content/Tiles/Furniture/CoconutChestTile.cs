@@ -3,7 +3,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
 
-namespace Nightshade.Content.Tiles;
+namespace Nightshade.Content.Tiles.Furniture;
 
 // TODO: Dust, name, other properties.
 
@@ -17,6 +17,6 @@ internal sealed class CoconutChestTile : AbstractChest
 
 		Main.tileShine2[Type] = false;
 
-		AddMapEntry(new Color(221, 205, 201), Language.GetOrRegister($"Tiles.{GetType().Name}"));
+		AddMapEntry(new Color(221, 205, 201), Mod.GetLocalization($"Tiles.{GetType().Name}"));
 	}
 }

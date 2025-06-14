@@ -3387,6 +3387,73 @@ internal static class LocalizationReferences
                         }
                     }
                 }
+
+                public static class HangingCoconutItem
+                {
+                    public const string KEY = "Mods.Nightshade.Items.HangingCoconutItem";
+
+                    public static LocalizedText GetChildText(string childKey)
+                    {
+                        return Language.GetText(KEY + '.' + childKey);
+                    }
+
+                    public static string GetChildTextValue(string childKey, params object?[] values)
+                    {
+                        return Language.GetTextValue(KEY + '.' + childKey, values);
+                    }
+
+                    public static class DisplayName
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.HangingCoconutItem.DisplayName";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+
+                    public static class Tooltip
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.HangingCoconutItem.Tooltip";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+                }
             }
 
             public static class Projectiles
@@ -3789,6 +3856,47 @@ internal static class LocalizationReferences
                     public static class DisplayName
                     {
                         public const string KEY = "Mods.Nightshade.Projectiles.CactusSplashJugThrown.DisplayName";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+                }
+
+                public static class FallingCoconutProjectile
+                {
+                    public const string KEY = "Mods.Nightshade.Projectiles.FallingCoconutProjectile";
+
+                    public static LocalizedText GetChildText(string childKey)
+                    {
+                        return Language.GetText(KEY + '.' + childKey);
+                    }
+
+                    public static string GetChildTextValue(string childKey, params object?[] values)
+                    {
+                        return Language.GetTextValue(KEY + '.' + childKey, values);
+                    }
+
+                    public static class DisplayName
+                    {
+                        public const string KEY = "Mods.Nightshade.Projectiles.FallingCoconutProjectile.DisplayName";
                         public const int ARG_COUNT = 0;
 
                         public static LocalizedText GetText()

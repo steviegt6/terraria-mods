@@ -295,6 +295,11 @@ Items: {
 		DisplayName: Living Palm Wood Wand
 		Tooltip: ""
 	}
+
+	HangingCoconutItem: {
+		DisplayName: Hanging Coconut
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
@@ -308,6 +313,7 @@ Projectiles: {
 	StarFragmentProjSpawner.DisplayName: Star Fragment Proj Spawner
 	PreDigesterHeldProj.DisplayName: Pre Digester Held Proj
 	CactusSplashJugThrown.DisplayName: Cactus Splash Jug Thrown
+	FallingCoconutProjectile.DisplayName: Falling Coconut
 }
 
 Tiles.CoconutChestTile: Coconut Chest
