@@ -151,9 +151,12 @@ public class CactusSplashJugThrown : ModProjectile
 			splash.Prepare(Projectile.Center, dropletVel, JuiceColor() * 1.1f, Main.rand.NextFloat(1f, 2f), Main.rand.Next(15, 35));
 			splash.Lighted = true;
 			ParticleEngine.Particles.Add(splash);
+
+			Color color = Color.Lerp(Color.DarkOliveGreen, Color.ForestGreen, Main.rand.NextFloat());
+			Dust.NewDustPerfect(Projectile.Center + Main.rand.NextVector2Circular(10, 10), DustID.FoodPiece, Projectile.velocity.RotatedByRandom(2f) * Main.rand.NextFloat(0.5f), newColor: color);
 		}
 
-		// TODO: Sound, gore
+		// TODO: Sound
 
 		SoundEngine.PlaySound(SoundID.Dig with { Volume = 0.7f, Pitch = 1, PitchVariance = 0.2f, MaxInstances = 0 }, Projectile.Center);
 		SoundEngine.PlaySound(SoundID.Item167 with { Volume = 0.7f, Pitch = 1f, PitchVariance = 0.2f, MaxInstances = 0 }, Projectile.Center);
