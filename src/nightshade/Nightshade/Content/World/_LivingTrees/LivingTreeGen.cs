@@ -141,14 +141,12 @@ internal sealed class LivingTreeGen : ModSystem
 
     private static void GenPalms(GenerationProgress progress)
     {
-        LivingPalmCount = (!WorldGen.genRand.NextBool(4)).ToInt() + 1;
+        LivingPalmCount = (!WorldGen.genRand.NextBool(4)).ToInt() + WorldGen.genRand.NextBool().ToInt();
 
         if (Main.drunkWorld)
-        {
-			LivingPalmCount = 4;
-		}
+			LivingPalmCount = 10;
 
-        float count = 0;
+		float count = 0;
         int fallback = 100;
         LivingPalmBiome palm = GenVars.configuration.CreateBiome<LivingPalmBiome>();
 
@@ -159,8 +157,8 @@ internal sealed class LivingTreeGen : ModSystem
 			palm.StartCurl = WorldGen.genRand.NextFloat(0.2f) * -direction;
 			palm.CurlStrength = WorldGen.genRand.NextFloat(0.5f, 1f) * direction;
 
-            int left = flipSide ? Main.maxTilesX - WorldGen.beachDistance : 0;
-            int right = flipSide ? Main.maxTilesX : WorldGen.beachDistance;
+            int left = flipSide ? Main.maxTilesX - WorldGen.beachDistance : (int)(WorldGen.beachDistance / 1.5f);
+            int right = flipSide ? Main.maxTilesX - (int)(WorldGen.beachDistance / 1.5f) : WorldGen.beachDistance;
 
             if (palm.Place(new Point(WorldGen.genRand.Next(left, right), (int)(Main.worldSurface) - 300), GenVars.structures))
             {

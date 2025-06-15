@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-
+using System.Linq;
 using Terraria;
 using Terraria.WorldBuilding;
 
@@ -26,6 +26,20 @@ public static class NightshadeGenUtil
 				}
 
 				return false;
+			}
+		}
+
+		public sealed class IsNotTile(params int[] tileTypes) : GenCondition
+		{
+			protected override bool CheckValidity(int x, int y)
+			{
+				if (!WorldGen.InWorld(x, y))
+					return false;
+
+				if (tileTypes.Any(n => Main.tile[x, y].TileType == n))
+					return false;
+
+				return true;
 			}
 		}
 	}

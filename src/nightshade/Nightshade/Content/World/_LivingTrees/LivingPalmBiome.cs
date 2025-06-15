@@ -12,22 +12,6 @@ using Terraria.WorldBuilding;
 
 namespace Nightshade.Content.World;
 
-public sealed class GenTreeCommand : ModCommand
-{
-	public override string Command => "gentree";
-
-	public override CommandType Type => CommandType.Chat;
-
-	public override void Action(CommandCaller caller, string input, string[] args)
-	{
-		LivingPalmBiome palm = new LivingPalmBiome();
-		int direction = WorldGen.genRand.NextBool().ToDirectionInt();
-		palm.StartCurl = WorldGen.genRand.NextFloat(0.2f) * -direction;
-		palm.CurlStrength = WorldGen.genRand.NextFloat(0.5f, 1f) * direction;
-
-		palm.Place(Main.MouseWorld.ToTileCoordinates(), GenVars.structures);
-	}
-}
 public sealed class LivingPalmBiome : MicroBiome
 {
 	private static ushort WoodType => (ushort)ModContent.TileType<LivingPalmWood>();
@@ -44,25 +28,24 @@ public sealed class LivingPalmBiome : MicroBiome
 
 	public override bool Place(Point origin, StructureMap structures)
 	{
-
-		if (!WorldUtils.Find(origin, Searches.Chain(new Searches.Rectangle(400, 300),
+		if (!WorldUtils.Find(origin, Searches.Chain(new Searches.Rectangle(200, 200),
 			new Conditions.IsTile(TileID.Sand), new NightshadeGenUtil.Conditions.IsSolidSurface()), out origin))
 			return false;
 
-		if (!WorldUtils.Find(origin, Searches.Chain(new Searches.Up(100),
-			new Conditions.IsTile(TileID.Sand), new NightshadeGenUtil.Conditions.IsSolidSurface()), out origin))
+		Rectangle kindaArea = new Rectangle(origin.X - 40, origin.Y - 100, 80, 100);
+		if (!structures?.CanPlace(kindaArea) ?? false)
 			return false;
 
 		PlaceStem(origin, out Point headPosition, out float curl);
 		PlaceHead(curl * 0.2f, headPosition);
 
-		int left = Math.Min(origin.X, headPosition.X) - 35;
+		int left = Math.Min(origin.X, headPosition.X) - 30;
 		int top = headPosition.Y - 20;
 		int height = Math.Abs(headPosition.Y - origin.Y) + 35;
-		Rectangle area = new Rectangle(left, top, 70, height);
+		Rectangle area = new Rectangle(left, top, 60, height);
 		ClearTrees(area);
 
-		structures?.AddProtectedStructure(area);
+		structures?.AddProtectedStructure(area, 4);
 
 		return true;
 	}
@@ -87,7 +70,7 @@ public sealed class LivingPalmBiome : MicroBiome
 		Vector2 curPos = origin.ToVector2();
 
 		float length = WorldGen.genRand.Next(24, 30);
-		const float halfSize = 3.3f;
+		const float halfSize = 3.6f;
 
 		float curl = 0f;
 
@@ -178,12 +161,12 @@ public sealed class LivingPalmBiome : MicroBiome
 			GenerateLeaf(origin, direction.RotatedBy(rotation), 5, WorldGen.genRand.NextFloat(18f, 22f), Math.Sign(rotation) * 0.02f);
 		}
 
-		PlaceCoconuts(origin.X, origin.Y, 20);
+		PlaceCoconuts(origin.X, origin.Y + 4, 10);
 	}
 
 	private static void PlaceCoconuts(int x, int y, int radius)
 	{
-		int cocoCount = WorldGen.genRand.Next(4, 8);
+		int cocoCount = WorldGen.genRand.Next(4);
 		for (int i = x - radius; i < x + radius; i++)
 		{
 			for (int j = y - radius; j < y + radius; j++)
@@ -196,7 +179,7 @@ public sealed class LivingPalmBiome : MicroBiome
 
 				if (Main.tile[i, j].WallType == WallID.None && Main.tile[i, j - 1].TileType == LeafType && cocoCount <= 0)
 				{
-					cocoCount = WorldGen.genRand.Next(4, 8);
+					cocoCount = WorldGen.genRand.Next(2, 5);
 					WorldGen.PlaceTile(i, j, CoconutType, true);
 				}
 				else
