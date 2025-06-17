@@ -135,7 +135,7 @@ public class CactusSplashJugThrown : ModProjectile
 
 		for (var i = 0; i < Main.rand.Next(15, 25); i++)
 		{
-			var dropletVel = Projectile.velocity * Main.rand.NextFloat() + Main.rand.NextVector2Circular(5, 5);
+			var dropletVel = Projectile.velocity * 0.5f + Main.rand.NextVector2Circular(7, 7);
 			Dust.NewDustPerfect(Projectile.Center + Main.rand.NextVector2Circular(8, 8), ModContent.DustType<DotDropletDust>(), dropletVel, 0, JuiceColor(), Main.rand.NextFloat(0.6f, 2f));
 		}
 
@@ -159,9 +159,10 @@ public class CactusSplashJugThrown : ModProjectile
 		// TODO: Sound
 
 		SoundEngine.PlaySound(SoundID.Dig with { Volume = 0.7f, Pitch = 1, PitchVariance = 0.2f, MaxInstances = 0 }, Projectile.Center);
+		SoundEngine.PlaySound(SoundID.Dig with { Volume = 0.7f, Pitch = -0.5f, PitchVariance = 0.2f, MaxInstances = 0 }, Projectile.Center);
 		SoundEngine.PlaySound(SoundID.Item167 with { Volume = 0.7f, Pitch = 1f, PitchVariance = 0.2f, MaxInstances = 0 }, Projectile.Center);
 		SoundEngine.PlaySound(SoundID.Splash with { Volume = 0.8f, Pitch = 0.8f, PitchVariance = 0.3f, MaxInstances = 0 }, Projectile.Center);
-		SoundEngine.PlaySound(SoundID.Item107 with { Volume = 0.3f, Pitch = 0.6f, PitchVariance = 0.2f, MaxInstances = 0 }, Projectile.Center);
+		SoundEngine.PlaySound(SoundID.Splash with { Volume = 0.8f, Pitch = 0.3f, PitchVariance = 0.3f, MaxInstances = 0 }, Projectile.Center);
 	}
 
 	private void HealNPC(NPC npc, int amount)

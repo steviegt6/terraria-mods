@@ -22,17 +22,17 @@ public class DotDropletDust : ModDust
 
 		if (Collision.SolidCollision(dust.position - new Vector2(6), 12, 12))
 		{
-			dust.scale *= 0.7f;
-			dust.velocity *= 0.4f;
+			dust.scale *= 0.5f;
+			dust.velocity *= 0.1f;
 		}
 
 		if (!dust.noGravity && !noGrav)
 		{
-			dust.velocity.Y += 0.4f;
+			dust.velocity.Y += 0.35f;
 
-			if (dust.velocity.Y > 16f)
+			if (dust.velocity.Y > 22f)
 			{
-				dust.velocity.Y = 16f;
+				dust.velocity.Y = 22f;
 			}
 		}
 

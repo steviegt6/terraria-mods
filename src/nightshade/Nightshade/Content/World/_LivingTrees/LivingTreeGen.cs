@@ -19,7 +19,8 @@ internal sealed class LivingTreeGen : ModSystem
 {
     public override void Load()
     {
-        WorldGen.DetourPass((PassLegacy)WorldGen.VanillaGenPasses["Micro Biomes"], GenLivingTrees);
+        WorldGen.DetourPass((PassLegacy)WorldGen.VanillaGenPasses["Living Trees"], GenBigLivingTrees);
+        WorldGen.DetourPass((PassLegacy)WorldGen.VanillaGenPasses["Micro Biomes"], GenSmallLivingTrees);
 
         // When attempting to place oases, place a ball cactus instead if it
         // fails.  These spawn outside of the desert (instead, in dunes), so it
@@ -77,7 +78,7 @@ internal sealed class LivingTreeGen : ModSystem
 	private static int LivingPalmCount { get; set; }
 	private static int LivingBorealCount { get; set; }
 
-    private static void GenLivingTrees(WorldGen.orig_GenPassDetour orig, object self, GenerationProgress progress, GameConfiguration configuration)
+    private static void GenSmallLivingTrees(WorldGen.orig_GenPassDetour orig, object self, GenerationProgress progress, GameConfiguration configuration)
 	{
 		progress.Message = Lang.gen[76].Value + ".. More Living Trees";
 
@@ -169,5 +170,10 @@ internal sealed class LivingTreeGen : ModSystem
             flipSide = !flipSide;
 			fallback--;
         }
+	}
+
+    private static void GenBigLivingTrees(WorldGen.orig_GenPassDetour orig, object self, GenerationProgress progress, GameConfiguration configuration)
+    {
+		orig(self, progress, configuration);
 	}
 }

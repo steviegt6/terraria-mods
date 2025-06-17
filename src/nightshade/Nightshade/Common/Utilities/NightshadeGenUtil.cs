@@ -36,6 +36,9 @@ public static class NightshadeGenUtil
 				if (!WorldGen.InWorld(x, y))
 					return false;
 
+				if (tileTypes is null || tileTypes.Length == 0)
+					return !Main.tile[x, y].HasTile;
+
 				if (tileTypes.Any(n => Main.tile[x, y].TileType == n))
 					return false;
 
