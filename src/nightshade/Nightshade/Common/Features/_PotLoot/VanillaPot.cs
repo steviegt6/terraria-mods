@@ -1,5 +1,3 @@
-using System;
-
 using Microsoft.Xna.Framework;
 
 using Terraria;
@@ -168,6 +166,89 @@ internal sealed class VanillaPot(bool echo) : CustomPot
                     }
                 }
                 break;
+        }
+    }
+
+    public override bool ShouldTryForLoot(int i, int j, int style)
+    {
+        return !echo;
+    }
+
+    public override void ModifyTorchType(
+        int i,
+        int j,
+        int style,
+        Player player,
+        ref int torchType,
+        ref int glowstickType,
+        ref int itemStack
+    )
+    {
+        if (player.ZoneHallow)
+        {
+            itemStack += Main.rand.Next(2, 7);
+            torchType = 4387;
+        }
+        else if (style is >= 22 and <= 24 || player.ZoneCrimson)
+        {
+            itemStack += Main.rand.Next(2, 7);
+            torchType = 4386;
+        }
+        else if (style is >= 16 and <= 18 || player.ZoneCorrupt)
+        {
+            itemStack += Main.rand.Next(2, 7);
+            torchType = 4385;
+        }
+        else if (style is >= 7 and <= 9)
+        {
+            itemStack += Main.rand.Next(2, 7);
+            itemStack = (int)(itemStack * 1.5f);
+            torchType = 4388;
+        }
+        else if (style is >= 4 and <= 6)
+        {
+            torchType = 974;
+            glowstickType = 286;
+        }
+        else if (style is >= 34 and <= 36)
+        {
+            itemStack += Main.rand.Next(2, 7);
+            torchType = 4383;
+        }
+        else if (player.ZoneGlowshroom)
+        {
+            itemStack += Main.rand.Next(2, 7);
+            torchType = 5293;
+        }
+    }
+
+    public override bool TryGetUtilityItem(
+        int i,
+        int j,
+        int style,
+        bool aboveUnderworldLayer,
+        out int utilityType,
+        out int utilityStack
+    )
+    {
+        var isUndergroundDesertPot = style is >= 34 and <= 36;
+        if (!isUndergroundDesertPot && !aboveUnderworldLayer)
+        {
+            utilityType = 0;
+            utilityStack = 0;
+            return false;
+        }
+        
+        utilityType = 166;
+        if (isUndergroundDesertPot)
+        {
+            utilityType = 4423;
+        }
+        
+        utilityStack = Main.rand.Next(4) + 1;
+        if (Main.expertMode)
+        {
+            utilityStack += Main.rand.Next(4);
         }
     }
 }
