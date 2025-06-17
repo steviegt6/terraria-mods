@@ -15,6 +15,7 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
+using Terraria.UI.Chat;
 
 namespace Daybreak.Common.Features.ModPanel;
 
@@ -187,11 +188,30 @@ public abstract class ModPanelStyle : ModType
     {
         return modName;
     }
-    public virtual string ModifyEnabledText(string text, bool enabled)
+    /// <summary>
+    ///     Lets you modify the value of the "Enabled/Disabled" text.
+    /// </summary>
+    public virtual string ModifyEnabledText(UIPanel element, string text, bool enabled)
     {
         return text;
     }
-
+    /// <summary>
+    ///     Lets you modify the value of the "Reload Required" text.
+    /// </summary>
+    public virtual string ModifyReloadRequiredText(UIPanel element, string text)
+    { 
+        return text; 
+    }
+    /// <summary>
+    ///     Invoked before the "Reload Required" text is drawn,
+    ///     return <see langword="false"/> to stop it from drawing.
+    /// </summary>
+    public virtual bool PreDrawReloadRequiredText(UIPanel element) {  return true; }
+    /// <summary>
+    ///     Invoked after the "Reload Required" text is drawn,
+    ///     regardless of what <see cref="PreDrawReloadRequiredText(UIPanel)"/> returns.
+    /// </summary>
+    public virtual void PostDrawReloadRequiredText(UIPanel element) { }
     /// <summary>
     ///     Invoked before hover colors are set.
     /// </summary>
@@ -199,7 +219,13 @@ public abstract class ModPanelStyle : ModType
     {
         return true;
     }
-
+    /// <summary>
+    ///     Allows you to modify the text drawn on the "mouse-over" hover panel.
+    /// </summary>
+    public virtual string ModifyHoverTooltip(UIPanel element, string tooltip) 
+    {
+        return tooltip; 
+    }
     /// <summary>
     ///     Invoked after hover colors are set.
     /// </summary>
@@ -226,15 +252,31 @@ public abstract class ModPanelStyle : ModType
     {
         return true;
     }
+    /// <summary>
+    ///     Invoked before the "Enabled/Disabled" text is drawn, 
+    ///     return <see langword="false"/> to stop it from drawing.
+    /// </summary>
     public virtual bool PreDrawModStateText(UIElement self, bool enabled)
     {
         return true;
     }
+    /// <summary>
+    ///     Invoked after the <see cref="UIModStateText.DrawEnabledText(SpriteBatch)"/> is called,
+    ///     regardless of what <see cref="PreDrawModStateText(UIElement, bool)"/> returns.
+    /// </summary>
     public virtual void PostDrawModStateText(UIElement self, bool enabled) { }
+    /// <summary>
+    ///     Invoked before <see cref="UIModStateText.DrawPanel(SpriteBatch)"/> is called,
+    ///     return <see langword="false"/> to stop it from drawing.
+    /// </summary>
     public virtual bool PreDrawModStateTextPanel(UIElement self, bool enabled)
     {
         return true;
     }
+    /// <summary>
+    ///     Invoked after <see cref="UIModStateText.DrawPanel(SpriteBatch)"/> is called,
+    ///     regardless of what <see cref="PreDrawModStateTextPanel(UIElement, bool)"/> returns.
+    /// </summary>
     public virtual void PostDrawModStateTextPanel(UIElement self, bool enabled) { }
     /// <summary>
     ///     Invoked specifically after the panel is drawn, assuming

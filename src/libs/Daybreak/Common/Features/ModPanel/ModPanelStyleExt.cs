@@ -33,9 +33,13 @@ public abstract class ModPanelStyleExt : ModPanelStyle
     {
         return ModifyModIcon((UIModItem)element, modIcon, ref modIconAdjust);
     }
-    public override string ModifyEnabledText(string text, bool enabled)
+    public sealed override string ModifyEnabledText(UIPanel element, string text, bool enabled)
     {
-        return text;
+        return ModifyEnabledText((UIModItem)element, text, enabled);
+    }
+    public sealed override string ModifyHoverTooltip(UIPanel element, string tooltip)
+    {
+        return ModifyHoverTooltip((UIModItem)element, tooltip);
     }
 
     public sealed override UIText ModifyModName(UIPanel element, UIText modName)
@@ -71,6 +75,34 @@ public abstract class ModPanelStyleExt : ModPanelStyle
     public sealed override void PostDrawPanel(UIPanel element, SpriteBatch sb)
     {
         PostDrawPanel((UIModItem)element, sb);
+    }
+    public sealed override string ModifyReloadRequiredText(UIPanel element, string text)
+    {
+        return ModifyReloadRequiredText((UIModItem)element, text);
+    }
+    public sealed override bool PreDrawReloadRequiredText(UIPanel element)
+    {
+        return PreDrawReloadRequiredText((UIModItem)element);
+    }
+    public sealed override void PostDrawReloadRequiredText(UIPanel element)
+    {
+        PostDrawReloadRequiredText((UIModItem)element);
+    }
+    public sealed override bool PreDrawModStateText(UIElement self, bool enabled)
+    {
+        return PreDrawModStateText((UIModStateText)self, enabled);
+    }
+    public sealed override void PostDrawModStateText(UIElement self, bool enabled)
+    {
+        PostDrawModStateText((UIModStateText)self, enabled);
+    }
+    public sealed override bool PreDrawModStateTextPanel(UIElement self, bool enabled)
+    {
+        return PreDrawModStateTextPanel((UIModStateText)self, enabled);
+    }
+    public sealed override void PostDrawModStateTextPanel(UIElement self, bool enabled)
+    {
+        PostDrawModStateTextPanel((UIModStateText)self, enabled);
     }
 
     /// <inheritdoc cref="ModPanelStyle.PreInitialize"/>
@@ -120,4 +152,22 @@ public abstract class ModPanelStyleExt : ModPanelStyle
 
     /// <inheritdoc cref="ModPanelStyle.PostDrawPanel"/>
     public virtual void PostDrawPanel(UIModItem element, SpriteBatch sb) { }
+    /// <inheritdoc cref="ModPanelStyle.ModifyEnabledText(UIPanel, string, bool)"/>
+    public virtual string ModifyEnabledText(UIModItem element, string text, bool enabled) { return text; }
+    /// <inheritdoc cref="ModPanelStyle.ModifyHoverTooltip(UIPanel, string)"/>
+    public virtual string ModifyHoverTooltip(UIModItem element, string tooltip) { return tooltip; }
+    /// <inheritdoc cref="ModPanelStyle.ModifyReloadRequiredText(UIPanel, string)"/>
+    public virtual string ModifyReloadRequiredText(UIModItem element, string text) { return text; }
+    /// <inheritdoc cref="ModPanelStyle.PreDrawReloadRequiredText(UIPanel)"/>
+    public virtual bool PreDrawReloadRequiredText(UIModItem element) { return true; }
+    /// <inheritdoc cref="ModPanelStyle.PostDrawReloadRequiredText(UIPanel)"/>
+    public virtual void PostDrawReloadRequiredText(UIModItem element) { }
+    /// <inheritdoc cref="ModPanelStyle.PreDrawModStateText(UIElement, bool)"/>
+    public virtual bool PreDrawModStateText(UIModStateText element, bool enabled) { return true; }
+    /// <inheritdoc cref="ModPanelStyle.PostDrawModStateText(UIElement, bool)"/>
+    public virtual void PostDrawModStateText(UIModStateText element, bool enabled) { }
+    /// <inheritdoc cref="ModPanelStyle.PreDrawModStateTextPanel(UIElement, bool)"/>
+    public virtual bool PreDrawModStateTextPanel(UIModStateText element, bool enabled) { return true; }
+    /// <inheritdoc cref="ModPanelStyle.PostDrawModStateTextPanel(UIElement, bool)"/>
+    public virtual void PostDrawModStateTextPanel(UIModStateText element, bool enabled) { }
 }
