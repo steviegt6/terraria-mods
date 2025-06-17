@@ -10,8 +10,8 @@ namespace Nightshade.Common.Features;
 
 internal sealed class PotLootImpl : ModSystem
 {
-    private static readonly CustomPot vanilla_pot = new VanillaPot(echo: false);
-    private static readonly CustomPot vanilla_pot_echo = new VanillaPot(echo: true);
+    public static readonly CustomPot VANILLA_POT = new VanillaPot(echo: false);
+    public static readonly CustomPot VANILLA_POT_ECHO = new VanillaPot(echo: true);
 
     public override void Load()
     {
@@ -30,11 +30,11 @@ internal sealed class PotLootImpl : ModSystem
         switch (type)
         {
             case TileID.Pots:
-                pot = vanilla_pot;
+                pot = VANILLA_POT;
                 return true;
 
             case TileID.PotsEcho:
-                pot = vanilla_pot_echo;
+                pot = VANILLA_POT_ECHO;
                 return true;
         }
 
@@ -46,16 +46,6 @@ internal sealed class PotLootImpl : ModSystem
 
         pot = null;
         return false;
-
-        static bool IsVanillaPot(int type)
-        {
-            return type is TileID.Pots or TileID.PotsEcho;
-        }
-    }
-
-    private static bool IsWithinVanillaBounds(int type)
-    {
-        return type is >= VanillaPot.POT_0_FOREST and <= VanillaPot.POT_36_UNDERGROUND_DESERT;
     }
 
     private static void CheckPot_EncodeVanillaAndModdedStyles(On_WorldGen.orig_CheckPot orig, int i, int j, int type)

@@ -1,8 +1,6 @@
-using System;
-using System.Collections.Generic;
-
 using Microsoft.Xna.Framework;
 
+using Nightshade.Common.Features;
 using Nightshade.Content.Gores;
 using Nightshade.Content.Items;
 
@@ -16,93 +14,79 @@ namespace Nightshade.Content.Tiles;
 
 internal sealed class LivingCactusPot : AbstractPot
 {
-	public override string Texture => Assets.Images.Tiles.Misc.LivingCactusPot.KEY;
+    private sealed class PotImpl : CustomPot
+    {
+        public override void PlayBreakSound(int i, int j, int style) { }
 
-	public override void SetStaticDefaults()
-	{
-		base.SetStaticDefaults();
+        public override void SpawnGore(int i, int j, int style)
+        {
+            var goreAmt = Main.rand.Next(1, 2 + 1);
 
-		AddMapEntry(new Color(47, 79, 79), Language.GetText("MapObject.Pot")); // dark slate gray
-		DustType = 29;
-	}
+            for (var k = 0; k < goreAmt; k++)
+            for (var l = 1; l < 3; l++)
+            {
+                Gore.NewGore(new EntitySource_TileBreak(i, j), new Vector2(i, j) * 16, Main.rand.NextVector2CircularEdge(3f, 3f), ModContent.GetInstance<ModImpl>().Find<ModGore>($"LivingCactusPotGore{l}").Type);
+            }
+        }
 
-	public override void KillMultiTile(int i, int j, int frameX, int frameY)
-	{
-		base.KillMultiTile(i, j, frameX, frameY);
+        public override bool ShouldTryForLoot(int i, int j, int style)
+        {
+            return true;
+        }
 
-		if (Main.netMode == NetmodeID.Server)
-		{
-			return;
-		}
+        public override void ModifyTorchType(int i, int j, int style, Player player, ref int torchType, ref int glowstickType, ref int itemStack)
+        {
+            PotLootImpl.VANILLA_POT.ModifyTorchType(i, j, VanillaPot.POT_34_UNDERGROUND_DESERT, player, ref torchType, ref glowstickType, ref itemStack);
+        }
 
-		var goreAmt = Main.rand.Next(1, 2 + 1);
-		for (var k = 0; k < goreAmt; k++)
-		{
-			for (var l = 1; l < 3; l++)
-			{
-				Gore.NewGore(new EntitySource_TileBreak(i, j), new Vector2(i, j) * 16, Main.rand.NextVector2CircularEdge(3f, 3f), Mod.Find<ModGore>($"LivingCactusPotGore{l}").Type);
-			}
-		}
-	}
+        public override bool TryGetUtilityItem(int i, int j, int style, bool aboveUnderworldLayer, out int utilityType, out int utilityStack)
+        {
+            utilityType = ModContent.ItemType<CactusSplashJug>();
+            utilityStack = Main.rand.Next(5, 10);
+            return true;
+        }
 
-	public override IEnumerable<Item> GetItemDrops(int i, int j)
-	{
-		if (WorldGen.genRand.NextBool(45))
-		{
-			return [new Item(ItemID.RegenerationPotion)];
-		}
+        public override void ModifyCoinMultiplier(int i, int j, int style, ref float multiplier)
+        {
+            PotLootImpl.VANILLA_POT.ModifyCoinMultiplier(i, j, VanillaPot.POT_34_UNDERGROUND_DESERT, ref multiplier);
+        }
+    }
 
-		if (WorldGen.genRand.NextBool(45))
-		{
-			return [new Item(ItemID.ThornsPotion)];
-		}
+    public override string Texture => Assets.Images.Tiles.Misc.LivingCactusPot.KEY;
 
-		switch (Main.rand.Next(6))
-		{
-			case 0: return [new Item(ItemID.WoodenArrow, WorldGen.genRand.Next(8, 20))];
+    public override CustomPot Pot { get; } = new PotImpl();
 
-			case 1: return [new Item(ItemID.Grenade, WorldGen.genRand.Next(8, 20))];
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
 
-			case 2: return [new Item(ModContent.ItemType<CactusSplashJug>(), WorldGen.genRand.Next(5, 10))];
-
-			default:
-				var moneyAmount = WorldGen.genRand.Next(100, 301);
-
-				// In vanilla, money dropped from pots has a lot of funny logic thats all embedded in a single function.
-				// Tmod has no support for pot drop logic either.
-				// So we will not do funny pot drop logic.
-
-				return [
-					new Item(ItemID.CopperCoin, moneyAmount % 100),
-					new Item(ItemID.SilverCoin, (int)MathF.Floor(moneyAmount / 100))
-					];
-		}
-
-	}
+        AddMapEntry(new Color(47, 79, 79), Language.GetText("MapObject.Pot")); // dark slate gray
+        DustType = 29;
+    }
 }
 
 internal sealed class LivingCactusPotPlacer : ModItem
 {
-	public override string Texture => Assets.Images.Items.Misc.LivingPalmWoodBlock.KEY;
+    public override string Texture => Assets.Images.Items.Misc.LivingPalmWoodBlock.KEY;
 
-	public override void SetDefaults()
-	{
-		base.SetDefaults();
+    public override void SetDefaults()
+    {
+        base.SetDefaults();
 
-		Item.DefaultToPlaceableTile(ModContent.TileType<LivingCactusPot>());
+        Item.DefaultToPlaceableTile(ModContent.TileType<LivingCactusPot>());
 
-		Item.value = 100;
-		Item.rare = ItemRarityID.Green;
-	}
+        Item.value = 100;
+        Item.rare = ItemRarityID.Green;
+    }
 }
 
 internal sealed class PotGoreLoader : ILoadable
 {
-	public void Load(Mod mod)
-	{
-		mod.AddContent(new GenericGore("LivingCactusPotGore1", Assets.Images.Gores.Misc.CactusPotGore1.KEY));
-		mod.AddContent(new GenericGore("LivingCactusPotGore2", Assets.Images.Gores.Misc.CactusPotGore2.KEY));
-	}
+    public void Load(Mod mod)
+    {
+        mod.AddContent(new GenericGore("LivingCactusPotGore1", Assets.Images.Gores.Misc.CactusPotGore1.KEY));
+        mod.AddContent(new GenericGore("LivingCactusPotGore2", Assets.Images.Gores.Misc.CactusPotGore2.KEY));
+    }
 
-	public void Unload() { }
+    public void Unload() { }
 }

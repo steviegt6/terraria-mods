@@ -250,6 +250,7 @@ internal sealed class VanillaPot(bool echo) : CustomPot
         {
             utilityStack += Main.rand.Next(4);
         }
+        return true;
     }
 
     public override void ModifyCoinMultiplier(int i, int j, int style, ref float multiplier)
