@@ -188,7 +188,7 @@ internal sealed class LivingTreeGen : ModSystem
 		if (Main.drunkWorld)
 			LivingBorealCount = 14;
 
-		int fallback = 20000;
+		int fallback = 2000;
         int count = 0;
 
         LivingBorealBiome boreal = GenVars.configuration.CreateBiome<LivingBorealBiome>();

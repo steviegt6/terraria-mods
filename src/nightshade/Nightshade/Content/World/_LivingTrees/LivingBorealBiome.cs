@@ -23,8 +23,10 @@ public sealed class GenTreeCommand : ModCommand
 
 	public override void Action(CommandCaller caller, string input, string[] args)
 	{
-		LivingBorealBiome tree = new LivingBorealBiome();
-		tree.Place(Main.MouseWorld.ToTileCoordinates(), new StructureMap());
+		int treeHeight = WorldGen.genRand.Next(55, 65);
+		int treeWidth = WorldGen.genRand.Next(20, 23);
+
+		LivingBorealBiome.PlaceTree(Main.MouseWorld.ToTileCoordinates(), treeWidth, treeHeight);
 	}
 }
 
@@ -48,8 +50,8 @@ public sealed class LivingBorealBiome : MicroBiome
 		if (!WorldUtils.Find(origin, Searches.Chain(new Searches.Down(250), new Conditions.IsSolid()), out origin))
 			return false;
 
-		var areaCondition = new NightshadeGenUtil.Conditions.IsNotTile().AreaAnd(treeWidth / 2, treeHeight / 4);
-		Point areaCheckPoint = origin - new Point(treeWidth / 4, treeHeight / 4);
+		var areaCondition = new NightshadeGenUtil.Conditions.IsNotTile().AreaAnd(treeWidth / 2, treeHeight / 2);
+		Point areaCheckPoint = origin - new Point(treeWidth / 4, treeHeight / 2);
 
 		if (!WorldUtils.Find(areaCheckPoint, Searches.Chain(new Searches.Rectangle(treeWidth * 2, treeHeight / 2), areaCondition), out areaCheckPoint))
 			return false;
@@ -129,8 +131,22 @@ public sealed class LivingBorealBiome : MicroBiome
 				{
 					int yForLeaves = (int)(y + Math.Sqrt(Math.Abs(i)) - heightOffGround);
 					int leafStretch = 1 + (i > 0 ? Math.Abs(rightSize) : Math.Abs(leftSize)) / 3;
+
 					for (int l = 0; l < leafStretch; l++)
 					{
+						int snowCount = Math.Min(3, leafStretch - l);
+						for (int s = 0; s < snowCount; s++)
+						{
+							if (!WorldGen.InWorld(x + l * Math.Sign(i), yForLeaves - s))
+								continue;
+
+							if (Main.tile[x + l * Math.Sign(i), yForLeaves - s].HasTile)
+								continue;
+
+							Main.tile[x + l * Math.Sign(i), yForLeaves - s].ResetToType(TileID.SnowBlock);
+							WorldGen.SquareTileFrame(x + l * Math.Sign(i), yForLeaves);
+						}
+
 						if (!WorldGen.InWorld(x + l * Math.Sign(i), yForLeaves))
 							continue;
 
@@ -149,6 +165,7 @@ public sealed class LivingBorealBiome : MicroBiome
 						Main.tile[x, y].ClearEverything();
 						Main.tile[x, y].WallType = WallType;
 					}
+					WorldGen.SquareTileFrame(x, y);
 				}
 			}
 
