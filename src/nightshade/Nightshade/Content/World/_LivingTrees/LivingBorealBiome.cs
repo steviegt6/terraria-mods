@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Nightshade.Common.Utilities;
+using Nightshade.Content.Tiles.Furniture;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,49 +30,63 @@ public sealed class GenTreeCommand : ModCommand
 
 public sealed class LivingBorealBiome : MicroBiome
 {
-	private static ushort WoodType => (ushort)TileID.BorealWood;
+	private static ushort WoodType => (ushort)TileID.LivingWood;
 
-	private static ushort LeafType => (ushort)TileID.PineTree;
+	private static ushort LeafType => (ushort)TileID.LeafBlock;
 
 	private static ushort PlatformType => (ushort)TileID.Platforms;
 
-	private static ushort WallType => (ushort)WallID.BorealWood;
+	private static ushort WallType => (ushort)WallID.LivingWood;
 
 	private static ushort PotType => (ushort)TileID.Pots;
 
 	public override bool Place(Point origin, StructureMap structures)
 	{
 		int treeHeight = WorldGen.genRand.Next(55, 65);
-		int treeWidth = WorldGen.genRand.Next(20, 27);
+		int treeWidth = WorldGen.genRand.Next(20, 23);
+
+		if (!WorldUtils.Find(origin, Searches.Chain(new Searches.Down(250), new Conditions.IsSolid()), out origin))
+			return false;
+
+		var areaCondition = new NightshadeGenUtil.Conditions.IsNotTile().AreaAnd(treeWidth / 2, treeHeight / 4);
+		Point areaCheckPoint = origin - new Point(treeWidth / 4, treeHeight / 4);
+
+		if (!WorldUtils.Find(areaCheckPoint, Searches.Chain(new Searches.Rectangle(treeWidth * 2, treeHeight / 2), areaCondition), out areaCheckPoint))
+			return false;
+
+		origin = new Point(areaCheckPoint.X + treeWidth / 4, areaCheckPoint.Y + treeHeight / 4);
 
 		Point bottom = new Point(origin.X, origin.Y + 85);
 
 		if (!WorldUtils.Find(bottom, Searches.Chain(new Searches.Down(120), new NightshadeGenUtil.Conditions.IsNotTile()), out bottom))
 			bottom = new Point(origin.X, origin.Y + WorldGen.genRand.Next(80, 120));
 
-		BorealRootNode[] nodes = CreateLootNodes(bottom, 5, 10, 4, 7);
+		BorealLootNode[] nodes = CreateLootNodes(bottom, 7, 10, 4, 7);
 
 		Rectangle area = new Rectangle(origin.X - treeWidth, origin.Y - treeHeight, treeWidth * 2, bottom.Y - origin.Y + 7);
 
-		PlacePassage(origin, WorldGen.genRand.Next(nodes).Center);
+		if (!structures?.CanPlace(area) ?? false)
+			return false;
+
 		PlaceTree(origin, treeWidth, treeHeight);
-		PlaceNodes(nodes);
+		PlacePassage(origin, nodes.MinBy(n => n.Center.Y).Center);
+		PlaceLootNodes(nodes);
 
 		structures?.AddProtectedStructure(area);
 
 		return true;
 	}
 
-	public record struct BorealRootNode(Point Center, int Radius);
+	public record struct BorealLootNode(Point Center, int Radius);
 
-	public static BorealRootNode[] CreateLootNodes(Point origin, int count, int maxDist, int minRadius, int maxRadius)
+	public static BorealLootNode[] CreateLootNodes(Point origin, int count, int maxDist, int minRadius, int maxRadius)
 	{
-		BorealRootNode[] nodes = new BorealRootNode[count];
+		BorealLootNode[] nodes = new BorealLootNode[count];
 		for (int i = 0; i < count; i++)
 		{
 			Point randomOffset = new Point(WorldGen.genRand.Next(-maxDist, maxDist), WorldGen.genRand.Next(-maxDist, maxDist));
 			int size = WorldGen.genRand.Next(minRadius, maxRadius) + 1 + count / 10;
-			nodes[i] = new BorealRootNode(origin + randomOffset, (int)size);
+			nodes[i] = new BorealLootNode(origin + randomOffset, (int)size);
 		}
 
 		return nodes;
@@ -83,11 +98,21 @@ public sealed class LivingBorealBiome : MicroBiome
 		int leftSize = width;
 		int rightSize = width;
 		const int heightOffGround = 17;
-		const int trunkThickness = 5;
+		const int trunkThickness = 7;
 		List<Point> branches = new List<Point>();
 		int branchLeft = heightOffGround - 3;
 		int branchRight = heightOffGround - 3;
 
+		// Roots
+		const int rootCount = 5;
+		for (int k = 0; k < rootCount; k++)
+		{
+			Point rootPosition = new Point((int)(origin.X + ((double)k / (rootCount - 1) - 0.5) * trunkThickness), origin.Y);
+			double rootAngle = MathHelper.PiOver2 + (0.5f - (double)k / (rootCount - 1));
+			WorldUtils.Gen(rootPosition, new ShapeRoot(rootAngle, 30), new Actions.SetTile(WoodType));
+		}
+
+		// Tree
 		for (int j = 0; j > -height; j--)
 		{
 			double threshold = (1.0 - ((double)Math.Abs(j) / height)) * width / 3;
@@ -114,9 +139,9 @@ public sealed class LivingBorealBiome : MicroBiome
 					}
 				}
 
-				if (Math.Abs(i) < trunkThickness * (1.0 - ((double)Math.Abs(j) / (height - 4))))
+				if (Math.Abs(i) < trunkThickness * (1.0 - Math.Sqrt((double)Math.Abs(j) / (height - 4))))
 				{
-					int holeSize = (int)Math.Floor((trunkThickness - 1.1f) * MathF.Cbrt(Utils.GetLerpValue(-heightOffGround / 2, heightOffGround / 4, j, true)));
+					int holeSize = (int)Math.Floor((trunkThickness - 3f) * MathF.Cbrt(Utils.GetLerpValue(-heightOffGround / 2, heightOffGround / 5, j, true)));
 					if (Math.Abs(i) > holeSize || j < -heightOffGround / 2)
 						Main.tile[x, y].ResetToType(WoodType);
 					else
@@ -124,9 +149,6 @@ public sealed class LivingBorealBiome : MicroBiome
 						Main.tile[x, y].ClearEverything();
 						Main.tile[x, y].WallType = WallType;
 					}
-
-					WorldGen.SquareTileFrame(x, y);
-					WorldGen.SquareWallFrame(x, y);
 				}
 			}
 
@@ -164,6 +186,7 @@ public sealed class LivingBorealBiome : MicroBiome
 			}
 		}
 
+		// Branches in tree
 		foreach (Point branch in branches)
 		{
 			float angle = MathHelper.PiOver2 + (MathHelper.PiOver2 + 0.2f) * Math.Sign(branch.X);
@@ -178,10 +201,11 @@ public sealed class LivingBorealBiome : MicroBiome
 		int steps = (int)difference.Length();
 		float rotater = WorldGen.genRand.NextFloat(-0.7f, 0.7f);
 		int branch = WorldGen.genRand.Next(15, 20);
+		HashSet<Point> inside = new HashSet<Point>();
 
 		for (int k = 0; k < steps; k++)
 		{
-			int channelRadius = (int)(6 - 2 * Math.Cbrt((double)k / steps));
+			int channelRadius = (int)(5 - 1 * Math.Cbrt((double)k / steps));
 
 			rotater = MathHelper.Lerp(rotater, WorldGen.genRand.NextFloat(-0.7f, 0.7f), 0.1f);
 			for (int j = -channelRadius; j <= channelRadius; j++)
@@ -193,15 +217,22 @@ public sealed class LivingBorealBiome : MicroBiome
 
 					double distance = Math.Sqrt(i * i + j * j);
 
+					if (k < 2 && Main.tile[x, y].WallType == WallType)
+						inside.Add(new Point(x, y));
+
 					if (distance < channelRadius - 0.5)
 					{
-						if (distance > (channelRadius - 2.4) && Main.tile[x, y].WallType != WallType)
+						double channelSize = channelRadius - 2.5 + (double)k / steps * 0.3;
+						if (distance > channelSize && !inside.Contains(new Point(x, y)))
 							Main.tile[x, y].ResetToType(WoodType);
 						else
 						{
 							Main.tile[x, y].ClearEverything();
-							Main.tile[x, y].WallType = WallType;
+							inside.Add(new Point(x, y));
 						}
+
+						if (distance < channelSize + 0.9 || inside.Contains(new Point(x, y)))
+							Main.tile[x, y].WallType = WallType;
 
 						WorldGen.SquareTileFrame(x, y);
 						WorldGen.SquareWallFrame(x, y);
@@ -209,7 +240,7 @@ public sealed class LivingBorealBiome : MicroBiome
 				}
 			}
 
-			if (--branch <= 0)
+			if (--branch <= 0 && k < steps)
 			{
 				branch = WorldGen.genRand.Next(18, 24);
 				int branchDir = WorldGen.genRand.NextBool().ToDirectionInt();
@@ -221,11 +252,13 @@ public sealed class LivingBorealBiome : MicroBiome
 		}
 	}
 
-	public static void PlaceNodes(BorealRootNode[] nodes)
+	public static void PlaceLootNodes(BorealLootNode[] nodes)
 	{
+		HashSet<Point> insides = new HashSet<Point>();
+
 		for (int k = 0; k < nodes.Length; k++)
 		{
-			BorealRootNode node = nodes[k];
+			BorealLootNode node = nodes[k];
 
 			float distX = WorldGen.genRand.NextFloat(1f, 1.2f);
 			float distY = WorldGen.genRand.NextFloat(1f, 1.2f);
@@ -247,19 +280,65 @@ public sealed class LivingBorealBiome : MicroBiome
 
 					if (distance < node.Radius * 1.1)
 					{
-						if (distance > node.Radius * 1.1 - 2.1 && Main.tile[x, y].WallType != WallType)
-							Main.tile[x, y].ResetToType(WoodType);
+						if (distance > node.Radius * 1.1 - 2.1 && !insides.Contains(new Point(x, y)))
+							Main.tile[x, y].ResetToType(TileID.SnowBlock);
 						else
+							insides.Add(new Point(x, y));
+
+						if (distance < node.Radius * 1.1 - 1.5)
 						{
-							Main.tile[x, y].ClearEverything();
-							Main.tile[x, y].WallType = WallType;
+							if (insides.Contains(new Point(x, y)))
+								Main.tile[x, y].ClearEverything();
+
+							Main.tile[x, y].WallType = WallID.SnowWallUnsafe;
 						}
 					}
-
-					WorldGen.SquareTileFrame(x, y);
-					WorldGen.SquareWallFrame(x, y);
 				}
 			}
 		}
+
+		// Loot
+		int placeTime = WorldGen.genRand.Next(3);
+
+		int chestCount = 1 + WorldGen.genRand.NextBool(10).ToInt();
+		int heartCount = 1 + WorldGen.genRand.Next(3);
+		foreach (Point p in insides)
+		{
+			placeTime--;
+
+			if (placeTime <= 0)
+			{
+				placeTime = WorldGen.genRand.Next(1, 6);
+
+				if (chestCount > 0)
+				{
+					if (TryPlaceLootChest(p.X, p.Y))
+						chestCount--;
+				}
+
+				if (heartCount > 0)
+				{
+					if (TryPlaceHeart(p.X, p.Y))
+						heartCount--;
+				}
+			}
+		}
+	}
+
+	private static bool TryPlaceHeart(int x, int y)
+	{
+		if (WorldGen.SolidTile(x, y + 2) && WorldGen.SolidTile(x + 1, y + 2))
+			return WorldGen.PlaceObject(x, y, TileID.Heart, true);
+
+		return false;
+	}
+
+	private static bool TryPlaceLootChest(int x, int y)
+	{
+		int chest = WorldGen.PlaceChest(x, y, (ushort)ModContent.TileType<CoconutChestTile>());
+		if (chest < 0)
+			return false;
+
+		return true;
 	}
 }

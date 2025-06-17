@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 using MonoMod.Cil;
 
 using Nightshade.Common.Utilities;
-
+using Nightshade.Content.World._LivingTrees;
 using Terraria;
 using Terraria.GameContent.Biomes.Desert;
 using Terraria.GameContent.Generation;
@@ -80,12 +80,12 @@ internal sealed class LivingTreeGen : ModSystem
 
     private static void GenSmallLivingTrees(WorldGen.orig_GenPassDetour orig, object self, GenerationProgress progress, GameConfiguration configuration)
 	{
+		orig(self, progress, configuration);
+
 		progress.Message = Lang.gen[76].Value + ".. More Living Trees";
 
 		GenCacti(progress);
         GenPalms(progress);
-
-        orig(self, progress, configuration);
     }
 
     private static void GenCacti(GenerationProgress progress)
@@ -147,8 +147,11 @@ internal sealed class LivingTreeGen : ModSystem
         if (Main.drunkWorld)
 			LivingPalmCount = 10;
 
+		// TODO: generate when tiles and loot are done
+		return;
+
 		float count = 0;
-        int fallback = 100;
+        int fallback = 20000;
         LivingPalmBiome palm = GenVars.configuration.CreateBiome<LivingPalmBiome>();
 
         bool flipSide = WorldGen.genRand.NextBool();
@@ -175,5 +178,34 @@ internal sealed class LivingTreeGen : ModSystem
     private static void GenBigLivingTrees(WorldGen.orig_GenPassDetour orig, object self, GenerationProgress progress, GameConfiguration configuration)
     {
 		orig(self, progress, configuration);
+
+        // TODO: generate when tiles and loot are done
+
+        return;
+
+        LivingBorealCount = WorldGen.genRand.NextBool().ToInt();
+
+		if (Main.drunkWorld)
+			LivingBorealCount = 14;
+
+		int fallback = 20000;
+        int count = 0;
+
+        LivingBorealBiome boreal = GenVars.configuration.CreateBiome<LivingBorealBiome>();
+
+		while (count < LivingBorealCount && fallback > 0)
+        {
+            Point placePoint = new Point(
+                WorldGen.genRand.Next(GenVars.snowOriginLeft + 60, GenVars.snowOriginRight - 60), 
+                WorldGen.genRand.Next(GenVars.snowTop - 220, GenVars.snowTop - 180));
+
+			if (boreal.Place(placePoint, GenVars.structures))
+            {
+                count++;
+				progress.Set(count / LivingBorealCount);
+			}
+
+			fallback--;
+		}
 	}
 }
