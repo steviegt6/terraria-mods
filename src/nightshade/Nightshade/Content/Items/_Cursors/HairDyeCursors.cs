@@ -1,3 +1,7 @@
+using System.Linq;
+
+using Daybreak.Common.Features.Hooks;
+
 using Microsoft.Xna.Framework;
 
 using Nightshade.Common.Features;
@@ -15,6 +19,28 @@ internal abstract class HairDyeCursor(int hairDye) : ModItem
         base.SetStaticDefaults();
 
         VanityCursorSets.IsVanityCursor[Type] = true;
+        
+        GlobalNPCHooks.ModifyShop.Event += AddMyselfToStylistShop;
+    }
+
+    private void AddMyselfToStylistShop(GlobalNPC self, NPCShop shop)
+    {
+        if (shop.NpcType != NPCID.Stylist)
+        {
+            return;
+        }
+        
+        if (!shop.TryGetEntry(hairDye, out var hairDyeEntry))
+        {
+            // TODO: Log?
+            return;
+        }
+
+        // TODO: Deficient tML API; I want to use the entry itself as the target
+        //       to match, but the overload taking a generic item type doesn't
+        //       pair with any that take an entry.
+        // Ideal: (hairDyeEntry, Type, hairDyeEntry.Conditions.ToArray())
+        shop.InsertAfter(hairDyeEntry.Item.type, Type, hairDyeEntry.Conditions.ToArray());
     }
 
     public override void SetDefaults()
@@ -30,6 +56,9 @@ internal abstract class HairDyeCursor(int hairDye) : ModItem
         Item.hasVanityEffects = true;
 
         Item.maxStack = 1;
+
+        // Explicitly set back to none because we clone from a consumable item.
+        Item.useStyle = ItemUseStyleID.None;
     }
 
     public override void UpdateAccessory(Player player, bool hideVisual)
