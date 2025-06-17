@@ -49,6 +49,9 @@ internal sealed class LivingCactusBiome : MicroBiome
 		if (!WorldUtils.Find(origin, Searches.Chain(new Searches.Up(50), new NightshadeGenUtil.Conditions.IsNotTile(TileID.Sand, TileID.HardenedSand, TileID.Sandstone)), out origin))
 			return false;
 
+        if (GetSandCount(origin, 50, 50) < 250)
+            return false;
+
 		var cactusBounds = new Rectangle(origin.X - width / 2 - 5, origin.Y - height / 2 - 5, width + 10, height + 10);
 
         if (!structures?.CanPlace(cactusBounds) ?? false)
@@ -69,6 +72,27 @@ internal sealed class LivingCactusBiome : MicroBiome
 
         return true;
     }
+
+    public static int GetSandCount(Point origin, int width, int height)
+    {
+        int sandCount = 0;
+
+		for (int j = origin.Y - height; j < origin.Y + height; j++)
+		{
+			for (int i = origin.X - width; i < origin.X + width; i++)
+			{
+				if (!WorldGen.InWorld(i, j))
+					continue;
+
+                int tileType = Main.tile[i, j].TileType;
+
+                if (TileID.Sets.isDesertBiomeSand[tileType])
+                    sandCount++;
+			}
+		}
+
+        return sandCount;
+	}
 
     private static bool CanPlaceCactusOutline(int x, int y, int thickness, bool checkCorners)
     {

@@ -134,7 +134,7 @@ public sealed class LivingBorealBiome : MicroBiome
 
 					for (int l = 0; l < leafStretch; l++)
 					{
-						int snowCount = Math.Min(3, leafStretch - l);
+						int snowCount = 1 + Math.Min(4, leafStretch - l);
 						for (int s = 0; s < snowCount; s++)
 						{
 							if (!WorldGen.InWorld(x + l * Math.Sign(i), yForLeaves - s))
@@ -150,7 +150,12 @@ public sealed class LivingBorealBiome : MicroBiome
 						if (!WorldGen.InWorld(x + l * Math.Sign(i), yForLeaves))
 							continue;
 
-						Main.tile[x + l * Math.Sign(i), yForLeaves].ResetToType(LeafType);
+						bool snowChance = j > -height * 2 / 3 
+							? WorldGen.genRand.NextBool(5) 
+							: !WorldGen.genRand.NextBool(3);
+
+						bool snowed = j < -height / 3 && snowChance;
+						Main.tile[x + l * Math.Sign(i), yForLeaves].ResetToType(snowed ? TileID.SnowBlock : LeafType);
 						WorldGen.SquareTileFrame(x + l * Math.Sign(i), yForLeaves);
 					}
 				}
@@ -175,11 +180,8 @@ public sealed class LivingBorealBiome : MicroBiome
 			if (Math.Abs(j) < height - 4)
 			{
 				if (leftSize <= threshold)
-				{
-					leftSize += (int)(WorldGen.genRand.NextFloat(0.5f, 0.9f) * width / (Math.Abs(j) / (float)(height / 5) + 1f));
-					if (Math.Abs(j + 10) < 9)
-						leftSize += 6;
-				}
+					leftSize += (int)(WorldGen.genRand.NextFloat(0.5f, 0.9f) * width / (Math.Abs(j) / (float)(height / 3) + 1f));
+
 				else if (leftSize <= threshold * 1.5 && branchLeft <= 0)
 				{
 					branches.Add(new Point(-leftSize, Math.Abs(j)));
@@ -187,11 +189,8 @@ public sealed class LivingBorealBiome : MicroBiome
 				}
 
 				if (rightSize <= threshold)
-				{
-					rightSize += (int)(WorldGen.genRand.NextFloat(0.5f, 0.9f) * width / (Math.Abs(j) / (float)(height / 5) + 1f));
-					if (Math.Abs(j + 10) < 9)
-						rightSize += 6;
-				}
+					rightSize += (int)(WorldGen.genRand.NextFloat(0.5f, 0.9f) * width / (Math.Abs(j) / (float)(height / 3) + 1f));
+
 				else if (rightSize <= threshold * 1.5 && branchRight <= 0)
 				{
 					branches.Add(new Point(rightSize, Math.Abs(j)));
@@ -335,19 +334,11 @@ public sealed class LivingBorealBiome : MicroBiome
 
 				if (heartCount > 0)
 				{
-					if (TryPlaceHeart(p.X, p.Y))
+					if (WorldGen.PlaceObject(p.X, p.Y, TileID.Heart, true))
 						heartCount--;
 				}
 			}
 		}
-	}
-
-	private static bool TryPlaceHeart(int x, int y)
-	{
-		if (WorldGen.SolidTile(x, y + 2) && WorldGen.SolidTile(x + 1, y + 2))
-			return WorldGen.PlaceObject(x, y, TileID.Heart, true);
-
-		return false;
 	}
 
 	private static bool TryPlaceLootChest(int x, int y)

@@ -34,7 +34,7 @@ internal sealed class LivingTreeGen : ModSystem
                 c.GotoNext(MoveType.Before, x => x.MatchCall<WorldGen>(nameof(WorldGen.PlaceOasis)));
                 c.Remove();
 
-                c.EmitDelegate((int x, int y) => WorldGen.PlaceOasis(x, y) || PlaceBallCactus(x, y));
+                c.EmitDelegate((int x, int y) => WorldGen.PlaceOasis(x, y) || PlaceSurfaceBallCactus(x, y));
             }
         );
 
@@ -55,11 +55,6 @@ internal sealed class LivingTreeGen : ModSystem
                 {
                     y--;
                     airThreshold--;
-
-					if (y < description.Desert.Y)
-                    {
-                        break;
-                    }
                 }
 
                 i++;
@@ -120,21 +115,22 @@ internal sealed class LivingTreeGen : ModSystem
         cactus.Place(new Point(locationX, GenVars.desertHiveHigh), GenVars.structures);
     }
 
-    private static bool PlaceBallCactus(int x, int y)
+    private static bool PlaceSurfaceBallCactus(int x, int y)
     {
-        // Let's not spawn too many.
-        if (!WorldGen.genRand.NextBool(3) || y > GenVars.desertHiveHigh + 50)
-        {
-            return false;
-        }
+		if (x < WorldGen.beachDistance || x > Main.maxTilesX - WorldGen.beachDistance)
+			return false;
 
-        var terrainSlope = NightshadeGenUtil.GetAverageSurfaceSlope(x, y, 15);
-        if (Math.Abs(terrainSlope) > 0.2f)
-        {
-            return false;
-        }
+		// Let's not spawn too many.
+		if (!WorldGen.genRand.NextBool(3) || y > GenVars.desertHiveHigh + 50)
+			return false;
 
-        var cactus = GenVars.configuration.CreateBiome<LivingCactusBiome>();
+		var terrainSlope = NightshadeGenUtil.GetAverageSurfaceSlope(x, y, 15);
+
+        if (Math.Abs(terrainSlope) > 0.15f)
+			return false;
+
+
+		var cactus = GenVars.configuration.CreateBiome<LivingCactusBiome>();
         cactus.Round = true;
         cactus.WithWater = false;
         return cactus.Place(new Point(x, y), GenVars.structures);
@@ -180,7 +176,6 @@ internal sealed class LivingTreeGen : ModSystem
 		orig(self, progress, configuration);
 
         // TODO: generate when tiles and loot are done
-
         return;
 
         LivingBorealCount = WorldGen.genRand.NextBool().ToInt();
