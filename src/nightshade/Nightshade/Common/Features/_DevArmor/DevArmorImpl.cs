@@ -1,6 +1,9 @@
 using System.Collections.Generic;
 
+using MonoMod.Cil;
+
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Default;
@@ -18,7 +21,7 @@ namespace Nightshade.Common.Features;
 
 internal sealed class DevArmorImpl : ModSystem
 {
-    private static readonly Dictionary<DevArmorKind, List<DevArmorDefinition>> dev_armor_set_definitions = [];
+    private static readonly List<DevArmorDefinition> dev_armor_sets = [];
 
     private static readonly DevArmorDefinition[] vanilla_dev_sets =
     [
@@ -175,16 +178,55 @@ internal sealed class DevArmorImpl : ModSystem
 
     internal static void AddNightshadeDevSet(params DevArmorItem[] items)
     {
-        GetDevArmorSetDefinitions(DevArmorKind.NightshadeDev).Add(new DevArmorDefinition(DevArmorKind.NightshadeDev, items));
+        dev_armor_sets.Add(new DevArmorDefinition(DevArmorKind.NightshadeDev, items));
+    }
+
+    public override void Load()
+    {
+        base.Load();
+
+        IL_Player.OpenBossBag += OpenBossBag_AlwaysTryForDevItems;
+        On_Player.TryGettingDevArmor += TryGettingDevArmor_OnlyPullFromOurItems;
+    }
+
+    private static void OpenBossBag_AlwaysTryForDevItems(ILContext il)
+    {
+        var c = new ILCursor(il);
+
+        c.GotoNext(MoveType.After, x => x.MatchLdelemU1());
+
+        c.EmitPop();
+        c.EmitLdcI4(0); // false
+    }
+
+    private static void TryGettingDevArmor_OnlyPullFromOurItems(On_Player.orig_TryGettingDevArmor orig, Player self, IEntitySource source)
+    {
+        if (!Main.rand.NextBool(Main.tenthAnniversaryWorld ? 8 : 16))
+        {
+            return;
+        }
+
+        var hardmode = source is EntitySource_ItemOpen itemOpenSource && !ItemID.Sets.PreHardmodeLikeBossBag[itemOpenSource.ItemType];
+        var devSet = dev_armor_sets[Main.rand.Next(dev_armor_sets.Count)];
+
+        foreach (var item in devSet.Items)
+        {
+            if (item.Hardmode && !hardmode)
+            {
+                continue; // Skip hardmode items in pre-hardmode.
+            }
+
+            self.QuickSpawnItem(source, item.ItemType, item.Stack);
+        }
     }
 
     public override void PostSetupContent()
     {
         base.PostSetupContent();
 
-        GetDevArmorSetDefinitions(DevArmorKind.VanillaDev).AddRange(vanilla_dev_sets);
-        GetDevArmorSetDefinitions(DevArmorKind.ModLoaderPatreon).AddRange(MakeSetsFromModItems(DevArmorKind.ModLoaderPatreon, ModLoaderMod.PatronSets));
-        GetDevArmorSetDefinitions(DevArmorKind.ModLoaderDev).AddRange(MakeSetsFromModItems(DevArmorKind.ModLoaderDev, ModLoaderMod.DeveloperSets));
+        dev_armor_sets.AddRange(vanilla_dev_sets);
+        dev_armor_sets.AddRange(MakeSetsFromModItems(DevArmorKind.ModLoaderPatreon, ModLoaderMod.PatronSets));
+        dev_armor_sets.AddRange(MakeSetsFromModItems(DevArmorKind.ModLoaderDev, ModLoaderMod.DeveloperSets));
 
         return;
 
@@ -196,11 +238,11 @@ internal sealed class DevArmorImpl : ModSystem
                 foreach (var item in set)
                 {
                     var staticItem = ContentSamples.ItemsByType[item.Type];
-                    
+
                     // TODO: Support stack sizes when tML makes use of them.
                     items.Add(new DevArmorItem(item.Type, /*item.Item.stack*/ 1, IsHardmodeItem(staticItem)));
                 }
-                
+
                 yield return new DevArmorDefinition(kind, items.ToArray());
             }
         }
@@ -211,15 +253,5 @@ internal sealed class DevArmorImpl : ModSystem
             // Similar case for damage.
             return item.wingSlot > 0 || item.damage > 0;
         }
-    }
-
-    private static List<DevArmorDefinition> GetDevArmorSetDefinitions(DevArmorKind kind)
-    {
-        if (dev_armor_set_definitions.TryGetValue(kind, out var definitions))
-        {
-            return definitions;
-        }
-
-        return dev_armor_set_definitions[kind] = [];
     }
 }
