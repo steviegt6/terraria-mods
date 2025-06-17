@@ -20,10 +20,10 @@ internal abstract class HairDyeCursor(int hairDye) : ModItem
 
         VanityCursorSets.IsVanityCursor[Type] = true;
         
-        GlobalNPCHooks.ModifyShop.Event += AddMyItemToStylist;
+        GlobalNPCHooks.ModifyShop.Event += AddMyselfToStylistShop;
     }
 
-    private void AddMyItemToStylist(GlobalNPC self, NPCShop shop)
+    private void AddMyselfToStylistShop(GlobalNPC self, NPCShop shop)
     {
         if (shop.NpcType != NPCID.Stylist)
         {
@@ -56,6 +56,9 @@ internal abstract class HairDyeCursor(int hairDye) : ModItem
         Item.hasVanityEffects = true;
 
         Item.maxStack = 1;
+
+        // Explicitly set back to none because we clone from a consumable item.
+        Item.useStyle = ItemUseStyleID.None;
     }
 
     public override void UpdateAccessory(Player player, bool hideVisual)
