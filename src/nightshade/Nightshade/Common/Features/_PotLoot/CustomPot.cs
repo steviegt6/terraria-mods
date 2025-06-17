@@ -4,5 +4,5 @@ public abstract class CustomPot
 {
     public abstract void PlayBreakSound(int i, int j, int style);
     
-    public abstract void SpawnGore();
+    public abstract void SpawnGore(int i, int j, int style);
 }

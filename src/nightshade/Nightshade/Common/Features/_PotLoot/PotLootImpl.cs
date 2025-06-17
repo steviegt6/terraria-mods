@@ -1,7 +1,8 @@
+using System.Diagnostics.CodeAnalysis;
+
 using Microsoft.Xna.Framework;
 
 using Terraria;
-using Terraria.Audio;
 using Terraria.ModLoader;
 using Terraria.ID;
 
@@ -9,6 +10,9 @@ namespace Nightshade.Common.Features;
 
 internal sealed class PotLootImpl : ModSystem
 {
+    private static readonly CustomPot vanilla_pot = new VanillaPot(echo: false);
+    private static readonly CustomPot vanilla_pot_echo = new VanillaPot(echo: true);
+
     public override void Load()
     {
         base.Load();
@@ -17,6 +21,42 @@ internal sealed class PotLootImpl : ModSystem
         // implementing everything Nightshade needs.
         On_WorldGen.CheckPot += CheckPot_EncodeVanillaAndModdedStyles;
         On_WorldGen.SpawnThingsFromPot += SpawnThingsFromPot_HandleVanillaAndModdedStyles;
+    }
+
+    public static bool TryGetPot(
+        int type,
+        [NotNullWhen(returnValue: true)] out CustomPot? pot
+    )
+    {
+        switch (type)
+        {
+            case TileID.Pots:
+                pot = vanilla_pot;
+                return true;
+            
+            case TileID.PotsEcho:
+                pot = vanilla_pot_echo;
+                return true;
+        }
+
+        if (TileLoader.GetTile(type) is IPot potTile)
+        {
+            pot = potTile.Pot;
+            return true;
+        }
+
+        pot = null;
+        return false;
+
+        static bool IsVanillaPot(int type)
+        {
+            return type is TileID.Pots or TileID.PotsEcho;
+        }
+    }
+
+    private static bool IsWithinVanillaBounds(int type)
+    {
+        return type is >= VanillaPot.POT_0_FOREST and <= VanillaPot.POT_36_UNDERGROUND_DESERT;
     }
 
     private static void CheckPot_EncodeVanillaAndModdedStyles(On_WorldGen.orig_CheckPot orig, int i, int j, int type)
@@ -32,7 +72,7 @@ internal sealed class PotLootImpl : ModSystem
 
         startX *= -1;
         startX += i;
-        
+
         var frameY = Main.tile[i, j].frameY / 18;
         var styleIndex = 0;
         while (frameY > 1)
@@ -42,7 +82,7 @@ internal sealed class PotLootImpl : ModSystem
         }
 
         startY -= frameY;
-        
+
         var dontHandleBreak = false;
         for (var x = startX; x < startX + 2; x++)
         {
@@ -80,6 +120,13 @@ internal sealed class PotLootImpl : ModSystem
 
         WorldGen.destroyObject = true;
 
+        if (!TryGetPot(type, out var pot))
+        {
+            return;
+        }
+
+        pot.PlayBreakSound(i, j, styleIndex);
+
         var drop = TileLoader.Drop(i, j, type);
         for (var m = startX; m < startX + 2; m++)
         {
@@ -91,92 +138,10 @@ internal sealed class PotLootImpl : ModSystem
                 }
             }
         }
-        
+
         using (new Item.DisableNewItemMethod(!drop))
         {
-            switch (styleIndex)
-            {
-                case 0:
-                    Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), 51);
-                    Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), 52);
-                    Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), 53);
-                    break;
-
-                case 1:
-                    Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), 166);
-                    Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), 167);
-                    Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), 168);
-                    break;
-
-                case 2:
-                    Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), 169);
-                    Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), 170);
-                    Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), 171);
-                    break;
-
-                case 3:
-                    Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), 172);
-                    Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), 173);
-                    Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), 174);
-                    break;
-
-                case 4:
-                case 5:
-                case 6:
-                    Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), 197);
-                    Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), 198);
-                    break;
-
-                default:
-                    if (styleIndex is >= 7 and <= 9)
-                    {
-                        Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), 199);
-                        Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), 200);
-                    }
-                    else if (styleIndex is >= 10 and <= 12)
-                    {
-                        Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), 201);
-                        Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), 202);
-                    }
-                    else if (styleIndex is >= 13 and <= 15)
-                    {
-                        Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), 203);
-                        Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), 204);
-                    }
-                    else
-                    {
-                        if (styleIndex is >= 16 and <= 18 or >= 19 and <= 21 or >= 22 and <= 24)
-                        {
-                            break;
-                        }
-
-                        if (styleIndex is >= 25 and <= 27)
-                        {
-                            Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), WorldGen.genRand.Next(217, 220));
-                            Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), WorldGen.genRand.Next(217, 220));
-                        }
-                        else if (styleIndex is >= 28 and <= 30)
-                        {
-                            Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), WorldGen.genRand.Next(315, 317));
-                            Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), WorldGen.genRand.Next(315, 317));
-                        }
-                        else if (styleIndex is >= 31 and <= 33)
-                        {
-                            int num6 = WorldGen.genRand.Next(2, 5);
-                            for (var num7 = 0; num7 < num6; num7++)
-                            {
-                                Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), 698 + WorldGen.genRand.Next(6));
-                            }
-                        }
-                        else if (styleIndex is >= 34 and <= 36)
-                        {
-                            Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), 1122);
-                            Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), 1123);
-                            Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), 1124);
-                        }
-                    }
-                    break;
-            }
+            pot.SpawnGore(i, j, styleIndex);
 
             if (Main.netMode != NetmodeID.MultiplayerClient && type != 653)
             {

@@ -1,6 +1,8 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
 
+using Microsoft.Xna.Framework;
+
+using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 
@@ -60,61 +62,112 @@ internal sealed class VanillaPot(bool echo) : CustomPot
     public const int POT_35_UNDERGROUND_DESERT = 35;
     public const int POT_36_UNDERGROUND_DESERT = 36;
 
-    public override void PlayBreakSound()
+    public override void PlayBreakSound(int i, int j, int style)
     {
-                
-        if (style is >= 7 and <= 9)
+        switch (style)
         {
-            SoundEngine.PlaySound(SoundID.Grass, i * 16, j * 16);
-        }
-        else if (styleIndex is >= 16 and <= 24)
-        {
-            SoundEngine.PlaySound(4, i * 16, j * 16);
-        }
-        else
-        {
-            SoundEngine.PlaySound(SoundID.Shatter, i * 16, j * 16);
+            case >= 7 and <= 9:
+                SoundEngine.PlaySound(SoundID.Grass, i * 16, j * 16);
+                break;
+
+            case >= 16 and <= 24:
+                SoundEngine.PlaySound(4, i * 16, j * 16);
+                break;
+
+            default:
+                SoundEngine.PlaySound(SoundID.Shatter, i * 16, j * 16);
+                break;
         }
     }
 
-    public override void SpawnGore()
+    public override void SpawnGore(int i, int j, int style)
     {
-        throw new NotImplementedException();
-    }
-
-    public static bool IsVanillaPot(int type)
-    {
-        return type is TileID.Pots or TileID.PotsEcho;
-    }
-
-    public static bool TryGetVanillaPot(
-        int type,
-        [NotNullWhen(returnValue: true)] out CustomPot? pot
-    )
-    {
-        // Originally, I was going to make it so, when providing a pot style to
-        // the rewritten method handling pot loot, vanilla styles would be
-        // denoted by negative values (stuck using the same parameter).  I
-        // realized after that I can just not do that since vanilla pot styles
-        // would only overlap existing vanilla tile IDs, so I can assume in good
-        // faith when a pot style is vanilla or actually a new modded tile ID.
-        /*if (type < 0)
+        switch (style)
         {
-            type = Math.Abs(type);
-        }*/
+            case 0:
+                Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), 51);
+                Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), 52);
+                Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), 53);
+                break;
 
-        if (!IsWithinPotBounds(type))
-        {
-            pot = null;
-            return false;
+            case 1:
+                Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), 166);
+                Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), 167);
+                Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), 168);
+                break;
+
+            case 2:
+                Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), 169);
+                Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), 170);
+                Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), 171);
+                break;
+
+            case 3:
+                Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), 172);
+                Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), 173);
+                Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), 174);
+                break;
+
+            case 4:
+            case 5:
+            case 6:
+                Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), 197);
+                Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), 198);
+                break;
+
+            default:
+                if (style is >= 7 and <= 9)
+                {
+                    Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), 199);
+                    Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), 200);
+                }
+                else if (style is >= 10 and <= 12)
+                {
+                    Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), 201);
+                    Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), 202);
+                }
+                else if (style is >= 13 and <= 15)
+                {
+                    Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), 203);
+                    Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), 204);
+                }
+                else
+                {
+                    if (style is >= 16 and <= 18 or >= 19 and <= 21 or >= 22 and <= 24)
+                    {
+                        break;
+                    }
+
+                    switch (style)
+                    {
+                        case >= 25 and <= 27:
+                            Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), WorldGen.genRand.Next(217, 220));
+                            Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), WorldGen.genRand.Next(217, 220));
+                            break;
+
+                        case >= 28 and <= 30:
+                            Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), WorldGen.genRand.Next(315, 317));
+                            Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), WorldGen.genRand.Next(315, 317));
+                            break;
+
+                        case >= 31 and <= 33:
+                        {
+                            var num6 = WorldGen.genRand.Next(2, 5);
+                            for (var num7 = 0; num7 < num6; num7++)
+                            {
+                                Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), 698 + WorldGen.genRand.Next(6));
+                            }
+                            break;
+                        }
+
+                        case >= 34 and <= 36:
+                            Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), 1122);
+                            Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), 1123);
+                            Gore.NewGore(new Vector2(i * 16, j * 16), default(Vector2), 1124);
+                            break;
+                    }
+                }
+                break;
         }
-
-        pot = new VanillaPot(type);
-        return true;
-    }
-    
-    private static bool IsWithinPotBounds(int type)
-    {
-        return type is >= POT_0_FOREST and <= POT_36_UNDERGROUND_DESERT;
     }
 }
