@@ -169,70 +169,7 @@ internal sealed class PotLootImpl : ModSystem
 
         var coinMultiplier = 1f;
         // var isUndergroundDesertPot = style is >= 34 and <= 36;
-        switch (style)
-        {
-            case 4:
-            case 5:
-            case 6:
-                coinMultiplier = 1.25f;
-                break;
-
-            default:
-                switch (style)
-                {
-                    case >= 7 and <= 9:
-                        coinMultiplier = 1.75f;
-                        break;
-
-                    case >= 10 and <= 12:
-                        coinMultiplier = 1.9f;
-                        break;
-
-                    case >= 13 and <= 15:
-                        coinMultiplier = 2.1f;
-                        break;
-
-                    case >= 16 and <= 18:
-                        coinMultiplier = 1.6f;
-                        break;
-
-                    case >= 19 and <= 21:
-                        coinMultiplier = 3.5f;
-                        break;
-
-                    case >= 22 and <= 24:
-                        coinMultiplier = 1.6f;
-                        break;
-
-                    case >= 25 and <= 27:
-                        coinMultiplier = 10f;
-                        break;
-
-                    case >= 28 and <= 30:
-                    {
-                        if (Main.hardMode)
-                        {
-                            coinMultiplier = 4f;
-                        }
-                        break;
-                    }
-
-                    case >= 31 and <= 33:
-                        coinMultiplier = 2f;
-                        break;
-
-                    case >= 34 and <= 36:
-                        coinMultiplier = 1.25f;
-                        break;
-                }
-                break;
-
-            case 0:
-            case 1:
-            case 2:
-            case 3:
-                break;
-        }
+        pot.ModifyCoinMultiplier(i, j, style, ref coinMultiplier);
 
         coinMultiplier = (coinMultiplier * 2f + 1f) / 3f;
         var coinPortalChance = (int)(500f / ((coinMultiplier + 1f) / 2f));

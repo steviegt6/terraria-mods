@@ -29,4 +29,6 @@ public abstract class CustomPot
         out int utilityType,
         out int utilityStack
     );
+
+    public abstract void ModifyCoinMultiplier(int i, int j, int style, ref float multiplier);
 }

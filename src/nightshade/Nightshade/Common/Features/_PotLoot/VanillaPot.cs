@@ -238,17 +238,85 @@ internal sealed class VanillaPot(bool echo) : CustomPot
             utilityStack = 0;
             return false;
         }
-        
+
         utilityType = 166;
         if (isUndergroundDesertPot)
         {
             utilityType = 4423;
         }
-        
+
         utilityStack = Main.rand.Next(4) + 1;
         if (Main.expertMode)
         {
             utilityStack += Main.rand.Next(4);
+        }
+    }
+
+    public override void ModifyCoinMultiplier(int i, int j, int style, ref float multiplier)
+    {
+        switch (style)
+        {
+            case 4:
+            case 5:
+            case 6:
+                multiplier = 1.25f;
+                break;
+
+            default:
+                switch (style)
+                {
+                    case >= 7 and <= 9:
+                        multiplier = 1.75f;
+                        break;
+
+                    case >= 10 and <= 12:
+                        multiplier = 1.9f;
+                        break;
+
+                    case >= 13 and <= 15:
+                        multiplier = 2.1f;
+                        break;
+
+                    case >= 16 and <= 18:
+                        multiplier = 1.6f;
+                        break;
+
+                    case >= 19 and <= 21:
+                        multiplier = 3.5f;
+                        break;
+
+                    case >= 22 and <= 24:
+                        multiplier = 1.6f;
+                        break;
+
+                    case >= 25 and <= 27:
+                        multiplier = 10f;
+                        break;
+
+                    case >= 28 and <= 30:
+                    {
+                        if (Main.hardMode)
+                        {
+                            multiplier = 4f;
+                        }
+                        break;
+                    }
+
+                    case >= 31 and <= 33:
+                        multiplier = 2f;
+                        break;
+
+                    case >= 34 and <= 36:
+                        multiplier = 1.25f;
+                        break;
+                }
+                break;
+
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+                break;
         }
     }
 }
