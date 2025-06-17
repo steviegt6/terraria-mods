@@ -56,7 +56,7 @@ internal sealed class DevArmorImpl : ModSystem
             new DevArmorItem(1557),
             new DevArmorItem(1558),
             new DevArmorItem(1559),
-            new DevArmorItem(1585)
+            new DevArmorItem(1585, Hardmode: true)
         ),
         new(
             // Wil
@@ -112,7 +112,7 @@ internal sealed class DevArmorImpl : ModSystem
             new DevArmorItem(3585),
             new DevArmorItem(3586),
             new DevArmorItem(3587),
-            new DevArmorItem(3588),
+            new DevArmorItem(3588, Hardmode: true),
             new DevArmorItem(3024, Stack: 4)
         ),
         new(
