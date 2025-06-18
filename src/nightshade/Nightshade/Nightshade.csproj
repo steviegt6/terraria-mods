@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-    <Import Project="../../common/Mod.targets" />
+    <Import Project="../../common/Mod.targets"/>
 
     <PropertyGroup>
         <AssemblyName>Nightshade</AssemblyName>
@@ -8,20 +8,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Publicize Include="FNA" />
-        <Publicize Include="ReLogic" />
+        <Publicize Include="FNA"/>
+        <Publicize Include="ReLogic"/>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\libs\Daybreak\Daybreak.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Assets\Images\Dusts\" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Include="Content\Particles\GlowSplashParticle.cs" />
+        <ProjectReference Include="..\..\libs\Daybreak\Daybreak.csproj"/>
     </ItemGroup>
 
 </Project>
