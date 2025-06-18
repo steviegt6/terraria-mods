@@ -1,0 +1,28 @@
+using System.Collections.Generic;
+
+namespace Nightshade.Common.Features;
+
+public readonly record struct PotBreakContext(int X, int Y, int Style);
+
+public readonly record struct PotLootContext(
+    int X,
+    int Y,
+    int X2,
+    int Y2,
+    int Style,
+    bool AboveRockLayer,
+    bool AboveUnderworldLayer
+);
+
+public readonly record struct PotLootContextWithCoinMult(
+    int X,
+    int Y,
+    int X2,
+    int Y2,
+    int Style,
+    bool AboveRockLayer,
+    bool AboveUnderworldLayer,
+    float CoinMult
+);
+
+public readonly record struct PotLootPotion(int ItemType, int Stack = 1);

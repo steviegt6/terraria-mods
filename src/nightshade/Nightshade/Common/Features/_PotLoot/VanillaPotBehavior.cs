@@ -11,58 +11,14 @@ namespace Nightshade.Common.Features;
 /// </summary>
 internal sealed class VanillaPotBehavior(bool echo) : PotBehavior
 {
-    public const int POT_0_FOREST = 0;
-    public const int POT_1_FOREST = 1;
-    public const int POT_2_FOREST = 2;
-    public const int POT_3_FOREST = 3;
-
-    public const int POT_4_TUNDRA = 4;
-    public const int POT_5_TUNDRA = 5;
-    public const int POT_6_TUNDRA = 6;
-
-    public const int POT_7_JUNGLE = 7;
-    public const int POT_8_JUNGLE = 8;
-    public const int POT_9_JUNGLE = 9;
-
-    public const int POT_10_DUNGEON = 10;
-    public const int POT_11_DUNGEON = 11;
-    public const int POT_12_DUNGEON = 12;
-
-    public const int POT_13_UNDERWORLD = 13;
-    public const int POT_14_UNDERWORLD = 14;
-    public const int POT_15_UNDERWORLD = 15;
-
-    public const int POT_16_CORRUPTION = 16;
-    public const int POT_17_CORRUPTION = 17;
-    public const int POT_18_CORRUPTION = 18;
-
-    public const int POT_19_SPIDER_CAVE = 19;
-    public const int POT_20_SPIDER_CAVE = 20;
-    public const int POT_21_SPIDER_CAVE = 21;
-
-    public const int POT_22_CRIMSON = 22;
-    public const int POT_23_CRIMSON = 23;
-    public const int POT_24_CRIMSON = 24;
-
-    public const int POT_25_PYRAMID = 25;
-    public const int POT_26_PYRAMID = 26;
-    public const int POT_27_PYRAMID = 27;
-
-    public const int POT_28_LIHZAHRD = 28;
-    public const int POT_29_LIHZAHRD = 29;
-    public const int POT_30_LIHZAHRD = 30;
-
-    public const int POT_31_MARBLE = 31;
-    public const int POT_32_MARBLE = 32;
-    public const int POT_33_MARBLE = 33;
-
-    public const int POT_34_UNDERGROUND_DESERT = 34;
-    public const int POT_35_UNDERGROUND_DESERT = 35;
-    public const int POT_36_UNDERGROUND_DESERT = 36;
-
-    public override void PlayBreakSound(int i, int j, int style)
+    internal override void PlayBreakSound(PotBreakContext ctx)
     {
-        switch (style)
+        base.PlayBreakSound(ctx);
+
+        var i = ctx.X;
+        var j = ctx.Y;
+
+        switch (ctx.Style)
         {
             case >= 7 and <= 9:
                 SoundEngine.PlaySound(SoundID.Grass, i * 16, j * 16);
@@ -78,8 +34,12 @@ internal sealed class VanillaPotBehavior(bool echo) : PotBehavior
         }
     }
 
-    public override void SpawnGore(int i, int j, int style)
+    public override void SpawnGore(PotBreakContext ctx)
     {
+        var i = ctx.X;
+        var j = ctx.Y;
+        var style = ctx.Style;
+
         switch (style)
         {
             case 0:
@@ -169,9 +129,81 @@ internal sealed class VanillaPotBehavior(bool echo) : PotBehavior
         }
     }
 
-    public override bool ShouldTryForLoot(int i, int j, int style)
+    public override bool ShouldTryForLoot(PotBreakContext ctx)
     {
         return !echo;
+    }
+
+    public override float GetInitialCoinValue(PotLootContext ctx)
+    {
+        var multiplier = 1f;
+
+        switch (ctx.Style)
+        {
+            case 4:
+            case 5:
+            case 6:
+                multiplier = 1.25f;
+                break;
+
+            default:
+                switch (ctx.Style)
+                {
+                    case >= 7 and <= 9:
+                        multiplier = 1.75f;
+                        break;
+
+                    case >= 10 and <= 12:
+                        multiplier = 1.9f;
+                        break;
+
+                    case >= 13 and <= 15:
+                        multiplier = 2.1f;
+                        break;
+
+                    case >= 16 and <= 18:
+                        multiplier = 1.6f;
+                        break;
+
+                    case >= 19 and <= 21:
+                        multiplier = 3.5f;
+                        break;
+
+                    case >= 22 and <= 24:
+                        multiplier = 1.6f;
+                        break;
+
+                    case >= 25 and <= 27:
+                        multiplier = 10f;
+                        break;
+
+                    case >= 28 and <= 30:
+                    {
+                        if (Main.hardMode)
+                        {
+                            multiplier = 4f;
+                        }
+                        break;
+                    }
+
+                    case >= 31 and <= 33:
+                        multiplier = 2f;
+                        break;
+
+                    case >= 34 and <= 36:
+                        multiplier = 1.25f;
+                        break;
+                }
+                break;
+
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+                break;
+        }
+
+        return multiplier;
     }
 
     public override void ModifyTorchType(
@@ -251,73 +283,5 @@ internal sealed class VanillaPotBehavior(bool echo) : PotBehavior
             utilityStack += Main.rand.Next(4);
         }
         return true;
-    }
-
-    public override void ModifyCoinMultiplier(int i, int j, int style, ref float multiplier)
-    {
-        switch (style)
-        {
-            case 4:
-            case 5:
-            case 6:
-                multiplier = 1.25f;
-                break;
-
-            default:
-                switch (style)
-                {
-                    case >= 7 and <= 9:
-                        multiplier = 1.75f;
-                        break;
-
-                    case >= 10 and <= 12:
-                        multiplier = 1.9f;
-                        break;
-
-                    case >= 13 and <= 15:
-                        multiplier = 2.1f;
-                        break;
-
-                    case >= 16 and <= 18:
-                        multiplier = 1.6f;
-                        break;
-
-                    case >= 19 and <= 21:
-                        multiplier = 3.5f;
-                        break;
-
-                    case >= 22 and <= 24:
-                        multiplier = 1.6f;
-                        break;
-
-                    case >= 25 and <= 27:
-                        multiplier = 10f;
-                        break;
-
-                    case >= 28 and <= 30:
-                    {
-                        if (Main.hardMode)
-                        {
-                            multiplier = 4f;
-                        }
-                        break;
-                    }
-
-                    case >= 31 and <= 33:
-                        multiplier = 2f;
-                        break;
-
-                    case >= 34 and <= 36:
-                        multiplier = 1.25f;
-                        break;
-                }
-                break;
-
-            case 0:
-            case 1:
-            case 2:
-            case 3:
-                break;
-        }
     }
 }

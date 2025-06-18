@@ -77,11 +77,6 @@ internal sealed class PotLootImpl : ModSystem
         {
             for (var y = startY; y < startY + 2; y++)
             {
-                // if (Main.tile[x, y] == null)
-                // {
-                //     Main.tile[x, y] = new Tile();
-                // }
-
                 int frameXOffset;
                 for (frameXOffset = Main.tile[x, y].frameX / 18; frameXOffset > 1; frameXOffset -= 2) { }
 
@@ -90,11 +85,6 @@ internal sealed class PotLootImpl : ModSystem
                     dontHandleBreak = true;
                 }
             }
-
-            // if (Main.tile[x, startY + 2] == null)
-            // {
-            //     Main.tile[x, startY + 2] = new Tile();
-            // }
 
             if (!WorldGen.SolidTile2(x, startY + 2))
             {
@@ -114,7 +104,9 @@ internal sealed class PotLootImpl : ModSystem
             return;
         }
 
-        pot.PlayBreakSound(i, j, style);
+        var ctx = new PotBreakContext(i, j, style);
+
+        pot.PlayBreakSound(ctx);
 
         var drop = TileLoader.Drop(i, j, type);
         for (var m = startX; m < startX + 2; m++)
@@ -130,9 +122,9 @@ internal sealed class PotLootImpl : ModSystem
 
         using (new Item.DisableNewItemMethod(!drop))
         {
-            pot.SpawnGore(i, j, style);
+            pot.SpawnGore(ctx);
 
-            if (Main.netMode != NetmodeID.MultiplayerClient && pot.ShouldTryForLoot(i, j, style))
+            if (Main.netMode != NetmodeID.MultiplayerClient && pot.ShouldTryForLoot(ctx))
             {
                 SpawnThingsFromPot_HandleVanillaAndModdedStyles(i, j, startX, startY, pot, style);
             }
@@ -157,313 +149,64 @@ internal sealed class PotLootImpl : ModSystem
             aboveUnderworldLayer = j > Main.worldSurface && j < Main.rockLayer;
         }
 
-        var coinMultiplier = 1f;
-        // var isUndergroundDesertPot = style is >= 34 and <= 36;
-        potBehavior.ModifyCoinMultiplier(i, j, style, ref coinMultiplier);
+        var ctx = new PotLootContext(i, j, x2, y2, style, aboveRockLayer, aboveUnderworldLayer);
 
-        coinMultiplier = (coinMultiplier * 2f + 1f) / 3f;
-        var coinPortalChance = (int)(500f / ((coinMultiplier + 1f) / 2f));
-
-        if (Player.GetClosestRollLuck(i, j, coinPortalChance) == 0f)
+        var coinValue = potBehavior.GetInitialCoinValue(ctx);
         {
-            if (Main.netMode != NetmodeID.MultiplayerClient)
-            {
-                Projectile.NewProjectile(WorldGen.GetProjectileSource_TileBreak(i, j), i * 16 + 16, j * 16 + 16, 0f, -12f, 518, 0, 0f, Main.myPlayer);
-            }
+            coinValue = (coinValue * 2f + 1f) / 3f;
+        }
 
+        var ctxWithCoinValue = new PotLootContextWithCoinMult(
+            ctx.X,
+            ctx.Y,
+            ctx.X2,
+            ctx.Y2,
+            ctx.Style,
+            ctx.AboveRockLayer,
+            ctx.AboveUnderworldLayer,
+            coinValue
+        );
+
+        if (potBehavior.ShouldSpawnCoinPortal(ctxWithCoinValue))
+        {
+            potBehavior.SpawnCoinPortal(ctxWithCoinValue);
             return;
         }
 
-        if (WorldGen.genRand.NextBool(35) && Main.wallDungeon[Main.tile[i, j].wall] && j > Main.worldSurface)
+        if (potBehavior.ShouldSpawnGoldenKey(ctxWithCoinValue))
         {
-            Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 327);
+            potBehavior.SpawnGoldenKey(ctxWithCoinValue);
             return;
         }
 
-        if (Main.getGoodWorld && WorldGen.genRand.NextBool(6))
+        if (potBehavior.ShouldSpawnLitBomb(ctxWithCoinValue))
         {
-            Projectile.NewProjectile(WorldGen.GetProjectileSource_TileBreak(i, j), i * 16 + 16, j * 16 + 8, Main.rand.Next(-100, 101) * 0.002f, 0f, 28, 0, 0f, Main.myPlayer, 16f, 16f);
+            potBehavior.SpawnLitBomb(ctxWithCoinValue);
             return;
         }
 
-        if (Main.remixWorld && Main.netMode != NetmodeID.MultiplayerClient && WorldGen.genRand.NextBool(5))
+        if (potBehavior.ShouldSpawnDontDigUpStar(ctxWithCoinValue))
         {
-            var player = Main.player[Player.FindClosest(new Vector2(i * 16, j * 16), 16, 16)];
-            if (Main.rand.NextBool(2))
-            {
-                Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 75);
-            }
-            else if (player.ZoneJungle)
-            {
-                var num2 = NPC.NewNPC(NPC.GetSpawnSourceForNaturalSpawn(), x2 * 16 + 16, y2 * 16 + 32, -10);
-                if (num2 > -1)
-                {
-                    Main.npc[num2].ai[1] = 75f;
-                    Main.npc[num2].netUpdate = true;
-                }
-            }
-            else if (j > Main.rockLayer && j < Main.maxTilesY - 350)
-            {
-                var num3 = Main.rand.NextBool(9) ? NPC.NewNPC(NPC.GetSpawnSourceForNaturalSpawn(), x2 * 16 + 16, y2 * 16 + 32, -7) : Main.rand.Next(7) == 0 ? NPC.NewNPC(NPC.GetSpawnSourceForNaturalSpawn(), x2 * 16 + 16, y2 * 16 + 32, -8) : Main.rand.Next(6) == 0 ? NPC.NewNPC(NPC.GetSpawnSourceForNaturalSpawn(), x2 * 16 + 16, y2 * 16 + 32, -9) : Main.rand.Next(3) != 0 ? NPC.NewNPC(NPC.GetSpawnSourceForNaturalSpawn(), x2 * 16 + 16, y2 * 16 + 32, 1) : NPC.NewNPC(NPC.GetSpawnSourceForNaturalSpawn(), x2 * 16 + 16, y2 * 16 + 32, -3);
-                if (num3 > -1)
-                {
-                    Main.npc[num3].ai[1] = 75f;
-                    Main.npc[num3].netUpdate = true;
-                }
-            }
-            else if (j > Main.worldSurface && j <= Main.rockLayer)
-            {
-                var num4 = NPC.NewNPC(NPC.GetSpawnSourceForNaturalSpawn(), x2 * 16 + 16, y2 * 16 + 32, -6);
-                if (num4 > -1)
-                {
-                    Main.npc[num4].ai[1] = 75f;
-                    Main.npc[num4].netUpdate = true;
-                }
-            }
-            else
-            {
-                Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 75);
-            }
-
+            potBehavior.SpawnDontDigUpStar(ctxWithCoinValue);
             return;
         }
 
-        if (Main.remixWorld && i > Main.maxTilesX * 0.37 && i < Main.maxTilesX * 0.63 && j > Main.maxTilesY - 220)
+        if (potBehavior.ShouldSpawnDontDigUpRope(ctxWithCoinValue))
         {
-            var stack = Main.rand.Next(20, 41);
-            Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 965, stack);
+            potBehavior.SpawnDontDigUpRope(ctxWithCoinValue);
             return;
         }
 
-        // TODO: POTION CASE
-        if (WorldGen.genRand.NextBool(45) || (Main.rand.NextBool(45) && Main.expertMode))
+        if (potBehavior.ShouldSpawnPotion(ctxWithCoinValue))
         {
-            if (j < Main.worldSurface)
-            {
-                var num5 = WorldGen.genRand.Next(10);
-                switch (num5)
-                {
-                    case 0:
-                        Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 292);
-                        break;
-
-                    case 1:
-                        Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 298);
-                        break;
-
-                    case 2:
-                        Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 299);
-                        break;
-
-                    case 3:
-                        Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 290);
-                        break;
-
-                    case 4:
-                        Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 2322);
-                        break;
-
-                    case 5:
-                        Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 2324);
-                        break;
-
-                    case 6:
-                        Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 2325);
-                        break;
-
-                    case >= 7:
-                        Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 2350, WorldGen.genRand.Next(1, 3));
-                        break;
-                }
-            }
-            else if (aboveRockLayer)
-            {
-                var num6 = WorldGen.genRand.Next(11);
-                switch (num6)
-                {
-                    case 0:
-                        Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 289);
-                        break;
-
-                    case 1:
-                        Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 298);
-                        break;
-
-                    case 2:
-                        Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 299);
-                        break;
-
-                    case 3:
-                        Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 290);
-                        break;
-
-                    case 4:
-                        Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 303);
-                        break;
-
-                    case 5:
-                        Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 291);
-                        break;
-
-                    case 6:
-                        Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 304);
-                        break;
-
-                    case 7:
-                        Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 2322);
-                        break;
-
-                    case 8:
-                        Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 2329);
-                        break;
-                }
-
-                if (num6 >= 7)
-                {
-                    Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 2350, WorldGen.genRand.Next(1, 3));
-                }
-            }
-            else if (aboveUnderworldLayer)
-            {
-                var num7 = WorldGen.genRand.Next(15);
-                switch (num7)
-                {
-                    case 0:
-                        Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 296);
-                        break;
-
-                    case 1:
-                        Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 295);
-                        break;
-
-                    case 2:
-                        Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 299);
-                        break;
-
-                    case 3:
-                        Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 302);
-                        break;
-
-                    case 4:
-                        Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 303);
-                        break;
-
-                    case 5:
-                        Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 305);
-                        break;
-
-                    case 6:
-                        Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 301);
-                        break;
-
-                    case 7:
-                        Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 302);
-                        break;
-
-                    case 8:
-                        Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 297);
-                        break;
-
-                    case 9:
-                        Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 304);
-                        break;
-
-                    case 10:
-                        Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 2322);
-                        break;
-
-                    case 11:
-                        Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 2323);
-                        break;
-
-                    case 12:
-                        Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 2327);
-                        break;
-
-                    case 13:
-                        Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 2329);
-                        break;
-                }
-
-                if (num7 >= 7)
-                {
-                    Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 2350, WorldGen.genRand.Next(1, 3));
-                }
-            }
-            else
-            {
-                var num8 = WorldGen.genRand.Next(14);
-                switch (num8)
-                {
-                    case 0:
-                        Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 296);
-                        break;
-
-                    case 1:
-                        Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 295);
-                        break;
-
-                    case 2:
-                        Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 293);
-                        break;
-
-                    case 3:
-                        Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 288);
-                        break;
-
-                    case 4:
-                        Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 294);
-                        break;
-
-                    case 5:
-                        Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 297);
-                        break;
-
-                    case 6:
-                        Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 304);
-                        break;
-
-                    case 7:
-                        Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 305);
-                        break;
-
-                    case 8:
-                        Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 301);
-                        break;
-
-                    case 9:
-                        Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 302);
-                        break;
-
-                    case 10:
-                        Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 288);
-                        break;
-
-                    case 11:
-                        Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 300);
-                        break;
-
-                    case 12:
-                        Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 2323);
-                        break;
-
-                    case 13:
-                        Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 2326);
-                        break;
-                }
-
-                if (WorldGen.genRand.NextBool(5))
-                {
-                    Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 4870);
-                }
-            }
-
+            var potions = potBehavior.GetPotions(ctxWithCoinValue);
+            potBehavior.SpawnPotions(ctxWithCoinValue, potions);
             return;
         }
 
-        if (Main.netMode == NetmodeID.Server && Main.rand.NextBool(30))
+        if (potBehavior.ShouldSpawnWormholePotion(ctxWithCoinValue))
         {
-            Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 2997);
+            potBehavior.SpawnWormholePotion(ctxWithCoinValue);
             return;
         }
 
@@ -674,7 +417,7 @@ internal sealed class PotLootImpl : ModSystem
             num15 *= 1.75f;
         }
 
-        num15 *= coinMultiplier;
+        num15 *= coinValue;
         if (NPC.downedBoss1)
         {
             num15 *= 1.1f;

@@ -16,27 +16,30 @@ internal sealed class LivingCactusPot : AbstractPot
 {
     private sealed class PotBehaviorImpl : PotBehavior
     {
-        public override void PlayBreakSound(int i, int j, int style) { }
-
-        public override void SpawnGore(int i, int j, int style)
+        public override void SpawnGore(PotBreakContext ctx)
         {
             var goreAmt = Main.rand.Next(1, 2 + 1);
 
-            for (var k = 0; k < goreAmt; k++)
-            for (var l = 1; l < 3; l++)
+            for (var i = 0; i < goreAmt; i++)
+            for (var type = 1; type < 3; type++)
             {
-                Gore.NewGore(new EntitySource_TileBreak(i, j), new Vector2(i, j) * 16, Main.rand.NextVector2CircularEdge(3f, 3f), ModContent.GetInstance<ModImpl>().Find<ModGore>($"LivingCactusPotGore{l}").Type);
+                Gore.NewGore(
+                    new EntitySource_TileBreak(ctx.X, ctx.Y),
+                    new Vector2(ctx.X, ctx.Y) * 16,
+                    Main.rand.NextVector2CircularEdge(3f, 3f),
+                    ModContent.GetInstance<ModImpl>().Find<ModGore>($"LivingCactusPotGore{type}").Type
+                );
             }
         }
 
-        public override bool ShouldTryForLoot(int i, int j, int style)
+        public override float GetInitialCoinValue(PotLootContext ctx)
         {
-            return true;
+            return PotLootImpl.POT_BEHAVIOR_VANILLA.GetInitialCoinValue(ctx with { Style = (int)VanillaPotStyle.UndergroundDesert34 });
         }
 
         public override void ModifyTorchType(int i, int j, int style, Player player, ref int torchType, ref int glowstickType, ref int itemStack)
         {
-            PotLootImpl.POT_BEHAVIOR_VANILLA.ModifyTorchType(i, j, VanillaPotBehavior.POT_34_UNDERGROUND_DESERT, player, ref torchType, ref glowstickType, ref itemStack);
+            PotLootImpl.POT_BEHAVIOR_VANILLA.ModifyTorchType(i, j, (int)VanillaPotStyle.UndergroundDesert34, player, ref torchType, ref glowstickType, ref itemStack);
         }
 
         public override bool TryGetUtilityItem(int i, int j, int style, bool aboveUnderworldLayer, out int utilityType, out int utilityStack)
@@ -44,11 +47,6 @@ internal sealed class LivingCactusPot : AbstractPot
             utilityType = ModContent.ItemType<CactusSplashJug>();
             utilityStack = Main.rand.Next(5, 10);
             return true;
-        }
-
-        public override void ModifyCoinMultiplier(int i, int j, int style, ref float multiplier)
-        {
-            PotLootImpl.POT_BEHAVIOR_VANILLA.ModifyCoinMultiplier(i, j, VanillaPotBehavior.POT_34_UNDERGROUND_DESERT, ref multiplier);
         }
     }
 
