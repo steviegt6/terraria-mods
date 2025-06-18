@@ -25,7 +25,7 @@ internal sealed class VanillaPotBehavior(bool echo) : PotBehavior
                 break;
 
             case >= 16 and <= 24:
-                SoundEngine.PlaySound(4, i * 16, j * 16);
+                SoundEngine.PlaySound(LegacySoundIDs.NPCKilled, i * 16, j * 16);
                 break;
 
             default:
@@ -254,7 +254,11 @@ internal sealed class VanillaPotBehavior(bool echo) : PotBehavior
         }
     }
 
-    protected override bool TryGetUtilityItem(PotLootContextWithCoinMult ctx, out int utilityType, out int utilityStack)
+    protected override bool TryGetUtilityItem(
+        PotLootContextWithCoinMult ctx,
+        out int utilityType,
+        out int utilityStack
+    )
     {
         var isUndergroundDesertPot = ctx.Style is >= 34 and <= 36;
         if (!isUndergroundDesertPot && !ctx.AboveUnderworldLayer)

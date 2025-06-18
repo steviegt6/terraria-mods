@@ -13,15 +13,6 @@ internal sealed class PotLootImpl : ModSystem
     public static readonly PotBehavior POT_BEHAVIOR_VANILLA = new VanillaPotBehavior(echo: false);
     public static readonly PotBehavior POT_BEHAVIOR_VANILLA_ECHO = new VanillaPotBehavior(echo: true);
 
-    public override void Load()
-    {
-        base.Load();
-
-        // Vanilla logic is completely rewritten here in favor of directly
-        // implementing everything Nightshade needs.
-        On_WorldGen.CheckPot += CheckPot_EncodeVanillaAndModdedStyles;
-    }
-
     public static bool TryGetPot(
         int type,
         [NotNullWhen(returnValue: true)] out PotBehavior? pot
@@ -46,6 +37,15 @@ internal sealed class PotLootImpl : ModSystem
 
         pot = null;
         return false;
+    }
+
+    public override void Load()
+    {
+        base.Load();
+
+        // Vanilla logic is completely rewritten here in favor of directly
+        // implementing everything Nightshade needs.
+        On_WorldGen.CheckPot += CheckPot_EncodeVanillaAndModdedStyles;
     }
 
     private static void CheckPot_EncodeVanillaAndModdedStyles(On_WorldGen.orig_CheckPot orig, int i, int j, int type)
@@ -133,7 +133,14 @@ internal sealed class PotLootImpl : ModSystem
         WorldGen.destroyObject = false;
     }
 
-    private static void SpawnThingsFromPot_HandleVanillaAndModdedStyles(int i, int j, int x2, int y2, PotBehavior potBehavior, int style)
+    private static void SpawnThingsFromPot_HandleVanillaAndModdedStyles(
+        int i,
+        int j,
+        int x2,
+        int y2,
+        PotBehavior potBehavior,
+        int style
+    )
     {
         if (WorldGen.gen)
         {
@@ -341,7 +348,7 @@ internal sealed class PotLootImpl : ModSystem
         }
 
         coinAmount *= coinMult;
-        
+
         if (NPC.downedBoss1)
         {
             coinAmount *= 1.1f;
@@ -401,7 +408,7 @@ internal sealed class PotLootImpl : ModSystem
         {
             coinAmount *= 1.1f;
         }
-        
+
         // TODO: Maybe a final hook around here to modify the coin amount.
 
         while ((int)coinAmount > 0)
