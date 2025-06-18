@@ -134,7 +134,7 @@ internal sealed class VanillaPotBehavior(bool echo) : PotBehavior
         return !echo;
     }
 
-    public override float GetInitialCoinValue(PotLootContext ctx)
+    public override float GetInitialCoinMult(PotLootContext ctx)
     {
         var multiplier = 1f;
 
@@ -206,16 +206,16 @@ internal sealed class VanillaPotBehavior(bool echo) : PotBehavior
         return multiplier;
     }
 
-    public override void ModifyTorchType(
-        int i,
-        int j,
-        int style,
+    protected override void ModifyTorchType(
+        PotLootContextWithCoinMult ctx,
         Player player,
         ref int torchType,
         ref int glowstickType,
         ref int itemStack
     )
     {
+        var style = ctx.Style;
+
         if (player.ZoneHallow)
         {
             itemStack += Main.rand.Next(2, 7);
@@ -254,17 +254,10 @@ internal sealed class VanillaPotBehavior(bool echo) : PotBehavior
         }
     }
 
-    public override bool TryGetUtilityItem(
-        int i,
-        int j,
-        int style,
-        bool aboveUnderworldLayer,
-        out int utilityType,
-        out int utilityStack
-    )
+    protected override bool TryGetUtilityItem(PotLootContextWithCoinMult ctx, out int utilityType, out int utilityStack)
     {
-        var isUndergroundDesertPot = style is >= 34 and <= 36;
-        if (!isUndergroundDesertPot && !aboveUnderworldLayer)
+        var isUndergroundDesertPot = ctx.Style is >= 34 and <= 36;
+        if (!isUndergroundDesertPot && !ctx.AboveUnderworldLayer)
         {
             utilityType = 0;
             utilityStack = 0;
@@ -282,6 +275,7 @@ internal sealed class VanillaPotBehavior(bool echo) : PotBehavior
         {
             utilityStack += Main.rand.Next(4);
         }
+
         return true;
     }
 }

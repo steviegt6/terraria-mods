@@ -1,3 +1,5 @@
+using System;
+
 using Microsoft.Xna.Framework;
 
 using Nightshade.Common.Features;
@@ -14,7 +16,7 @@ namespace Nightshade.Content.Tiles;
 
 internal sealed class LivingCactusPot : AbstractPot
 {
-    private sealed class PotBehaviorImpl : PotBehavior
+    private sealed class LivingCactusPotBehavior : PotBehavior
     {
         public override void SpawnGore(PotBreakContext ctx)
         {
@@ -32,17 +34,39 @@ internal sealed class LivingCactusPot : AbstractPot
             }
         }
 
-        public override float GetInitialCoinValue(PotLootContext ctx)
+        public override float GetInitialCoinMult(PotLootContext ctx)
         {
-            return PotLootImpl.POT_BEHAVIOR_VANILLA.GetInitialCoinValue(ctx with { Style = (int)VanillaPotStyle.UndergroundDesert34 });
+            return PotLootImpl.POT_BEHAVIOR_VANILLA.GetInitialCoinMult(
+                ctx with { Style = (int)VanillaPotStyle.UndergroundDesert34 }
+            );
         }
 
-        public override void ModifyTorchType(int i, int j, int style, Player player, ref int torchType, ref int glowstickType, ref int itemStack)
+        public override void SpawnTorches(PotLootContextWithCoinMult ctx, Player player)
         {
-            PotLootImpl.POT_BEHAVIOR_VANILLA.ModifyTorchType(i, j, (int)VanillaPotStyle.UndergroundDesert34, player, ref torchType, ref glowstickType, ref itemStack);
+            // base.SpawnTorches(ctx, player);
+
+            PotLootImpl.POT_BEHAVIOR_VANILLA.SpawnTorches(
+                ctx with { Style = (int)VanillaPotStyle.UndergroundDesert34 },
+                player
+            );
         }
 
-        public override bool TryGetUtilityItem(int i, int j, int style, bool aboveUnderworldLayer, out int utilityType, out int utilityStack)
+        protected override void ModifyTorchType(
+            PotLootContextWithCoinMult ctx,
+            Player player,
+            ref int torchType,
+            ref int glowstickType,
+            ref int itemStack
+        )
+        {
+            throw new InvalidOperationException();
+        }
+
+        protected override bool TryGetUtilityItem(
+            PotLootContextWithCoinMult ctx,
+            out int utilityType,
+            out int utilityStack
+        )
         {
             utilityType = ModContent.ItemType<CactusSplashJug>();
             utilityStack = Main.rand.Next(5, 10);
@@ -52,7 +76,7 @@ internal sealed class LivingCactusPot : AbstractPot
 
     public override string Texture => Assets.Images.Tiles.Misc.LivingCactusPot.KEY;
 
-    public override PotBehavior Behavior { get; } = new PotBehaviorImpl();
+    public override PotBehavior Behavior { get; } = new LivingCactusPotBehavior();
 
     public override void SetStaticDefaults()
     {

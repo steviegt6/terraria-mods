@@ -151,9 +151,9 @@ internal sealed class PotLootImpl : ModSystem
 
         var ctx = new PotLootContext(i, j, x2, y2, style, aboveRockLayer, aboveUnderworldLayer);
 
-        var coinValue = potBehavior.GetInitialCoinValue(ctx);
+        var coinMult = potBehavior.GetInitialCoinMult(ctx);
         {
-            coinValue = (coinValue * 2f + 1f) / 3f;
+            coinMult = (coinMult * 2f + 1f) / 3f;
         }
 
         var ctxWithCoinValue = new PotLootContextWithCoinMult(
@@ -164,7 +164,7 @@ internal sealed class PotLootImpl : ModSystem
             ctx.Style,
             ctx.AboveRockLayer,
             ctx.AboveUnderworldLayer,
-            coinValue
+            coinMult
         );
 
         if (potBehavior.ShouldSpawnCoinPortal(ctxWithCoinValue))
@@ -210,351 +210,310 @@ internal sealed class PotLootImpl : ModSystem
             return;
         }
 
-        var num9 = Main.rand.Next(7);
+        // Named after the `S` notation on the wiki:
+        // https://terraria.wiki.gg/wiki/Pot
+        var sChoice = Main.rand.Next(7);
         if (Main.expertMode)
         {
-            num9--;
+            sChoice--;
         }
 
-        var player2 = Main.player[Player.FindClosest(new Vector2(i * 16, j * 16), 16, 16)];
-        var num10 = 0;
-        const int num11 = 20;
-        for (var k = 0; k < 50; k++)
+        const int torch_threshold = 20;
+
+        var player = Main.player[Player.FindClosest(new Vector2(i * 16, j * 16), 16, 16)];
+
+        var torchCount = 0;
+        for (var invSlot = 0; invSlot < 50; invSlot++)
         {
-            var item = player2.inventory[k];
-            if (!item.IsAir && item.createTile == TileID.Torches)
+            var item = player.inventory[invSlot];
+
+            // TODO: Support our torches (or all modded torches?).
+            if (item.IsAir || item.createTile != TileID.Torches)
             {
-                num10 += item.stack;
-                if (num10 >= num11)
-                {
-                    break;
-                }
+                continue;
+            }
+
+            torchCount += item.stack;
+
+            if (torchCount >= torch_threshold)
+            {
+                break;
             }
         }
 
-        var flag4 = num10 < num11;
-        if (num9 == 0 && player2.statLife < player2.statLifeMax2)
+        if (sChoice == 0 && player.statLife < player.statLifeMax2)
         {
-            Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 58);
-            if (Main.rand.NextBool(2))
-            {
-                Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 58);
-            }
-
-            if (Main.expertMode)
-            {
-                if (Main.rand.NextBool(2))
-                {
-                    Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 58);
-                }
-
-                if (Main.rand.NextBool(2))
-                {
-                    Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 58);
-                }
-            }
-
+            potBehavior.SpawnHearts(ctxWithCoinValue);
             return;
         }
 
-        if (num9 == 1 || (num9 == 0 && flag4))
+        var secondChanceAtTorches = torchCount < torch_threshold;
+        if (sChoice == 1 || (sChoice == 0 && secondChanceAtTorches))
         {
-            var torchStack = Main.rand.Next(2, 7);
-            if (Main.expertMode)
-            {
-                torchStack += Main.rand.Next(1, 7);
-            }
-
-            var torchType = 8;
-            var glowstickType = 282;
-
-            potBehavior.ModifyTorchType(i, j, style, player2, ref torchType, ref glowstickType, ref torchStack);
-
-            if (Main.tile[i, j].liquid > 0)
-            {
-                Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, glowstickType, torchStack);
-            }
-            else
-            {
-                Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, torchType, torchStack);
-            }
-
+            potBehavior.SpawnTorches(ctxWithCoinValue, player);
             return;
         }
 
-        switch (num9)
+        switch (sChoice)
         {
             case 2:
             {
-                var stack2 = Main.rand.Next(10, 21);
-                var type4 = 40;
-                if (aboveRockLayer && WorldGen.genRand.NextBool(2))
-                {
-                    type4 = !Main.hardMode ? 42 : 168;
-                }
-
-                if (j > Main.UnderworldLayer)
-                {
-                    type4 = 265;
-                }
-                else if (Main.hardMode)
-                {
-                    type4 = !Main.rand.NextBool(2) ? 47 : WorldGen.SavedOreTiers.Silver != 168 ? 278 : 4915;
-                }
-
-                Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, type4, stack2);
+                potBehavior.SpawnAmmo(ctxWithCoinValue);
                 return;
             }
 
             case 3:
             {
-                var type5 = 28;
-                if (j > Main.UnderworldLayer || Main.hardMode)
-                {
-                    type5 = 188;
-                }
-
-                var num14 = 1;
-                if (Main.expertMode && !Main.rand.NextBool(3))
-                {
-                    num14++;
-                }
-
-                Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, type5, num14);
+                potBehavior.SpawnHealingPotions(ctxWithCoinValue);
                 return;
             }
 
             case 4:
-                /*if (isUndergroundDesertPot || aboveUnderworldLayer)
-                {
-                    var utilityType = 166;
-                    if (isUndergroundDesertPot)
-                    {
-                        utilityType = 4423;
-                    }
-
-                    var utilityStack = Main.rand.Next(4) + 1;
-                    if (Main.expertMode)
-                    {
-                        utilityStack += Main.rand.Next(4);
-                    }
-
-                    Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, utilityType, utilityStack);
-                    return;
-                }*/
-
-                if (potBehavior.TryGetUtilityItem(i, j, style, aboveUnderworldLayer, out var utilityType, out var utilityStack))
-                {
-                    Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, utilityType, utilityStack);
-                }
-                break;
+                potBehavior.SpawnUtilityItems(ctxWithCoinValue);
+                return;
         }
 
-        if (num9 is 4 or 5 && j < Main.UnderworldLayer && !Main.hardMode)
+        if (sChoice is 4 or 5 && j < Main.UnderworldLayer && !Main.hardMode)
         {
-            var stack3 = Main.rand.Next(20, 41);
-            Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 965, stack3);
+            potBehavior.SpawnRopes(ctxWithCoinValue);
             return;
         }
 
-        float num15 = 200 + WorldGen.genRand.Next(-100, 101);
+        float coinAmount = 200 + WorldGen.genRand.Next(-100, 101);
+
         if (j < Main.worldSurface)
         {
-            num15 *= 0.5f;
+            coinAmount *= 0.5f;
         }
         else if (aboveRockLayer)
         {
-            num15 *= 0.75f;
+            coinAmount *= 0.75f;
         }
         else if (j > Main.maxTilesY - 250)
         {
-            num15 *= 1.25f;
+            coinAmount *= 1.25f;
         }
 
-        num15 *= 1f + Main.rand.Next(-20, 21) * 0.01f;
+        coinAmount *= 1f + Main.rand.Next(-20, 21) * 0.01f;
+
         if (Main.rand.NextBool(4))
         {
-            num15 *= 1f + Main.rand.Next(5, 11) * 0.01f;
+            coinAmount *= 1f + Main.rand.Next(5, 11) * 0.01f;
         }
 
         if (Main.rand.NextBool(8))
         {
-            num15 *= 1f + Main.rand.Next(10, 21) * 0.01f;
+            coinAmount *= 1f + Main.rand.Next(10, 21) * 0.01f;
         }
 
         if (Main.rand.NextBool(12))
         {
-            num15 *= 1f + Main.rand.Next(20, 41) * 0.01f;
+            coinAmount *= 1f + Main.rand.Next(20, 41) * 0.01f;
         }
 
         if (Main.rand.NextBool(16))
         {
-            num15 *= 1f + Main.rand.Next(40, 81) * 0.01f;
+            coinAmount *= 1f + Main.rand.Next(40, 81) * 0.01f;
         }
 
         if (Main.rand.NextBool(20))
         {
-            num15 *= 1f + Main.rand.Next(50, 101) * 0.01f;
+            coinAmount *= 1f + Main.rand.Next(50, 101) * 0.01f;
         }
 
         if (Main.expertMode)
         {
-            num15 *= 2.5f;
+            coinAmount *= 2.5f;
         }
 
         if (Main.expertMode && Main.rand.NextBool(2))
         {
-            num15 *= 1.25f;
+            coinAmount *= 1.25f;
         }
 
         if (Main.expertMode && Main.rand.NextBool(3))
         {
-            num15 *= 1.5f;
+            coinAmount *= 1.5f;
         }
 
         if (Main.expertMode && Main.rand.NextBool(4))
         {
-            num15 *= 1.75f;
+            coinAmount *= 1.75f;
         }
 
-        num15 *= coinValue;
+        coinAmount *= coinMult;
+        
         if (NPC.downedBoss1)
         {
-            num15 *= 1.1f;
+            coinAmount *= 1.1f;
         }
 
         if (NPC.downedBoss2)
         {
-            num15 *= 1.1f;
+            coinAmount *= 1.1f;
         }
 
         if (NPC.downedBoss3)
         {
-            num15 *= 1.1f;
+            coinAmount *= 1.1f;
         }
 
         if (NPC.downedMechBoss1)
         {
-            num15 *= 1.1f;
+            coinAmount *= 1.1f;
         }
 
         if (NPC.downedMechBoss2)
         {
-            num15 *= 1.1f;
+            coinAmount *= 1.1f;
         }
 
         if (NPC.downedMechBoss3)
         {
-            num15 *= 1.1f;
+            coinAmount *= 1.1f;
         }
 
         if (NPC.downedPlantBoss)
         {
-            num15 *= 1.1f;
+            coinAmount *= 1.1f;
         }
 
         if (NPC.downedQueenBee)
         {
-            num15 *= 1.1f;
+            coinAmount *= 1.1f;
         }
 
         if (NPC.downedGolemBoss)
         {
-            num15 *= 1.1f;
+            coinAmount *= 1.1f;
         }
 
         if (NPC.downedPirates)
         {
-            num15 *= 1.1f;
+            coinAmount *= 1.1f;
         }
 
         if (NPC.downedGoblins)
         {
-            num15 *= 1.1f;
+            coinAmount *= 1.1f;
         }
 
         if (NPC.downedFrost)
         {
-            num15 *= 1.1f;
+            coinAmount *= 1.1f;
         }
+        
+        // TODO: Maybe a final hook around here to modify the coin amount.
 
-        while ((int)num15 > 0)
+        while ((int)coinAmount > 0)
         {
-            switch (num15)
+            switch (coinAmount)
             {
                 case > 1000000f:
                 {
-                    var num16 = (int)(num15 / 1000000f);
-                    if (num16 > 50 && Main.rand.NextBool(2))
+                    var platCount = (int)(coinAmount / 1000000f);
+                    if (platCount > 50 && Main.rand.NextBool(2))
                     {
-                        num16 /= Main.rand.Next(3) + 1;
+                        platCount /= Main.rand.Next(3) + 1;
                     }
 
                     if (Main.rand.NextBool(2))
                     {
-                        num16 /= Main.rand.Next(3) + 1;
+                        platCount /= Main.rand.Next(3) + 1;
                     }
 
-                    num15 -= 1000000 * num16;
-                    Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 74, num16);
+                    coinAmount -= 1000000 * platCount;
+                    Item.NewItem(
+                        WorldGen.GetItemSource_FromTileBreak(i, j),
+                        i * 16,
+                        j * 16,
+                        16,
+                        16,
+                        74,
+                        platCount
+                    );
                     continue;
                 }
 
                 case > 10000f:
                 {
-                    var num17 = (int)(num15 / 10000f);
-                    if (num17 > 50 && Main.rand.NextBool(2))
+                    var goldCount = (int)(coinAmount / 10000f);
+                    if (goldCount > 50 && Main.rand.NextBool(2))
                     {
-                        num17 /= Main.rand.Next(3) + 1;
+                        goldCount /= Main.rand.Next(3) + 1;
                     }
 
                     if (Main.rand.NextBool(2))
                     {
-                        num17 /= Main.rand.Next(3) + 1;
+                        goldCount /= Main.rand.Next(3) + 1;
                     }
 
-                    num15 -= 10000 * num17;
-                    Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 73, num17);
+                    coinAmount -= 10000 * goldCount;
+                    Item.NewItem(
+                        WorldGen.GetItemSource_FromTileBreak(i, j),
+                        i * 16,
+                        j * 16,
+                        16,
+                        16,
+                        73,
+                        goldCount
+                    );
                     continue;
                 }
 
                 case > 100f:
                 {
-                    var num18 = (int)(num15 / 100f);
-                    if (num18 > 50 && Main.rand.NextBool(2))
+                    var silverCount = (int)(coinAmount / 100f);
+                    if (silverCount > 50 && Main.rand.NextBool(2))
                     {
-                        num18 /= Main.rand.Next(3) + 1;
+                        silverCount /= Main.rand.Next(3) + 1;
                     }
 
                     if (Main.rand.NextBool(2))
                     {
-                        num18 /= Main.rand.Next(3) + 1;
+                        silverCount /= Main.rand.Next(3) + 1;
                     }
 
-                    num15 -= 100 * num18;
-                    Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 72, num18);
+                    coinAmount -= 100 * silverCount;
+                    Item.NewItem(
+                        WorldGen.GetItemSource_FromTileBreak(i, j),
+                        i * 16,
+                        j * 16,
+                        16,
+                        16,
+                        72,
+                        silverCount
+                    );
                     continue;
                 }
             }
 
-            var num19 = (int)num15;
-            if (num19 > 50 && Main.rand.NextBool(2))
+            var copperCount = (int)coinAmount;
+            if (copperCount > 50 && Main.rand.NextBool(2))
             {
-                num19 /= Main.rand.Next(3) + 1;
+                copperCount /= Main.rand.Next(3) + 1;
             }
 
             if (Main.rand.NextBool(2))
             {
-                num19 /= Main.rand.Next(4) + 1;
+                copperCount /= Main.rand.Next(4) + 1;
             }
 
-            if (num19 < 1)
+            if (copperCount < 1)
             {
-                num19 = 1;
+                copperCount = 1;
             }
 
-            num15 -= num19;
-            Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, 71, num19);
+            coinAmount -= copperCount;
+            Item.NewItem(
+                WorldGen.GetItemSource_FromTileBreak(i, j),
+                i * 16,
+                j * 16,
+                16,
+                16,
+                71,
+                copperCount
+            );
         }
     }
 }

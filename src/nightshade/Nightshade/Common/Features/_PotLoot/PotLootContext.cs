@@ -25,4 +25,4 @@ public readonly record struct PotLootContextWithCoinMult(
     float CoinMult
 );
 
-public readonly record struct PotLootPotion(int ItemType, int Stack = 1);
+public readonly record struct PotItemDrop(int ItemType, int Stack = 1);
