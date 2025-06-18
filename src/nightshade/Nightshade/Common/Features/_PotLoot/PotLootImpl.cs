@@ -227,8 +227,7 @@ internal sealed class PotLootImpl : ModSystem
         {
             var item = player.inventory[invSlot];
 
-            // TODO: Support our torches (or all modded torches?).
-            if (item.IsAir || item.createTile != TileID.Torches)
+            if (item.IsAir || !TileID.Sets.Torch[item.createTile])
             {
                 continue;
             }
