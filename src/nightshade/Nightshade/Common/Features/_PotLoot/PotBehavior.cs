@@ -2,7 +2,10 @@ using Terraria;
 
 namespace Nightshade.Common.Features;
 
-public abstract class CustomPot
+/// <summary>
+///     Describes the behavior of a pot.
+/// </summary>
+public abstract class PotBehavior
 {
     public abstract void PlayBreakSound(int i, int j, int style);
 

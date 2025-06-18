@@ -10,8 +10,8 @@ namespace Nightshade.Common.Features;
 
 internal sealed class PotLootImpl : ModSystem
 {
-    public static readonly CustomPot VANILLA_POT = new VanillaPot(echo: false);
-    public static readonly CustomPot VANILLA_POT_ECHO = new VanillaPot(echo: true);
+    public static readonly PotBehavior POT_BEHAVIOR_VANILLA = new VanillaPotBehavior(echo: false);
+    public static readonly PotBehavior POT_BEHAVIOR_VANILLA_ECHO = new VanillaPotBehavior(echo: true);
 
     public override void Load()
     {
@@ -24,23 +24,23 @@ internal sealed class PotLootImpl : ModSystem
 
     public static bool TryGetPot(
         int type,
-        [NotNullWhen(returnValue: true)] out CustomPot? pot
+        [NotNullWhen(returnValue: true)] out PotBehavior? pot
     )
     {
         switch (type)
         {
             case TileID.Pots:
-                pot = VANILLA_POT;
+                pot = POT_BEHAVIOR_VANILLA;
                 return true;
 
             case TileID.PotsEcho:
-                pot = VANILLA_POT_ECHO;
+                pot = POT_BEHAVIOR_VANILLA_ECHO;
                 return true;
         }
 
         if (TileLoader.GetTile(type) is IPot potTile)
         {
-            pot = potTile.Pot;
+            pot = potTile.Behavior;
             return true;
         }
 
@@ -141,7 +141,7 @@ internal sealed class PotLootImpl : ModSystem
         WorldGen.destroyObject = false;
     }
 
-    private static void SpawnThingsFromPot_HandleVanillaAndModdedStyles(int i, int j, int x2, int y2, CustomPot pot, int style)
+    private static void SpawnThingsFromPot_HandleVanillaAndModdedStyles(int i, int j, int x2, int y2, PotBehavior potBehavior, int style)
     {
         if (WorldGen.gen)
         {
@@ -159,7 +159,7 @@ internal sealed class PotLootImpl : ModSystem
 
         var coinMultiplier = 1f;
         // var isUndergroundDesertPot = style is >= 34 and <= 36;
-        pot.ModifyCoinMultiplier(i, j, style, ref coinMultiplier);
+        potBehavior.ModifyCoinMultiplier(i, j, style, ref coinMultiplier);
 
         coinMultiplier = (coinMultiplier * 2f + 1f) / 3f;
         var coinPortalChance = (int)(500f / ((coinMultiplier + 1f) / 2f));
@@ -525,7 +525,7 @@ internal sealed class PotLootImpl : ModSystem
             var torchType = 8;
             var glowstickType = 282;
 
-            pot.ModifyTorchType(i, j, style, player2, ref torchType, ref glowstickType, ref torchStack);
+            potBehavior.ModifyTorchType(i, j, style, player2, ref torchType, ref glowstickType, ref torchStack);
 
             if (Main.tile[i, j].liquid > 0)
             {
@@ -600,7 +600,7 @@ internal sealed class PotLootImpl : ModSystem
                     return;
                 }*/
 
-                if (pot.TryGetUtilityItem(i, j, style, aboveUnderworldLayer, out var utilityType, out var utilityStack))
+                if (potBehavior.TryGetUtilityItem(i, j, style, aboveUnderworldLayer, out var utilityType, out var utilityStack))
                 {
                     Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, utilityType, utilityStack);
                 }

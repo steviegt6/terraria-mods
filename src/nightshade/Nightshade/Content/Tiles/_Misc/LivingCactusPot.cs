@@ -14,7 +14,7 @@ namespace Nightshade.Content.Tiles;
 
 internal sealed class LivingCactusPot : AbstractPot
 {
-    private sealed class PotImpl : CustomPot
+    private sealed class PotBehaviorImpl : PotBehavior
     {
         public override void PlayBreakSound(int i, int j, int style) { }
 
@@ -36,7 +36,7 @@ internal sealed class LivingCactusPot : AbstractPot
 
         public override void ModifyTorchType(int i, int j, int style, Player player, ref int torchType, ref int glowstickType, ref int itemStack)
         {
-            PotLootImpl.VANILLA_POT.ModifyTorchType(i, j, VanillaPot.POT_34_UNDERGROUND_DESERT, player, ref torchType, ref glowstickType, ref itemStack);
+            PotLootImpl.POT_BEHAVIOR_VANILLA.ModifyTorchType(i, j, VanillaPotBehavior.POT_34_UNDERGROUND_DESERT, player, ref torchType, ref glowstickType, ref itemStack);
         }
 
         public override bool TryGetUtilityItem(int i, int j, int style, bool aboveUnderworldLayer, out int utilityType, out int utilityStack)
@@ -48,13 +48,13 @@ internal sealed class LivingCactusPot : AbstractPot
 
         public override void ModifyCoinMultiplier(int i, int j, int style, ref float multiplier)
         {
-            PotLootImpl.VANILLA_POT.ModifyCoinMultiplier(i, j, VanillaPot.POT_34_UNDERGROUND_DESERT, ref multiplier);
+            PotLootImpl.POT_BEHAVIOR_VANILLA.ModifyCoinMultiplier(i, j, VanillaPotBehavior.POT_34_UNDERGROUND_DESERT, ref multiplier);
         }
     }
 
     public override string Texture => Assets.Images.Tiles.Misc.LivingCactusPot.KEY;
 
-    public override CustomPot Pot { get; } = new PotImpl();
+    public override PotBehavior Behavior { get; } = new PotBehaviorImpl();
 
     public override void SetStaticDefaults()
     {

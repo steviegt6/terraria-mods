@@ -9,7 +9,7 @@ namespace Nightshade.Common.Features;
 /// <summary>
 ///     Provides implementations for vanilla pot types.
 /// </summary>
-internal sealed class VanillaPot(bool echo) : CustomPot
+internal sealed class VanillaPotBehavior(bool echo) : PotBehavior
 {
     public const int POT_0_FOREST = 0;
     public const int POT_1_FOREST = 1;
