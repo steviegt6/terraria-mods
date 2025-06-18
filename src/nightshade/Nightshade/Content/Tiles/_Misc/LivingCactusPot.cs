@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 using Microsoft.Xna.Framework;
 
@@ -39,6 +40,18 @@ internal sealed class LivingCactusPot : AbstractPot
             return PotLootImpl.POT_BEHAVIOR_VANILLA.GetInitialCoinMult(
                 ctx with { Style = (int)VanillaPotStyle.UndergroundDesert34 }
             );
+        }
+
+        public override IEnumerable<PotItemDrop> GetPotions(PotLootContextWithCoinMult ctx)
+        {
+            if (WorldGen.genRand.NextBool())
+            {
+                yield return new PotItemDrop(ItemID.ThornsPotion);
+            }
+            else
+            {
+                yield return new PotItemDrop(ItemID.RegenerationPotion);
+            }
         }
 
         public override void SpawnTorches(PotLootContextWithCoinMult ctx, Player player)
