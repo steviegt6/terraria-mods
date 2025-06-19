@@ -46,7 +46,7 @@ internal sealed class LivingCactusBiome : MicroBiome
 		if (!WorldUtils.Find(origin, Searches.Chain(new Searches.Down(100), new Conditions.IsSolid().AreaAnd(6, 2), new Conditions.IsTile(TileID.Sand, TileID.HardenedSand, TileID.Sandstone)), out origin))
 			return false;
 
-		if (!WorldUtils.Find(origin, Searches.Chain(new Searches.Up(50), new NightshadeGenUtil.Conditions.IsNotTile(TileID.Sand, TileID.HardenedSand, TileID.Sandstone)), out origin))
+		if (!WorldUtils.Find(origin, Searches.Chain(new Searches.Up(50), new NightshadeGenUtil.Conditions.IsNotTile(TileID.Sand, TileID.HardenedSand, TileID.Sandstone)), out _))
 			return false;
 
         if (GetSandCount(origin, 50, 50) < 250)
@@ -224,7 +224,7 @@ internal sealed class LivingCactusBiome : MicroBiome
 
         PlaceLootChest(x, NightshadeGenUtil.GetNearestSurface(x, y - 5, 5), 2);
 		PlacePotsEverywhere(x, y - height / 5, width * 2);
-	}
+    }
 
 	private static void GenerateTallLivingCactus(int x, int y, int height)
     {
