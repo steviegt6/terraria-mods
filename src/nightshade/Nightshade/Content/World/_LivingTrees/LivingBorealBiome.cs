@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Nightshade.Common.Utilities;
+using Nightshade.Content.Tiles;
 using Nightshade.Content.Tiles.Furniture;
 using System;
 using System.Collections.Generic;
@@ -32,15 +33,15 @@ public sealed class GenTreeCommand : ModCommand
 
 public sealed class LivingBorealBiome : MicroBiome
 {
-	private static ushort WoodType => (ushort)TileID.LivingWood;
+	private static ushort WoodType => (ushort)ModContent.TileType<LivingBorealWood>();
 
-	private static ushort LeafType => (ushort)TileID.LeafBlock;
+	private static ushort LeafType => (ushort)ModContent.TileType<LivingBorealLeaf>();
+
+	private static ushort VineType => (ushort)ModContent.TileType<LivingBorealVine>();
 
 	private static ushort PlatformType => (ushort)TileID.Platforms;
 
 	private static ushort WallType => (ushort)WallID.LivingWood;
-
-	private static ushort PotType => (ushort)TileID.Pots;
 
 	public override bool Place(Point origin, StructureMap structures)
 	{
@@ -127,16 +128,18 @@ public sealed class LivingBorealBiome : MicroBiome
 
 				if (!WorldGen.InWorld(x, y))
 					continue;
-
+				
+				// Leaves
 				if (i > -leftSize && i < rightSize)
 				{
 					int yForLeaves = (int)(y + Math.Sqrt(Math.Abs(i)) - heightOffGround);
 					int leafStretch = 1 + (i > 0 ? Math.Abs(rightSize) : Math.Abs(leftSize)) / 3;
 
+					// Snow on leaves
 					for (int l = 0; l < leafStretch; l++)
 					{
-						int snowCount = 1 + Math.Min(4, leafStretch - l);
-						for (int s = 0; s < snowCount; s++)
+						int snowCount = 1 + (int)(Math.Min(4, leafStretch - l) * Math.Abs((double)j) / height * 3);
+						for (int s = 0; s <= snowCount; s++)
 						{
 							if (!WorldGen.InWorld(x + l * Math.Sign(i), yForLeaves - s))
 								continue;
@@ -152,7 +155,7 @@ public sealed class LivingBorealBiome : MicroBiome
 							continue;
 
 						bool snowChance = j > -height * 2 / 3 
-							? WorldGen.genRand.NextBool(5) 
+							? WorldGen.genRand.NextBool(4) 
 							: !WorldGen.genRand.NextBool(3);
 
 						bool snowed = j < -height / 3 && snowChance;
@@ -161,6 +164,7 @@ public sealed class LivingBorealBiome : MicroBiome
 					}
 				}
 
+				// Trunk
 				if (Math.Abs(i) < trunkThickness * (1.0 - Math.Sqrt((double)Math.Abs(j) / (height - 4))))
 				{
 					int holeSize = (int)Math.Floor((trunkThickness - 3f) * MathF.Cbrt(Utils.GetLerpValue(-heightOffGround / 2, heightOffGround / 5, j, true)));
@@ -218,6 +222,7 @@ public sealed class LivingBorealBiome : MicroBiome
 		int steps = (int)difference.Length();
 		float rotater = WorldGen.genRand.NextFloat(-0.7f, 0.7f);
 		int branch = WorldGen.genRand.Next(15, 20);
+		int platform = 0;
 		HashSet<Point> inside = new HashSet<Point>();
 
 		for (int k = 0; k < steps; k++)
@@ -234,7 +239,7 @@ public sealed class LivingBorealBiome : MicroBiome
 
 					double distance = Math.Sqrt(i * i + j * j);
 
-					if (k < 2 && Main.tile[x, y].WallType == WallType)
+					if (k < 3 && Main.tile[x, y].WallType == WallType)
 						inside.Add(new Point(x, y));
 
 					if (distance < channelRadius - 0.5)
@@ -250,11 +255,14 @@ public sealed class LivingBorealBiome : MicroBiome
 
 						if (distance < channelSize + 0.9 || inside.Contains(new Point(x, y)))
 							Main.tile[x, y].WallType = WallType;
-
-						WorldGen.SquareTileFrame(x, y);
-						WorldGen.SquareWallFrame(x, y);
 					}
 				}
+			}
+
+			if (--platform <= 0)
+			{
+				platform = WorldGen.genRand.Next(20, 50);
+				NightshadeGenUtil.PlacePlatform((int)currentPoint.X, (int)currentPoint.Y, PlatformType);
 			}
 
 			if (--branch <= 0 && k < steps)

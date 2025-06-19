@@ -20,7 +20,7 @@ internal sealed class LivingPalmWood : ModTile
 		Main.tileBlockLight[Type] = true;
 
 		TileID.Sets.ChecksForMerge[Type] = true;
-		Main.tileMerge[Type][ModContent.TileType<LivingPalmWood>()] = true;
+		Main.tileMerge[Type][ModContent.TileType<LivingPalmLeaf>()] = true;
 		Main.tileBlockLight[Type] = true;
 
 		RegisterItemDrop(ItemID.PalmWood);
