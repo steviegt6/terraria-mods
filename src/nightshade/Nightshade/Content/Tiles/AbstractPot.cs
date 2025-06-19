@@ -11,7 +11,7 @@ namespace Nightshade.Content.Tiles;
 
 internal abstract class AbstractPot : ModTile, IPot
 {
-    public abstract CustomPot Pot { get; }
+    public abstract PotBehavior Behavior { get; }
     
     public override void SetStaticDefaults()
     {
