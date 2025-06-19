@@ -1,6 +1,9 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Microsoft.VisualBasic;
+using Microsoft.Xna.Framework;
+using ReLogic.OS;
 using System.Linq;
 using Terraria;
+using Terraria.ID;
 using Terraria.WorldBuilding;
 
 namespace Nightshade.Common.Utilities;
@@ -145,4 +148,39 @@ public static class NightshadeGenUtil
 			}
 		}
 	}
+
+	public static void PlacePlatform(int x, int y, ushort type = TileID.Platforms, int style = 0)
+	{
+		int left = x;
+		int right = x;
+
+		while (true)
+		{
+			if (!WorldGen.InWorld(left - 1, y))
+				break;
+
+			if (WorldGen.SolidTile(left - 1, y))
+				break;
+
+			left--;
+		}
+
+		while (true)
+		{
+			if (!WorldGen.InWorld(right + 1, y))
+				break;
+
+			if (WorldGen.SolidTile(right + 1, y))
+				break;
+
+			right++;
+		}
+
+		for (int i = left; i <= right; i++)
+		{
+			WorldGen.PlaceTile(i, y, type, true, style: style);
+			WorldGen.SquareTileFrame(i, y);
+		}
+	}
 }
+
