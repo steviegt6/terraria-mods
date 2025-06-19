@@ -234,7 +234,7 @@ internal sealed class PotLootImpl : ModSystem
         {
             var item = player.inventory[invSlot];
 
-            if (item.IsAir || !TileID.Sets.Torch[item.createTile])
+            if (item.IsAir || item.createTile < 0 || !TileID.Sets.Torch[item.createTile])
             {
                 continue;
             }
