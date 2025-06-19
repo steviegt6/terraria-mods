@@ -147,10 +147,8 @@ internal sealed class LivingTreeGen : ModSystem
 			return false;
 
 		var terrainSlope = NightshadeGenUtil.GetAverageSurfaceSlope(x, y, 15);
-
         if (Math.Abs(terrainSlope) > 0.15f)
 			return false;
-
 
 		var cactus = GenVars.configuration.CreateBiome<LivingCactusBiome>();
         cactus.Round = true;
