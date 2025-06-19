@@ -143,9 +143,6 @@ internal sealed class LivingTreeGen : ModSystem
         if (Main.drunkWorld)
 			LivingPalmCount = 10;
 
-		// TODO: generate when tiles and loot are done
-		return;
-
 		float count = 0;
         int fallback = 20000;
         LivingPalmBiome palm = GenVars.configuration.CreateBiome<LivingPalmBiome>();
@@ -174,9 +171,6 @@ internal sealed class LivingTreeGen : ModSystem
     private static void GenBigLivingTrees(WorldGen.orig_GenPassDetour orig, object self, GenerationProgress progress, GameConfiguration configuration)
     {
 		orig(self, progress, configuration);
-
-        // TODO: generate when tiles and loot are done
-        return;
 
         LivingBorealCount = WorldGen.genRand.NextBool().ToInt();
 
