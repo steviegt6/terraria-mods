@@ -9,6 +9,7 @@ using Nightshade.Content.World._LivingTrees;
 using Terraria;
 using Terraria.GameContent.Biomes.Desert;
 using Terraria.GameContent.Generation;
+using Terraria.ID;
 using Terraria.IO;
 using Terraria.ModLoader;
 using Terraria.WorldBuilding;
@@ -34,7 +35,7 @@ internal sealed class LivingTreeGen : ModSystem
                 c.GotoNext(MoveType.Before, x => x.MatchCall<WorldGen>(nameof(WorldGen.PlaceOasis)));
                 c.Remove();
 
-                c.EmitDelegate((int x, int y) => WorldGen.PlaceOasis(x, y) || PlaceSurfaceBallCactus(x, y));
+                c.EmitDelegate((int x, int y) => WorldGen.PlaceOasis(x, y) || PlaceSurfaceBallCactus_FromSpace(x));
             }
         );
 
@@ -115,9 +116,30 @@ internal sealed class LivingTreeGen : ModSystem
         cactus.Place(new Point(locationX, GenVars.desertHiveHigh), GenVars.structures);
     }
 
+    private static bool PlaceSurfaceBallCactus_FromSpace(int x)
+    {
+	    for (var y = 0; y < Main.worldSurface; y++)
+	    {
+		    var tile = Main.tile[x, y];
+		    if (!tile.HasTile)
+		    {
+			    continue;
+		    }
+
+		    if (Main.tile[x, y].TileType != TileID.Sand)
+		    {
+			    break;
+		    }
+
+		    return PlaceSurfaceBallCactus(x, y);
+	    }
+
+	    return false;
+    }
+
     private static bool PlaceSurfaceBallCactus(int x, int y)
     {
-		if (x < WorldGen.beachDistance || x > Main.maxTilesX - WorldGen.beachDistance)
+		if (x < WorldGen.beachDistance || x > Main.maxTilesX - WorldGen.beachDistance || y > Main.worldSurface - 10)
 			return false;
 
 		// Let's not spawn too many.
