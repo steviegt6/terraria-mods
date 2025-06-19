@@ -50,6 +50,7 @@ public sealed class LivingBorealBiome : MicroBiome
 		if (!WorldUtils.Find(origin, Searches.Chain(new Searches.Down(250), new Conditions.IsSolid()), out origin))
 			return false;
 
+		var realOrigin = origin;
 		var areaCondition = new NightshadeGenUtil.Conditions.IsNotTile().AreaAnd(treeWidth / 2, treeHeight / 2);
 		Point areaCheckPoint = origin - new Point(treeWidth / 4, treeHeight / 2);
 
@@ -70,8 +71,8 @@ public sealed class LivingBorealBiome : MicroBiome
 		if (!structures?.CanPlace(area) ?? false)
 			return false;
 
-		PlaceTree(origin, treeWidth, treeHeight);
-		PlacePassage(origin, nodes.MinBy(n => n.Center.Y).Center);
+		PlaceTree(realOrigin, treeWidth, treeHeight);
+		PlacePassage(realOrigin, nodes.MinBy(n => n.Center.Y).Center);
 		PlaceLootNodes(nodes);
 
 		structures?.AddProtectedStructure(area);
