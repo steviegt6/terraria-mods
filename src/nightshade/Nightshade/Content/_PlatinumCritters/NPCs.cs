@@ -154,7 +154,8 @@ public abstract class PlatinumCritterNpc<TItem>(string critterName) : ModNPC
 
         On_UnlockableNPCEntryIcon.AdjustSpecialSpawnRulesForVisuals += AdjustSpecialSpawnRulesForVisuals_ApplyFunctionalType;
 
-        On_BestiaryDatabaseNPCsPopulator.ModifyEntriesThatNeedIt += CloneBestiaryEntryInfo;
+        On_BestiaryDatabaseNPCsPopulator.AddNPCBiomeRelationships_AddDecorations_Automated += CloneBestiaryInfos;
+        On_BestiaryDatabaseNPCsPopulator.ModifyEntriesThatNeedIt += CloneBestiaryInfoProviders;
 
         IL_NPC.SpawnNPC += SpawnNpc_SpawnPlatinumCritterSometimes;
     }
@@ -201,7 +202,20 @@ public abstract class PlatinumCritterNpc<TItem>(string critterName) : ModNPC
         self._npcNetId = oldType;
     }
 
-    private void CloneBestiaryEntryInfo(
+    private void CloneBestiaryInfos(On_BestiaryDatabaseNPCsPopulator.orig_AddNPCBiomeRelationships_AddDecorations_Automated orig, BestiaryDatabaseNPCsPopulator self)
+    {
+        var bestiaryEntry = BestiaryDatabaseNPCsPopulator.FindEntryByNPCID(Type);
+        if (bestiaryEntry.Info.Count != 0)
+        {
+            bestiaryEntry.Info.AddRange(
+                BestiaryDatabaseNPCsPopulator.FindEntryByNPCID(NpcType).Info.Where(x => x is SpawnConditionBestiaryInfoElement)
+            );
+        }
+
+        orig(self);
+    }
+
+    private void CloneBestiaryInfoProviders(
         On_BestiaryDatabaseNPCsPopulator.orig_ModifyEntriesThatNeedIt orig,
         BestiaryDatabaseNPCsPopulator self
     )
@@ -209,14 +223,6 @@ public abstract class PlatinumCritterNpc<TItem>(string critterName) : ModNPC
         orig(self);
 
         var bestiaryEntry = BestiaryDatabaseNPCsPopulator.FindEntryByNPCID(Type);
-        if (bestiaryEntry.Info.Count == 0)
-        {
-            return;
-        }
-
-        bestiaryEntry.Info.AddRange(
-            BestiaryDatabaseNPCsPopulator.FindEntryByNPCID(NpcType).Info.Where(x => x is SpawnConditionBestiaryInfoElement)
-        );
 
         if (BestiaryDatabaseNPCsPopulator.FindEntryByNPCID(NpcType).UIInfoProvider is GoldCritterUICollectionInfoProvider goldProvider)
         {
