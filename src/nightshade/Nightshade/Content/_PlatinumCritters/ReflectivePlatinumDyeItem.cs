@@ -14,15 +14,12 @@ public sealed class ReflectivePlatinumDyeItem : ModItem
 {
     private sealed class Shader : ReflectiveArmorShaderData
     {
-        private static readonly Color platinum_color_one = new Color(255, 220, 255);
-        private static readonly Color platinum_color_two = new Color(220, 255, 255);
-
         public Shader(Ref<Effect> shader, string passName) : base(shader, passName) { }
 
         public override void Apply(Entity entity, DrawData? drawData)
         {
             UseColor(
-                Color.SlateBlue * 2.65f
+                new Color(135, 135, 225) * 1.6f
             );
 
             base.Apply(entity, drawData);
@@ -39,7 +36,17 @@ public sealed class ReflectivePlatinumDyeItem : ModItem
 
         if (!Main.dedServ)
         {
-            GameShaders.Armor.BindShader(Item.type, new Shader(Main.PixelShaderRef, "ArmorReflectiveColor"));
+            Main.QueueMainThreadAction(
+                () =>
+                {
+                    var effect = Assets.Shaders.Misc.ReflectivePlatinumShader.Asset;
+                    effect.Wait();
+                    GameShaders.Armor.BindShader(
+                        Item.type,
+                        new Shader(new Ref<Effect>(effect.Value), "ArmorReflectiveColor")
+                    );
+                }
+            );
         }
     }
 

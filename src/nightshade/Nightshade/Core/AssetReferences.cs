@@ -2220,6 +2220,39 @@ internal static class AssetReferences
                     }
                 }
 
+                public static class ReflectivePlatinumShader
+                {
+                    public sealed class Parameters : IShaderParameters
+                    {
+                        public Microsoft.Xna.Framework.Graphics.Texture2D? uImage0 { get; set; }
+
+                        public Microsoft.Xna.Framework.Vector2 uImageSize0 { get; set; }
+
+                        public Microsoft.Xna.Framework.Vector3 uColor { get; set; }
+
+                        public Microsoft.Xna.Framework.Vector3 uLightSource { get; set; }
+
+                        public void Apply(Microsoft.Xna.Framework.Graphics.EffectParameterCollection parameters)
+                        {
+                            parameters["uImage0"]?.SetValue(uImage0);
+                            parameters["uImageSize0"]?.SetValue(uImageSize0);
+                            parameters["uColor"]?.SetValue(uColor);
+                            parameters["uLightSource"]?.SetValue(uLightSource);
+                        }
+                    }
+
+                    public const string KEY = "Nightshade/Assets/Shaders/Misc/ReflectivePlatinumShader";
+
+                    public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Effect> Asset => lazy.Value;
+
+                    private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Effect>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Effect>(KEY));
+
+                    public static WrapperShaderData<Parameters> CreateArmorReflectiveColor()
+                    {
+                        return new WrapperShaderData<Parameters>(Asset, "ArmorReflectiveColor");
+                    }
+                }
+
                 public static class VanillaVertexStripShader
                 {
                     public sealed class Parameters : IShaderParameters
