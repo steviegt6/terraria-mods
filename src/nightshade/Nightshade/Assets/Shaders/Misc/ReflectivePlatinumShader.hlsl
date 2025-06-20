@@ -133,7 +133,7 @@ float4 ArmorMirage(float4 v0 /* vertex color input */, float2 t0 /* texture coor
     return r0;
 }
 
-float4 ArmorReflectiveColor(float4 v0 /* vertex color input */, float2 t0 /* texture coordinates (uv) */)
+float4 ArmorReflectiveColor(float4 v0 /* vertex color input */, float2 t0 /* texture coordinates (uv) */, sampler s0)
 {
     // preshader
 
@@ -222,20 +222,23 @@ float4 ArmorReflectiveColor(float4 v0 /* vertex color input */, float2 t0 /* tex
     // add r3.y, t0.y, -c0.x
     r3.y = t0.y - c0.x;
 
+    // #define texld(src0, src1) ArmorMirage(src0, src1.xy, s0)
+#define texld(src0, src1) tex2D(s0, src1)
+
     // texld r0, r0, s0
-    r0 = ArmorMirage(v0, r0.xy, s0);
+    r0 = texld(v0, r0.xy);
 
     // texld r1, r1, s0
-    r1 = ArmorMirage(v0, r1.xy, s0);
+    r1 = texld(v0, r1.xy);
 
     // texld r2, r2, s0
-    r2 = ArmorMirage(v0, r2.xy, s0);
+    r2 = texld(v0, r2.xy);
 
     // texld r3, r3, s0
-    r3 = ArmorMirage(v0, r3.xy, s0);
+    r3 = texld(v0, r3.xy);
 
     // texld r4, t0, s0
-    r4 = ArmorMirage(v0, t0.xy, s0);
+    r4 = texld(v0, t0.xy);
 
     // add r0.xyz, r0, -r1
     r0.xyz = r0.xyz - r1.xyz;
@@ -337,7 +340,7 @@ float4 ArmorReflectiveColor(float4 v0 /* vertex color input */, float2 t0 /* tex
 
 float4 main(float4 color : COLOR0, float2 uv : TEXCOORD0) : COLOR0
 {
-    return ArmorReflectiveColor(color, uv);
+    return ArmorReflectiveColor(color, uv, uImage0);
 }
 
 #ifdef FX
