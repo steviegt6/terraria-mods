@@ -15,7 +15,7 @@ public abstract class PlatinumCritterCageItem<TTile>(string critterName) : ModIt
     {
         base.SetDefaults();
 
-        Item.CloneDefaults(ItemID.Search.GetId(PlatCritterHelpers.GetGoldName(critterName)));
+        Item.CloneDefaults(ItemID.Search.GetId(PlatCritterHelpers.GetGoldName(critterName + "Cage")));
         Item.createTile = ModContent.TileType<TTile>();
         Item.value = Item.sellPrice(platinum: 1);
         Item.rare = ItemRarityID.LightRed;

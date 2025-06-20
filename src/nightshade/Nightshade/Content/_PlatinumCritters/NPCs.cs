@@ -125,7 +125,7 @@ public abstract class PlatinumCritterNpc<TItem>(string critterName) : ModNPC
     {
         base.SetStaticDefaults();
 
-        NPCID.Sets.TakesDamageFromHostilesWithoutBeingFriendly[Type] = NPCID.Sets.TakesDamageFromHostilesWithoutBeingFriendly[Type];
+        NPCID.Sets.TakesDamageFromHostilesWithoutBeingFriendly[Type] = NPCID.Sets.TakesDamageFromHostilesWithoutBeingFriendly[NpcType];
         NPCID.Sets.DebuffImmunitySets[Type] = NPCID.Sets.DebuffImmunitySets[NpcType];
         NPCID.Sets.CountsAsCritter[Type] = NPCID.Sets.CountsAsCritter[NpcType];
         NPCID.Sets.TownCritter[Type] = NPCID.Sets.TownCritter[NpcType];
@@ -133,6 +133,8 @@ public abstract class PlatinumCritterNpc<TItem>(string critterName) : ModNPC
         // TODO: ShimmerTransformToNpc
 
         Main.npcCatchable[Type] = Main.npcCatchable[NpcType];
+
+        Main.npcFrameCount[Type] = Main.npcFrameCount[NpcType];
 
         PlatinumCritterNpcHandler.COLLECTION.Add(Type);
 
@@ -149,6 +151,8 @@ public abstract class PlatinumCritterNpc<TItem>(string critterName) : ModNPC
         On_NPCID.Sets.NPCBestiaryDrawOffsetCreation += NpcBestiaryDrawOffsetCreation_CopyCritterProperties;
 
         On_UnlockableNPCEntryIcon.AdjustSpecialSpawnRulesForVisuals += AdjustSpecialSpawnRulesForVisuals_ApplyFunctionalType;
+
+        On_BestiaryDatabaseNPCsPopulator.ModifyEntriesThatNeedIt += CloneBestiaryEntryInfo;
 
         IL_NPC.SpawnNPC += SpawnNpc_SpawnPlatinumCritterSometimes;
     }
@@ -223,6 +227,28 @@ public abstract class PlatinumCritterNpc<TItem>(string critterName) : ModNPC
         self._npcNetId = oldType;
     }
 
+    private void CloneBestiaryEntryInfo(
+        On_BestiaryDatabaseNPCsPopulator.orig_ModifyEntriesThatNeedIt orig,
+        BestiaryDatabaseNPCsPopulator self
+    )
+    {
+        orig(self);
+
+        var bestiaryEntry = BestiaryDatabaseNPCsPopulator.FindEntryByNPCID(Type);
+
+        bestiaryEntry.Info.AddRange(
+            BestiaryDatabaseNPCsPopulator.FindEntryByNPCID(NpcType).Info.Where(x => x is SpawnConditionBestiaryInfoElement)
+        );
+
+        if (BestiaryDatabaseNPCsPopulator.FindEntryByNPCID(NpcType).UIInfoProvider is GoldCritterUICollectionInfoProvider goldProvider)
+        {
+            bestiaryEntry.UIInfoProvider = new PlatinumCritterCollectionInfoProvider(
+                goldProvider._normalCritterPersistentId.Concat([goldProvider._goldCritterPersistentId]).ToArray(),
+                ContentSamples.NpcBestiaryCreditIdsByNpcNetIds[Type]
+            );
+        }
+    }
+
     private void SpawnNpc_SpawnPlatinumCritterSometimes(ILContext il)
     {
         var c = new ILCursor(il);
@@ -238,18 +264,6 @@ public abstract class PlatinumCritterNpc<TItem>(string critterName) : ModNPC
     public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
     {
         base.SetBestiary(database, bestiaryEntry);
-
-        bestiaryEntry.Info.AddRange(
-            database.FindEntryByNPCID(NpcType).Info.Where(x => x is SpawnConditionBestiaryInfoElement)
-        );
-
-        if (database.FindEntryByNPCID(NpcType).UIInfoProvider is GoldCritterUICollectionInfoProvider goldProvider)
-        {
-            bestiaryEntry.UIInfoProvider = new PlatinumCritterCollectionInfoProvider(
-                goldProvider._normalCritterPersistentId.Concat([goldProvider._goldCritterPersistentId]).ToArray(),
-                ContentSamples.NpcBestiaryCreditIdsByNpcNetIds[Type]
-            );
-        }
     }
 
     public override void SetDefaults()
@@ -419,14 +433,14 @@ public sealed class PlatinumLadyBugNpc() : PlatinumCritterNpc<PlatinumLadyBugIte
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
-        
+
         On_NPC.CheckActive += CheckActive_ApplyLadybugLuck;
     }
 
     public override void OnKill()
     {
         base.OnKill();
-        
+
         NPC.LadyBugKilled(NPC.Center, true);
     }
 

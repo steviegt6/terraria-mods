@@ -3253,6 +3253,1748 @@ internal static class LocalizationReferences
                         }
                     }
                 }
+
+                public static class PlatinumBirdCageItem
+                {
+                    public const string KEY = "Mods.Nightshade.Items.PlatinumBirdCageItem";
+
+                    public static LocalizedText GetChildText(string childKey)
+                    {
+                        return Language.GetText(KEY + '.' + childKey);
+                    }
+
+                    public static string GetChildTextValue(string childKey, params object?[] values)
+                    {
+                        return Language.GetTextValue(KEY + '.' + childKey, values);
+                    }
+
+                    public static class DisplayName
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.PlatinumBirdCageItem.DisplayName";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+
+                    public static class Tooltip
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.PlatinumBirdCageItem.Tooltip";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+                }
+
+                public static class PlatinumBirdItem
+                {
+                    public const string KEY = "Mods.Nightshade.Items.PlatinumBirdItem";
+
+                    public static LocalizedText GetChildText(string childKey)
+                    {
+                        return Language.GetText(KEY + '.' + childKey);
+                    }
+
+                    public static string GetChildTextValue(string childKey, params object?[] values)
+                    {
+                        return Language.GetTextValue(KEY + '.' + childKey, values);
+                    }
+
+                    public static class DisplayName
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.PlatinumBirdItem.DisplayName";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+
+                    public static class Tooltip
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.PlatinumBirdItem.Tooltip";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+                }
+
+                public static class PlatinumBunnyCageItem
+                {
+                    public const string KEY = "Mods.Nightshade.Items.PlatinumBunnyCageItem";
+
+                    public static LocalizedText GetChildText(string childKey)
+                    {
+                        return Language.GetText(KEY + '.' + childKey);
+                    }
+
+                    public static string GetChildTextValue(string childKey, params object?[] values)
+                    {
+                        return Language.GetTextValue(KEY + '.' + childKey, values);
+                    }
+
+                    public static class DisplayName
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.PlatinumBunnyCageItem.DisplayName";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+
+                    public static class Tooltip
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.PlatinumBunnyCageItem.Tooltip";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+                }
+
+                public static class PlatinumBunnyItem
+                {
+                    public const string KEY = "Mods.Nightshade.Items.PlatinumBunnyItem";
+
+                    public static LocalizedText GetChildText(string childKey)
+                    {
+                        return Language.GetText(KEY + '.' + childKey);
+                    }
+
+                    public static string GetChildTextValue(string childKey, params object?[] values)
+                    {
+                        return Language.GetTextValue(KEY + '.' + childKey, values);
+                    }
+
+                    public static class DisplayName
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.PlatinumBunnyItem.DisplayName";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+
+                    public static class Tooltip
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.PlatinumBunnyItem.Tooltip";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+                }
+
+                public static class PlatinumButterflyCageItem
+                {
+                    public const string KEY = "Mods.Nightshade.Items.PlatinumButterflyCageItem";
+
+                    public static LocalizedText GetChildText(string childKey)
+                    {
+                        return Language.GetText(KEY + '.' + childKey);
+                    }
+
+                    public static string GetChildTextValue(string childKey, params object?[] values)
+                    {
+                        return Language.GetTextValue(KEY + '.' + childKey, values);
+                    }
+
+                    public static class DisplayName
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.PlatinumButterflyCageItem.DisplayName";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+
+                    public static class Tooltip
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.PlatinumButterflyCageItem.Tooltip";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+                }
+
+                public static class PlatinumButterflyItem
+                {
+                    public const string KEY = "Mods.Nightshade.Items.PlatinumButterflyItem";
+
+                    public static LocalizedText GetChildText(string childKey)
+                    {
+                        return Language.GetText(KEY + '.' + childKey);
+                    }
+
+                    public static string GetChildTextValue(string childKey, params object?[] values)
+                    {
+                        return Language.GetTextValue(KEY + '.' + childKey, values);
+                    }
+
+                    public static class DisplayName
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.PlatinumButterflyItem.DisplayName";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+
+                    public static class Tooltip
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.PlatinumButterflyItem.Tooltip";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+                }
+
+                public static class PlatinumDragonflyCageItem
+                {
+                    public const string KEY = "Mods.Nightshade.Items.PlatinumDragonflyCageItem";
+
+                    public static LocalizedText GetChildText(string childKey)
+                    {
+                        return Language.GetText(KEY + '.' + childKey);
+                    }
+
+                    public static string GetChildTextValue(string childKey, params object?[] values)
+                    {
+                        return Language.GetTextValue(KEY + '.' + childKey, values);
+                    }
+
+                    public static class DisplayName
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.PlatinumDragonflyCageItem.DisplayName";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+
+                    public static class Tooltip
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.PlatinumDragonflyCageItem.Tooltip";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+                }
+
+                public static class PlatinumDragonflyItem
+                {
+                    public const string KEY = "Mods.Nightshade.Items.PlatinumDragonflyItem";
+
+                    public static LocalizedText GetChildText(string childKey)
+                    {
+                        return Language.GetText(KEY + '.' + childKey);
+                    }
+
+                    public static string GetChildTextValue(string childKey, params object?[] values)
+                    {
+                        return Language.GetTextValue(KEY + '.' + childKey, values);
+                    }
+
+                    public static class DisplayName
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.PlatinumDragonflyItem.DisplayName";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+
+                    public static class Tooltip
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.PlatinumDragonflyItem.Tooltip";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+                }
+
+                public static class PlatinumFrogCageItem
+                {
+                    public const string KEY = "Mods.Nightshade.Items.PlatinumFrogCageItem";
+
+                    public static LocalizedText GetChildText(string childKey)
+                    {
+                        return Language.GetText(KEY + '.' + childKey);
+                    }
+
+                    public static string GetChildTextValue(string childKey, params object?[] values)
+                    {
+                        return Language.GetTextValue(KEY + '.' + childKey, values);
+                    }
+
+                    public static class DisplayName
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.PlatinumFrogCageItem.DisplayName";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+
+                    public static class Tooltip
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.PlatinumFrogCageItem.Tooltip";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+                }
+
+                public static class PlatinumFrogItem
+                {
+                    public const string KEY = "Mods.Nightshade.Items.PlatinumFrogItem";
+
+                    public static LocalizedText GetChildText(string childKey)
+                    {
+                        return Language.GetText(KEY + '.' + childKey);
+                    }
+
+                    public static string GetChildTextValue(string childKey, params object?[] values)
+                    {
+                        return Language.GetTextValue(KEY + '.' + childKey, values);
+                    }
+
+                    public static class DisplayName
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.PlatinumFrogItem.DisplayName";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+
+                    public static class Tooltip
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.PlatinumFrogItem.Tooltip";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+                }
+
+                public static class PlatinumGoldfishCageItem
+                {
+                    public const string KEY = "Mods.Nightshade.Items.PlatinumGoldfishCageItem";
+
+                    public static LocalizedText GetChildText(string childKey)
+                    {
+                        return Language.GetText(KEY + '.' + childKey);
+                    }
+
+                    public static string GetChildTextValue(string childKey, params object?[] values)
+                    {
+                        return Language.GetTextValue(KEY + '.' + childKey, values);
+                    }
+
+                    public static class DisplayName
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.PlatinumGoldfishCageItem.DisplayName";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+
+                    public static class Tooltip
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.PlatinumGoldfishCageItem.Tooltip";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+                }
+
+                public static class PlatinumGoldfishItem
+                {
+                    public const string KEY = "Mods.Nightshade.Items.PlatinumGoldfishItem";
+
+                    public static LocalizedText GetChildText(string childKey)
+                    {
+                        return Language.GetText(KEY + '.' + childKey);
+                    }
+
+                    public static string GetChildTextValue(string childKey, params object?[] values)
+                    {
+                        return Language.GetTextValue(KEY + '.' + childKey, values);
+                    }
+
+                    public static class DisplayName
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.PlatinumGoldfishItem.DisplayName";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+
+                    public static class Tooltip
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.PlatinumGoldfishItem.Tooltip";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+                }
+
+                public static class PlatinumGrasshopperCageItem
+                {
+                    public const string KEY = "Mods.Nightshade.Items.PlatinumGrasshopperCageItem";
+
+                    public static LocalizedText GetChildText(string childKey)
+                    {
+                        return Language.GetText(KEY + '.' + childKey);
+                    }
+
+                    public static string GetChildTextValue(string childKey, params object?[] values)
+                    {
+                        return Language.GetTextValue(KEY + '.' + childKey, values);
+                    }
+
+                    public static class DisplayName
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.PlatinumGrasshopperCageItem.DisplayName";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+
+                    public static class Tooltip
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.PlatinumGrasshopperCageItem.Tooltip";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+                }
+
+                public static class PlatinumGrasshopperItem
+                {
+                    public const string KEY = "Mods.Nightshade.Items.PlatinumGrasshopperItem";
+
+                    public static LocalizedText GetChildText(string childKey)
+                    {
+                        return Language.GetText(KEY + '.' + childKey);
+                    }
+
+                    public static string GetChildTextValue(string childKey, params object?[] values)
+                    {
+                        return Language.GetTextValue(KEY + '.' + childKey, values);
+                    }
+
+                    public static class DisplayName
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.PlatinumGrasshopperItem.DisplayName";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+
+                    public static class Tooltip
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.PlatinumGrasshopperItem.Tooltip";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+                }
+
+                public static class PlatinumLadyBugCageItem
+                {
+                    public const string KEY = "Mods.Nightshade.Items.PlatinumLadyBugCageItem";
+
+                    public static LocalizedText GetChildText(string childKey)
+                    {
+                        return Language.GetText(KEY + '.' + childKey);
+                    }
+
+                    public static string GetChildTextValue(string childKey, params object?[] values)
+                    {
+                        return Language.GetTextValue(KEY + '.' + childKey, values);
+                    }
+
+                    public static class DisplayName
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.PlatinumLadyBugCageItem.DisplayName";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+
+                    public static class Tooltip
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.PlatinumLadyBugCageItem.Tooltip";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+                }
+
+                public static class PlatinumLadyBugItem
+                {
+                    public const string KEY = "Mods.Nightshade.Items.PlatinumLadyBugItem";
+
+                    public static LocalizedText GetChildText(string childKey)
+                    {
+                        return Language.GetText(KEY + '.' + childKey);
+                    }
+
+                    public static string GetChildTextValue(string childKey, params object?[] values)
+                    {
+                        return Language.GetTextValue(KEY + '.' + childKey, values);
+                    }
+
+                    public static class DisplayName
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.PlatinumLadyBugItem.DisplayName";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+
+                    public static class Tooltip
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.PlatinumLadyBugItem.Tooltip";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+                }
+
+                public static class PlatinumMouseCageItem
+                {
+                    public const string KEY = "Mods.Nightshade.Items.PlatinumMouseCageItem";
+
+                    public static LocalizedText GetChildText(string childKey)
+                    {
+                        return Language.GetText(KEY + '.' + childKey);
+                    }
+
+                    public static string GetChildTextValue(string childKey, params object?[] values)
+                    {
+                        return Language.GetTextValue(KEY + '.' + childKey, values);
+                    }
+
+                    public static class DisplayName
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.PlatinumMouseCageItem.DisplayName";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+
+                    public static class Tooltip
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.PlatinumMouseCageItem.Tooltip";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+                }
+
+                public static class PlatinumMouseItem
+                {
+                    public const string KEY = "Mods.Nightshade.Items.PlatinumMouseItem";
+
+                    public static LocalizedText GetChildText(string childKey)
+                    {
+                        return Language.GetText(KEY + '.' + childKey);
+                    }
+
+                    public static string GetChildTextValue(string childKey, params object?[] values)
+                    {
+                        return Language.GetTextValue(KEY + '.' + childKey, values);
+                    }
+
+                    public static class DisplayName
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.PlatinumMouseItem.DisplayName";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+
+                    public static class Tooltip
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.PlatinumMouseItem.Tooltip";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+                }
+
+                public static class PlatinumSeahorseCageItem
+                {
+                    public const string KEY = "Mods.Nightshade.Items.PlatinumSeahorseCageItem";
+
+                    public static LocalizedText GetChildText(string childKey)
+                    {
+                        return Language.GetText(KEY + '.' + childKey);
+                    }
+
+                    public static string GetChildTextValue(string childKey, params object?[] values)
+                    {
+                        return Language.GetTextValue(KEY + '.' + childKey, values);
+                    }
+
+                    public static class DisplayName
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.PlatinumSeahorseCageItem.DisplayName";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+
+                    public static class Tooltip
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.PlatinumSeahorseCageItem.Tooltip";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+                }
+
+                public static class PlatinumSeahorseItem
+                {
+                    public const string KEY = "Mods.Nightshade.Items.PlatinumSeahorseItem";
+
+                    public static LocalizedText GetChildText(string childKey)
+                    {
+                        return Language.GetText(KEY + '.' + childKey);
+                    }
+
+                    public static string GetChildTextValue(string childKey, params object?[] values)
+                    {
+                        return Language.GetTextValue(KEY + '.' + childKey, values);
+                    }
+
+                    public static class DisplayName
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.PlatinumSeahorseItem.DisplayName";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+
+                    public static class Tooltip
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.PlatinumSeahorseItem.Tooltip";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+                }
+
+                public static class PlatinumSquirrelCageItem
+                {
+                    public const string KEY = "Mods.Nightshade.Items.PlatinumSquirrelCageItem";
+
+                    public static LocalizedText GetChildText(string childKey)
+                    {
+                        return Language.GetText(KEY + '.' + childKey);
+                    }
+
+                    public static string GetChildTextValue(string childKey, params object?[] values)
+                    {
+                        return Language.GetTextValue(KEY + '.' + childKey, values);
+                    }
+
+                    public static class DisplayName
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.PlatinumSquirrelCageItem.DisplayName";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+
+                    public static class Tooltip
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.PlatinumSquirrelCageItem.Tooltip";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+                }
+
+                public static class PlatinumSquirrelItem
+                {
+                    public const string KEY = "Mods.Nightshade.Items.PlatinumSquirrelItem";
+
+                    public static LocalizedText GetChildText(string childKey)
+                    {
+                        return Language.GetText(KEY + '.' + childKey);
+                    }
+
+                    public static string GetChildTextValue(string childKey, params object?[] values)
+                    {
+                        return Language.GetTextValue(KEY + '.' + childKey, values);
+                    }
+
+                    public static class DisplayName
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.PlatinumSquirrelItem.DisplayName";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+
+                    public static class Tooltip
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.PlatinumSquirrelItem.Tooltip";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+                }
+
+                public static class PlatinumWaterStriderCageItem
+                {
+                    public const string KEY = "Mods.Nightshade.Items.PlatinumWaterStriderCageItem";
+
+                    public static LocalizedText GetChildText(string childKey)
+                    {
+                        return Language.GetText(KEY + '.' + childKey);
+                    }
+
+                    public static string GetChildTextValue(string childKey, params object?[] values)
+                    {
+                        return Language.GetTextValue(KEY + '.' + childKey, values);
+                    }
+
+                    public static class DisplayName
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.PlatinumWaterStriderCageItem.DisplayName";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+
+                    public static class Tooltip
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.PlatinumWaterStriderCageItem.Tooltip";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+                }
+
+                public static class PlatinumWaterStriderItem
+                {
+                    public const string KEY = "Mods.Nightshade.Items.PlatinumWaterStriderItem";
+
+                    public static LocalizedText GetChildText(string childKey)
+                    {
+                        return Language.GetText(KEY + '.' + childKey);
+                    }
+
+                    public static string GetChildTextValue(string childKey, params object?[] values)
+                    {
+                        return Language.GetTextValue(KEY + '.' + childKey, values);
+                    }
+
+                    public static class DisplayName
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.PlatinumWaterStriderItem.DisplayName";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+
+                    public static class Tooltip
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.PlatinumWaterStriderItem.Tooltip";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+                }
+
+                public static class PlatinumWormCageItem
+                {
+                    public const string KEY = "Mods.Nightshade.Items.PlatinumWormCageItem";
+
+                    public static LocalizedText GetChildText(string childKey)
+                    {
+                        return Language.GetText(KEY + '.' + childKey);
+                    }
+
+                    public static string GetChildTextValue(string childKey, params object?[] values)
+                    {
+                        return Language.GetTextValue(KEY + '.' + childKey, values);
+                    }
+
+                    public static class DisplayName
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.PlatinumWormCageItem.DisplayName";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+
+                    public static class Tooltip
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.PlatinumWormCageItem.Tooltip";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+                }
+
+                public static class PlatinumWormItem
+                {
+                    public const string KEY = "Mods.Nightshade.Items.PlatinumWormItem";
+
+                    public static LocalizedText GetChildText(string childKey)
+                    {
+                        return Language.GetText(KEY + '.' + childKey);
+                    }
+
+                    public static string GetChildTextValue(string childKey, params object?[] values)
+                    {
+                        return Language.GetTextValue(KEY + '.' + childKey, values);
+                    }
+
+                    public static class DisplayName
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.PlatinumWormItem.DisplayName";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+
+                    public static class Tooltip
+                    {
+                        public const string KEY = "Mods.Nightshade.Items.PlatinumWormItem.Tooltip";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+                }
             }
 
             public static class Projectiles
@@ -3927,6 +5669,595 @@ internal static class LocalizationReferences
                     public static class Description
                     {
                         public const string KEY = "Mods.Nightshade.Achievements.Achievement3.Description";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+                }
+            }
+
+            public static class NPCs
+            {
+                public const string KEY = "Mods.Nightshade.NPCs";
+
+                public static LocalizedText GetChildText(string childKey)
+                {
+                    return Language.GetText(KEY + '.' + childKey);
+                }
+
+                public static string GetChildTextValue(string childKey, params object?[] values)
+                {
+                    return Language.GetTextValue(KEY + '.' + childKey, values);
+                }
+
+                public static class PlatinumBirdNpc
+                {
+                    public const string KEY = "Mods.Nightshade.NPCs.PlatinumBirdNpc";
+
+                    public static LocalizedText GetChildText(string childKey)
+                    {
+                        return Language.GetText(KEY + '.' + childKey);
+                    }
+
+                    public static string GetChildTextValue(string childKey, params object?[] values)
+                    {
+                        return Language.GetTextValue(KEY + '.' + childKey, values);
+                    }
+
+                    public static class DisplayName
+                    {
+                        public const string KEY = "Mods.Nightshade.NPCs.PlatinumBirdNpc.DisplayName";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+                }
+
+                public static class PlatinumBunnyNpc
+                {
+                    public const string KEY = "Mods.Nightshade.NPCs.PlatinumBunnyNpc";
+
+                    public static LocalizedText GetChildText(string childKey)
+                    {
+                        return Language.GetText(KEY + '.' + childKey);
+                    }
+
+                    public static string GetChildTextValue(string childKey, params object?[] values)
+                    {
+                        return Language.GetTextValue(KEY + '.' + childKey, values);
+                    }
+
+                    public static class DisplayName
+                    {
+                        public const string KEY = "Mods.Nightshade.NPCs.PlatinumBunnyNpc.DisplayName";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+                }
+
+                public static class PlatinumButterflyNpc
+                {
+                    public const string KEY = "Mods.Nightshade.NPCs.PlatinumButterflyNpc";
+
+                    public static LocalizedText GetChildText(string childKey)
+                    {
+                        return Language.GetText(KEY + '.' + childKey);
+                    }
+
+                    public static string GetChildTextValue(string childKey, params object?[] values)
+                    {
+                        return Language.GetTextValue(KEY + '.' + childKey, values);
+                    }
+
+                    public static class DisplayName
+                    {
+                        public const string KEY = "Mods.Nightshade.NPCs.PlatinumButterflyNpc.DisplayName";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+                }
+
+                public static class PlatinumDragonflyNpc
+                {
+                    public const string KEY = "Mods.Nightshade.NPCs.PlatinumDragonflyNpc";
+
+                    public static LocalizedText GetChildText(string childKey)
+                    {
+                        return Language.GetText(KEY + '.' + childKey);
+                    }
+
+                    public static string GetChildTextValue(string childKey, params object?[] values)
+                    {
+                        return Language.GetTextValue(KEY + '.' + childKey, values);
+                    }
+
+                    public static class DisplayName
+                    {
+                        public const string KEY = "Mods.Nightshade.NPCs.PlatinumDragonflyNpc.DisplayName";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+                }
+
+                public static class PlatinumFrogNpc
+                {
+                    public const string KEY = "Mods.Nightshade.NPCs.PlatinumFrogNpc";
+
+                    public static LocalizedText GetChildText(string childKey)
+                    {
+                        return Language.GetText(KEY + '.' + childKey);
+                    }
+
+                    public static string GetChildTextValue(string childKey, params object?[] values)
+                    {
+                        return Language.GetTextValue(KEY + '.' + childKey, values);
+                    }
+
+                    public static class DisplayName
+                    {
+                        public const string KEY = "Mods.Nightshade.NPCs.PlatinumFrogNpc.DisplayName";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+                }
+
+                public static class PlatinumGoldfishNpc
+                {
+                    public const string KEY = "Mods.Nightshade.NPCs.PlatinumGoldfishNpc";
+
+                    public static LocalizedText GetChildText(string childKey)
+                    {
+                        return Language.GetText(KEY + '.' + childKey);
+                    }
+
+                    public static string GetChildTextValue(string childKey, params object?[] values)
+                    {
+                        return Language.GetTextValue(KEY + '.' + childKey, values);
+                    }
+
+                    public static class DisplayName
+                    {
+                        public const string KEY = "Mods.Nightshade.NPCs.PlatinumGoldfishNpc.DisplayName";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+                }
+
+                public static class PlatinumWalkerGoldfishNpc
+                {
+                    public const string KEY = "Mods.Nightshade.NPCs.PlatinumWalkerGoldfishNpc";
+
+                    public static LocalizedText GetChildText(string childKey)
+                    {
+                        return Language.GetText(KEY + '.' + childKey);
+                    }
+
+                    public static string GetChildTextValue(string childKey, params object?[] values)
+                    {
+                        return Language.GetTextValue(KEY + '.' + childKey, values);
+                    }
+
+                    public static class DisplayName
+                    {
+                        public const string KEY = "Mods.Nightshade.NPCs.PlatinumWalkerGoldfishNpc.DisplayName";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+                }
+
+                public static class PlatinumGrasshopperNpc
+                {
+                    public const string KEY = "Mods.Nightshade.NPCs.PlatinumGrasshopperNpc";
+
+                    public static LocalizedText GetChildText(string childKey)
+                    {
+                        return Language.GetText(KEY + '.' + childKey);
+                    }
+
+                    public static string GetChildTextValue(string childKey, params object?[] values)
+                    {
+                        return Language.GetTextValue(KEY + '.' + childKey, values);
+                    }
+
+                    public static class DisplayName
+                    {
+                        public const string KEY = "Mods.Nightshade.NPCs.PlatinumGrasshopperNpc.DisplayName";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+                }
+
+                public static class PlatinumLadyBugNpc
+                {
+                    public const string KEY = "Mods.Nightshade.NPCs.PlatinumLadyBugNpc";
+
+                    public static LocalizedText GetChildText(string childKey)
+                    {
+                        return Language.GetText(KEY + '.' + childKey);
+                    }
+
+                    public static string GetChildTextValue(string childKey, params object?[] values)
+                    {
+                        return Language.GetTextValue(KEY + '.' + childKey, values);
+                    }
+
+                    public static class DisplayName
+                    {
+                        public const string KEY = "Mods.Nightshade.NPCs.PlatinumLadyBugNpc.DisplayName";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+                }
+
+                public static class PlatinumMouseNpc
+                {
+                    public const string KEY = "Mods.Nightshade.NPCs.PlatinumMouseNpc";
+
+                    public static LocalizedText GetChildText(string childKey)
+                    {
+                        return Language.GetText(KEY + '.' + childKey);
+                    }
+
+                    public static string GetChildTextValue(string childKey, params object?[] values)
+                    {
+                        return Language.GetTextValue(KEY + '.' + childKey, values);
+                    }
+
+                    public static class DisplayName
+                    {
+                        public const string KEY = "Mods.Nightshade.NPCs.PlatinumMouseNpc.DisplayName";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+                }
+
+                public static class PlatinumSeahorseNpc
+                {
+                    public const string KEY = "Mods.Nightshade.NPCs.PlatinumSeahorseNpc";
+
+                    public static LocalizedText GetChildText(string childKey)
+                    {
+                        return Language.GetText(KEY + '.' + childKey);
+                    }
+
+                    public static string GetChildTextValue(string childKey, params object?[] values)
+                    {
+                        return Language.GetTextValue(KEY + '.' + childKey, values);
+                    }
+
+                    public static class DisplayName
+                    {
+                        public const string KEY = "Mods.Nightshade.NPCs.PlatinumSeahorseNpc.DisplayName";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+                }
+
+                public static class PlatinumSquirrelNpc
+                {
+                    public const string KEY = "Mods.Nightshade.NPCs.PlatinumSquirrelNpc";
+
+                    public static LocalizedText GetChildText(string childKey)
+                    {
+                        return Language.GetText(KEY + '.' + childKey);
+                    }
+
+                    public static string GetChildTextValue(string childKey, params object?[] values)
+                    {
+                        return Language.GetTextValue(KEY + '.' + childKey, values);
+                    }
+
+                    public static class DisplayName
+                    {
+                        public const string KEY = "Mods.Nightshade.NPCs.PlatinumSquirrelNpc.DisplayName";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+                }
+
+                public static class PlatinumWaterStriderNpc
+                {
+                    public const string KEY = "Mods.Nightshade.NPCs.PlatinumWaterStriderNpc";
+
+                    public static LocalizedText GetChildText(string childKey)
+                    {
+                        return Language.GetText(KEY + '.' + childKey);
+                    }
+
+                    public static string GetChildTextValue(string childKey, params object?[] values)
+                    {
+                        return Language.GetTextValue(KEY + '.' + childKey, values);
+                    }
+
+                    public static class DisplayName
+                    {
+                        public const string KEY = "Mods.Nightshade.NPCs.PlatinumWaterStriderNpc.DisplayName";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+                }
+
+                public static class PlatinumWormNpc
+                {
+                    public const string KEY = "Mods.Nightshade.NPCs.PlatinumWormNpc";
+
+                    public static LocalizedText GetChildText(string childKey)
+                    {
+                        return Language.GetText(KEY + '.' + childKey);
+                    }
+
+                    public static string GetChildTextValue(string childKey, params object?[] values)
+                    {
+                        return Language.GetTextValue(KEY + '.' + childKey, values);
+                    }
+
+                    public static class DisplayName
+                    {
+                        public const string KEY = "Mods.Nightshade.NPCs.PlatinumWormNpc.DisplayName";
                         public const int ARG_COUNT = 0;
 
                         public static LocalizedText GetText()

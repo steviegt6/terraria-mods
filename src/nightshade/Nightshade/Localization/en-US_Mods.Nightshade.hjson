@@ -287,122 +287,122 @@ Items: {
 	}
 
 	PlatinumBirdCageItem: {
-		DisplayName: Platinum Bird Cage Item
+		DisplayName: Platinum Bird Cage
 		Tooltip: ""
 	}
 
 	PlatinumBirdItem: {
-		DisplayName: Platinum Bird Item
+		DisplayName: Platinum Bird
 		Tooltip: ""
 	}
 
 	PlatinumBunnyCageItem: {
-		DisplayName: Platinum Bunny Cage Item
+		DisplayName: Platinum Bunny Cage
 		Tooltip: ""
 	}
 
 	PlatinumBunnyItem: {
-		DisplayName: Platinum Bunny Item
+		DisplayName: Platinum Bunny
 		Tooltip: ""
 	}
 
 	PlatinumButterflyCageItem: {
-		DisplayName: Platinum Butterfly Cage Item
+		DisplayName: Platinum Butterfly Jar
 		Tooltip: ""
 	}
 
 	PlatinumButterflyItem: {
-		DisplayName: Platinum Butterfly Item
+		DisplayName: Platinum Butterfly
 		Tooltip: ""
 	}
 
 	PlatinumDragonflyCageItem: {
-		DisplayName: Platinum Dragonfly Cage Item
+		DisplayName: Platinum Dragonfly Jar
 		Tooltip: ""
 	}
 
 	PlatinumDragonflyItem: {
-		DisplayName: Platinum Dragonfly Item
+		DisplayName: Platinum Dragonfly
 		Tooltip: ""
 	}
 
 	PlatinumFrogCageItem: {
-		DisplayName: Platinum Frog Cage Item
+		DisplayName: Platinum Frog Cage
 		Tooltip: ""
 	}
 
 	PlatinumFrogItem: {
-		DisplayName: Platinum Frog Item
+		DisplayName: Platinum Frog
 		Tooltip: ""
 	}
 
 	PlatinumGoldfishCageItem: {
-		DisplayName: Platinum Goldfish Cage Item
+		DisplayName: Platinum Fish Bowl
 		Tooltip: ""
 	}
 
 	PlatinumGoldfishItem: {
-		DisplayName: Platinum Goldfish Item
+		DisplayName: Platinum Goldfish
 		Tooltip: ""
 	}
 
 	PlatinumGrasshopperCageItem: {
-		DisplayName: Platinum Grasshopper Cage Item
+		DisplayName: Platinum Grasshopper Cage
 		Tooltip: ""
 	}
 
 	PlatinumGrasshopperItem: {
-		DisplayName: Platinum Grasshopper Item
+		DisplayName: Platinum Grasshopper
 		Tooltip: ""
 	}
 
 	PlatinumLadyBugCageItem: {
-		DisplayName: Platinum Lady Bug Cage Item
+		DisplayName: Platinum Ladybug Cage
 		Tooltip: ""
 	}
 
 	PlatinumLadyBugItem: {
-		DisplayName: Platinum Lady Bug Item
+		DisplayName: Platinum Ladybug
 		Tooltip: ""
 	}
 
 	PlatinumMouseCageItem: {
-		DisplayName: Platinum Mouse Cage Item
+		DisplayName: Platinum Mouse Cage
 		Tooltip: ""
 	}
 
 	PlatinumMouseItem: {
-		DisplayName: Platinum Mouse Item
+		DisplayName: Platinum Mouse
 		Tooltip: ""
 	}
 
 	PlatinumSeahorseCageItem: {
-		DisplayName: Platinum Seahorse Cage Item
+		DisplayName: Platinum Seahorse Cage
 		Tooltip: ""
 	}
 
 	PlatinumSeahorseItem: {
-		DisplayName: Platinum Seahorse Item
+		DisplayName: Platinum Seahorse
 		Tooltip: ""
 	}
 
 	PlatinumSquirrelCageItem: {
-		DisplayName: Platinum Squirrel Cage Item
+		DisplayName: Platinum Squirrel Cage
 		Tooltip: ""
 	}
 
 	PlatinumSquirrelItem: {
-		DisplayName: Platinum Squirrel Item
+		DisplayName: Platinum Squirrel
 		Tooltip: ""
 	}
 
 	PlatinumWaterStriderCageItem: {
-		DisplayName: Platinum Water Strider Cage Item
+		DisplayName: Platinum Water Strider Cage
 		Tooltip: ""
 	}
 
 	PlatinumWaterStriderItem: {
-		DisplayName: Platinum Water Strider Item
+		DisplayName: Platinum Water Strider
 		Tooltip: ""
 	}
 
@@ -412,7 +412,7 @@ Items: {
 	}
 
 	PlatinumWormItem: {
-		DisplayName: Platinum Worm Item
+		DisplayName: Platinum Worm
 		Tooltip: ""
 	}
 }
@@ -450,18 +450,18 @@ Achievements: {
 }
 
 NPCs: {
-	PlatinumBirdNpc.DisplayName: Platinum Bird Npc
-	PlatinumBunnyNpc.DisplayName: Platinum Bunny Npc
-	PlatinumButterflyNpc.DisplayName: Platinum Butterfly Npc
-	PlatinumDragonflyNpc.DisplayName: Platinum Dragonfly Npc
-	PlatinumFrogNpc.DisplayName: Platinum Frog Npc
-	PlatinumGoldfishNpc.DisplayName: Platinum Goldfish Npc
-	PlatinumGrasshopperNpc.DisplayName: Platinum Grasshopper Npc
-	PlatinumLadyBugNpc.DisplayName: Platinum Lady Bug Npc
-	PlatinumMouseNpc.DisplayName: Platinum Mouse Npc
-	PlatinumSeahorseNpc.DisplayName: Platinum Seahorse Npc
-	PlatinumSquirrelNpc.DisplayName: Platinum Squirrel Npc
-	PlatinumWalkerGoldfishNpc.DisplayName: Platinum Walker Goldfish Npc
-	PlatinumWaterStriderNpc.DisplayName: Platinum Water Strider Npc
-	PlatinumWormNpc.DisplayName: Platinum Worm Npc
+	PlatinumBirdNpc.DisplayName: Platinum Bird
+	PlatinumBunnyNpc.DisplayName: Platinum Bunny
+	PlatinumButterflyNpc.DisplayName: Platinum Butterfly
+	PlatinumDragonflyNpc.DisplayName: Platinum Dragonfly
+	PlatinumFrogNpc.DisplayName: Platinum Frog
+	PlatinumGoldfishNpc.DisplayName: Platinum Goldfish
+	PlatinumWalkerGoldfishNpc.DisplayName: Platinum Goldfish
+	PlatinumGrasshopperNpc.DisplayName: Platinum Grasshopper
+	PlatinumLadyBugNpc.DisplayName: Platinum Lady Bug
+	PlatinumMouseNpc.DisplayName: Platinum Mouse
+	PlatinumSeahorseNpc.DisplayName: Platinum Seahorse
+	PlatinumSquirrelNpc.DisplayName: Platinum Squirrel
+	PlatinumWaterStriderNpc.DisplayName: Platinum Water Strider
+	PlatinumWormNpc.DisplayName: Platinum Worm
 }
