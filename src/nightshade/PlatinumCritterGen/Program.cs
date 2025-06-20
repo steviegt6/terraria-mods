@@ -22,26 +22,41 @@ internal static class Program
     private static readonly Dictionary<Rgba32, Rgba32> critter_color_map = new()
     {
         // basic mapping of gold bar/critter colors
-        [new Rgba32(83, 62, 11)] = new Rgba32(255, 0, 0),
-        [new Rgba32(102, 77, 14)] = new Rgba32(0, 255, 0),
-        [new Rgba32(121, 92, 18)] = new Rgba32(0, 0, 255),
-        [new Rgba32(147, 125, 30)] = new Rgba32(255, 255, 0),
-        [new Rgba32(203, 179, 73)] = new Rgba32(0, 255, 255),
-        [new Rgba32(255, 249, 181)] = new Rgba32(255, 0, 255),
+        [new Rgba32(83, 62, 11)] = new Rgba32(55, 62, 89),
+        [new Rgba32(102, 77, 14)] = new Rgba32(85, 86, 128),
+        [new Rgba32(121, 92, 18)] = new Rgba32(101, 110, 136),
+        [new Rgba32(147, 125, 30)] = new Rgba32(133, 152, 179),
+        [new Rgba32(203, 179, 73)] = new Rgba32(182, 188, 213),
+        [new Rgba32(255, 249, 181)] = new Rgba32(242, 223, 236),
+
+        // weird case for frogs only
+        [new Rgba32(129, 92, 10)] = new Rgba32(101, 113, 145),
     };
 
     private static readonly Dictionary<Rgba32, Rgba32> cage_color_map = new()
     {
         // basic mapping of gold bar/critter colors
-        [new Rgba32(83, 62, 11)] = new Rgba32(255, 0, 0),
-        [new Rgba32(102, 77, 14)] = new Rgba32(0, 255, 0),
-        [new Rgba32(121, 92, 18)] = new Rgba32(0, 0, 255),
-        [new Rgba32(147, 125, 30)] = new Rgba32(255, 255, 0),
-        [new Rgba32(203, 179, 73)] = new Rgba32(0, 255, 255),
-        [new Rgba32(255, 249, 181)] = new Rgba32(255, 0, 255),
-        
+        [new Rgba32(83, 62, 11)] = new Rgba32(55, 62, 89),
+        [new Rgba32(102, 77, 14)] = new Rgba32(85, 86, 128),
+        [new Rgba32(121, 92, 18)] = new Rgba32(101, 110, 136),
+        [new Rgba32(147, 125, 30)] = new Rgba32(133, 152, 179),
+        [new Rgba32(203, 179, 73)] = new Rgba32(182, 188, 213),
+        [new Rgba32(255, 249, 181)] = new Rgba32(242, 223, 236),
+
         // additional shade present as cage outline
-        [new Rgba32(29, 20, 0)] = new Rgba32(255, 255, 255),
+        [new Rgba32(29, 20, 0)] = new Rgba32(14, 16, 38),
+
+        // tinted shades that mirror the main shades
+        [new Rgba32(84, 84, 47)] = new Rgba32(55, 62, 89),
+        [new Rgba32(99, 96, 49)] = new Rgba32(85, 86, 128),
+        [new Rgba32(114, 108, 52)] = new Rgba32(101, 110, 136),
+        [new Rgba32(135, 135, 62)] = new Rgba32(133, 152, 179),
+        [new Rgba32(180, 178, 96)] = new Rgba32(182, 188, 213),
+        [new Rgba32(221, 234, 183)] = new Rgba32(242, 223, 236),
+
+        // exceptions for grasshopper cage tile
+        [new Rgba32(218, 155, 16)] = new Rgba32(182, 188, 213),
+        [new Rgba32(231, 196, 121)] = new Rgba32(242, 223, 236),
     };
 
     public static void Main()
