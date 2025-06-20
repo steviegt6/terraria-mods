@@ -313,7 +313,7 @@ Items: {
 
 	PlatinumButterflyItem: {
 		DisplayName: Platinum Butterfly
-		Tooltip: ""
+		Tooltip: Can be used as bait indefinitely
 	}
 
 	PlatinumDragonflyCageItem: {
@@ -323,7 +323,7 @@ Items: {
 
 	PlatinumDragonflyItem: {
 		DisplayName: Platinum Dragonfly
-		Tooltip: ""
+		Tooltip: Can be used as bait indefinitely
 	}
 
 	PlatinumFrogCageItem: {
@@ -353,7 +353,7 @@ Items: {
 
 	PlatinumGrasshopperItem: {
 		DisplayName: Platinum Grasshopper
-		Tooltip: ""
+		Tooltip: Can be used as bait indefinitely
 	}
 
 	PlatinumLadyBugCageItem: {
@@ -363,7 +363,7 @@ Items: {
 
 	PlatinumLadyBugItem: {
 		DisplayName: Platinum Ladybug
-		Tooltip: ""
+		Tooltip: Can be used as bait indefinitely
 	}
 
 	PlatinumMouseCageItem: {
@@ -403,7 +403,7 @@ Items: {
 
 	PlatinumWaterStriderItem: {
 		DisplayName: Platinum Water Strider
-		Tooltip: ""
+		Tooltip: Can be used as bait indefinitely
 	}
 
 	PlatinumWormCageItem: {
@@ -413,7 +413,7 @@ Items: {
 
 	PlatinumWormItem: {
 		DisplayName: Platinum Worm
-		Tooltip: ""
+		Tooltip: Can be used as bait indefinitely
 	}
 
 	ReflectivePlatinumDyeItem: {

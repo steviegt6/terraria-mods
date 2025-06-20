@@ -31,6 +31,11 @@ public abstract class PlatinumCritterItem<TNpc, TCage>(string critterName, int h
               .Register();
     }
 
+    public override bool? CanConsumeBait(Player player)
+    {
+        return Item.bait > 0 ? false : base.CanConsumeBait(player);
+    }
+
     private static string MakeTexturePath(string name)
     {
         // Use a definite reference here so we fail to compile if we ever change

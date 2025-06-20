@@ -2232,9 +2232,9 @@ internal static class AssetReferences
 
                         public Microsoft.Xna.Framework.Vector3 uLightSource { get; set; }
 
-                        public Microsoft.Xna.Framework.Vector4 uSourceRect { get; set; }
+                        public Microsoft.Xna.Framework.Vector3 color1 { get; set; }
 
-                        public float uTime { get; set; }
+                        public Microsoft.Xna.Framework.Vector3 color2 { get; set; }
 
                         public void Apply(Microsoft.Xna.Framework.Graphics.EffectParameterCollection parameters)
                         {
@@ -2242,8 +2242,8 @@ internal static class AssetReferences
                             parameters["uImageSize0"]?.SetValue(uImageSize0);
                             parameters["uColor"]?.SetValue(uColor);
                             parameters["uLightSource"]?.SetValue(uLightSource);
-                            parameters["uSourceRect"]?.SetValue(uSourceRect);
-                            parameters["uTime"]?.SetValue(Terraria.Main.GlobalTimeWrappedHourly);
+                            parameters["color1"]?.SetValue(color1);
+                            parameters["color2"]?.SetValue(color2);
                         }
                     }
 
