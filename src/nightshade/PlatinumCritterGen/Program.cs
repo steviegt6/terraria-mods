@@ -21,6 +21,7 @@ internal static class Program
 
     private static readonly Dictionary<Rgba32, Rgba32> critter_color_map = new()
     {
+        // basic mapping of gold bar/critter colors
         [new Rgba32(83, 62, 11)] = new Rgba32(255, 0, 0),
         [new Rgba32(102, 77, 14)] = new Rgba32(0, 255, 0),
         [new Rgba32(121, 92, 18)] = new Rgba32(0, 0, 255),
@@ -31,12 +32,16 @@ internal static class Program
 
     private static readonly Dictionary<Rgba32, Rgba32> cage_color_map = new()
     {
+        // basic mapping of gold bar/critter colors
         [new Rgba32(83, 62, 11)] = new Rgba32(255, 0, 0),
         [new Rgba32(102, 77, 14)] = new Rgba32(0, 255, 0),
         [new Rgba32(121, 92, 18)] = new Rgba32(0, 0, 255),
         [new Rgba32(147, 125, 30)] = new Rgba32(255, 255, 0),
         [new Rgba32(203, 179, 73)] = new Rgba32(0, 255, 255),
         [new Rgba32(255, 249, 181)] = new Rgba32(255, 0, 255),
+        
+        // additional shade present as cage outline
+        [new Rgba32(29, 20, 0)] = new Rgba32(255, 255, 255),
     };
 
     public static void Main()
