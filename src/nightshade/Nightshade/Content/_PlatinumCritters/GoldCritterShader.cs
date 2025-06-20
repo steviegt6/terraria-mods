@@ -33,7 +33,8 @@ internal sealed class GoldCritterShader : GlobalNPC
             );
         }
 
-        GameShaders.Armor.GetShaderFromItemId(ItemID.ReflectiveGoldDye).Apply(npc, new DrawData(TextureAssets.Npc[npc.type].Value, npc.position, drawColor));
+        GameShaders.Armor.GetShaderFromItemId(ItemID.ReflectiveGoldDye)
+                   .Apply(npc, new DrawData(TextureAssets.Npc[npc.type].Value, npc.position, drawColor));
 
         return base.PreDraw(npc, spriteBatch, screenPos, drawColor);
     }

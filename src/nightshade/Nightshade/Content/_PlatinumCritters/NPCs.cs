@@ -326,16 +326,17 @@ public abstract class PlatinumCritterNpc<TItem>(string critterName) : ModNPC
                 Main.Transform
             );
         }
-        
-        GameShaders.Armor.GetShaderFromItemId(ItemID.ReflectiveDye).Apply(NPC, new DrawData(TextureAssets.Npc[Type].Value, NPC.position, drawColor));
-        
+
+        GameShaders.Armor.GetShaderFromItemId(ModContent.ItemType<ReflectivePlatinumDyeItem>())
+                   .Apply(NPC, new DrawData(TextureAssets.Npc[Type].Value, NPC.position, drawColor));
+
         return base.PreDraw(spriteBatch, screenPos, drawColor);
     }
 
     public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
         Main.pixelShader.CurrentTechnique.Passes[0].Apply();
-        
+
         if (!NPC.IsABestiaryIconDummy)
         {
             spriteBatch.End();
@@ -349,7 +350,7 @@ public abstract class PlatinumCritterNpc<TItem>(string critterName) : ModNPC
                 Main.Transform
             );
         }
-        
+
         base.PostDraw(spriteBatch, screenPos, drawColor);
     }
 

@@ -407,12 +407,17 @@ Items: {
 	}
 
 	PlatinumWormCageItem: {
-		DisplayName: Platinum Worm Cage Item
+		DisplayName: Platinum Worm Cage
 		Tooltip: ""
 	}
 
 	PlatinumWormItem: {
 		DisplayName: Platinum Worm
+		Tooltip: ""
+	}
+
+	ReflectivePlatinumDyeItem: {
+		DisplayName: Reflective Platinum Dye
 		Tooltip: ""
 	}
 }
