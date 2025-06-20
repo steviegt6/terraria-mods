@@ -12,6 +12,7 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.Drawing;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -291,7 +292,7 @@ public abstract class PlatinumCritterNpc<TItem>(string critterName) : ModNPC
             }
 
             red /= 30;
-            if (Main.rand.Next(300) < red)
+            if (Main.rand.Next(500) < red)
             {
                 var dust = Dust.NewDust(
                     NPC.position,
@@ -301,7 +302,7 @@ public abstract class PlatinumCritterNpc<TItem>(string critterName) : ModNPC
                     0f,
                     0f,
                     254,
-                    new Color(255, 255, 0),
+                    Color.SlateBlue * 2.65f,
                     0.5f
                 );
                 Main.dust[dust].velocity *= 0f;
@@ -352,6 +353,48 @@ public abstract class PlatinumCritterNpc<TItem>(string critterName) : ModNPC
         }
 
         base.PostDraw(spriteBatch, screenPos, drawColor);
+    }
+
+    public override void ModifyHitByItem(Player player, Item item, ref NPC.HitModifiers modifiers)
+    {
+        base.ModifyHitByItem(player, item, ref modifiers);
+
+        modifiers.SetMaxDamage(1);
+    }
+
+    public override void ModifyHitByProjectile(Projectile projectile, ref NPC.HitModifiers modifiers)
+    {
+        base.ModifyHitByProjectile(projectile, ref modifiers);
+
+        modifiers.SetMaxDamage(1);
+    }
+
+    public override void HitEffect(NPC.HitInfo hit)
+    {
+        base.HitEffect(hit);
+
+        ParticleOrchestrator.RequestParticleSpawn(
+            clientOnly: true,
+            ParticleOrchestraType.PaladinsHammer,
+            new ParticleOrchestraSettings
+            {
+                PositionInWorld = NPC.Center,
+            }
+        );
+    }
+
+    public override void OnKill()
+    {
+        base.OnKill();
+
+        ParticleOrchestrator.RequestParticleSpawn(
+            clientOnly: true,
+            ParticleOrchestraType.ShimmerTownNPCSend,
+            new ParticleOrchestraSettings
+            {
+                PositionInWorld = NPC.Center,
+            }
+        );
     }
 
     private static string MakeTexturePath(string name)
