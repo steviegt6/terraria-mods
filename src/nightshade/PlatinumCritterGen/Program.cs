@@ -29,6 +29,16 @@ internal static class Program
         [new Rgba32(255, 249, 181)] = new Rgba32(255, 0, 255),
     };
 
+    private static readonly Dictionary<Rgba32, Rgba32> cage_color_map = new()
+    {
+        [new Rgba32(83, 62, 11)] = new Rgba32(255, 0, 0),
+        [new Rgba32(102, 77, 14)] = new Rgba32(0, 255, 0),
+        [new Rgba32(121, 92, 18)] = new Rgba32(0, 0, 255),
+        [new Rgba32(147, 125, 30)] = new Rgba32(255, 255, 0),
+        [new Rgba32(203, 179, 73)] = new Rgba32(0, 255, 255),
+        [new Rgba32(255, 249, 181)] = new Rgba32(255, 0, 255),
+    };
+
     public static void Main()
     {
         var dir = Directory.GetCurrentDirectory();
@@ -70,6 +80,15 @@ internal static class Program
         }
 
         var images = GetNamesFromDirectory(inputPath).ToArray();
+
+        foreach (var image in images)
+        {
+            ProcessImage(
+                image.Path,
+                Path.Combine(outputPath, GetDirectoryFromKind(image.Kind), $"{image.Name}.png"),
+                BasicPaletteSwap(cage_color_map)
+            );
+        }
     }
 
     private static IEnumerable<NameAndKind> GetNamesFromDirectory(string dir)
@@ -120,7 +139,7 @@ internal static class Program
         {
             Directory.CreateDirectory(dirName);
         }
-        
+
         using var image = Image.Load<Rgba32>(inputPath);
         imageFunc(image);
         image.Save(outputPath);
