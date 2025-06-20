@@ -106,9 +106,9 @@ internal static class AssetReferences
                         private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
                     }
 
-                    public static class Butterly
+                    public static class Butterfly
                     {
-                        public const string KEY = "Nightshade/Assets/Images/NPCs/PlatinumCritters/Butterly";
+                        public const string KEY = "Nightshade/Assets/Images/NPCs/PlatinumCritters/Butterfly";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -160,9 +160,9 @@ internal static class AssetReferences
                         private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
                     }
 
-                    public static class Ladybug
+                    public static class LadyBug
                     {
-                        public const string KEY = "Nightshade/Assets/Images/NPCs/PlatinumCritters/Ladybug";
+                        public const string KEY = "Nightshade/Assets/Images/NPCs/PlatinumCritters/LadyBug";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -1035,15 +1035,6 @@ internal static class AssetReferences
                             private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
                         }
 
-                        public static class Goldfish_Head
-                        {
-                            public const string KEY = "Nightshade/Assets/Images/Items/Misc/PlatinumCritters/Goldfish_Head";
-
-                            public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
-
-                            private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
-                        }
-
                         public static class Grasshopper
                         {
                             public const string KEY = "Nightshade/Assets/Images/Items/Misc/PlatinumCritters/Grasshopper";
@@ -1053,9 +1044,9 @@ internal static class AssetReferences
                             private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
                         }
 
-                        public static class Ladybug
+                        public static class LadyBug
                         {
-                            public const string KEY = "Nightshade/Assets/Images/Items/Misc/PlatinumCritters/Ladybug";
+                            public const string KEY = "Nightshade/Assets/Images/Items/Misc/PlatinumCritters/LadyBug";
 
                             public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -1163,6 +1154,15 @@ internal static class AssetReferences
                                 private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
                             }
 
+                            public static class Goldfish_Head
+                            {
+                                public const string KEY = "Nightshade/Assets/Images/Items/Misc/PlatinumCritters/Cages/Goldfish_Head";
+
+                                public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
+
+                                private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
+                            }
+
                             public static class Grasshopper
                             {
                                 public const string KEY = "Nightshade/Assets/Images/Items/Misc/PlatinumCritters/Cages/Grasshopper";
@@ -1172,9 +1172,9 @@ internal static class AssetReferences
                                 private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
                             }
 
-                            public static class Ladybug
+                            public static class LadyBug
                             {
-                                public const string KEY = "Nightshade/Assets/Images/Items/Misc/PlatinumCritters/Cages/Ladybug";
+                                public const string KEY = "Nightshade/Assets/Images/Items/Misc/PlatinumCritters/Cages/LadyBug";
 
                                 public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -2091,9 +2091,9 @@ internal static class AssetReferences
                             private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
                         }
 
-                        public static class Ladybug
+                        public static class LadyBug
                         {
-                            public const string KEY = "Nightshade/Assets/Images/Tiles/Misc/PlatinumCritters/Ladybug";
+                            public const string KEY = "Nightshade/Assets/Images/Tiles/Misc/PlatinumCritters/LadyBug";
 
                             public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 

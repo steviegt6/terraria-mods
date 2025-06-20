@@ -18,7 +18,7 @@ public abstract class PlatinumCritterTile<TCageItem>(string critterName) : ModTi
         // Get the actual directory.
         var basePath = key.Split('/')[..^1];
 
-        return basePath + name;
+        return string.Join('/', basePath) + '/' + name;
     }
 }
 
@@ -36,7 +36,7 @@ public sealed class PlatinumGoldfishTile() : PlatinumCritterTile<PlatinumGoldfis
 
 public sealed class PlatinumGrasshopperTile() : PlatinumCritterTile<PlatinumGrasshopperCageItem>("Grasshopper");
 
-public sealed class PlatinumLadybugTile() : PlatinumCritterTile<PlatinumLadybugCageItem>("Ladybug");
+public sealed class PlatinumLadyBugTile() : PlatinumCritterTile<PlatinumLadyBugCageItem>("LadyBug");
 
 public sealed class PlatinumMouseTile() : PlatinumCritterTile<PlatinumMouseCageItem>("Mouse");
 

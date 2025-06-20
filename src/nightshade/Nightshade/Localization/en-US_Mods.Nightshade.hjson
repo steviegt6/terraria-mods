@@ -285,6 +285,136 @@ Items: {
 		DisplayName: Time Cursor
 		Tooltip: ""
 	}
+
+	PlatinumBirdCageItem: {
+		DisplayName: Platinum Bird Cage Item
+		Tooltip: ""
+	}
+
+	PlatinumBirdItem: {
+		DisplayName: Platinum Bird Item
+		Tooltip: ""
+	}
+
+	PlatinumBunnyCageItem: {
+		DisplayName: Platinum Bunny Cage Item
+		Tooltip: ""
+	}
+
+	PlatinumBunnyItem: {
+		DisplayName: Platinum Bunny Item
+		Tooltip: ""
+	}
+
+	PlatinumButterflyCageItem: {
+		DisplayName: Platinum Butterfly Cage Item
+		Tooltip: ""
+	}
+
+	PlatinumButterflyItem: {
+		DisplayName: Platinum Butterfly Item
+		Tooltip: ""
+	}
+
+	PlatinumDragonflyCageItem: {
+		DisplayName: Platinum Dragonfly Cage Item
+		Tooltip: ""
+	}
+
+	PlatinumDragonflyItem: {
+		DisplayName: Platinum Dragonfly Item
+		Tooltip: ""
+	}
+
+	PlatinumFrogCageItem: {
+		DisplayName: Platinum Frog Cage Item
+		Tooltip: ""
+	}
+
+	PlatinumFrogItem: {
+		DisplayName: Platinum Frog Item
+		Tooltip: ""
+	}
+
+	PlatinumGoldfishCageItem: {
+		DisplayName: Platinum Goldfish Cage Item
+		Tooltip: ""
+	}
+
+	PlatinumGoldfishItem: {
+		DisplayName: Platinum Goldfish Item
+		Tooltip: ""
+	}
+
+	PlatinumGrasshopperCageItem: {
+		DisplayName: Platinum Grasshopper Cage Item
+		Tooltip: ""
+	}
+
+	PlatinumGrasshopperItem: {
+		DisplayName: Platinum Grasshopper Item
+		Tooltip: ""
+	}
+
+	PlatinumLadyBugCageItem: {
+		DisplayName: Platinum Lady Bug Cage Item
+		Tooltip: ""
+	}
+
+	PlatinumLadyBugItem: {
+		DisplayName: Platinum Lady Bug Item
+		Tooltip: ""
+	}
+
+	PlatinumMouseCageItem: {
+		DisplayName: Platinum Mouse Cage Item
+		Tooltip: ""
+	}
+
+	PlatinumMouseItem: {
+		DisplayName: Platinum Mouse Item
+		Tooltip: ""
+	}
+
+	PlatinumSeahorseCageItem: {
+		DisplayName: Platinum Seahorse Cage Item
+		Tooltip: ""
+	}
+
+	PlatinumSeahorseItem: {
+		DisplayName: Platinum Seahorse Item
+		Tooltip: ""
+	}
+
+	PlatinumSquirrelCageItem: {
+		DisplayName: Platinum Squirrel Cage Item
+		Tooltip: ""
+	}
+
+	PlatinumSquirrelItem: {
+		DisplayName: Platinum Squirrel Item
+		Tooltip: ""
+	}
+
+	PlatinumWaterStriderCageItem: {
+		DisplayName: Platinum Water Strider Cage Item
+		Tooltip: ""
+	}
+
+	PlatinumWaterStriderItem: {
+		DisplayName: Platinum Water Strider Item
+		Tooltip: ""
+	}
+
+	PlatinumWormCageItem: {
+		DisplayName: Platinum Worm Cage Item
+		Tooltip: ""
+	}
+
+	PlatinumWormItem: {
+		DisplayName: Platinum Worm Item
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
@@ -317,4 +447,21 @@ Achievements: {
 		DisplayName: Dummy Achievement 3
 		Description: Dummy Achievement 3 Description Dummy Achievement 3 Description Dummy Achievement 3 Description Dummy Achievement 3 Description Dummy Achievement 3 Description Dummy Achievement 3 Description
 	}
+}
+
+NPCs: {
+	PlatinumBirdNpc.DisplayName: Platinum Bird Npc
+	PlatinumBunnyNpc.DisplayName: Platinum Bunny Npc
+	PlatinumButterflyNpc.DisplayName: Platinum Butterfly Npc
+	PlatinumDragonflyNpc.DisplayName: Platinum Dragonfly Npc
+	PlatinumFrogNpc.DisplayName: Platinum Frog Npc
+	PlatinumGoldfishNpc.DisplayName: Platinum Goldfish Npc
+	PlatinumGrasshopperNpc.DisplayName: Platinum Grasshopper Npc
+	PlatinumLadyBugNpc.DisplayName: Platinum Lady Bug Npc
+	PlatinumMouseNpc.DisplayName: Platinum Mouse Npc
+	PlatinumSeahorseNpc.DisplayName: Platinum Seahorse Npc
+	PlatinumSquirrelNpc.DisplayName: Platinum Squirrel Npc
+	PlatinumWalkerGoldfishNpc.DisplayName: Platinum Walker Goldfish Npc
+	PlatinumWaterStriderNpc.DisplayName: Platinum Water Strider Npc
+	PlatinumWormNpc.DisplayName: Platinum Worm Npc
 }

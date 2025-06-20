@@ -15,7 +15,7 @@ public abstract class PlatinumCritterCageItem<TTile>(string critterName) : ModIt
     {
         base.SetDefaults();
 
-        Item.CloneDefaults(ItemID.Search.GetId("Gold" + critterName));
+        Item.CloneDefaults(ItemID.Search.GetId(PlatCritterHelpers.GetGoldName(critterName)));
         Item.createTile = ModContent.TileType<TTile>();
         Item.value = Item.sellPrice(platinum: 1);
         Item.rare = ItemRarityID.LightRed;
@@ -30,7 +30,7 @@ public abstract class PlatinumCritterCageItem<TTile>(string critterName) : ModIt
         // Get the actual directory.
         var basePath = key.Split('/')[..^1];
 
-        return basePath + name;
+        return string.Join('/', basePath) + '/' + name;
     }
 }
 
@@ -73,7 +73,7 @@ public sealed class PlatinumGoldfishCageItem() : PlatinumCritterCageItem<Platinu
 
 public sealed class PlatinumGrasshopperCageItem() : PlatinumCritterCageItem<PlatinumGrasshopperTile>("Grasshopper");
 
-public sealed class PlatinumLadybugCageItem() : PlatinumCritterCageItem<PlatinumLadybugTile>("Ladybug");
+public sealed class PlatinumLadyBugCageItem() : PlatinumCritterCageItem<PlatinumLadyBugTile>("LadyBug");
 
 public sealed class PlatinumMouseCageItem() : PlatinumCritterCageItem<PlatinumMouseTile>("Mouse");
 

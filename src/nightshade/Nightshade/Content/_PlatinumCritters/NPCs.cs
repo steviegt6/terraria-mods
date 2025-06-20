@@ -119,7 +119,7 @@ public abstract class PlatinumCritterNpc<TItem>(string critterName) : ModNPC
 {
     public override string Texture => MakeTexturePath(critterName);
 
-    protected int NpcType => NPCID.Search.GetId("Gold" + critterName);
+    protected int NpcType => NPCID.Search.GetId(PlatCritterHelpers.GetGoldName(critterName));
 
     public override void SetStaticDefaults()
     {
@@ -312,7 +312,7 @@ public abstract class PlatinumCritterNpc<TItem>(string critterName) : ModNPC
         // Get the actual directory.
         var basePath = key.Split('/')[..^1];
 
-        return basePath + name;
+        return string.Join('/', basePath) + '/' + name;
     }
 }
 
@@ -414,7 +414,7 @@ public sealed class PlatinumWalkerGoldfishNpc() : PlatinumCritterNpc<PlatinumGol
 
 public sealed class PlatinumGrasshopperNpc() : PlatinumCritterNpc<PlatinumGrasshopperItem>("Grasshopper");
 
-public sealed class PlatinumLadybugNpc() : PlatinumCritterNpc<PlatinumLadybugItem>("Ladybug")
+public sealed class PlatinumLadyBugNpc() : PlatinumCritterNpc<PlatinumLadyBugItem>("LadyBug")
 {
     public override void SetStaticDefaults()
     {
