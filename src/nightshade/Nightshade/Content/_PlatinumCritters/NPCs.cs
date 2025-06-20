@@ -144,11 +144,14 @@ public abstract class PlatinumCritterNpc<TItem>(string critterName) : ModNPC
             NPCID.Sets.NormalGoldCritterBestiaryPriority.Insert(priorityIdx, Type);
         }
 
+        if (NPCID.Sets.NPCBestiaryDrawOffset.TryGetValue(NpcType, out var offset))
+        {
+            NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, offset);
+        }
+
         On_NPC.UpdateNPC_Inner += UpdateNPC_Inner_ApplyFunctionalType;
         // On_NPC.VanillaFindFrame += VanillaFindFrame_ApplyFunctionalType;
         On_NPC.UpdateNPC_CritterSounds += UpdateNpc_CritterSounds_ApplyFunctionalType;
-
-        On_NPCID.Sets.NPCBestiaryDrawOffsetCreation += NpcBestiaryDrawOffsetCreation_CopyCritterProperties;
 
         On_UnlockableNPCEntryIcon.AdjustSpecialSpawnRulesForVisuals += AdjustSpecialSpawnRulesForVisuals_ApplyFunctionalType;
 
@@ -197,20 +200,6 @@ public abstract class PlatinumCritterNpc<TItem>(string critterName) : ModNPC
         self.type = NpcType;
         orig(self);
         self.type = oldType;
-    }
-
-    private Dictionary<int, NPCID.Sets.NPCBestiaryDrawModifiers> NpcBestiaryDrawOffsetCreation_CopyCritterProperties(
-        On_NPCID.Sets.orig_NPCBestiaryDrawOffsetCreation orig
-    )
-    {
-        var res = orig();
-
-        if (res.TryGetValue(NpcType, out var val))
-        {
-            res[Type] = val;
-        }
-
-        return res;
     }
 
     private void AdjustSpecialSpawnRulesForVisuals_ApplyFunctionalType(On_UnlockableNPCEntryIcon.orig_AdjustSpecialSpawnRulesForVisuals orig, UnlockableNPCEntryIcon self, EntryIconDrawSettings settings)
