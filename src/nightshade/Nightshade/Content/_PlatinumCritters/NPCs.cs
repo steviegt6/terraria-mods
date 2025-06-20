@@ -4,11 +4,15 @@ using System.Linq;
 using Daybreak.Common.Features.Hooks;
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 using MonoMod.Cil;
 
 using Terraria;
+using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
@@ -305,6 +309,48 @@ public abstract class PlatinumCritterNpc<TItem>(string critterName) : ModNPC
         }
 
         NPC.position -= NPC.netOffset;
+    }
+
+    public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+    {
+        if (!NPC.IsABestiaryIconDummy)
+        {
+            spriteBatch.End();
+            spriteBatch.Begin(
+                SpriteSortMode.Immediate,
+                BlendState.AlphaBlend,
+                SamplerState.PointClamp,
+                DepthStencilState.Default,
+                RasterizerState.CullNone,
+                null,
+                Main.Transform
+            );
+        }
+        
+        GameShaders.Armor.GetShaderFromItemId(ItemID.ReflectiveDye).Apply(NPC, new DrawData(TextureAssets.Npc[Type].Value, NPC.position, drawColor));
+        
+        return base.PreDraw(spriteBatch, screenPos, drawColor);
+    }
+
+    public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+    {
+        Main.pixelShader.CurrentTechnique.Passes[0].Apply();
+        
+        if (!NPC.IsABestiaryIconDummy)
+        {
+            spriteBatch.End();
+            spriteBatch.Begin(
+                SpriteSortMode.Deferred,
+                BlendState.AlphaBlend,
+                Main.DefaultSamplerState,
+                DepthStencilState.None,
+                Main.Rasterizer,
+                null,
+                Main.Transform
+            );
+        }
+        
+        base.PostDraw(spriteBatch, screenPos, drawColor);
     }
 
     private static string MakeTexturePath(string name)
