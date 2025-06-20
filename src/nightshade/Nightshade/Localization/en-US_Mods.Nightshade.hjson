@@ -449,6 +449,8 @@ Achievements: {
 	}
 }
 
+Bestiary.PlatinumCritterText: Even rarer are platinum critters; a treasure for which even the stingiest of merchants would pay a fortune!
+
 NPCs: {
 	PlatinumBirdNpc.DisplayName: Platinum Bird
 	PlatinumBunnyNpc.DisplayName: Platinum Bunny

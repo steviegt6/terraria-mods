@@ -11,6 +11,7 @@ using Terraria;
 using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.UI;
 
 namespace Nightshade.Content;
 
@@ -133,7 +134,6 @@ public abstract class PlatinumCritterNpc<TItem>(string critterName) : ModNPC
         // TODO: ShimmerTransformToNpc
 
         Main.npcCatchable[Type] = Main.npcCatchable[NpcType];
-
         Main.npcFrameCount[Type] = Main.npcFrameCount[NpcType];
 
         PlatinumCritterNpcHandler.COLLECTION.Add(Type);
@@ -141,7 +141,7 @@ public abstract class PlatinumCritterNpc<TItem>(string critterName) : ModNPC
         var priorityIdx = NPCID.Sets.NormalGoldCritterBestiaryPriority.IndexOf(NpcType);
         if (priorityIdx >= 0)
         {
-            NPCID.Sets.NormalGoldCritterBestiaryPriority.Insert(priorityIdx, Type);
+            NPCID.Sets.NormalGoldCritterBestiaryPriority.Insert(priorityIdx + 1, Type);
         }
 
         if (NPCID.Sets.NPCBestiaryDrawOffset.TryGetValue(NpcType, out var offset))
@@ -150,7 +150,6 @@ public abstract class PlatinumCritterNpc<TItem>(string critterName) : ModNPC
         }
 
         On_NPC.UpdateNPC_Inner += UpdateNPC_Inner_ApplyFunctionalType;
-        // On_NPC.VanillaFindFrame += VanillaFindFrame_ApplyFunctionalType;
         On_NPC.UpdateNPC_CritterSounds += UpdateNpc_CritterSounds_ApplyFunctionalType;
 
         On_UnlockableNPCEntryIcon.AdjustSpecialSpawnRulesForVisuals += AdjustSpecialSpawnRulesForVisuals_ApplyFunctionalType;
@@ -173,20 +172,6 @@ public abstract class PlatinumCritterNpc<TItem>(string critterName) : ModNPC
         orig(self, i);
         self.type = oldType;
     }
-
-    /*private void VanillaFindFrame_ApplyFunctionalType(On_NPC.orig_VanillaFindFrame orig, NPC self, int num, bool islikeatownnpc, int type)
-    {
-        if (self.type != Type)
-        {
-            orig(self, num, islikeatownnpc, type);
-            return;
-        }
-
-        var oldType = self.type;
-        self.type = NpcType;
-        orig(self, num, islikeatownnpc, type);
-        self.type = oldType;
-    }*/
 
     private void UpdateNpc_CritterSounds_ApplyFunctionalType(On_NPC.orig_UpdateNPC_CritterSounds orig, NPC self)
     {
@@ -224,6 +209,10 @@ public abstract class PlatinumCritterNpc<TItem>(string critterName) : ModNPC
         orig(self);
 
         var bestiaryEntry = BestiaryDatabaseNPCsPopulator.FindEntryByNPCID(Type);
+        if (bestiaryEntry.Info.Count == 0)
+        {
+            return;
+        }
 
         bestiaryEntry.Info.AddRange(
             BestiaryDatabaseNPCsPopulator.FindEntryByNPCID(NpcType).Info.Where(x => x is SpawnConditionBestiaryInfoElement)
@@ -253,6 +242,12 @@ public abstract class PlatinumCritterNpc<TItem>(string critterName) : ModNPC
     public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
     {
         base.SetBestiary(database, bestiaryEntry);
+
+        bestiaryEntry.Info.AddRange(
+            [
+                new FlavorTextBestiaryInfoElement(Mods.Nightshade.Bestiary.PlatinumCritterText.KEY),
+            ]
+        );
     }
 
     public override void SetDefaults()
