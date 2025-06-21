@@ -33,6 +33,9 @@ public abstract class PlatinumCritterTile<TCageItem>(string critterName) : ModTi
         TileObjectData.newTile.CopyFrom(sourceData);
         TileObjectData.addTile(Type);
 
+        DustType = DustID.Glass;
+        HitSound = SoundID.Shatter;
+
         On_TileDrawing.GetTileDrawData += GetTileDrawData_StealDataOfVanillaTile;
     }
 
