@@ -245,7 +245,7 @@ public abstract class PlatinumCritterNpc<TItem>(string critterName) : ModNPC
         while (c.TryGotoNext(MoveType.After, x => x.MatchLdcI4(NpcType)))
         {
             c.EmitDelegate(
-                (int goldCritter) => Main.rand.NextBool(10) ? Type : goldCritter
+                (int goldCritter) => Main.hardMode && Main.rand.NextBool(10) ? Type : goldCritter
             );
         }
     }
