@@ -1,3 +1,5 @@
+using Daybreak.Common.Features.Hooks;
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -5,7 +7,6 @@ using ReLogic.Content;
 
 using Terraria;
 using Terraria.DataStructures;
-using Terraria.GameContent.Dyes;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -96,6 +97,11 @@ public sealed class ReflectivePlatinumDyeItem : ModItem
                 }
             );
         }
+
+        ModPlayerHooks.GetDyeTraderReward.Event += (_, pool) =>
+        {
+            pool.Add(Type);
+        };
     }
 
     public override void SetDefaults()
