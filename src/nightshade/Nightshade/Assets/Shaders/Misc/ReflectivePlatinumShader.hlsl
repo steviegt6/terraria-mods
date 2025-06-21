@@ -5,7 +5,7 @@ float3 uColor;
 float3 uLightSource;
 
 float3 color1 = float3(101./255.,132./255.,174./255.) * 2.05;
-float3 color2 = float3(246./255.,216./255./1.5,235./255./1.5) * 2.5; // float3(0.75, 1., 0.75);
+float3 color2 = float3(246./255.,216./255./1.5,235./255./1.5) * 3; // float3(0.75, 1., 0.75);
 
 float get_sat(float3 col)
 {
