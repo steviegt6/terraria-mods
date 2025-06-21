@@ -21,7 +21,7 @@ public sealed class ReflectivePlatinumDyeItem : ModItem
         {
             if (entity == null)
             {
-                Shader.Parameters["uLightSource"]?.SetValue(Vector3.Zero);
+                Shader.Parameters["uLightSource"]?.SetValue(new Vector3(0f, -0.47281122f, 0.5286983f));
             }
             else
             {

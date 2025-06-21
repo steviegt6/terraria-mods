@@ -1,6 +1,14 @@
+using Daybreak.Common.Rendering;
+
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+
 using MonoMod.Cil;
 
 using Terraria;
+using Terraria.DataStructures;
+using Terraria.GameContent;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -19,6 +27,54 @@ public abstract class PlatinumCritterCageItem<TTile>(string critterName) : ModIt
         Item.createTile = ModContent.TileType<TTile>();
         Item.value = Item.sellPrice(platinum: 1);
         Item.rare = ItemRarityID.LightRed;
+    }
+
+    private SpriteBatchSnapshot worldSs;
+
+    public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
+    {
+        spriteBatch.End(out worldSs);
+        spriteBatch.Begin(
+            worldSs with { SortMode = SpriteSortMode.Immediate }
+        );
+
+        GameShaders.Armor.GetShaderFromItemId(ModContent.ItemType<ReflectivePlatinumDyeItem>())
+                   .Apply(Item, new DrawData(TextureAssets.Item[Item.type].Value, Item.position, alphaColor));
+
+        return base.PreDrawInWorld(spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
+    }
+
+    public override void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
+    {
+        Main.pixelShader.CurrentTechnique.Passes[0].Apply();
+
+        spriteBatch.Restart(in worldSs);
+
+        base.PostDrawInWorld(spriteBatch, lightColor, alphaColor, rotation, scale, whoAmI);
+    }
+
+    private SpriteBatchSnapshot inventorySs;
+
+    public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
+    {
+        spriteBatch.End(out inventorySs);
+        spriteBatch.Begin(
+            inventorySs with { SortMode = SpriteSortMode.Immediate }
+        );
+
+        GameShaders.Armor.GetShaderFromItemId(ModContent.ItemType<ReflectivePlatinumDyeItem>())
+                   .Apply(null, new DrawData(TextureAssets.Item[Item.type].Value, Item.position, itemColor));
+
+        return base.PreDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
+    }
+
+    public override void PostDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
+    {
+        Main.pixelShader.CurrentTechnique.Passes[0].Apply();
+
+        spriteBatch.Restart(in inventorySs);
+
+        base.PostDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
     }
 
     private static string MakeTexturePath(string name)
@@ -68,6 +124,13 @@ public sealed class PlatinumGoldfishCageItem() : PlatinumCritterCageItem<Platinu
                 }
             );
         };
+    }
+
+    public override void SetDefaults()
+    {
+        var origHead = Item.headSlot;
+        base.SetDefaults();
+        Item.headSlot = origHead;
     }
 }
 
