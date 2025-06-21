@@ -16,8 +16,4 @@
         <ProjectReference Include="..\..\libs\Daybreak\Daybreak.csproj"/>
     </ItemGroup>
 
-    <ItemGroup>
-      <ClCompile Include="Assets\Shaders\Misc\ReflectivePlatinumShader.hlsl" />
-    </ItemGroup>
-
 </Project>

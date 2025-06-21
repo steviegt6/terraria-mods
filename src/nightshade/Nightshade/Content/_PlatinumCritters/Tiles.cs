@@ -1,13 +1,117 @@
+using Daybreak.Common.Rendering;
+
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+
+using Terraria;
+using Terraria.DataStructures;
+using Terraria.GameContent;
+using Terraria.GameContent.Drawing;
+using Terraria.Graphics.Shaders;
+using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ObjectData;
 
 namespace Nightshade.Content;
-
-// TODO: everything
 
 public abstract class PlatinumCritterTile<TCageItem>(string critterName) : ModTile
     where TCageItem : ModItem
 {
+    private sealed class FakeEntity : Entity;
+    
     public override string Texture => MakeTexturePath(critterName);
+
+    private int TileType => TileID.Search.GetId(PlatCritterHelpers.GetGoldName(critterName + "Cage"));
+
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+
+        Main.tileFrameImportant[Type] = true;
+
+        var sourceData = TileObjectData.GetTileData(TileType, 0);
+        TileObjectData.newTile.CopyFrom(sourceData);
+        TileObjectData.addTile(Type);
+
+        On_TileDrawing.GetTileDrawData += GetTileDrawData_StealDataOfVanillaTile;
+    }
+
+    private SpriteBatchSnapshot ss;
+
+    public override bool PreDraw(int i, int j, SpriteBatch spriteBatch)
+    {
+        spriteBatch.End(out ss);
+        spriteBatch.Begin(
+            ss with { SortMode = SpriteSortMode.Immediate }
+        );
+
+        GameShaders.Armor.GetShaderFromItemId(ModContent.ItemType<ReflectivePlatinumDyeItem>())
+                   .Apply(new FakeEntity
+                    {
+                        width = 16,
+                        height = 16,
+                        position = new Vector2(i, j),
+                        direction = 0,
+                    }, new DrawData(TextureAssets.Tile[Type].Value, new Vector2(i, j), Color.White));
+
+        return base.PreDraw(i, j, spriteBatch);
+    }
+
+    public override void PostDraw(int i, int j, SpriteBatch spriteBatch)
+    {
+        Main.pixelShader.CurrentTechnique.Passes[0].Apply();
+
+        spriteBatch.Restart(in ss);
+
+        base.PostDraw(i, j, spriteBatch);
+    }
+
+    private void GetTileDrawData_StealDataOfVanillaTile(
+        On_TileDrawing.orig_GetTileDrawData orig,
+        TileDrawing self,
+        int x,
+        int y,
+        Tile tileCache,
+        ushort typeCache,
+        ref short tileFrameX,
+        ref short tileFrameY,
+        out int tileWidth,
+        out int tileHeight,
+        out int tileTop,
+        out int halfBrickHeight,
+        out int addFrX,
+        out int addFrY,
+        out SpriteEffects tileSpriteEffect,
+        out Texture2D glowTexture,
+        out Rectangle glowSourceRect,
+        out Color glowColor
+    )
+    {
+        if (typeCache == Type)
+        {
+            typeCache = (ushort)TileType;
+        }
+
+        orig(
+            self,
+            x,
+            y,
+            tileCache,
+            typeCache,
+            ref tileFrameX,
+            ref tileFrameY,
+            out tileWidth,
+            out tileHeight,
+            out tileTop,
+            out halfBrickHeight,
+            out addFrX,
+            out addFrY,
+            out tileSpriteEffect,
+            out glowTexture,
+            out glowSourceRect,
+            out glowColor
+        );
+    }
 
     private static string MakeTexturePath(string name)
     {
