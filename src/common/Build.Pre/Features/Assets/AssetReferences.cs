@@ -117,12 +117,14 @@ internal sealed class EffectReference : IAssetReference
     {
         return uniformType switch
         {
+            "bool" => "bool",
             "float" => "float",
             "float2" => "Microsoft.Xna.Framework.Vector2",
             "float3" => "Microsoft.Xna.Framework.Vector3",
             "float4" => "Microsoft.Xna.Framework.Vector4",
             "matrix" => "Microsoft.Xna.Framework.Matrix",
             "sampler" => "Microsoft.Xna.Framework.Graphics.Texture2D?",
+            "texture2D" => "Microsoft.Xna.Framework.Graphics.Texture2D?",
             _ => throw new InvalidOperationException("Unsupported uniform type: " + uniformType),
         };
     }

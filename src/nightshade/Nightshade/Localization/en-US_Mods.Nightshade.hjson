@@ -319,7 +319,4 @@ Achievements: {
 	}
 }
 
-NPCs: {
-	ThawBoss.DisplayName: Thaw
-}
-
+NPCs.ThawBoss.DisplayName: Thaw
