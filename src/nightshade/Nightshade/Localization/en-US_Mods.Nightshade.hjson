@@ -285,6 +285,141 @@ Items: {
 		DisplayName: Time Cursor
 		Tooltip: ""
 	}
+
+	PlatinumBirdCageItem: {
+		DisplayName: Platinum Bird Cage
+		Tooltip: ""
+	}
+
+	PlatinumBirdItem: {
+		DisplayName: Platinum Bird
+		Tooltip: ""
+	}
+
+	PlatinumBunnyCageItem: {
+		DisplayName: Platinum Bunny Cage
+		Tooltip: ""
+	}
+
+	PlatinumBunnyItem: {
+		DisplayName: Platinum Bunny
+		Tooltip: ""
+	}
+
+	PlatinumButterflyCageItem: {
+		DisplayName: Platinum Butterfly Jar
+		Tooltip: ""
+	}
+
+	PlatinumButterflyItem: {
+		DisplayName: Platinum Butterfly
+		Tooltip: Can be used as bait indefinitely
+	}
+
+	PlatinumDragonflyCageItem: {
+		DisplayName: Platinum Dragonfly Jar
+		Tooltip: ""
+	}
+
+	PlatinumDragonflyItem: {
+		DisplayName: Platinum Dragonfly
+		Tooltip: Can be used as bait indefinitely
+	}
+
+	PlatinumFrogCageItem: {
+		DisplayName: Platinum Frog Cage
+		Tooltip: ""
+	}
+
+	PlatinumFrogItem: {
+		DisplayName: Platinum Frog
+		Tooltip: ""
+	}
+
+	PlatinumGoldfishCageItem: {
+		DisplayName: Platinum Fish Bowl
+		Tooltip: ""
+	}
+
+	PlatinumGoldfishItem: {
+		DisplayName: Platinum Goldfish
+		Tooltip: ""
+	}
+
+	PlatinumGrasshopperCageItem: {
+		DisplayName: Platinum Grasshopper Cage
+		Tooltip: ""
+	}
+
+	PlatinumGrasshopperItem: {
+		DisplayName: Platinum Grasshopper
+		Tooltip: Can be used as bait indefinitely
+	}
+
+	PlatinumLadyBugCageItem: {
+		DisplayName: Platinum Ladybug Cage
+		Tooltip: ""
+	}
+
+	PlatinumLadyBugItem: {
+		DisplayName: Platinum Ladybug
+		Tooltip: Can be used as bait indefinitely
+	}
+
+	PlatinumMouseCageItem: {
+		DisplayName: Platinum Mouse Cage
+		Tooltip: ""
+	}
+
+	PlatinumMouseItem: {
+		DisplayName: Platinum Mouse
+		Tooltip: ""
+	}
+
+	PlatinumSeahorseCageItem: {
+		DisplayName: Platinum Seahorse Cage
+		Tooltip: ""
+	}
+
+	PlatinumSeahorseItem: {
+		DisplayName: Platinum Seahorse
+		Tooltip: ""
+	}
+
+	PlatinumSquirrelCageItem: {
+		DisplayName: Platinum Squirrel Cage
+		Tooltip: ""
+	}
+
+	PlatinumSquirrelItem: {
+		DisplayName: Platinum Squirrel
+		Tooltip: ""
+	}
+
+	PlatinumWaterStriderCageItem: {
+		DisplayName: Platinum Water Strider Cage
+		Tooltip: ""
+	}
+
+	PlatinumWaterStriderItem: {
+		DisplayName: Platinum Water Strider
+		Tooltip: Can be used as bait indefinitely
+	}
+
+	PlatinumWormCageItem: {
+		DisplayName: Platinum Worm Cage
+		Tooltip: ""
+	}
+
+	PlatinumWormItem: {
+		DisplayName: Platinum Worm
+		Tooltip: Can be used as bait indefinitely
+	}
+
+	ReflectivePlatinumDyeItem: {
+		DisplayName: Reflective Platinum Dye
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
@@ -319,40 +454,21 @@ Achievements: {
 	}
 }
 
+Bestiary.PlatinumCritterText: Even rarer are platinum critters; a treasure for which even the stingiest of merchants would pay a fortune!
+
 NPCs: {
-	SlimeBoss: {
-		DisplayName: "[starspeak:Reductio ad Astra]"
-		FullBossName: "{0}, {1}"
-		BossName: Reductio ad {0}
-		BossSubtitle: Dream {0}
-
-		BossNames: {
-			0: Astra
-			1: Somnior
-			2: Excito
-			3: Hallucinor
-			4: Sidereal
-			5: Absurdum
-		}
-
-		BossTitle: "{0}"
-
-		BossTitles: {
-			0: Sleeping Star Beyond The Darkest Expanse
-			1: Aimless Wanderer Beyond The Empyrean Abyss
-		}
-
-		BossSubtitles: {
-			0: Weaver
-			1: Eater
-			2: Deeper
-			3: Above
-			4: Diver
-			5: Dweller
-			6: Composer
-			7: Mirror
-			8: Epicure
-			9: Dissenter
-		}
-	}
+	PlatinumBirdNpc.DisplayName: Platinum Bird
+	PlatinumBunnyNpc.DisplayName: Platinum Bunny
+	PlatinumButterflyNpc.DisplayName: Platinum Butterfly
+	PlatinumDragonflyNpc.DisplayName: Platinum Dragonfly
+	PlatinumFrogNpc.DisplayName: Platinum Frog
+	PlatinumGoldfishNpc.DisplayName: Platinum Goldfish
+	PlatinumWalkerGoldfishNpc.DisplayName: Platinum Goldfish
+	PlatinumGrasshopperNpc.DisplayName: Platinum Grasshopper
+	PlatinumLadyBugNpc.DisplayName: Platinum Lady Bug
+	PlatinumMouseNpc.DisplayName: Platinum Mouse
+	PlatinumSeahorseNpc.DisplayName: Platinum Seahorse
+	PlatinumSquirrelNpc.DisplayName: Platinum Squirrel
+	PlatinumWaterStriderNpc.DisplayName: Platinum Water Strider
+	PlatinumWormNpc.DisplayName: Platinum Worm
 }
