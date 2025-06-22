@@ -400,12 +400,16 @@ public abstract class PlatinumCritterNpc<TItem>(string critterName) : ModNPC
 		for (int i = 0; i < 10; i++)
 		{
             Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Platinum, 0, -1);
-		}
+			Dust c = Dust.NewDustPerfect(NPC.Center, DustID.AncientLight, Main.rand.NextVector2Circular(15, 15), newColor: Color.LightSlateGray, Scale: Main.rand.NextFloat(1f, 1.5f));
+            c.noGravity = true;
+        }
 
 		for (int i = 0; i < 20; i++)
         {
-            TrailingSparkleParticle particle = TrailingSparkleParticle.pool.RequestParticle();
-            particle.Prepare(NPC.Center, Main.rand.NextVector2Circular(2, 2), Color.LightSlateGray with { A = 10 }, Main.rand.Next(10, 80), Main.rand.NextFloat(0.3f, 1.5f));
+            Color platColor = Color.Lerp(Color.LightSlateGray, Color.PaleGoldenrod * 0.8f, Main.rand.NextFloat());
+
+			TrailingSparkleParticle particle = TrailingSparkleParticle.pool.RequestParticle();
+            particle.Prepare(NPC.Center, Main.rand.NextVector2Circular(2, 2), platColor with { A = 10 }, Main.rand.Next(10, 80), Main.rand.NextFloat(0.3f, 1.5f));
             ParticleEngine.Particles.Add(particle);
         }
 	}

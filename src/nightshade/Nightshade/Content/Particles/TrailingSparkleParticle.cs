@@ -39,7 +39,8 @@ public sealed class TrailingSparkleParticle : BaseParticle
 
 		Position += Velocity;
 
-		Dust trail = Dust.NewDustPerfect(Position, DustID.AncientLight, Vector2.zeroVector, 0, ColorTint * 0.5f, Scale);
+		float trailScale = MathF.Sqrt(Utils.GetLerpValue(MaxTime, MaxTime - 18, TimeLeft, true));
+		Dust trail = Dust.NewDustPerfect(Position, DustID.AncientLight, -Velocity * 0.1f, 0, ColorTint * 0.5f, trailScale);
 		trail.noGravity = true;
 
 		Scale *= 0.999f;
