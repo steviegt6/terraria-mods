@@ -10,6 +10,7 @@ using MonoMod.Cil;
 using Nightshade.Common.Features;
 using Nightshade.Content.Particles;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
@@ -262,7 +263,11 @@ public abstract class PlatinumCritterNpc<TItem>(string critterName) : ModNPC
         );
     }
 
-    public override void SetDefaults()
+    // TODO: Generate these 
+    public static readonly SoundStyle HitSound = new SoundStyle($"Nightshade/Assets/Sounds/NPCs/PlatinumHit", 2) with { PitchVariance = 0.1f };
+    public static readonly SoundStyle DeathSound = new SoundStyle($"Nightshade/Assets/Sounds/NPCs/PlatinumKill") with { PitchVariance = 0.05f, MaxInstances = 0 };
+
+	public override void SetDefaults()
     {
         base.SetDefaults();
 
@@ -271,7 +276,10 @@ public abstract class PlatinumCritterNpc<TItem>(string critterName) : ModNPC
 
         AIType = NpcType;
         AnimationType = NpcType;
-    }
+
+        NPC.HitSound = HitSound;
+        NPC.DeathSound = DeathSound;
+	}
 
     public override void PostAI()
     {
