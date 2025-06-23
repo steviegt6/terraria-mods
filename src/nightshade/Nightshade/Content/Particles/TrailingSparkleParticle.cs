@@ -51,6 +51,9 @@ public sealed class TrailingSparkleParticle : BaseParticle
 
 	public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spritebatch)
 	{
+		Main.instance.LoadProjectile(1007);
+		Texture2D trail = TextureAssets.Projectile[1007].Value;
+
 		Texture2D texture = TextureAssets.Extra[98].Value;
 
 		float scale = Scale * (1f + MathF.Sin(TimeLeft * 0.1f) * 0.1f) * MathF.Sqrt(Utils.GetLerpValue(MaxTime, MaxTime - 18, TimeLeft, true));
