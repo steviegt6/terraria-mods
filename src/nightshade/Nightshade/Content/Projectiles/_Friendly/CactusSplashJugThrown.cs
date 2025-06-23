@@ -14,7 +14,7 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Nightshade.Content.Projectiles._Friendly;
+namespace Nightshade.Content.Projectiles;
 
 public class CactusSplashJugThrown : ModProjectile
 {

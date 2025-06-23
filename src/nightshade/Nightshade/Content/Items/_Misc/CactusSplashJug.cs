@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-using Nightshade.Content.Projectiles._Friendly;
+using Nightshade.Content.Projectiles;
 
 using Terraria;
 using Terraria.DataStructures;

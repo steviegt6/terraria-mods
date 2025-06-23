@@ -8,7 +8,7 @@ using ReLogic.Graphics;
 using Terraria.ModLoader;
 using Terraria.UI.Chat;
 
-namespace Nightshade.Content.ChatTags;
+namespace Nightshade.Content;
 
 internal sealed class NightshadeAuthorTagHandler : ILoadableTagHandler<NightshadeAuthorTagHandler>
 {
