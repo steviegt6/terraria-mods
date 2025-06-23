@@ -91,6 +91,8 @@ internal sealed class CustomModPanelImpl
             // TODO: These should just be UITexts
             if (_mod.properties.side != ModSide.Server && (_mod.Enabled != _loaded || _configChangesRequireReload))
             {
+                drawPos += new Vector2(_uiModStateText.Width.Pixels + left2ndLine, 0f);
+
                 var reloadText = _configChangesRequireReload ? Language.GetTextValue("tModLoader.ModReloadForced") : Language.GetTextValue("tModLoader.ModReloadRequired");
                 if (style is not null)
                 {
@@ -264,12 +266,20 @@ internal sealed class CustomModPanelImpl
                 c.GotoNext(MoveType.After, i => i.MatchCallvirt<UIModStateText>(nameof(UIModStateText.SetEnabled)));
 
                 c.EmitLdarg0();
-                c.EmitDelegate((UIModItem self) => { self._modReferenceIcon.Left.Set(self._uiModStateText.Left.Pixels + self._uiModStateText.Width.Pixels + 5, 0); });
+                c.EmitDelegate((UIModItem self) =>
+                    {
+                        self._modReferenceIcon?.Left.Set(self._uiModStateText.Left.Pixels + self._uiModStateText.Width.Pixels + 5, 0);
+                    }
+                );
 
                 c.GotoNext(MoveType.After, i => i.MatchCallvirt<UIModStateText>(nameof(UIModStateText.SetDisabled)));
 
                 c.EmitLdarg0();
-                c.EmitDelegate((UIModItem self) => { self._modReferenceIcon.Left.Set(self._uiModStateText.Left.Pixels + self._uiModStateText.Width.Pixels + 5, 0); });
+                c.EmitDelegate((UIModItem self) =>
+                    {
+                        self._modReferenceIcon?.Left.Set(self._uiModStateText.Left.Pixels + self._uiModStateText.Width.Pixels + 5, 0);
+                    }
+                );
             }
         );
         return;
