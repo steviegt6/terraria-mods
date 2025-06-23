@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 
+using Daybreak.Common.Features.PotLoot;
+
 using Nightshade.Common.Features;
 
 using Terraria;
@@ -9,7 +11,7 @@ using Terraria.ObjectData;
 
 namespace Nightshade.Content.Tiles;
 
-internal abstract class AbstractPot : ModTile, IPot
+internal abstract class AbstractPot : ModTile, IHasPotBehavior
 {
     public abstract PotBehavior Behavior { get; }
     

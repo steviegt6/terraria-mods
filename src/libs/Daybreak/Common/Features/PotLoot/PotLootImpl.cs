@@ -6,7 +6,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Nightshade.Common.Features;
+namespace Daybreak.Common.Features.PotLoot;
 
 internal sealed class PotLootImpl : ModSystem
 {
@@ -29,7 +29,7 @@ internal sealed class PotLootImpl : ModSystem
                 return true;
         }
 
-        if (TileLoader.GetTile(type) is IPot potTile)
+        if (TileLoader.GetTile(type) is IHasPotBehavior potTile)
         {
             pot = potTile.Behavior;
             return true;

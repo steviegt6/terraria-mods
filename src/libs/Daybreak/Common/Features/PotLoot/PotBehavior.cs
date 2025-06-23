@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 
-namespace Nightshade.Common.Features;
+namespace Daybreak.Common.Features.PotLoot;
 
 /// <summary>
 ///     Describes the behavior of a pot.

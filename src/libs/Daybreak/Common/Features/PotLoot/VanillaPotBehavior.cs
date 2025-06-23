@@ -4,7 +4,7 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 
-namespace Nightshade.Common.Features;
+namespace Daybreak.Common.Features.PotLoot;
 
 /// <summary>
 ///     Provides implementations for vanilla pot types.

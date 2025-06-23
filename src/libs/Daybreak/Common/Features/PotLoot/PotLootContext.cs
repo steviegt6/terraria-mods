@@ -1,4 +1,4 @@
-namespace Nightshade.Common.Features;
+namespace Daybreak.Common.Features.PotLoot;
 
 public readonly record struct PotBreakContext(
     int X,

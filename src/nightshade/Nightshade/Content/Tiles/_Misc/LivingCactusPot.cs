@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 
+using Daybreak.Common.Features.PotLoot;
+
 using Microsoft.Xna.Framework;
 
 using Nightshade.Common.Features;

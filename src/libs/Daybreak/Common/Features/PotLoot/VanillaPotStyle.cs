@@ -1,4 +1,4 @@
-namespace Nightshade.Common.Features;
+namespace Daybreak.Common.Features.PotLoot;
 
 /// <summary>
 ///     Well-known pot styles for the vanilla pot types.
