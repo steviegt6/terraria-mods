@@ -66,7 +66,7 @@ internal sealed class CustomModPanelImpl
         {
             var ptr = typeof(UIPanel).GetMethod("DrawSelf", BindingFlags.NonPublic | BindingFlags.Instance)!.MethodHandle.GetFunctionPointer();
             var baseDrawSelf = (Action<SpriteBatch>)Activator.CreateInstance(typeof(Action<SpriteBatch>), this, ptr)!;
-            var drawPanelDivider = false;
+            var drawPanelDivider = true;
             if (!TryGetPanelStyle(currentMod, out var style))
             {
                 baseDrawSelf(spriteBatch);

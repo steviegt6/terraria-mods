@@ -261,7 +261,8 @@ internal sealed class PanelStyle : ModPanelStyleExt
 
     public override bool PreDrawPanel(UIModItem element, SpriteBatch sb, ref bool drawDivider)
     {
-        drawDivider = true;
+        drawDivider = false;
+
         if (element._needsTextureLoading)
         {
             element._needsTextureLoading = false;
