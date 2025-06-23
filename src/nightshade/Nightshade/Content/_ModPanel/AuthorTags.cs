@@ -1,3 +1,10 @@
+using System;
+
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+
+using Terraria;
+
 namespace Nightshade.Content;
 
 internal abstract class CommonAuthorTag : AuthorTag
@@ -17,7 +24,19 @@ internal sealed class CitrusTag : CommonAuthorTag;
 
 internal sealed class EbonflyTag : CommonAuthorTag;
 
-internal sealed class BlockarozTag : CommonAuthorTag;
+internal sealed class BlockarozTag : CommonAuthorTag
+{
+    public override void DrawIcon(SpriteBatch sb, Vector2 position)
+    {
+        base.DrawIcon(sb, position);
+
+        sb.Draw(
+            Assets.Images.UI.AuthorTags.Blockaroz_Overlay.Asset.Value,
+            new Rectangle((int)position.X, (int)position.Y - 2, 26, 26),
+            Color.Red with { A = 20 } * Math.Abs(MathF.Sin(Main.GlobalTimeWrappedHourly * MathHelper.TwoPi * 0.1f))
+        );
+    }
+}
 
 internal sealed class TyeskiTag : CommonAuthorTag;
 
