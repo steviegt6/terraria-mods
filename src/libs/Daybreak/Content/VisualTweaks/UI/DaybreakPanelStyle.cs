@@ -174,8 +174,10 @@ internal sealed class DaybreakPanelStyle : ModPanelStyleExt
         return false;
     }
 
-    public override bool PreDrawPanel(UIModItem element, SpriteBatch sb)
+    public override bool PreDrawPanel(UIModItem element, SpriteBatch sb, ref bool drawDivider)
     {
+        drawDivider = false;
+        
         if (element._needsTextureLoading)
         {
             element._needsTextureLoading = false;
