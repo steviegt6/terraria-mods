@@ -65,36 +65,10 @@ public sealed class LivingBorealLeaf : ModTile
 
 	public override IEnumerable<Item> GetItemDrops(int i, int j) => [];
 
-	//public override void ModifyFrameMerge(int i, int j, ref int up, ref int down, ref int left, ref int right, ref int upLeft, ref int upRight, ref int downLeft, ref int downRight)
-	//{
-	//	base.ModifyFrameMerge(i, j, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
-
-	//	WorldGen.TileMergeAttempt(-2, TileID.SnowBlock, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
-	//}
-}
-
-public sealed class LivingBorealVine : ModTile
-{
-    public override string Texture => Assets.Images.Tiles.Misc.LivingBorealVine.KEY;
-
-    public override void SetStaticDefaults()
-    {
-        base.SetStaticDefaults();
-
-		TileID.Sets.VineThreads[Type] = true;
-		TileID.Sets.IsVine[Type] = true;
-
-		DustType = DustID.Grass;
-        HitSound = SoundID.Grass;
-
-		AddMapEntry(new Color(24, 137, 94));
-	}
-
-	public override IEnumerable<Item> GetItemDrops(int i, int j) => [];
-
-	public override bool PreDraw(int i, int j, SpriteBatch spriteBatch)
+	public override void ModifyFrameMerge(int i, int j, ref int up, ref int down, ref int left, ref int right, ref int upLeft, ref int upRight, ref int downLeft, ref int downRight)
 	{
-		Main.instance.TilesRenderer.CrawlToTopOfVineAndAddSpecialPoint(j, i);
-		return base.PreDraw(i, j, spriteBatch);
+		base.ModifyFrameMerge(i, j, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
+
+		//WorldGen.TileMergeAttempt(-2, TileID.SnowBlock, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
 	}
 }

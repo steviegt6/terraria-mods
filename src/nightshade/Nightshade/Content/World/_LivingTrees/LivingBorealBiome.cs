@@ -2,16 +2,14 @@
 using Nightshade.Common.Utilities;
 using Nightshade.Content.Tiles;
 using Nightshade.Content.Tiles.Furniture;
+using Nightshade.Content.Walls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.GameContent.Generation;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.Utilities;
 using Terraria.WorldBuilding;
 
 namespace Nightshade.Content.World._LivingTrees;
@@ -37,11 +35,9 @@ public sealed class LivingBorealBiome : MicroBiome
 
 	private static ushort LeafType => (ushort)ModContent.TileType<LivingBorealLeaf>();
 
-	private static ushort VineType => (ushort)ModContent.TileType<LivingBorealVine>();
-
 	private static ushort PlatformType => (ushort)TileID.Platforms;
 
-	private static ushort WallType => (ushort)WallID.LivingWood;
+	private static ushort WallType => (ushort)ModContent.WallType<LivingBorealWoodWall>();
 
 	public override bool Place(Point origin, StructureMap structures)
 	{
