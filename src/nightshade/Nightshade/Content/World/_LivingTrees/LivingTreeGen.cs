@@ -5,10 +5,11 @@ using Microsoft.Xna.Framework;
 using MonoMod.Cil;
 
 using Nightshade.Common.Utilities;
-
+using Nightshade.Content.World._LivingTrees;
 using Terraria;
 using Terraria.GameContent.Biomes.Desert;
 using Terraria.GameContent.Generation;
+using Terraria.ID;
 using Terraria.IO;
 using Terraria.ModLoader;
 using Terraria.WorldBuilding;
@@ -19,7 +20,8 @@ internal sealed class LivingTreeGen : ModSystem
 {
     public override void Load()
     {
-        WorldGen.DetourPass((PassLegacy)WorldGen.VanillaGenPasses["Micro Biomes"], GenLivingTrees);
+        WorldGen.DetourPass((PassLegacy)WorldGen.VanillaGenPasses["Living Trees"], GenBigLivingTrees);
+        WorldGen.DetourPass((PassLegacy)WorldGen.VanillaGenPasses["Micro Biomes"], GenSmallLivingTrees);
 
         // When attempting to place oases, place a ball cactus instead if it
         // fails.  These spawn outside of the desert (instead, in dunes), so it
@@ -33,7 +35,7 @@ internal sealed class LivingTreeGen : ModSystem
                 c.GotoNext(MoveType.Before, x => x.MatchCall<WorldGen>(nameof(WorldGen.PlaceOasis)));
                 c.Remove();
 
-                c.EmitDelegate((int x, int y) => WorldGen.PlaceOasis(x, y) || PlaceBallCactus(x, y));
+                c.EmitDelegate((int x, int y) => WorldGen.PlaceOasis(x, y) || PlaceSurfaceBallCactus_FromSpace(x));
             }
         );
 
@@ -49,14 +51,11 @@ internal sealed class LivingTreeGen : ModSystem
                 var y = description.Surface[x];
 
                 // if below ground, travel up
-                while (Main.tile[x, y - 1].HasTile)
+                int airThreshold = 5;
+                while (Main.tile[x, y - 1].HasTile && airThreshold > 0)
                 {
                     y--;
-
-                    if (y < description.Desert.Y)
-                    {
-                        break;
-                    }
+                    airThreshold--;
                 }
 
                 i++;
@@ -72,18 +71,21 @@ internal sealed class LivingTreeGen : ModSystem
     }
 
 	private static int LivingCactusCount { get; set; }
+	private static int LivingPalmCount { get; set; }
+	private static int LivingBorealCount { get; set; }
 
-    private static void GenLivingTrees(WorldGen.orig_GenPassDetour orig, object self, GenerationProgress progress, GameConfiguration configuration)
-    {
-        GenCacti(progress);
+    private static void GenSmallLivingTrees(WorldGen.orig_GenPassDetour orig, object self, GenerationProgress progress, GameConfiguration configuration)
+	{
+		orig(self, progress, configuration);
 
-        orig(self, progress, configuration);
+		progress.Message = Lang.gen[76].Value + ".. More Living Trees";
+
+		GenCacti(progress);
+        GenPalms(progress);
     }
 
     private static void GenCacti(GenerationProgress progress)
     {
-        progress.Message = Lang.gen[76].Value + ".. More Living Trees";
-
         LivingCactusCount = WorldGen.genRand.Next(1, 5) + WorldGen.GetWorldSize() * 2;
 
         if (WorldGen.drunkWorldGen)
@@ -114,23 +116,105 @@ internal sealed class LivingTreeGen : ModSystem
         cactus.Place(new Point(locationX, GenVars.desertHiveHigh), GenVars.structures);
     }
 
-    private static bool PlaceBallCactus(int x, int y)
+    private static bool PlaceSurfaceBallCactus_FromSpace(int x)
     {
-        // Let's not spawn too many.
-        if (!WorldGen.genRand.NextBool(3) || y > GenVars.desertHiveHigh + 50)
-        {
-            return false;
-        }
+	    for (var y = 0; y < Main.worldSurface; y++)
+	    {
+		    var tile = Main.tile[x, y];
+		    if (!tile.HasTile)
+		    {
+			    continue;
+		    }
 
-        var terrainSlope = NightshadeGenUtil.GetAverageSurfaceSlope(x, y, 15);
-        if (Math.Abs(terrainSlope) > 0.2f)
-        {
-            return false;
-        }
+		    if (Main.tile[x, y].TileType != TileID.Sand)
+		    {
+			    break;
+		    }
 
-        var cactus = GenVars.configuration.CreateBiome<LivingCactusBiome>();
+		    return PlaceSurfaceBallCactus(x, y);
+	    }
+
+	    return false;
+    }
+
+    private static bool PlaceSurfaceBallCactus(int x, int y)
+    {
+		if (x < WorldGen.beachDistance || x > Main.maxTilesX - WorldGen.beachDistance || y > Main.worldSurface - 10)
+			return false;
+
+		// Let's not spawn too many.
+		if (!WorldGen.genRand.NextBool(3) || y > GenVars.desertHiveHigh + 50)
+			return false;
+
+		var terrainSlope = NightshadeGenUtil.GetAverageSurfaceSlope(x, y, 15);
+        if (Math.Abs(terrainSlope) > 0.15f)
+			return false;
+
+		var cactus = GenVars.configuration.CreateBiome<LivingCactusBiome>();
         cactus.Round = true;
         cactus.WithWater = false;
         return cactus.Place(new Point(x, y), GenVars.structures);
     }
+
+    private static void GenPalms(GenerationProgress progress)
+    {
+        LivingPalmCount = (!WorldGen.genRand.NextBool(4)).ToInt() + WorldGen.genRand.NextBool().ToInt();
+
+        if (Main.drunkWorld)
+			LivingPalmCount = 10;
+
+		float count = 0;
+        int fallback = 20000;
+        LivingPalmBiome palm = GenVars.configuration.CreateBiome<LivingPalmBiome>();
+
+        bool flipSide = WorldGen.genRand.NextBool();
+		while (count < LivingPalmCount && fallback > 0)
+		{
+            int direction = WorldGen.genRand.NextBool().ToDirectionInt();
+			palm.StartCurl = WorldGen.genRand.NextFloat(0.2f) * -direction;
+			palm.CurlStrength = WorldGen.genRand.NextFloat(0.5f, 1f) * direction;
+
+            int left = flipSide ? Main.maxTilesX - WorldGen.beachDistance : (int)(WorldGen.beachDistance / 1.5f);
+            int right = flipSide ? Main.maxTilesX - (int)(WorldGen.beachDistance / 1.5f) : WorldGen.beachDistance;
+
+            if (palm.Place(new Point(WorldGen.genRand.Next(left, right), (int)(Main.worldSurface) - 300), GenVars.structures))
+            {
+                count++;
+			    progress.Set(count / LivingPalmCount);
+            }
+
+            flipSide = !flipSide;
+			fallback--;
+        }
+	}
+
+    private static void GenBigLivingTrees(WorldGen.orig_GenPassDetour orig, object self, GenerationProgress progress, GameConfiguration configuration)
+    {
+		orig(self, progress, configuration);
+
+        LivingBorealCount = WorldGen.genRand.NextBool().ToInt();
+
+		if (Main.drunkWorld)
+			LivingBorealCount = 14;
+
+		int fallback = 2000;
+        int count = 0;
+
+        LivingBorealBiome boreal = GenVars.configuration.CreateBiome<LivingBorealBiome>();
+
+		while (count < LivingBorealCount && fallback > 0)
+        {
+            Point placePoint = new Point(
+                WorldGen.genRand.Next(GenVars.snowOriginLeft + 60, GenVars.snowOriginRight - 60), 
+                WorldGen.genRand.Next(GenVars.snowTop - 220, GenVars.snowTop - 180));
+
+			if (boreal.Place(placePoint, GenVars.structures))
+            {
+                count++;
+				progress.Set(count / LivingBorealCount);
+			}
+
+			fallback--;
+		}
+	}
 }

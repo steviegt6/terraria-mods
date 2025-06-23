@@ -35,7 +35,7 @@ public sealed class LivingCactus : ModTile
         Main.tileMerge[Type][TileID.Grass] = true;
         Main.tileMerge[TileID.Grass][Type] = true;
 
-        DustType = DustID.t_Cactus;
+        DustType = DustID.OasisCactus;
         HitSound = SoundID.Dig;
 
 		RegisterItemDrop(ItemID.Cactus);
@@ -43,9 +43,9 @@ public sealed class LivingCactus : ModTile
 		AddMapEntry(new Color(121, 158, 29));
     }
 
-    public override IEnumerable<Item> GetItemDrops(int i, int j) => [new Item(ItemID.Cactus)];
+	public override IEnumerable<Item> GetItemDrops(int i, int j) => [new Item(ItemID.Cactus)];
 
-    public override void ModifyFrameMerge(int i, int j, ref int up, ref int down, ref int left, ref int right, ref int upLeft, ref int upRight, ref int downLeft, ref int downRight)
+	public override void ModifyFrameMerge(int i, int j, ref int up, ref int down, ref int left, ref int right, ref int upLeft, ref int upRight, ref int downLeft, ref int downRight)
     {
         base.ModifyFrameMerge(i, j, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
 
@@ -68,23 +68,24 @@ public sealed class LivingCactusWood : ModTile
 
 		TileID.Sets.ChecksForMerge[Type] = true;
 		Main.tileMerge[Type][ModContent.TileType<LivingCactus>()] = true;
-        Main.tileMerge[Type][TileID.Sand] = true;
-        Main.tileMerge[TileID.Sand][Type] = true;
-        Main.tileMerge[Type][TileID.Sandstone] = true;
-        Main.tileMerge[TileID.Sandstone][Type] = true;
-        Main.tileMerge[Type][TileID.HardenedSand] = true;
-        Main.tileMerge[TileID.HardenedSand][Type] = true;
-        Main.tileMerge[Type][TileID.Dirt] = true;
-        Main.tileMerge[TileID.Dirt][Type] = true;
-        Main.tileMerge[Type][TileID.Grass] = true;
-        Main.tileMerge[TileID.Grass][Type] = true;
+        //Main.tileMerge[Type][TileID.Sand] = true;
+        //Main.tileMerge[TileID.Sand][Type] = true;
+        //Main.tileMerge[Type][TileID.Sandstone] = true;
+        //Main.tileMerge[TileID.Sandstone][Type] = true;
+        //Main.tileMerge[Type][TileID.HardenedSand] = true;
+        //Main.tileMerge[TileID.HardenedSand][Type] = true;
+        //Main.tileMerge[Type][TileID.Dirt] = true;
+        //Main.tileMerge[TileID.Dirt][Type] = true;
+        //Main.tileMerge[Type][TileID.Grass] = true;
+        //Main.tileMerge[TileID.Grass][Type] = true;
 
         DustType = DustID.PalmWood;
         HitSound = SoundID.Dig;
 
 		RegisterItemDrop(ModContent.ItemType<CactusWoodBlock>());
+
 		AddMapEntry(new Color(207, 167, 82));
     }
 
-	public override IEnumerable<Item> GetItemDrops(int i, int j) => [new Item(ModContent.ItemType<CactusWoodBlock>())];
+    public override IEnumerable<Item> GetItemDrops(int i, int j) => [new Item(ModContent.ItemType<CactusWoodBlock>())];
 }

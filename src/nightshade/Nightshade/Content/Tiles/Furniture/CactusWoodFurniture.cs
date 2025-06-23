@@ -1,11 +1,10 @@
 using Microsoft.Xna.Framework;
-
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
 
-namespace Nightshade.Content.Tiles;
+namespace Nightshade.Content.Tiles.Furniture;
 
 public sealed class CactusWoodPlatform : ModTile
 {

@@ -22,7 +22,7 @@ public class CactusSplashJugThrown : ModProjectile
 
 	public override void SetDefaults()
 	{
-		Projectile.width = 16;
+		Projectile.width = 12;
 		Projectile.height = 10;
 		Projectile.hostile = false;
 		Projectile.tileCollide = true;
@@ -36,7 +36,6 @@ public class CactusSplashJugThrown : ModProjectile
 		if (BurstState == 1 && Time > 0)
 		{
 			SoundEngine.PlaySound(SoundID.SplashWeak with { Pitch = -1f, PitchVariance = 0.3f, MaxInstances = 0 }, Projectile.Center);
-			Projectile.velocity.Y *= -1;
 			Projectile.Kill();
 		}
 
@@ -76,6 +75,22 @@ public class CactusSplashJugThrown : ModProjectile
 
 	public const int HEAL_AMOUNT = 30;
 	public const int HEAL_RADIUS = 150;
+
+	public override bool OnTileCollide(Vector2 oldVelocity)
+	{
+		if (BurstState == 1)
+		{
+			Projectile.velocity = oldVelocity;
+			return true;
+		}
+
+		if (Math.Abs(Projectile.velocity.X - oldVelocity.X) > 0)
+			Projectile.velocity.X = -oldVelocity.X;
+		if (Math.Abs(Projectile.velocity.Y - oldVelocity.Y) > 0)
+			Projectile.velocity.Y = -oldVelocity.Y;
+
+		return true;
+	}
 
 	public override void OnKill(int timeLeft)
 	{
@@ -118,34 +133,36 @@ public class CactusSplashJugThrown : ModProjectile
 			Main.player[index].Heal(amtToHeal + Main.rand.Next(-8, 8));
 		}
 
-		var splashVelocity = new Vector2(Projectile.velocity.X * 0.33f, -Projectile.velocity.Y - 2f);
-
 		for (var i = 0; i < Main.rand.Next(15, 25); i++)
 		{
-			var dropletVel = splashVelocity * Main.rand.NextFloat() + Main.rand.NextVector2Circular(6, 6);
+			var dropletVel = Projectile.velocity * 0.5f + Main.rand.NextVector2Circular(7, 7);
 			Dust.NewDustPerfect(Projectile.Center + Main.rand.NextVector2Circular(8, 8), ModContent.DustType<DotDropletDust>(), dropletVel, 0, JuiceColor(), Main.rand.NextFloat(0.6f, 2f));
 		}
 
 		var glowSplash = GlowSplashParticle.pool.RequestParticle();
-		glowSplash.Prepare(Projectile.Center, 0f, (JuiceColor() * 0.4f) with { A = 0 }, 0.9f, 12);
+		glowSplash.Prepare(Projectile.Center, 0, (JuiceColor() * 0.4f) with { A = 0 }, 0.5f, 10);
 		glowSplash.Lighted = false;
 		ParticleEngine.Particles.Add(glowSplash);
 
 		for (var i = 0; i < Main.rand.Next(18, 25); i++)
 		{
-			var dropletVel = splashVelocity * Main.rand.NextFloat(1.5f) + Main.rand.NextVector2Circular(8, 8);
+			var dropletVel = Projectile.velocity * Main.rand.NextFloat() + Main.rand.NextVector2Circular(12, 12);
 			var splash = LiquidSplashParticle.pool.RequestParticle();
 			splash.Prepare(Projectile.Center, dropletVel, JuiceColor() * 1.1f, Main.rand.NextFloat(1f, 2f), Main.rand.Next(15, 35));
 			splash.Lighted = true;
 			ParticleEngine.Particles.Add(splash);
+
+			Color color = Color.Lerp(Color.DarkOliveGreen, Color.ForestGreen, Main.rand.NextFloat());
+			Dust.NewDustPerfect(Projectile.Center + Main.rand.NextVector2Circular(10, 10), DustID.FoodPiece, Projectile.velocity.RotatedByRandom(2f) * Main.rand.NextFloat(0.5f), newColor: color);
 		}
 
-		// TODO: Sound, gore
+		// TODO: Sound
 
 		SoundEngine.PlaySound(SoundID.Dig with { Volume = 0.7f, Pitch = 1, PitchVariance = 0.2f, MaxInstances = 0 }, Projectile.Center);
+		SoundEngine.PlaySound(SoundID.Dig with { Volume = 0.7f, Pitch = -0.5f, PitchVariance = 0.2f, MaxInstances = 0 }, Projectile.Center);
 		SoundEngine.PlaySound(SoundID.Item167 with { Volume = 0.7f, Pitch = 1f, PitchVariance = 0.2f, MaxInstances = 0 }, Projectile.Center);
 		SoundEngine.PlaySound(SoundID.Splash with { Volume = 0.8f, Pitch = 0.8f, PitchVariance = 0.3f, MaxInstances = 0 }, Projectile.Center);
-		SoundEngine.PlaySound(SoundID.Item107 with { Volume = 0.3f, Pitch = 0.6f, PitchVariance = 0.2f, MaxInstances = 0 }, Projectile.Center);
+		SoundEngine.PlaySound(SoundID.Splash with { Volume = 0.8f, Pitch = 0.3f, PitchVariance = 0.3f, MaxInstances = 0 }, Projectile.Center);
 	}
 
 	private void HealNPC(NPC npc, int amount)

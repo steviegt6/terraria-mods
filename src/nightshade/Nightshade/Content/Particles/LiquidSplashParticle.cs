@@ -51,9 +51,16 @@ public class LiquidSplashParticle : BaseParticle
 		Velocity.Y *= 0.93f;
 		Velocity.Y += (float)LifeTime / MaxLifeTime;
 
-		if (Collision.SolidTiles(Position - new Vector2(4), 8, 8))
+		if (Collision.WetCollision(Position - new Vector2(6), 12, 12))
 		{
-			LifeTime += 2;
+			Velocity.Y *= 0.9f;
+			Velocity.Y -= 0.4f;
+		}
+
+		if (Collision.SolidTiles(Position - new Vector2(6), 12, 12))
+		{
+			LifeTime++;
+			Velocity *= 0.9f;
 		}
 
 		if (++LifeTime >= MaxLifeTime)

@@ -17,3 +17,16 @@ public sealed class LivingCactusWoodWall : ModWall
 		AddMapEntry(new Color(84, 67, 33));
     }
 }
+
+public sealed class LivingBorealWoodWall : ModWall
+{
+    public override string Texture => Assets.Images.Walls.Misc.LivingBorealWoodWall.KEY;
+
+    public override void SetStaticDefaults()
+    {
+        DustType = DustID.BorealWood_Small;
+        HitSound = SoundID.Dig;
+
+		AddMapEntry(new Color(84, 67, 33));
+    }
+}

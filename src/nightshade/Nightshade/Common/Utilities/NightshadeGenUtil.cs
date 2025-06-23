@@ -1,11 +1,55 @@
-﻿using Microsoft.Xna.Framework;
-
+﻿using Microsoft.VisualBasic;
+using Microsoft.Xna.Framework;
+using ReLogic.OS;
+using System.Linq;
 using Terraria;
+using Terraria.ID;
+using Terraria.WorldBuilding;
 
 namespace Nightshade.Common.Utilities;
 
-internal static class NightshadeGenUtil
+public static class NightshadeGenUtil
 {
+	public static class Conditions
+	{
+		public sealed class IsSolidSurface(bool allowWet = false) : GenCondition
+		{
+			protected override bool CheckValidity(int x, int y)
+			{
+				if (!WorldGen.InWorld(x, y, 5))
+					return false;
+
+				if (Main.tile[x, y].HasTile)
+				{
+					bool hasAir = Main.tileSolid[Main.tile[x, y].TileType] && !Main.tile[x, y - 1].HasTile && !Main.tile[x, y - 2].HasTile;
+					if (allowWet)
+						return hasAir;
+
+					return hasAir && Main.tile[x, y - 1].LiquidAmount < 1 && Main.tile[x, y - 2].LiquidAmount < 1;
+				}
+
+				return false;
+			}
+		}
+
+		public sealed class IsNotTile(params int[] tileTypes) : GenCondition
+		{
+			protected override bool CheckValidity(int x, int y)
+			{
+				if (!WorldGen.InWorld(x, y))
+					return false;
+
+				if (tileTypes is null || tileTypes.Length == 0)
+					return !Main.tile[x, y].HasTile;
+
+				if (tileTypes.Any(n => Main.tile[x, y].TileType == n))
+					return false;
+
+				return true;
+			}
+		}
+	}
+
 	public static int GetNearestSolidHeight(int x, int y, int maxDistance)
 	{
 		var i = 0;
@@ -104,4 +148,39 @@ internal static class NightshadeGenUtil
 			}
 		}
 	}
+
+	public static void PlacePlatform(int x, int y, ushort type = TileID.Platforms, int style = 0)
+	{
+		int left = x;
+		int right = x;
+
+		while (true)
+		{
+			if (!WorldGen.InWorld(left - 1, y))
+				break;
+
+			if (WorldGen.SolidTile(left - 1, y))
+				break;
+
+			left--;
+		}
+
+		while (true)
+		{
+			if (!WorldGen.InWorld(right + 1, y))
+				break;
+
+			if (WorldGen.SolidTile(right + 1, y))
+				break;
+
+			right++;
+		}
+
+		for (int i = left; i <= right; i++)
+		{
+			WorldGen.PlaceTile(i, y, type, true, style: style);
+			WorldGen.SquareTileFrame(i, y);
+		}
+	}
 }
+
