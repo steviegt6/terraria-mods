@@ -1,5 +1,4 @@
-using Nightshade.Content.Tiles;
-
+using Nightshade.Content.Tiles.Furniture;
 using Terraria.ModLoader;
 
 namespace Nightshade.Content.Items;
