@@ -7,8 +7,10 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using MonoMod.Cil;
-
+using Nightshade.Common.Features;
+using Nightshade.Content.Particles;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
@@ -261,7 +263,11 @@ public abstract class PlatinumCritterNpc<TItem>(string critterName) : ModNPC
         );
     }
 
-    public override void SetDefaults()
+    // TODO: Generate these 
+    public static readonly SoundStyle HitSound = new SoundStyle($"Nightshade/Assets/Sounds/NPCs/PlatinumHit", 2) with { PitchVariance = 0.1f };
+    public static readonly SoundStyle DeathSound = new SoundStyle($"Nightshade/Assets/Sounds/NPCs/PlatinumKill") with { PitchVariance = 0.05f, MaxInstances = 0 };
+
+	public override void SetDefaults()
     {
         base.SetDefaults();
 
@@ -270,7 +276,10 @@ public abstract class PlatinumCritterNpc<TItem>(string critterName) : ModNPC
 
         AIType = NpcType;
         AnimationType = NpcType;
-    }
+
+        NPC.HitSound = HitSound;
+        NPC.DeathSound = DeathSound;
+	}
 
     public override void PostAI()
     {
@@ -387,15 +396,31 @@ public abstract class PlatinumCritterNpc<TItem>(string critterName) : ModNPC
     {
         base.OnKill();
 
-        ParticleOrchestrator.RequestParticleSpawn(
-            clientOnly: true,
-            ParticleOrchestraType.ShimmerTownNPCSend,
-            new ParticleOrchestraSettings
-            {
-                PositionInWorld = NPC.Center,
-            }
-        );
-    }
+		ParticleOrchestrator.RequestParticleSpawn(
+			clientOnly: true,
+			ParticleOrchestraType.PaladinsHammer,
+			new ParticleOrchestraSettings
+			{
+				PositionInWorld = NPC.Center,
+			}
+		);
+
+		for (int i = 0; i < 10; i++)
+		{
+            Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Platinum, 0, -1);
+			Dust c = Dust.NewDustPerfect(NPC.Center, DustID.AncientLight, Main.rand.NextVector2Circular(15, 15), newColor: Color.LightSlateGray, Scale: Main.rand.NextFloat(1f, 1.5f));
+            c.noGravity = true;
+        }
+
+		for (int i = 0; i < 20; i++)
+        {
+            Color platColor = Color.Lerp(Color.LightSlateGray, Color.PaleGoldenrod * 0.8f, Main.rand.NextFloat());
+
+			TrailingSparkleParticle particle = TrailingSparkleParticle.pool.RequestParticle();
+            particle.Prepare(NPC.Center, Main.rand.NextVector2Circular(2, 2), platColor with { A = 10 }, Main.rand.Next(10, 80), Main.rand.NextFloat(0.3f, 1.5f));
+            ParticleEngine.Particles.Add(particle);
+        }
+	}
 
     private static string MakeTexturePath(string name)
     {

@@ -100,21 +100,6 @@ internal sealed class LivingCactusPot : AbstractPot
     }
 }
 
-internal sealed class LivingCactusPotPlacer : ModItem
-{
-    public override string Texture => Assets.Images.Items.Misc.LivingPalmWoodBlock.KEY;
-
-    public override void SetDefaults()
-    {
-        base.SetDefaults();
-
-        Item.DefaultToPlaceableTile(ModContent.TileType<LivingCactusPot>());
-
-        Item.value = 100;
-        Item.rare = ItemRarityID.Green;
-    }
-}
-
 internal sealed class PotGoreLoader : ILoadable
 {
     public void Load(Mod mod)

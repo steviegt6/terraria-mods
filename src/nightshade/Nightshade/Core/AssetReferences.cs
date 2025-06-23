@@ -2377,6 +2377,27 @@ internal static class AssetReferences
                 }
             }
         }
+
+        public static class Sounds
+        {
+            public static class NPCs
+            {
+                public static class PlatinumHit1
+                {
+                    // TODO: PlatinumHit1
+                }
+
+                public static class PlatinumHit2
+                {
+                    // TODO: PlatinumHit2
+                }
+
+                public static class PlatinumKill
+                {
+                    // TODO: PlatinumKill
+                }
+            }
+        }
     }
 
     public static class Content
