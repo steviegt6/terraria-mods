@@ -420,6 +420,21 @@ Items: {
 		DisplayName: Reflective Platinum Dye
 		Tooltip: ""
 	}
+
+	HangingCoconutItem: {
+		DisplayName: Hanging Coconut Item
+		Tooltip: ""
+	}
+
+	LivingPalmLeafWand: {
+		DisplayName: Living Palm Leaf Wand
+		Tooltip: ""
+	}
+
+	LivingPalmWoodWand: {
+		DisplayName: Living Palm Wood Wand
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
@@ -433,6 +448,7 @@ Projectiles: {
 	StarFragmentProjSpawner.DisplayName: Star Fragment Proj Spawner
 	PreDigesterHeldProj.DisplayName: Pre Digester Held Proj
 	CactusSplashJugThrown.DisplayName: Cactus Splash Jug Thrown
+	FallingCoconutProjectile.DisplayName: Falling Coconut Projectile
 }
 
 Configs.DummyConfig.DisplayName: Dummy Config
@@ -471,4 +487,7 @@ NPCs: {
 	PlatinumSquirrelNpc.DisplayName: Platinum Squirrel
 	PlatinumWaterStriderNpc.DisplayName: Platinum Water Strider
 	PlatinumWormNpc.DisplayName: Platinum Worm
+	YogSothoth.DisplayName: Yog-Sothoth
 }
+
+Tiles.CoconutChestTile: Mods.Nightshade.Tiles.CoconutChestTile

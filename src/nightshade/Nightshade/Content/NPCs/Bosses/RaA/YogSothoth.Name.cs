@@ -1,6 +1,6 @@
 namespace Nightshade.Content.NPCs.Bosses.RaA;
 
-partial class SlimeBoss
+partial class YogSothoth
 {
     // Lang.GetNPCName
     // Lang.GetNPCNameValue
