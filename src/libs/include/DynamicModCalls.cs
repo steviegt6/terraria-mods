@@ -122,7 +122,7 @@ internal abstract class ModCall : ModType
 #if INCLUDE_METADATA
     [IncludedFrom(Meta.NAME, Meta.VERSION)]
 #endif
-    public sealed override void Register()
+    protected sealed override void Register()
     {
         CallHandler.Register(Mod, this);
     }
