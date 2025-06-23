@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Daybreak.Common.Features.PotLoot;
 
-internal sealed class PotLootImpl : ModSystem
+public sealed class PotLootImpl : ModSystem
 {
     public static readonly PotBehavior POT_BEHAVIOR_VANILLA = new VanillaPotBehavior(echo: false);
     public static readonly PotBehavior POT_BEHAVIOR_VANILLA_ECHO = new VanillaPotBehavior(echo: true);
