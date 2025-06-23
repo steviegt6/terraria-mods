@@ -17,7 +17,6 @@ using Microsoft.Xna.Framework;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.UI.Chat;
-using Terraria.UI;
 
 namespace Daybreak.Content.VisualTweaks.UI;
 
