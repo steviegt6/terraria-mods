@@ -15,7 +15,6 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
-using Terraria.UI.Chat;
 
 namespace Daybreak.Common.Features.ModPanel;
 
@@ -34,6 +33,7 @@ namespace Daybreak.Common.Features.ModPanel;
 /// </remarks>
 [PublicAPI]
 [Autoload(Side = ModSide.Client)]
+[UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature, ImplicitUseTargetFlags.WithInheritors)]
 public abstract class ModPanelStyle : ModType
 {
     private readonly struct TextureOverrider : IDisposable
@@ -124,13 +124,41 @@ public abstract class ModPanelStyle : ModType
     /// </summary>
     public readonly record struct PanelInfo(UIHoverImage InfoImage);
 
+    /// <summary>
+    ///     The 'texture kind', denoting known textures that can be overridden.
+    /// </summary>
     public enum TextureKind
     {
+        /// <summary>
+        ///     The 'Mod Info' button.
+        /// </summary>
         ModInfo,
+
+        /// <summary>
+        ///     The 'Mod Config' button.
+        /// </summary>
         ModConfig,
+
+        /// <summary>
+        ///     The 'Deps' icon, shown to display dependencies and dependents.
+        /// </summary>
         Deps,
+
+        /// <summary>
+        ///     The 'Translation Mod' icon, shown to display that this mod
+        ///     implements translations for other mods.
+        /// </summary>
         TranslationMod,
+
+        /// <summary>
+        ///     The 'Error' icon, shown to display errors (namely unloading
+        ///     issues) to mod developers.
+        /// </summary>
         Error,
+
+        /// <summary>
+        ///     The inner panel used to render the 'Enabled'/'Disabled' text.
+        /// </summary>
         InnerPanel,
     }
 
@@ -141,11 +169,17 @@ public abstract class ModPanelStyle : ModType
     /// </summary>
     public virtual Dictionary<TextureKind, Asset<Texture2D>> TextureOverrides { get; } = [];
 
+    /// <summary>
+    ///     Registers this style as known to the implementation.
+    /// </summary>
     protected sealed override void Register()
     {
         CustomModPanelImpl.AddPanelStyle(Mod, this);
     }
 
+    /// <summary>
+    ///     Unused; this type is a singleton.
+    /// </summary>
     protected sealed override void InitTemplateInstance() { }
 
     // I guess if someone was really crazy, they could do all the initialization
@@ -188,6 +222,7 @@ public abstract class ModPanelStyle : ModType
     {
         return modName;
     }
+
     /// <summary>
     ///     Lets you modify the value of the "Enabled/Disabled" text.
     /// </summary>
@@ -195,23 +230,30 @@ public abstract class ModPanelStyle : ModType
     {
         return text;
     }
+
     /// <summary>
     ///     Lets you modify the value of the "Reload Required" text.
     /// </summary>
     public virtual string ModifyReloadRequiredText(UIPanel element, string text)
-    { 
-        return text; 
+    {
+        return text;
     }
+
     /// <summary>
-    ///     Invoked before the "Reload Required" text is drawn,
-    ///     return <see langword="false"/> to stop it from drawing.
+    ///     Invoked before the "Reload Required" text is drawn, return
+    ///     <see langword="false"/> to stop it from drawing.
     /// </summary>
-    public virtual bool PreDrawReloadRequiredText(UIPanel element) {  return true; }
+    public virtual bool PreDrawReloadRequiredText(UIPanel element)
+    {
+        return true;
+    }
+
     /// <summary>
-    ///     Invoked after the "Reload Required" text is drawn,
-    ///     regardless of what <see cref="PreDrawReloadRequiredText(UIPanel)"/> returns.
+    ///     Invoked after the "Reload Required" text is drawn, regardless of
+    ///     what <see cref="PreDrawReloadRequiredText(UIPanel)"/> returns.
     /// </summary>
     public virtual void PostDrawReloadRequiredText(UIPanel element) { }
+
     /// <summary>
     ///     Invoked before hover colors are set.
     /// </summary>
@@ -219,13 +261,15 @@ public abstract class ModPanelStyle : ModType
     {
         return true;
     }
+
     /// <summary>
     ///     Allows you to modify the text drawn on the "mouse-over" hover panel.
     /// </summary>
-    public virtual string ModifyHoverTooltip(UIPanel element, string tooltip) 
+    public virtual string ModifyHoverTooltip(UIPanel element, string tooltip)
     {
-        return tooltip; 
+        return tooltip;
     }
+
     /// <summary>
     ///     Invoked after hover colors are set.
     /// </summary>
@@ -248,10 +292,11 @@ public abstract class ModPanelStyle : ModType
     ///     Invoked specifically before the panel is drawn, assuming
     ///     <see cref="PreDraw"/> returned <see langword="true"/>.
     /// </summary>
-    public virtual bool PreDrawPanel(UIPanel element, SpriteBatch sb, ref bool shouldDrawDivider)
+    public virtual bool PreDrawPanel(UIPanel element, SpriteBatch sb, ref bool drawDivider)
     {
         return true;
     }
+
     /// <summary>
     ///     Invoked before the "Enabled/Disabled" text is drawn, 
     ///     return <see langword="false"/> to stop it from drawing.
@@ -260,24 +305,31 @@ public abstract class ModPanelStyle : ModType
     {
         return true;
     }
+
     /// <summary>
-    ///     Invoked after the <see cref="UIModStateText.DrawEnabledText(SpriteBatch)"/> is called,
-    ///     regardless of what <see cref="PreDrawModStateText(UIElement, bool)"/> returns.
+    ///     Invoked after the
+    ///     <see cref="UIModStateText.DrawEnabledText(SpriteBatch)"/> is called,
+    ///     regardless of what
+    ///     <see cref="PreDrawModStateText(UIElement, bool)"/> returns.
     /// </summary>
     public virtual void PostDrawModStateText(UIElement self, bool enabled) { }
+
     /// <summary>
-    ///     Invoked before <see cref="UIModStateText.DrawPanel(SpriteBatch)"/> is called,
-    ///     return <see langword="false"/> to stop it from drawing.
+    ///     Invoked before <see cref="UIModStateText.DrawPanel(SpriteBatch)"/>
+    ///     is called, return <see langword="false"/> to stop it from drawing.
     /// </summary>
     public virtual bool PreDrawModStateTextPanel(UIElement self, bool enabled)
     {
         return true;
     }
+
     /// <summary>
-    ///     Invoked after <see cref="UIModStateText.DrawPanel(SpriteBatch)"/> is called,
-    ///     regardless of what <see cref="PreDrawModStateTextPanel(UIElement, bool)"/> returns.
+    ///     Invoked after <see cref="UIModStateText.DrawPanel(SpriteBatch)"/> is
+    ///     called, regardless of what
+    ///     <see cref="PreDrawModStateTextPanel(UIElement, bool)"/> returns.
     /// </summary>
     public virtual void PostDrawModStateTextPanel(UIElement self, bool enabled) { }
+
     /// <summary>
     ///     Invoked specifically after the panel is drawn, assuming
     ///     <see cref="PreDraw"/> returned <see langword="true"/>.
@@ -302,6 +354,17 @@ public abstract class ModPanelStyle : ModType
         "tModLoader.ModsXMounts",
     ];
 
+    /// <summary>
+    ///     Gets the panel information items for this mod.  Offsets are
+    ///     automatically calculated.
+    /// </summary>
+    /// <param name="mod">The mod instance to get information from.</param>
+    /// <returns>A collection of panel infos to be displayed.</returns>
+    /// <remarks>
+    ///     The <paramref name="mod"/> is passed because, despite panels being a
+    ///     per-mod thing, there is nothing necessarily limiting mods from
+    ///     sharing panel styles or similar cases.
+    /// </remarks>
     public virtual IEnumerable<PanelInfo> GetInfos(Mod mod)
     {
         return GetDefaultInfos(mod);

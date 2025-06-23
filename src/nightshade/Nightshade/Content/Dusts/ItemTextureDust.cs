@@ -24,7 +24,10 @@ namespace Nightshade.Content.Dusts
             dust.velocity.Y += 0.2f;
             dust.rotation += dust.velocity.X / 5f;
 
-            if (dust.fadeIn >= 1f) dust.active = false;
+            if (dust.fadeIn >= 1f)
+            {
+                dust.active = false;
+            }
 
             return false;
         }
@@ -38,7 +41,7 @@ namespace Nightshade.Content.Dusts
         {
             if (dust.customData is int data)
             {
-                Texture2D Tex = TextureAssets.Item[data].Value;
+                var Tex = TextureAssets.Item[data].Value;
                 Main.EntitySpriteDraw(Tex, dust.position - Main.screenPosition, Tex.Bounds, Lighting.GetColor(dust.position.ToTileCoordinates()) * (1f - dust.fadeIn), dust.rotation, Tex.Size() / 2, dust.scale, SpriteEffects.None);
             }
 

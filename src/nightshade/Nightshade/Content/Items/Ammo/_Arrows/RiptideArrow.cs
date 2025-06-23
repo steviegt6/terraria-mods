@@ -52,6 +52,6 @@ internal sealed class RiptideArrow : ModItem
         Item.shootSpeed = 2f;
 
         Item.rare  = ItemRarityID.Lime;
-        Item.value = Item.sellPrice(gold: 15);
+        Item.value = Item.buyPrice(gold: 15);
     }
 }

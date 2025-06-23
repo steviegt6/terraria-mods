@@ -1,5 +1,5 @@
 using Daybreak.Common.Assets;
-using Daybreak.Core.Hooks;
+using Daybreak.Common.Features.Hooks;
 
 using Terraria;
 using Terraria.Graphics.Renderers;
@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Nightshade.Content.VisualTweaks;
 
-internal sealed class StepStoolSprites : ILoad
+internal static class StepStoolSprites
 {
     private sealed class TrackHoC : ModPlayer
     {
@@ -35,7 +35,8 @@ internal sealed class StepStoolSprites : ILoad
         }
     }
 
-    void ILoad.Load()
+    [OnLoad]
+    private static void Load()
     {
         // Replace the stool texture for the entire draw player routine because
         // other mods may modify the method strangely (CalRemix).

@@ -175,7 +175,7 @@ internal sealed class DaybreakPanelStyle : ModPanelStyleExt
         return false;
     }
 
-    public override bool PreDrawPanel(UIModItem element, SpriteBatch sb, ref bool shouldDrawDivider)
+    public override bool PreDrawPanel(UIModItem element, SpriteBatch sb, ref bool drawDivider)
     {
         if (element._needsTextureLoading)
         {
@@ -283,6 +283,7 @@ internal sealed class DaybreakPanelStyle : ModPanelStyleExt
 
         return false;
     }
+
     public override Color ModifyEnabledTextColor(bool enabled, Color color)
     {
         return enabled ? color_2 : color_1;

@@ -1,3 +1,19 @@
+AuthorTags: {
+	BabyBlueSheep.DisplayName: babybluesheep
+	Blockaroz.DisplayName: Blockaroz
+	Citrus.DisplayName: Citrus
+	Dreitone.DisplayName: dreitone
+	Ebonfly.DisplayName: Ebonfly
+	Fred.DisplayName: Fred
+	Haram64.DisplayName: Haram! 64
+	SixtyDegrees.DisplayName: sixtydegrees
+	Tomat.DisplayName: tomat
+	Triangle.DisplayName: Triangle
+	Tyeski.DisplayName: TYESKI (Universe)
+	Tyrant.DisplayName: Tyrant
+	Wymsical.DisplayName: Wymsical
+}
+
 UI: {
 	ModIcon: {
 		AprilFools.ModName: NAMELESS MOD OF NIGHT
@@ -18,6 +34,16 @@ UI: {
 			Citrus: Citrus
 			BabyBlueSheep: babybluesheep
 		}
+	}
+
+	VanityCursor: Vanity Cursor
+	VanityCursorTrail: Cursor Trail
+
+	VanityCursorAppliesTo: {
+		None: None
+		Cursor: Cursor
+		Outline: Outline
+		Both: Both
 	}
 }
 
@@ -135,6 +161,296 @@ Items: {
 		DisplayName: Coconut Chest
 		Tooltip: ""
 	}
+
+	FourLeafClover: {
+		DisplayName: Four-Leaf Clover
+		Tooltip: Increases luck
+	}
+
+	RainbowHorseshoe: {
+		DisplayName: Rainbow Horseshoe
+		Tooltip:
+			'''
+			Increases jump height
+			Increases luck
+			Negates fall damage
+			'Magically delicious!'
+			'''
+	}
+
+	HallowedCharm: {
+		DisplayName: Hallowed Charm
+		Tooltip:
+			'''
+			Increases jump height and movement speed
+			Increases luck
+			Negates fall damage
+			Charge at full speed
+			'It's called clopping, dad'
+			'''
+	}
+
+	RabbitsFoot: {
+		DisplayName: Rabbit's Foot
+		Tooltip:
+			'''
+			The wearer can run faster
+			Increases luck
+			'''
+	}
+
+	TemporalVestige: {
+		DisplayName: Temporal Vestige
+		Tooltip:
+			'''
+			Allows the holder to do an improved double jump
+			Buffs last longer
+			'''
+	}
+
+	DriftersBoots: {
+		DisplayName: Drifter's Boots
+		Tooltip:
+			'''
+			The wearer can run super fast, and even faster on sand
+			Allows the wearer to quadruple jump
+			Buffs last longer
+			'''
+	}
+
+	SunGodEye: {
+		DisplayName: Eye of a Sun God
+		Tooltip: Inflicted debuffs deal more damage
+	}
+
+	RaBoots: {
+		DisplayName: Ra Boots
+		Tooltip:
+			'''
+			The wearer can run super fast, and even faster on sand
+			Allows the wearer to sextuple jump
+			Inflicted debuffs deal more damage
+			Buffs last longer
+			'''
+	}
+
+	Godspeed: {
+		DisplayName: Godspeed
+		Tooltip:
+			'''
+			The wearer can run super fast, and even faster on sand
+			Allows the wearer to septuple jump
+			Inflicted debuffs deal more damage
+			Buffs last longer
+			Increases jump height and movement speed
+			Increases luck
+			Allows flight and slow fall
+			'''
+	}
+
+	CactusSplashJug: {
+		DisplayName: Succulent Splash
+		Tooltip:
+			'''
+			Filled with a life restoring beverage
+			Right click to splash yourself with it
+			'''
+	}
+
+	LivingCactusWoodWallBlock: {
+		DisplayName: Living Cactus Wood Wall Block
+		Tooltip: ""
+	}
+
+	BiomeCursor: {
+		DisplayName: Biome Cursor
+		Tooltip: ""
+	}
+
+	DepthCursor: {
+		DisplayName: Depth Cursor
+		Tooltip: ""
+	}
+
+	LifeCursor: {
+		DisplayName: Life Cursor
+		Tooltip: ""
+	}
+
+	ManaCursor: {
+		DisplayName: Mana Cursor
+		Tooltip: ""
+	}
+
+	MoneyCursor: {
+		DisplayName: Money Cursor
+		Tooltip: ""
+	}
+
+	PartyCursor: {
+		DisplayName: Party Cursor
+		Tooltip: ""
+	}
+
+	SpeedCursor: {
+		DisplayName: Speed Cursor
+		Tooltip: ""
+	}
+
+	TimeCursor: {
+		DisplayName: Time Cursor
+		Tooltip: ""
+	}
+
+	PlatinumBirdCageItem: {
+		DisplayName: Platinum Bird Cage
+		Tooltip: ""
+	}
+
+	PlatinumBirdItem: {
+		DisplayName: Platinum Bird
+		Tooltip: ""
+	}
+
+	PlatinumBunnyCageItem: {
+		DisplayName: Platinum Bunny Cage
+		Tooltip: ""
+	}
+
+	PlatinumBunnyItem: {
+		DisplayName: Platinum Bunny
+		Tooltip: ""
+	}
+
+	PlatinumButterflyCageItem: {
+		DisplayName: Platinum Butterfly Jar
+		Tooltip: ""
+	}
+
+	PlatinumButterflyItem: {
+		DisplayName: Platinum Butterfly
+		Tooltip: Can be used as bait indefinitely
+	}
+
+	PlatinumDragonflyCageItem: {
+		DisplayName: Platinum Dragonfly Jar
+		Tooltip: ""
+	}
+
+	PlatinumDragonflyItem: {
+		DisplayName: Platinum Dragonfly
+		Tooltip: Can be used as bait indefinitely
+	}
+
+	PlatinumFrogCageItem: {
+		DisplayName: Platinum Frog Cage
+		Tooltip: ""
+	}
+
+	PlatinumFrogItem: {
+		DisplayName: Platinum Frog
+		Tooltip: ""
+	}
+
+	PlatinumGoldfishCageItem: {
+		DisplayName: Platinum Fish Bowl
+		Tooltip: ""
+	}
+
+	PlatinumGoldfishItem: {
+		DisplayName: Platinum Goldfish
+		Tooltip: ""
+	}
+
+	PlatinumGrasshopperCageItem: {
+		DisplayName: Platinum Grasshopper Cage
+		Tooltip: ""
+	}
+
+	PlatinumGrasshopperItem: {
+		DisplayName: Platinum Grasshopper
+		Tooltip: Can be used as bait indefinitely
+	}
+
+	PlatinumLadyBugCageItem: {
+		DisplayName: Platinum Ladybug Cage
+		Tooltip: ""
+	}
+
+	PlatinumLadyBugItem: {
+		DisplayName: Platinum Ladybug
+		Tooltip: Can be used as bait indefinitely
+	}
+
+	PlatinumMouseCageItem: {
+		DisplayName: Platinum Mouse Cage
+		Tooltip: ""
+	}
+
+	PlatinumMouseItem: {
+		DisplayName: Platinum Mouse
+		Tooltip: ""
+	}
+
+	PlatinumSeahorseCageItem: {
+		DisplayName: Platinum Seahorse Cage
+		Tooltip: ""
+	}
+
+	PlatinumSeahorseItem: {
+		DisplayName: Platinum Seahorse
+		Tooltip: ""
+	}
+
+	PlatinumSquirrelCageItem: {
+		DisplayName: Platinum Squirrel Cage
+		Tooltip: ""
+	}
+
+	PlatinumSquirrelItem: {
+		DisplayName: Platinum Squirrel
+		Tooltip: ""
+	}
+
+	PlatinumWaterStriderCageItem: {
+		DisplayName: Platinum Water Strider Cage
+		Tooltip: ""
+	}
+
+	PlatinumWaterStriderItem: {
+		DisplayName: Platinum Water Strider
+		Tooltip: Can be used as bait indefinitely
+	}
+
+	PlatinumWormCageItem: {
+		DisplayName: Platinum Worm Cage
+		Tooltip: ""
+	}
+
+	PlatinumWormItem: {
+		DisplayName: Platinum Worm
+		Tooltip: Can be used as bait indefinitely
+	}
+
+	ReflectivePlatinumDyeItem: {
+		DisplayName: Reflective Platinum Dye
+		Tooltip: ""
+	}
+
+	HangingCoconutItem: {
+		DisplayName: Hanging Coconut Item
+		Tooltip: ""
+	}
+
+	LivingPalmLeafWand: {
+		DisplayName: Living Palm Leaf Wand
+		Tooltip: ""
+	}
+
+	LivingPalmWoodWand: {
+		DisplayName: Living Palm Wood Wand
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
@@ -147,6 +463,46 @@ Projectiles: {
 	StarFragmentProj5.DisplayName: Star Fragment
 	StarFragmentProjSpawner.DisplayName: Star Fragment Proj Spawner
 	PreDigesterHeldProj.DisplayName: Pre Digester Held Proj
+	CactusSplashJugThrown.DisplayName: Cactus Splash Jug Thrown
+	FallingCoconutProjectile.DisplayName: Falling Coconut Projectile
 }
 
 Configs.DummyConfig.DisplayName: Dummy Config
+
+Achievements: {
+	Achievement1: {
+		DisplayName: Dummy Achievement
+		Description: Dummy Achievement Description
+	}
+
+	Achievement2: {
+		DisplayName: Dummy Achievement 2
+		Description: Dummy Achievement 2 Description Dummy Achievement 2 Description Dummy Achievement 2 Description Dummy Achievement 2 Description Dummy Achievement 2 Description Dummy Achievement 2 Description Dummy Achievement 2 Description Dummy Achievement 2 Description Dummy Achievement 2 Description Dummy Achievement 2 Description
+	}
+
+	Achievement3: {
+		DisplayName: Dummy Achievement 3
+		Description: Dummy Achievement 3 Description Dummy Achievement 3 Description Dummy Achievement 3 Description Dummy Achievement 3 Description Dummy Achievement 3 Description Dummy Achievement 3 Description
+	}
+}
+
+Bestiary.PlatinumCritterText: Even rarer are platinum critters; a treasure for which even the stingiest of merchants would pay a fortune!
+
+NPCs: {
+	PlatinumBirdNpc.DisplayName: Platinum Bird
+	PlatinumBunnyNpc.DisplayName: Platinum Bunny
+	PlatinumButterflyNpc.DisplayName: Platinum Butterfly
+	PlatinumDragonflyNpc.DisplayName: Platinum Dragonfly
+	PlatinumFrogNpc.DisplayName: Platinum Frog
+	PlatinumGoldfishNpc.DisplayName: Platinum Goldfish
+	PlatinumWalkerGoldfishNpc.DisplayName: Platinum Goldfish
+	PlatinumGrasshopperNpc.DisplayName: Platinum Grasshopper
+	PlatinumLadyBugNpc.DisplayName: Platinum Lady Bug
+	PlatinumMouseNpc.DisplayName: Platinum Mouse
+	PlatinumSeahorseNpc.DisplayName: Platinum Seahorse
+	PlatinumSquirrelNpc.DisplayName: Platinum Squirrel
+	PlatinumWaterStriderNpc.DisplayName: Platinum Water Strider
+	PlatinumWormNpc.DisplayName: Platinum Worm
+}
+
+Tiles.CoconutChestTile: Mods.Nightshade.Tiles.CoconutChestTile

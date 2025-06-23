@@ -1,4 +1,4 @@
-using Daybreak.Core.Hooks;
+using Daybreak.Common.Features.Hooks;
 
 using Microsoft.Xna.Framework.Graphics;
 
@@ -6,18 +6,15 @@ using Terraria;
 
 namespace Nightshade.Common.Rendering;
 
-internal sealed class RtContentPreserver : ILoad
+internal static class RtContentPreserver
 {
-    void ILoad.Load()
+    public static RenderTargetBinding[] GetAndPreserveMainRTs()
     {
-        Main.RunOnMainThread(
-            () =>
-            {
-                Main.graphics.GraphicsDevice.PresentationParameters.RenderTargetUsage = RenderTargetUsage.PreserveContents;
-                Main.graphics.ApplyChanges();
-            }
-        );
-    }
+        var bindings = Main.instance.GraphicsDevice.GetRenderTargets();
+        ApplyToBindings(bindings);
+
+		return bindings;
+	}
 
     public static void ApplyToBindings(RenderTargetBinding[] bindings)
     {
@@ -30,5 +27,17 @@ internal sealed class RtContentPreserver : ILoad
 
             rt.RenderTargetUsage = RenderTargetUsage.PreserveContents;
         }
+    }
+
+    [OnLoad]
+    private static void Load()
+    {
+        Main.RunOnMainThread(
+            () =>
+            {
+                Main.graphics.GraphicsDevice.PresentationParameters.RenderTargetUsage = RenderTargetUsage.PreserveContents;
+                Main.graphics.ApplyChanges();
+            }
+        );
     }
 }

@@ -1,5 +1,4 @@
-using Nightshade.Content.Tiles;
-
+using Nightshade.Content.Tiles.Furniture;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -15,7 +14,6 @@ public sealed class CactusWoodPlatformBlock : ModItem
 
 		Item.DefaultToPlaceableTile(ModContent.TileType<CactusWoodPlatform>());
 
-		Item.value = 50;
 		Item.rare = ItemRarityID.Green;
 	}
 }

@@ -1,10 +1,6 @@
-﻿using Microsoft.Xna.Framework;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Policy;
-using Terraria;
-using Terraria.ModLoader.Config.UI;
+﻿using System.Collections.Generic;
+
+using Microsoft.Xna.Framework;
 
 namespace Nightshade.Common.Features;
 

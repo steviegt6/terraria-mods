@@ -1,8 +1,16 @@
-#undef TECHNIQUES
-#include "ModPanelShader.effect.uniforms.hlsl"
+#include "../common.h"
+#include "../pixelation.h"
 
-#include "../common.hlsl"
-#include "../pixelation.hlsl"
+sampler uImage0 : register(s0);
+
+float uTime;
+float4 uSource;
+float uHoverIntensity;
+float uPixel;
+float uColorResolution;
+float uGrayness;
+float3 uInColor;
+float uSpeed;
 
 /**
  * Calculates a smooth fade effect near the edges of a given region.
@@ -83,5 +91,12 @@ float4 main(float2 coords : SV_POSITION, float2 tex_coords : TEXCOORD0) : COLOR0
     return float4(final_color, alpha);
 }
 
-#define TECHNIQUES
-#include "ModPanelShader.effect.uniforms.hlsl"
+#ifdef FX
+technique Technique1
+{
+    pass PanelShader
+    {
+        PixelShader = compile ps_3_0 main();
+    }
+}
+#endif // FX

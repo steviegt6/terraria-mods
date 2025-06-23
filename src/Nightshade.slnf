@@ -2,12 +2,15 @@
   "solution": {
     "path": "Tomat.TML.sln",
     "projects": [
+      "common\\Build.Post\\Build.Post.csproj",
+      "common\\Build.Pre\\Build.Pre.csproj",
+      "common\\Build.Shared\\Build.Shared.csproj",
       "common\\CodeAnalysis\\CodeAnalysis.csproj",
-      "common\\LocalizationChecker\\LocalizationChecker.csproj",
-      "common\\ShaderCompiler\\ShaderCompiler.csproj",
+      "common\\DaybreakHookGenerator\\DaybreakHookGenerator.csproj",
       "common\\SourceGenerator\\SourceGenerator.csproj",
       "libs\\Daybreak\\Daybreak.csproj",
-      "nightshade\\Nightshade\\Nightshade.csproj"
+      "nightshade\\Nightshade\\Nightshade.csproj",
+      "shader-reader\\ShaderDecompiler.csproj"
     ]
   }
 }

@@ -5,35 +5,41 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using Daybreak.Core.Hooks;
+
+using Daybreak.Common.Features.Hooks;
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+
 using MonoMod.Cil;
-using MonoMod.Utils;
+
 using Terraria;
-using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
-using Terraria.UI.Chat;
 
 namespace Daybreak.Common.Features.ModPanel;
 
-[Autoload(Side = ModSide.Client)]
-internal sealed class CustomModPanelImpl : ILoad, IUnload
+internal sealed class CustomModPanelImpl
 {
     // TODO : 
     // UIModItem:
     // Swap UIImage for Config/More info buttons (delayed)
     // swap all modifytext methods for one that uses an enum (if tomat says theres too many methods)
     // add ModPanelStyleExt methods
-    private sealed class DumbWorkaround : UIModItem
-    {
-        public DumbWorkaround(LocalMod mod) : base(mod) { }
 
+    // This exists instead of a regular IL edit/detour because, for some reason,
+    // it would seem that some part of the drawing routine may get inlined such
+    // that our changes are not properly reflected.  This, of course, only
+    // happens if you start the game with DAYBREAK disabled, entire the Mods
+    // List, and then enable DAYBREAK (since the JIT would have JITed the
+    // UI-related code).  I cannot, for the life of me, figure out how or why
+    // this is happening to non-concrete, virtual symbols.
+    private sealed class ModItemWithCustomDrawing(LocalMod mod) : UIModItem(mod)
+    {
         public override void Draw(SpriteBatch spriteBatch)
         {
             if (!ModLoader.TryGetMod(_mod.Name, out var mod) || !TryGetPanelStyle(mod, out var style))
@@ -41,28 +47,26 @@ internal sealed class CustomModPanelImpl : ILoad, IUnload
                 base.Draw(spriteBatch);
                 return;
             }
+
             using (style.OverrideTextures())
             {
                 currentMod = mod;
+
                 if (style.PreDraw(this, spriteBatch))
                 {
-                    currentMod = mod;
                     base.Draw(spriteBatch);
                 }
                 style.PostDraw(this, spriteBatch);
-                //currentMod = null;
+
+                currentMod = null;
             }
         }
 
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
-            if (!ModLoader.TryGetMod(_mod.Name, out currentMod))
-            {
-                //return;
-            }
             var ptr = typeof(UIPanel).GetMethod("DrawSelf", BindingFlags.NonPublic | BindingFlags.Instance)!.MethodHandle.GetFunctionPointer();
             var baseDrawSelf = (Action<SpriteBatch>)Activator.CreateInstance(typeof(Action<SpriteBatch>), this, ptr)!;
-            bool drawPanelDivider = false;
+            var drawPanelDivider = false;
             if (!TryGetPanelStyle(currentMod, out var style))
             {
                 baseDrawSelf(spriteBatch);
@@ -79,22 +83,28 @@ internal sealed class CustomModPanelImpl : ILoad, IUnload
             var innerDimensions = GetInnerDimensions();
             var drawPos = new Vector2(innerDimensions.X + 5f + _modIconAdjust, innerDimensions.Y + 30f);
             if (drawPanelDivider)
-            spriteBatch.Draw(UICommon.DividerTexture.Value, drawPos, null, Color.White, 0f, Vector2.Zero, new Vector2((innerDimensions.Width - 10f - _modIconAdjust) / 8f, 1f), SpriteEffects.None, 0f);
+            {
+                spriteBatch.Draw(UICommon.DividerTexture.Value, drawPos, null, Color.White, 0f, Vector2.Zero, new Vector2((innerDimensions.Width - 10f - _modIconAdjust) / 8f, 1f), SpriteEffects.None, 0f);
+            }
             drawPos = new Vector2(innerDimensions.X + 10f + _modIconAdjust, innerDimensions.Y + 45f);
 
             // TODO: These should just be UITexts
             if (_mod.properties.side != ModSide.Server && (_mod.Enabled != _loaded || _configChangesRequireReload))
             {
-                drawPos += new Vector2(_uiModStateText.Width.Pixels + left2ndLine, 0f);
-                string text = _configChangesRequireReload ? Language.GetTextValue("tModLoader.ModReloadForced") : Language.GetTextValue("tModLoader.ModReloadRequired");
-                if (style != null)
+                var reloadText = _configChangesRequireReload ? Language.GetTextValue("tModLoader.ModReloadForced") : Language.GetTextValue("tModLoader.ModReloadRequired");
+                if (style is not null)
                 {
-                    text = style.ModifyReloadRequiredText(this, text);
+                    reloadText = style.ModifyReloadRequiredText(this, reloadText);
                     if (style.PreDrawReloadRequiredText(this))
-                        Utils.DrawBorderString(spriteBatch, text, drawPos, Color.White, 1f, 0f, 0f, -1);
+                    {
+                        Utils.DrawBorderString(spriteBatch, reloadText, drawPos, Color.White);
+                    }
                     style.PostDrawReloadRequiredText(this);
                 }
-                else Utils.DrawBorderString(spriteBatch, text, drawPos, Color.White, 1f, 0f, 0f, -1);
+                else
+                {
+                    Utils.DrawBorderString(spriteBatch, reloadText, drawPos, Color.White);
+                }
             }
             if (_mod.properties.side == ModSide.Server)
             {
@@ -143,8 +153,11 @@ internal sealed class CustomModPanelImpl : ILoad, IUnload
                 var refs = string.Join(", ", _mod!.properties.RefNames(true)); // Translation mods can be strong or weak references.
                 _tooltip = Language.GetTextValue("tModLoader.TranslationModTooltip", refs);
             }
+
             if (style is not null)
-            _tooltip = style.ModifyHoverTooltip(this, _tooltip);
+            {
+                _tooltip = style.ModifyHoverTooltip(this, _tooltip);
+            }
         }
     }
 
@@ -188,7 +201,8 @@ internal sealed class CustomModPanelImpl : ILoad, IUnload
         return false;
     }
 
-    void ILoad.Load()
+    [OnLoad(Side = ModSide.Client)]
+    private static void Load()
     {
         if (!ConciseModListCompat())
         {
@@ -198,52 +212,68 @@ internal sealed class CustomModPanelImpl : ILoad, IUnload
                 {
                     self.modItemsTask = Task.Run(() =>
                         {
-                            return ModOrganizer.FindMods(logDuplicates: true).Select(mod => new DumbWorkaround(mod)).Cast<UIModItem>().ToList();
+                            return ModOrganizer.FindMods(logDuplicates: true).Select(mod => new ModItemWithCustomDrawing(mod)).Cast<UIModItem>().ToList();
                         }
                     );
                 }
             );
+
             MonoModHooks.Add(
                 GetMethod(nameof(UIModItem.OnInitialize)),
-                OnInitialize
+                OnInitialize_RunHooks
             );
+
             MonoModHooks.Modify(
                 GetMethod(nameof(UIModItem.OnInitialize)),
-                ModifyAppendedFields
+                OnInitialize_ModifyFieldsBeingAppended
             );
         }
+
         MonoModHooks.Add(
             GetMethod(nameof(UIModItem.SetHoverColors)),
-            SetHoverColors
+            SetHoverColors_RunHooks
         );
-        // UIModStateText
+
         MonoModHooks.Modify(
             typeof(UIModStateText).GetMethod(nameof(UIModStateText.DrawEnabledText), BindingFlags.NonPublic | BindingFlags.Instance),
-            DrawCustomColoredEnabledText
+            DrawEnabledText_RunHooks
         );
+
         MonoModHooks.Modify(
             typeof(UIModStateText).GetProperty("DisplayText", BindingFlags.NonPublic | BindingFlags.Instance)!.GetGetMethod(true),
-            ModifyEnabledText
+            DisplayText_UIModStateText_RunHooks
         );
-        MonoModHooks.Add(typeof(UIModStateText).GetMethod("DrawPanel", BindingFlags.NonPublic | BindingFlags.Instance)!,
-            DrawModStatePanel
+
+        MonoModHooks.Add(
+            typeof(UIModStateText).GetMethod("DrawPanel", BindingFlags.NonPublic | BindingFlags.Instance)!,
+            DrawPanel_UIModStateText_RunHooks
         );
-        MonoModHooks.Add(typeof(UIModStateText).GetMethod("DrawEnabledText", BindingFlags.NonPublic | BindingFlags.Instance)!,
-            DrawModStateText
+
+        MonoModHooks.Add(
+            typeof(UIModStateText).GetMethod("DrawEnabledText", BindingFlags.NonPublic | BindingFlags.Instance)!,
+            DrawEnabledText_UIModStateText_RunHooks
         );
+
         // readjust dependency button position
-        MonoModHooks.Modify(GetMethod(nameof(UIModItem.UpdateUIForEnabledChange)),
-            static (ILContext il) => {
-                ILCursor c = new ILCursor(il);
-                c.GotoNext(MoveType.After, i => i.MatchCallvirt<UIModStateText>("SetEnabled"));
+        MonoModHooks.Modify(
+            GetMethod(nameof(UIModItem.UpdateUIForEnabledChange)),
+            static il =>
+            {
+                var c = new ILCursor(il);
+
+                c.GotoNext(MoveType.After, i => i.MatchCallvirt<UIModStateText>(nameof(UIModStateText.SetEnabled)));
+
                 c.EmitLdarg0();
                 c.EmitDelegate((UIModItem self) => { self._modReferenceIcon.Left.Set(self._uiModStateText.Left.Pixels + self._uiModStateText.Width.Pixels + 5, 0); });
-                c.GotoNext(MoveType.After, i => i.MatchCallvirt<UIModStateText>("SetDisabled"));
+
+                c.GotoNext(MoveType.After, i => i.MatchCallvirt<UIModStateText>(nameof(UIModStateText.SetDisabled)));
+
                 c.EmitLdarg0();
                 c.EmitDelegate((UIModItem self) => { self._modReferenceIcon.Left.Set(self._uiModStateText.Left.Pixels + self._uiModStateText.Width.Pixels + 5, 0); });
             }
         );
         return;
+
         static MethodInfo GetMethod(string name)
         {
             return typeof(UIModItem).GetMethod(name, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance)!;
@@ -266,7 +296,7 @@ internal sealed class CustomModPanelImpl : ILoad, IUnload
 
             MonoModHooks.Add(
                 type.GetMethod(nameof(UIModItem.OnInitialize), BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance),
-                OnInitialize
+                OnInitialize_RunHooks
             );
 
             MonoModHooks.Add(
@@ -330,14 +360,15 @@ internal sealed class CustomModPanelImpl : ILoad, IUnload
         }
     }
 
-    void IUnload.Unload()
+    [OnUnload(Side = ModSide.Client)]
+    private static void Unload()
     {
         currentMod = null;
         panel_styles.Clear();
     }
-    private static void OnInitialize(Action<UIModItem> orig, UIModItem self)
-    {
 
+    private static void OnInitialize_RunHooks(Action<UIModItem> orig, UIModItem self)
+    {
         if (!ModLoader.TryGetMod(self._mod.Name, out currentMod) || !TryGetPanelStyle(currentMod, out var style))
         {
             orig(self);
@@ -356,7 +387,7 @@ internal sealed class CustomModPanelImpl : ILoad, IUnload
         currentMod = null;
     }
 
-    private static void ModifyAppendedFields(ILContext il)
+    private static void OnInitialize_ModifyFieldsBeingAppended(ILContext il)
     {
         var c = new ILCursor(il);
 
@@ -391,28 +422,7 @@ internal sealed class CustomModPanelImpl : ILoad, IUnload
                 : style.ModifyModName(self, originalText)
             );
         }
-        // Modify the mod state text.
-        {
-            /*c.GotoNext(MoveType.Before, x => x.MatchLdarg0(),
-                x => x.MatchLdfld<UIModItem>(nameof(UIModItem._uiModStateText)),
-                x => x.MatchLdarg0(),
-                x => x.MatchLdftn<UIModItem>("ToggleEnabled"));
-            c.EmitLdarg0(); // push this
-            c.EmitLdarg0();
-            c.EmitLdfld(typeof(UIModItem).GetField(nameof(UIModItem._uiModStateText), BindingFlags.NonPublic | BindingFlags.Instance)); // push the already initialized mod state text
-            c.EmitDelegate(static (UIModItem self, UIModStateText text) =>
-            {
-                if (!ModLoader.TryGetMod(self.ModName, out var mod) || !TryGetPanelStyle(mod, out var style))
-                {
-                    return text;
-                }
-                else
-                {
-                    UIElement stateText = style.ModifyEnabledText(text);
-                    return stateText is null ? text : stateText;
-                }
-            });*/
-        }
+
         // Modify the info buttons.
         {
             // Move into the actual block that handles this.
@@ -456,39 +466,44 @@ internal sealed class CustomModPanelImpl : ILoad, IUnload
             c.MarkLabel(label);
         }
     }
-    private static void DrawModStateText(Action<UIModStateText, SpriteBatch> orig, UIModStateText self, SpriteBatch sb)
+
+    private static void DrawEnabledText_UIModStateText_RunHooks(Action<UIModStateText, SpriteBatch> orig, UIModStateText self, SpriteBatch sb)
     {
         var modName = ((UIModItem)self.Parent)._mod.Name;
-        ModLoader.TryGetMod(modName, out var mod);
-        if (!TryGetPanelStyle(mod, out var style))
+
+        if (!ModLoader.TryGetMod(modName, out var mod) || !TryGetPanelStyle(mod, out var style))
         {
             orig(self, sb);
             return;
         }
+
         if (style.PreDrawModStateText(self, self._enabled))
         {
             orig(self, sb);
         }
         style.PostDrawModStateText(self, self._enabled);
     }
-    private static void DrawModStatePanel(Action<UIModStateText, SpriteBatch> orig, UIModStateText self, SpriteBatch sb)
+
+    private static void DrawPanel_UIModStateText_RunHooks(Action<UIModStateText, SpriteBatch> orig, UIModStateText self, SpriteBatch sb)
     {
         var modName = ((UIModItem)self.Parent)._mod.Name;
-        ModLoader.TryGetMod(modName, out var mod);
-        if (!TryGetPanelStyle(mod, out var style))
+
+        if (!ModLoader.TryGetMod(modName, out var mod) || !TryGetPanelStyle(mod, out var style))
         {
             orig(self, sb);
             return;
         }
+
         if (style.PreDrawModStateTextPanel(self, self._enabled))
         {
             orig(self, sb);
         }
         style.PostDrawModStateTextPanel(self, self._enabled);
-    } 
+    }
+
     // TODO: Don't remember if we can use currentMod here, but I'd rather
     // minimize its usage in cases where we actually can determine the context.
-    private static void SetHoverColors(
+    private static void SetHoverColors_RunHooks(
         Action<UIModItem, bool> orig,
         UIModItem self,
         bool hovered
@@ -521,12 +536,14 @@ internal sealed class CustomModPanelImpl : ILoad, IUnload
         using (style.OverrideTextures())
         {
             currentMod = mod;
+
             if (style.PreDraw(self, spriteBatch))
             {
                 orig(self, spriteBatch);
             }
             style.PostDraw(self, spriteBatch);
-            //currentMod = null;
+
+            currentMod = null;
         }
     }
 
@@ -541,15 +558,16 @@ internal sealed class CustomModPanelImpl : ILoad, IUnload
             orig(self, spriteBatch);
             return;
         }
-        bool _ = false;
-        if (style.PreDrawPanel(uiModItem, spriteBatch, ref _))
+
+        var drawDivider = false;
+        if (style.PreDrawPanel(uiModItem, spriteBatch, ref drawDivider))
         {
             orig(self, spriteBatch);
         }
         style.PostDrawPanel(uiModItem, spriteBatch);
     }
 
-    private static void DrawCustomColoredEnabledText(ILContext il)
+    private static void DrawEnabledText_RunHooks(ILContext il)
     {
         var c = new ILCursor(il);
 
@@ -567,28 +585,26 @@ internal sealed class CustomModPanelImpl : ILoad, IUnload
             }
         );
     }
-    private static void ModifyEnabledText(ILContext il)
+
+    private static void DisplayText_UIModStateText_RunHooks(ILContext il)
     {
-        ILCursor c = new ILCursor(il);
+        var c = new ILCursor(il);
+
         c.EmitLdarg0();
         c.EmitDelegate(static (UIModStateText self) =>
-        {
-            string text = self._enabled ? Language.GetTextValue("GameUI.Enabled") : Language.GetTextValue("GameUI.Disabled");
-            var modName = ((UIModItem)self.Parent)._mod.Name;
-            if(!ModLoader.TryGetMod(modName, out var mod))
             {
-                return text;
-            }
-            if (!TryGetPanelStyle(mod, out var style))
-            {
-                return text;
-            }
-            else
-            {
+                var text = self._enabled ? Language.GetTextValue("GameUI.Enabled") : Language.GetTextValue("GameUI.Disabled");
+                var modName = ((UIModItem)self.Parent)._mod.Name;
+                if (!ModLoader.TryGetMod(modName, out var mod) || !TryGetPanelStyle(mod, out var style))
+                {
+                    return text;
+                }
+
                 text = style.ModifyEnabledText((UIPanel)self.Parent, text, self._enabled);
                 return text;
             }
-        });
+        );
+
         c.EmitRet();
     }
 }

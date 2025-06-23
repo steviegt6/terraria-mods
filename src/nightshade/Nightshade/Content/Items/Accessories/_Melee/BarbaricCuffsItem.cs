@@ -64,7 +64,7 @@ internal sealed class BarbaricCuffsItem : ModItem
 
         Item.SetShopValues(
             ItemRarityColor.Pink5,
-            Item.sellPrice(gold: 9, silver: 50)
+            Item.buyPrice(gold: 9, silver: 50)
         );
     }
 

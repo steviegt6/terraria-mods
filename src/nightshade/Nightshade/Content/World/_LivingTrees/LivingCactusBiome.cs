@@ -2,8 +2,12 @@
 using System.Collections.Generic;
 
 using Microsoft.Xna.Framework;
+
 using Nightshade.Common.Utilities;
+using Nightshade.Content.Items;
 using Nightshade.Content.Tiles;
+using Nightshade.Content.Tiles.Furniture;
+using Nightshade.Content.Walls;
 
 using Terraria;
 using Terraria.ID;
@@ -20,9 +24,9 @@ internal sealed class LivingCactusBiome : MicroBiome
 
     private static ushort PlatformType => (ushort)ModContent.TileType<CactusWoodPlatform>();
 
-    private static ushort WoodWallType => WallID.LivingWood;
+    private static ushort WallType => (ushort)ModContent.WallType<LivingCactusWoodWall>();
 
-    private static ushort PotType => (ushort)ModContent.TileType<LivingCactusPot>();
+	private static ushort PotType => (ushort)ModContent.TileType<LivingCactusPot>();
 
     public bool Round { get; set; }
 
@@ -30,8 +34,8 @@ internal sealed class LivingCactusBiome : MicroBiome
 
     public override bool Place(Point origin, StructureMap? structures)
     {
-        int height = WorldGen.genRand.Next(40, 55);
-        int width = height / 2;
+        var height = WorldGen.genRand.Next(40, 55);
+        var width = height / 2;
 
         if (Round)
         {
@@ -40,11 +44,15 @@ internal sealed class LivingCactusBiome : MicroBiome
 		}
 
 		if (!WorldUtils.Find(origin, Searches.Chain(new Searches.Down(100), new Conditions.IsSolid().AreaAnd(6, 2), new Conditions.IsTile(TileID.Sand, TileID.HardenedSand, TileID.Sandstone)), out origin))
-        {
-            return false;
-        }
+			return false;
 
-		Rectangle cactusBounds = new Rectangle(origin.X - width / 2 - 5, origin.Y - height / 2 - 5, width + 10, height + 10);
+		if (!WorldUtils.Find(origin, Searches.Chain(new Searches.Up(50), new NightshadeGenUtil.Conditions.IsNotTile(TileID.Sand, TileID.HardenedSand, TileID.Sandstone)), out _))
+			return false;
+
+        if (GetSandCount(origin, 50, 50) < 250)
+            return false;
+
+		var cactusBounds = new Rectangle(origin.X - width / 2 - 5, origin.Y - height / 2 - 5, width + 10, height + 10);
 
         if (!structures?.CanPlace(cactusBounds) ?? false)
         {
@@ -52,22 +60,47 @@ internal sealed class LivingCactusBiome : MicroBiome
         }
 
         if (Round)
+        {
             GenerateRoundLivingCactus(origin.X, origin.Y, width, height, WithWater);
+        }
         else
-			GenerateTallLivingCactus(origin.X, origin.Y, height);
+        {
+            GenerateTallLivingCactus(origin.X, origin.Y, height);
+        }
 
-		structures?.AddProtectedStructure(cactusBounds, 10);
+        structures?.AddProtectedStructure(cactusBounds, 10);
 
         return true;
     }
 
+    public static int GetSandCount(Point origin, int width, int height)
+    {
+        int sandCount = 0;
+
+		for (int j = origin.Y - height; j < origin.Y + height; j++)
+		{
+			for (int i = origin.X - width; i < origin.X + width; i++)
+			{
+				if (!WorldGen.InWorld(i, j))
+					continue;
+
+                int tileType = Main.tile[i, j].TileType;
+
+                if (TileID.Sets.isDesertBiomeSand[tileType])
+                    sandCount++;
+			}
+		}
+
+        return sandCount;
+	}
+
     private static bool CanPlaceCactusOutline(int x, int y, int thickness, bool checkCorners)
     {
-		bool onOutside = Main.tile[x, y].WallType != WoodWallType && Main.tile[x, y].TileType != WoodType;
-        bool onEdge = false;
-        for (int i = x - thickness; i <= x + thickness; i++)
+		var onOutside = Main.tile[x, y].WallType != WallType && Main.tile[x, y].TileType != WoodType;
+        var onEdge = false;
+        for (var i = x - thickness; i <= x + thickness; i++)
         {
-            for (int j = y - thickness; j <= y + thickness; j++)
+            for (var j = y - thickness; j <= y + thickness; j++)
             {
                 if (i == x && y == j)
                 {
@@ -101,13 +134,13 @@ internal sealed class LivingCactusBiome : MicroBiome
 
     private static void GenerateRoundLivingCactus(int x, int y, int width, int height, bool withWater)
 	{
-		int curvature = WorldGen.genRand.Next(8, 15); // Higher is less curved
-		int curveDir = WorldGen.genRand.NextBool().ToDirectionInt();
-		int offsetX = 0;
-		int[] stalkXOffsets = new int[height];
-		int halfWidth = width / 2;
+		var curvature = WorldGen.genRand.Next(8, 15); // Higher is less curved
+		var curveDir = WorldGen.genRand.NextBool().ToDirectionInt();
+		var offsetX = 0;
+		var stalkXOffsets = new int[height];
+		var halfWidth = width / 2;
 
-		for (int j = 0; j < height; j++)
+		for (var j = 0; j < height; j++)
 		{
 			if (j % curvature == 0 && j > height / 4 && j < height / 2)
 			{
@@ -117,27 +150,27 @@ internal sealed class LivingCactusBiome : MicroBiome
 			stalkXOffsets[j] = offsetX;
 		}
 
-		for (int j = 0; j < height; j++)
+		for (var j = 0; j < height; j++)
 		{
-            float lowerCurveProgress = Utils.GetLerpValue(height * 0.7f, 0, j, true);
+            var lowerCurveProgress = Utils.GetLerpValue(height * 0.7f, 0, j, true);
 
-			for (int i = -halfWidth; i < halfWidth; i++)
+			for (var i = -halfWidth; i < halfWidth; i++)
 			{
-                int offX = stalkXOffsets[Math.Clamp(j - Math.Sign(i) * curveDir * (curvature / 3 + 1), 0, stalkXOffsets.Length - 1)];
-				int centerX = x;
-                int centerY = y - height / 2 + (int)MathHelper.Lerp(0, height / 8, Utils.GetLerpValue(height / 2, 0, j, true));
+                var offX = stalkXOffsets[Math.Clamp(j - Math.Sign(i) * curveDir * (curvature / 3 + 1), 0, stalkXOffsets.Length - 1)];
+				var centerX = x;
+                var centerY = y - height / 2 + (int)MathHelper.Lerp(0, height / 8, Utils.GetLerpValue(height / 2, 0, j, true));
 
 				if (!WorldGen.InWorld(x + i + offX, y - j))
 				{
 					continue;
 				}
 
-				bool place = i <= -halfWidth || i >= halfWidth - 1;
+				var place = i <= -halfWidth || i >= halfWidth - 1;
 
-                int normI = i + centerX - x;
-                int normJ = j + centerY - y;
+                var normI = i + centerX - x;
+                var normJ = j + centerY - y;
 				double distance = MathF.Sqrt(normI * normI + normJ * normJ);
-				bool withinBound = distance < halfWidth;
+				var withinBound = distance < halfWidth;
 				if (withinBound)
 				{
 					place = distance > halfWidth - 1.4;
@@ -156,16 +189,16 @@ internal sealed class LivingCactusBiome : MicroBiome
 					Main.tile[x + i + offX, y - j].ClearTile();
 				}
 
-				Main.tile[x + i + offX, y - j].WallType = WoodWallType;
+				Main.tile[x + i + offX, y - j].WallType = WallType;
 			}
 		}
 
 		const int outer_thick = 2;
-		for (int j = 0; j < height + outer_thick; j++)
+		for (var j = 0; j < height + outer_thick; j++)
 		{
-			for (int i = -halfWidth - outer_thick; i < halfWidth + outer_thick; i++)
+			for (var i = -halfWidth - outer_thick; i < halfWidth + outer_thick; i++)
 			{
-				int offX = stalkXOffsets[Math.Clamp(j - Math.Sign(i) * curveDir, 0, stalkXOffsets.Length - 1)];
+				var offX = stalkXOffsets[Math.Clamp(j - Math.Sign(i) * curveDir, 0, stalkXOffsets.Length - 1)];
 
 				if (!WorldGen.InWorld(x + i + offX, y - j))
 				{
@@ -179,7 +212,7 @@ internal sealed class LivingCactusBiome : MicroBiome
 			}
 		}
 
-		for (int i = -2; i < 3; i++)
+		for (var i = -2; i < 3; i++)
 		{
 			GenerateRoot(x + i, y - 2, 2.6, 11.0, new Vector2(i, 3.5f / (Math.Abs(i) + 1)));
 		}
@@ -189,24 +222,24 @@ internal sealed class LivingCactusBiome : MicroBiome
             WorldUtils.Gen(new Point(x, y - 5), new Shapes.HalfCircle(4), new Actions.SetLiquid());
         }
 
-        PlaceLootChest(x, NightshadeGenUtil.GetNearestSurface(x, y - 5, 5), 2, false);
+        PlaceLootChest(x, NightshadeGenUtil.GetNearestSurface(x, y - 5, 5), 2);
 		PlacePotsEverywhere(x, y - height / 5, width * 2);
-	}
+    }
 
 	private static void GenerateTallLivingCactus(int x, int y, int height)
     {
         const int stalk_half_width = 4;
-        int mainStalkCurvature = WorldGen.genRand.Next(5, 8); // Higher is less curved
-        int stalkCurveDir = WorldGen.genRand.NextBool().ToDirectionInt();
+        var mainStalkCurvature = WorldGen.genRand.Next(5, 8); // Higher is less curved
+        var stalkCurveDir = WorldGen.genRand.NextBool().ToDirectionInt();
 
-        int offsetX = 0;
-		int[] stalkXOffsets = new int[height];
+        var offsetX = 0;
+		var stalkXOffsets = new int[height];
 
-        int timeUntilArm = WorldGen.genRand.Next(5, 20);
-        int lastArmDirection = WorldGen.genRand.NextBool().ToDirectionInt();
-		List<Point> arms = new List<Point>();
+        var timeUntilArm = WorldGen.genRand.Next(5, 20);
+        var lastArmDirection = WorldGen.genRand.NextBool().ToDirectionInt();
+		var arms = new List<Point>();
 
-        for (int j = 0; j < height; j++)
+        for (var j = 0; j < height; j++)
         {
             if (j % mainStalkCurvature == 0 && j > 0 && j < height * 3 / 4)
             {
@@ -216,12 +249,12 @@ internal sealed class LivingCactusBiome : MicroBiome
             stalkXOffsets[j] = offsetX;
         }
 
-        for (int j = 0; j < height; j++)
+        for (var j = 0; j < height; j++)
         {
             timeUntilArm--;
             if (timeUntilArm == 0 && arms.Count < 2)
             {
-                int armX = lastArmDirection > 0 ? x : x - 1;
+                var armX = lastArmDirection > 0 ? x : x - 1;
                 arms.Add(new Point(armX + stalkXOffsets[j] + WorldGen.genRand.Next(9, 14) * lastArmDirection, y - j));
                 lastArmDirection *= -1;
 
@@ -231,24 +264,24 @@ internal sealed class LivingCactusBiome : MicroBiome
                 }
             }
 
-            for (int i = -stalk_half_width; i < stalk_half_width; i++)
+            for (var i = -stalk_half_width; i < stalk_half_width; i++)
             {
-                int offX = stalkXOffsets[Math.Clamp(j - Math.Sign(i) * stalkCurveDir * (mainStalkCurvature / 3 + 1), 0, stalkXOffsets.Length - 1)];
+                var offX = stalkXOffsets[Math.Clamp(j - Math.Sign(i) * stalkCurveDir * (mainStalkCurvature / 3 + 1), 0, stalkXOffsets.Length - 1)];
 
                 if (!WorldGen.InWorld(x + i + offX, y - j))
                 {
                     continue;
                 }
 
-                bool placeWide = offX != stalkXOffsets[j];
+                var placeWide = offX != stalkXOffsets[j];
 
-                bool place = i is <= -stalk_half_width or >= stalk_half_width - 1;
+                var place = i is <= -stalk_half_width or >= stalk_half_width - 1;
 
                 if (j > height - stalk_half_width)
                 {
-                    int normJ = j - height + stalk_half_width;
+                    var normJ = j - height + stalk_half_width;
                     double distance = MathF.Sqrt((i + 1) * i + normJ * normJ);
-                    bool withinCap = distance < stalk_half_width - 0.5;
+                    var withinCap = distance < stalk_half_width - 0.5;
                     if (withinCap)
                     {
                         place = distance > stalk_half_width - 1.75;
@@ -268,7 +301,7 @@ internal sealed class LivingCactusBiome : MicroBiome
                     Main.tile[x + i + offX, y - j].ClearTile();
                 }
 
-                Main.tile[x + i + offX, y - j].WallType = WoodWallType;
+                Main.tile[x + i + offX, y - j].WallType = WallType;
 
                 if (placeWide)
                 {
@@ -277,7 +310,7 @@ internal sealed class LivingCactusBiome : MicroBiome
                         Main.tile[x + i + stalkXOffsets[j] - Math.Sign(i), y - j].ClearTile();
                     }
 
-                    Main.tile[x + i + stalkXOffsets[j] - Math.Sign(i), y - j].WallType = WoodWallType;
+                    Main.tile[x + i + stalkXOffsets[j] - Math.Sign(i), y - j].WallType = WallType;
                 }
             }
         }
@@ -285,11 +318,11 @@ internal sealed class LivingCactusBiome : MicroBiome
         PlaceLootChest(x + offsetX, y - height + stalk_half_width * 2, 4, true);
 
         const int stalk_outer_thick = 2;
-        for (int j = 0; j < height + stalk_outer_thick; j++)
+        for (var j = 0; j < height + stalk_outer_thick; j++)
         {
-            for (int i = -stalk_half_width - stalk_outer_thick; i < stalk_half_width + stalk_outer_thick; i++)
+            for (var i = -stalk_half_width - stalk_outer_thick; i < stalk_half_width + stalk_outer_thick; i++)
             {
-                int offX = stalkXOffsets[Math.Clamp(j - Math.Sign(i) * stalkCurveDir, 0, stalkXOffsets.Length - 1)];
+                var offX = stalkXOffsets[Math.Clamp(j - Math.Sign(i) * stalkCurveDir, 0, stalkXOffsets.Length - 1)];
 
                 if (!WorldGen.InWorld(x + i + offX, y - j))
                 {
@@ -303,14 +336,14 @@ internal sealed class LivingCactusBiome : MicroBiome
             }
         }
 
-        foreach (Point point in arms)
+        foreach (var point in arms)
         {
-            int armDirection = Math.Sign(point.X - x);
-            int passageLength = Math.Abs(point.X - x);
+            var armDirection = Math.Sign(point.X - x);
+            var passageLength = Math.Abs(point.X - x);
             GenerateArm(point.X, point.Y, armDirection, passageLength, WorldGen.genRand.Next(15, 20));
         }
 
-        for (int i = -2; i < 3; i++)
+        for (var i = -2; i < 3; i++)
         {
             GenerateRoot(x + i, y, 2.3, 13.0, new Vector2(i, 2.5f / (Math.Abs(i) + 1)));
         }
@@ -322,15 +355,15 @@ internal sealed class LivingCactusBiome : MicroBiome
 
     private static void GenerateArm(int x, int y, int direction, int passageLength, int armHeight)
     {
-        int armCurveDir = WorldGen.genRand.NextBool().ToDirectionInt();
-        int armCurvature = WorldGen.genRand.Next(4, 8);
-        int offsetX = 0;
-		int[] armXOffsets = new int[armHeight];
+        var armCurveDir = WorldGen.genRand.NextBool().ToDirectionInt();
+        var armCurvature = WorldGen.genRand.Next(4, 8);
+        var offsetX = 0;
+		var armXOffsets = new int[armHeight];
 
         const int arm_half_width = 3;
         const int passage_height = 5;
 
-        for (int j = 0; j < armHeight; j++)
+        for (var j = 0; j < armHeight; j++)
         {
             if (j % armCurvature == 0 && j > passage_height + 2 && j < armHeight * 3 / 4)
             {
@@ -340,19 +373,19 @@ internal sealed class LivingCactusBiome : MicroBiome
             armXOffsets[j] = offsetX;
         }
 
-        for (int j = 0; j < armHeight; j++)
+        for (var j = 0; j < armHeight; j++)
         {
             if (j < passage_height)
             {
-                for (int i = 1; i < passageLength - 1; i++)
+                for (var i = 1; i < passageLength - 1; i++)
                 {
                     if (!WorldGen.InWorld(x - i * direction, y - j))
                     {
                         continue;
                     }
 
-					bool place = Math.Abs(j - passage_height / 2) > 1;
-                    if (place && Main.tile[x - i * direction, y - j].WallType != WoodWallType)
+					var place = Math.Abs(j - passage_height / 2) > 1;
+                    if (place && Main.tile[x - i * direction, y - j].WallType != WallType)
                     {
                         Main.tile[x - i * direction, y - j].ResetToType(WoodType);
                     }
@@ -363,29 +396,29 @@ internal sealed class LivingCactusBiome : MicroBiome
                             Main.tile[x - i * direction, y - j].ClearTile();
                         }
 
-                        Main.tile[x - i * direction, y - j].WallType = WoodWallType;
+                        Main.tile[x - i * direction, y - j].WallType = WallType;
                     }
                 }
             }
 
-            for (int i = -arm_half_width; i < arm_half_width; i++)
+            for (var i = -arm_half_width; i < arm_half_width; i++)
             {
-                int offX = armXOffsets[Math.Clamp(j + 2 * Math.Sign(i) * armCurveDir, 0, armXOffsets.Length - 1)];
+                var offX = armXOffsets[Math.Clamp(j + 2 * Math.Sign(i) * armCurveDir, 0, armXOffsets.Length - 1)];
 
                 if (!WorldGen.InWorld(x + i + offX, y - j))
                 {
                     continue;
                 }
 
-				bool placeWide = offX != armXOffsets[j];
+				var placeWide = offX != armXOffsets[j];
 
-				bool place = i is <= -arm_half_width or >= arm_half_width - 1;
+				var place = i is <= -arm_half_width or >= arm_half_width - 1;
 
                 if (j < arm_half_width)
                 {
-                    int normJ = j - arm_half_width;
+                    var normJ = j - arm_half_width;
                     double distance = MathF.Sqrt((i + 1) * i + normJ * normJ);
-					bool withinCap = distance < arm_half_width - 0.5;
+					var withinCap = distance < arm_half_width - 0.5;
                     if (withinCap)
                     {
                         place = distance > arm_half_width - 1.5;
@@ -398,9 +431,9 @@ internal sealed class LivingCactusBiome : MicroBiome
 
                 if (j > armHeight - arm_half_width)
                 {
-                    int normJ = j - armHeight + arm_half_width;
+                    var normJ = j - armHeight + arm_half_width;
                     double distance = MathF.Sqrt((i + 1) * i + normJ * normJ);
-                    bool withinCap = distance < arm_half_width - 0.5;
+                    var withinCap = distance < arm_half_width - 0.5;
                     if (withinCap)
                     {
                         place = distance > arm_half_width - 1.5;
@@ -411,7 +444,7 @@ internal sealed class LivingCactusBiome : MicroBiome
                     }
                 }
 
-                if (place && Main.tile[x + i + offX, y - j].WallType != WoodWallType)
+                if (place && Main.tile[x + i + offX, y - j].WallType != WallType)
                 {
                     Main.tile[x + i + offX, y - j].ResetToType(WoodType);
                 }
@@ -420,7 +453,7 @@ internal sealed class LivingCactusBiome : MicroBiome
                     Main.tile[x + i + offX, y - j].ClearTile();
                 }
 
-                Main.tile[x + i + offX, y - j].WallType = WoodWallType;
+                Main.tile[x + i + offX, y - j].WallType = WallType;
 
                 if (placeWide)
                 {
@@ -429,7 +462,7 @@ internal sealed class LivingCactusBiome : MicroBiome
                         Main.tile[x + i + armXOffsets[j], y - j].ClearTile();
                     }
 
-                    Main.tile[x + i + armXOffsets[j], y - j].WallType = WoodWallType;
+                    Main.tile[x + i + armXOffsets[j], y - j].WallType = WallType;
                 }
             }
         }
@@ -442,11 +475,11 @@ internal sealed class LivingCactusBiome : MicroBiome
         }
 
         const int arm_outer_thick = 2;
-        for (int j = -arm_outer_thick; j < armHeight + arm_outer_thick; j++)
+        for (var j = -arm_outer_thick; j < armHeight + arm_outer_thick; j++)
         {
             if (j < passage_height + arm_outer_thick)
             {
-                for (int i = -1; i < passageLength; i++)
+                for (var i = -1; i < passageLength; i++)
                 {
                     if (!WorldGen.InWorld(x - i * direction, y - j))
                     {
@@ -460,9 +493,9 @@ internal sealed class LivingCactusBiome : MicroBiome
                 }
             }
 
-            for (int i = -arm_half_width - arm_outer_thick; i < arm_half_width + arm_outer_thick; i++)
+            for (var i = -arm_half_width - arm_outer_thick; i < arm_half_width + arm_outer_thick; i++)
             {
-                int offX = armXOffsets[Math.Clamp(j + 2 * Math.Sign(i) * armCurveDir, 0, armXOffsets.Length - 1)];
+                var offX = armXOffsets[Math.Clamp(j + 2 * Math.Sign(i) * armCurveDir, 0, armXOffsets.Length - 1)];
 
                 if (!WorldGen.InWorld(x + i + offX, y - j))
                 {
@@ -482,16 +515,16 @@ internal sealed class LivingCactusBiome : MicroBiome
 
     private static void GenerateRoot(int x, int y, double size, double distance, Vector2 direction)
     {
-        double xi = x - size / 2;
-        double yi = y - size / 2;
-        for (int k = 0; k < (int)distance; k++)
+        var xi = x - size / 2;
+        var yi = y - size / 2;
+        for (var k = 0; k < (int)distance; k++)
         {
-            int thickness = (int)Math.Ceiling(Utils.Lerp(size, 0, Math.Sqrt(k / distance)));
-            int thickX = thickness + (int)Math.Abs(direction.X);
-            int thickY = thickness + (int)Math.Abs(direction.Y);
-            for (int i = 0; i < thickX; i++)
+            var thickness = (int)Math.Ceiling(Utils.Lerp(size, 0, Math.Sqrt(k / distance)));
+            var thickX = thickness + (int)Math.Abs(direction.X);
+            var thickY = thickness + (int)Math.Abs(direction.Y);
+            for (var i = 0; i < thickX; i++)
             {
-                for (int j = 0; j < thickY; j++)
+                for (var j = 0; j < thickY; j++)
                 {
                     Main.tile[(int)xi + i, (int)yi + j].ResetToType(WoodType);
 
@@ -513,13 +546,13 @@ internal sealed class LivingCactusBiome : MicroBiome
 
     private static void TryPlacePlatform(int x, int y, int direction, int max = 8)
     {
-        bool valid = true;
-        int solidCount = 0;
-        int validCount = 0;
-        int r = 0;
+        var valid = true;
+        var solidCount = 0;
+        var validCount = 0;
+        var r = 0;
         while (true)
         {
-            if (!Main.tile[x + r * direction, y].HasTile && Main.tile[x + r * direction, y].WallType == WoodWallType)
+            if (!Main.tile[x + r * direction, y].HasTile && Main.tile[x + r * direction, y].WallType == WallType)
             {
                 validCount++;
             }
@@ -545,7 +578,7 @@ internal sealed class LivingCactusBiome : MicroBiome
             return;
         }
 
-        for (int i = 0; i < validCount; i++)
+        for (var i = 0; i < validCount; i++)
         {
             if (!WorldGen.SolidTile(x + (i + solidCount) * direction, y))
             {
@@ -563,14 +596,75 @@ internal sealed class LivingCactusBiome : MicroBiome
 			TryPlacePlatform(x, y, -1, width / 2 + 1);
 		}
 
-		WorldGen.PlaceChest(x - 1 + WorldGen.genRand.Next(-width / 2 + 1, width / 2), y - 1, style: 10);
-    }
-
-    private static void PlacePotsEverywhere(int x, int y, int radius)
-    {
-        for (int i = x - radius; i < x + radius; i++)
+		int index = WorldGen.PlaceChest(x - 1 + WorldGen.genRand.Next(-width / 2 + 1, width / 2), y - 1, style: 10);
+        if (index < 0)
         {
-            for (int j = y - radius; j < y + radius; j++)
+            return;
+        }
+
+        List<Item> loot = new List<Item>();
+
+        if (WorldGen.genRand.NextBool(4))
+        {
+            loot.Add(new Item(ModContent.ItemType<PreDigester>()));
+        }
+        else if (WorldGen.genRand.NextBool(10))
+        {
+            loot.Add(new Item(ItemID.Extractinator));
+        }
+
+        loot.Add(new Item(ModContent.ItemType<CactusSplashJug>(), WorldGen.genRand.Next(30, 50)));
+
+        if (WorldGen.genRand.NextBool(10))
+        {
+            loot.Add(new Item(ItemID.CatBast));
+        }
+
+        if (WorldGen.genRand.NextBool())
+        {
+            if (GenVars.gold == 8)
+            {
+                loot.Add(new Item(ItemID.GoldBar, WorldGen.genRand.Next(5, 10)));
+            }
+            else if (GenVars.gold == 169)
+            {
+                loot.Add(new Item(ItemID.PlatinumBar, WorldGen.genRand.Next(5, 10)));
+            }
+            else // If we get here, then some mod adds a third ore alt. Cool!
+            {
+                loot.Add(new Item(ItemID.Diamond, WorldGen.genRand.Next(5, 10)));
+            }
+        }
+        
+        loot.Add(new Item(ItemID.Grenade, WorldGen.genRand.Next(30, 50)));
+
+		if (WorldGen.genRand.NextBool())
+        {
+            loot.Add(new Item(ItemID.ScarabBomb, WorldGen.genRand.Next(5, 20)));
+        }
+
+        if (WorldGen.genRand.NextBool(5))
+        {
+            loot.Add(new Item(ItemID.ThornsPotion, WorldGen.genRand.Next(1, 4)));
+        }
+        else
+        {
+            loot.Add(new Item(ItemID.RecallPotion, WorldGen.genRand.Next(1, 5)));
+        }
+
+        if (WorldGen.genRand.NextBool())
+        {
+            loot.Add(new Item(ItemID.SilverCoin, WorldGen.genRand.Next(25, 90)));
+        }
+
+        NightshadeGenUtil.AddLootToChest(ref Main.chest[index], loot.ToArray());
+	}
+
+	private static void PlacePotsEverywhere(int x, int y, int radius)
+    {
+        for (var i = x - radius; i < x + radius; i++)
+        {
+            for (var j = y - radius; j < y + radius; j++)
             {
                 if (WorldGen.genRand.NextBool(5))
                 {

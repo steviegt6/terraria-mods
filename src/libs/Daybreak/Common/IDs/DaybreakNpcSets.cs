@@ -14,23 +14,54 @@ namespace Daybreak.Common.IDs;
 // TODO: Support custom hook for EmoteBubble.CheckForNPCsToReactToEmoteBubble
 // TODO: Party of Doom Main.DoUpdateInWorld
 
+/// <summary>
+///     Provides NPC ID sets.
+/// </summary>
 [PublicAPI]
 public sealed class DaybreakNpcSets : ModSystem
 {
+    /// <summary>
+    ///     Whether the NPC can participate in parties.
+    /// </summary>
     public static bool?[] CanParty = [];
 
+    /// <summary>
+    ///     Whether the NPC should be counted when determining whether the Eye
+    ///     of Cthulhu is eligible to spawn.
+    /// </summary>
     public static bool?[] ContributesToEocSpawn = [];
 
+    /// <summary>
+    ///     Whether the NPC should be counted when determing whether the
+    ///     Traveling Merchant is eligible to spawn.
+    /// </summary>
     public static bool?[] ContributesToTravelingMerchantSpawn = [];
 
+    /// <summary>
+    ///     Whether the Traveling Merchant can choose this NPC as an NPC to
+    ///     randomly spawn near.
+    /// </summary>
     public static bool?[] TravelingMerchantCanSpawnNear = [];
 
+    /// <summary>
+    ///     Whether this NPC may be killed when the 'after-party of doom' is
+    ///     triggered.
+    /// </summary>
     public static bool?[] VulnerableToAfterPartyOfDoom = [];
 
+    /// <summary>
+    ///     Whether this town NPC contributes to town NPC slot counts.
+    /// </summary>
     public static bool[] TownNpcContributesToTownNpcSlots = [];
 
+    /// <summary>
+    ///     Whether this NPC contributes to the town NPC spawn count.
+    /// </summary>
     public static bool?[] ContributesToTownNpcSpawnCount = [];
 
+    /// <summary>
+    ///     Resizes sets.
+    /// </summary>
     public override void ResizeArrays()
     {
         base.ResizeArrays();
@@ -52,6 +83,9 @@ public sealed class DaybreakNpcSets : ModSystem
         }
     }
 
+    /// <summary>
+    ///     Initializes hooks/set implementations.
+    /// </summary>
     public override void Load()
     {
         base.Load();
