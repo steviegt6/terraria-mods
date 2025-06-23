@@ -337,9 +337,9 @@ internal static class AssetReferences
                         private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
                     }
 
-                    public static class Sixtydegrees
+                    public static class SixtyDegrees
                     {
-                        public const string KEY = "Nightshade/Assets/Images/UI/AuthorTags/Sixtydegrees";
+                        public const string KEY = "Nightshade/Assets/Images/UI/AuthorTags/SixtyDegrees";
 
                         public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
