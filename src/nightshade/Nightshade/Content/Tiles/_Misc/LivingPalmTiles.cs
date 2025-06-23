@@ -1,5 +1,5 @@
 using Microsoft.Xna.Framework;
-using Nightshade.Content.Items;
+
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;

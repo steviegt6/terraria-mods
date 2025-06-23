@@ -24,7 +24,7 @@ using Terraria.UI.Chat;
 
 namespace Nightshade.Content;
 
-internal sealed class NightshadePanelStyle : ModPanelStyleExt
+internal sealed class PanelStyle : ModPanelStyleExt
 {
     private sealed class ModName : UIText
     {
@@ -142,20 +142,8 @@ internal sealed class NightshadePanelStyle : ModPanelStyleExt
         }
     }
 
-    // C50084 CE008C dark
-    // E600E6        light
     private static readonly Color dark_pink = new(197, 0, 132);
     private static readonly Color light_pink = new(230, 0, 230);
-
-    // In no particular order of importance.  We could order based on whether
-    // they have icons?
-    // These names are used as unique keys for both getting icons and for
-    // getting localized names.
-    private static readonly string[] authors =
-    [
-        "Tomat", "Triangle", "Sixtydegrees", "Math2", "OneThree", "Tyeski",
-        "Wymsical", "Ebonfly", "Citrus", "BabyBlueSheep",
-    ];
 
     [InitializedInLoad]
     private static WrapperShaderData<Assets.Shaders.UI.ModPanelShader.Parameters>? panelShaderData;
@@ -250,21 +238,21 @@ internal sealed class NightshadePanelStyle : ModPanelStyleExt
             return;
         }
 
-        UICommon.TooltipMouseText(GetAuthorTooltip());
+        UICommon.TooltipMouseText(GetAuthorTooltip(Mod));
 
         return;
 
-        static string GetAuthorTooltip()
+        static string GetAuthorTooltip(Mod mod)
         {
             var sb = new StringBuilder();
 
             sb.AppendLine(Mods.Nightshade.UI.ModIcon.AuthorHeader.GetTextValue());
 
-            foreach (var authorName in authors)
+            foreach (var authorTag in mod.GetContent<AuthorTag>())
             {
-                sb.Append($"[nsa:{authorName}]");
+                sb.Append($"[nsa:{authorTag.FullName}]");
                 sb.Append(' ');
-                sb.AppendLine(Mods.Nightshade.UI.ModIcon.Authors.GetChildTextValue(authorName));
+                sb.AppendLine(authorTag.DisplayName.Value);
             }
 
             return sb.ToString();
@@ -343,7 +331,7 @@ internal sealed class NightshadePanelStyle : ModPanelStyleExt
     {
         return enabled ? light_pink : dark_pink;
     }
-    
+
     private static Vector4 Transform(Vector4 vector)
     {
         var vec1 = Vector2.Transform(new Vector2(vector.X, vector.Y), Main.UIScaleMatrix);

@@ -1,6 +1,5 @@
-﻿using Microsoft.VisualBasic;
-using Microsoft.Xna.Framework;
-using ReLogic.OS;
+﻿using Microsoft.Xna.Framework;
+
 using System.Linq;
 using Terraria;
 using Terraria.ID;

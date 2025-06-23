@@ -1,3 +1,19 @@
+AuthorTags: {
+	BabyBlueSheep.DisplayName: babybluesheep
+	Blockaroz.DisplayName: Blockaroz
+	Citrus.DisplayName: Citrus
+	Dreitone.DisplayName: dreitone
+	Ebonfly.DisplayName: Ebonfly
+	Fred.DisplayName: Fred
+	Haram64.DisplayName: Haram! 64
+	SixtyDegrees.DisplayName: sixtydegrees
+	Tomat.DisplayName: tomat
+	Triangle.DisplayName: Triangle
+	Tyeski.DisplayName: TYESKI (Universe)
+	Tyrant.DisplayName: Tyrant
+	Wymsical.DisplayName: Wymsical
+}
+
 UI: {
 	ModIcon: {
 		AprilFools.ModName: NAMELESS MOD OF NIGHT
@@ -420,6 +436,21 @@ Items: {
 		DisplayName: Reflective Platinum Dye
 		Tooltip: ""
 	}
+
+	HangingCoconutItem: {
+		DisplayName: Hanging Coconut Item
+		Tooltip: ""
+	}
+
+	LivingPalmLeafWand: {
+		DisplayName: Living Palm Leaf Wand
+		Tooltip: ""
+	}
+
+	LivingPalmWoodWand: {
+		DisplayName: Living Palm Wood Wand
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
@@ -433,6 +464,7 @@ Projectiles: {
 	StarFragmentProjSpawner.DisplayName: Star Fragment Proj Spawner
 	PreDigesterHeldProj.DisplayName: Pre Digester Held Proj
 	CactusSplashJugThrown.DisplayName: Cactus Splash Jug Thrown
+	FallingCoconutProjectile.DisplayName: Falling Coconut Projectile
 }
 
 Configs.DummyConfig.DisplayName: Dummy Config
@@ -472,3 +504,5 @@ NPCs: {
 	PlatinumWaterStriderNpc.DisplayName: Platinum Water Strider
 	PlatinumWormNpc.DisplayName: Platinum Worm
 }
+
+Tiles.CoconutChestTile: Mods.Nightshade.Tiles.CoconutChestTile
