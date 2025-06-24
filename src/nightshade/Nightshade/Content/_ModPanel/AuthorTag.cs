@@ -1,3 +1,5 @@
+using Daybreak.Common.Rendering;
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
