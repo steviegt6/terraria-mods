@@ -85,6 +85,24 @@ internal static class AssetReferences
 
                     private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
                 }
+
+                public static class HardGlow
+                {
+                    public const string KEY = "Nightshade/Assets/Images/Extras/HardGlow";
+
+                    public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
+
+                    private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
+                }
+
+                public static class MistNoise
+                {
+                    public const string KEY = "Nightshade/Assets/Images/Extras/MistNoise";
+
+                    public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
+
+                    private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
+                }
             }
 
             public static class NPCs
@@ -2281,6 +2299,51 @@ internal static class AssetReferences
                     }
 
                     public const string KEY = "Nightshade/Assets/Shaders/Misc/BasicPixelizationShader";
+
+                    public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Effect> Asset => lazy.Value;
+
+                    private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Effect>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Effect>(KEY));
+
+                    public static WrapperShaderData<Parameters> CreateStripShader()
+                    {
+                        return new WrapperShaderData<Parameters>(Asset, "StripShader");
+                    }
+                }
+
+                public static class DarkeningMistShader
+                {
+                    public sealed class Parameters : IShaderParameters
+                    {
+                        public Microsoft.Xna.Framework.Graphics.Texture2D? uImage0 { get; set; }
+
+                        public Microsoft.Xna.Framework.Graphics.Texture2D? uTexture0 { get; set; }
+
+                        public Microsoft.Xna.Framework.Graphics.Texture2D? tex0 { get; set; }
+
+                        public float uTime { get; set; }
+
+                        public Microsoft.Xna.Framework.Vector2 uScreenPosition { get; set; }
+
+                        public Microsoft.Xna.Framework.Vector2 uScreenSize { get; set; }
+
+                        public Microsoft.Xna.Framework.Vector2 uGasCenter { get; set; }
+
+                        public float uLoss { get; set; }
+
+                        public void Apply(Microsoft.Xna.Framework.Graphics.EffectParameterCollection parameters)
+                        {
+                            parameters["uImage0"]?.SetValue(uImage0);
+                            parameters["uTexture0"]?.SetValue(uTexture0);
+                            parameters["tex0"]?.SetValue(tex0);
+                            parameters["uTime"]?.SetValue(Terraria.Main.GlobalTimeWrappedHourly);
+                            parameters["uScreenPosition"]?.SetValue(uScreenPosition);
+                            parameters["uScreenSize"]?.SetValue(uScreenSize);
+                            parameters["uGasCenter"]?.SetValue(uGasCenter);
+                            parameters["uLoss"]?.SetValue(uLoss);
+                        }
+                    }
+
+                    public const string KEY = "Nightshade/Assets/Shaders/Misc/DarkeningMistShader";
 
                     public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Effect> Asset => lazy.Value;
 

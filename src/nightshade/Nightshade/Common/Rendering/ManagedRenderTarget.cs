@@ -15,7 +15,7 @@ namespace Nightshade.Common.Rendering;
 ///     API consumers should invoke <see cref="Initialize"/> upon creation with
 ///     their target size.
 /// </summary>
-internal sealed class ManagedRenderTarget : IDisposable
+public sealed class ManagedRenderTarget : IDisposable
 {
     /// <summary>
     ///     The wrapped render target.
