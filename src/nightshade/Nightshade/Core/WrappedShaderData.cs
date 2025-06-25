@@ -13,8 +13,9 @@ internal sealed class WrapperShaderData<TParameters>(Asset<Effect> shader, strin
 
     public override void Apply()
     {
-        Parameters.Apply(Shader.Parameters);
+        if (Shader is not null)
+			Parameters?.Apply(Shader.Parameters);
 
-        base.Apply();
+		base.Apply();
     }
 }

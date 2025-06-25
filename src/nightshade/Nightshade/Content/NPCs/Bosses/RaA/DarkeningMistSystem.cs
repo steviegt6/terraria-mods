@@ -36,6 +36,7 @@ public class DarkeningMistSystem : ILoadable
 
 	public static List<Action<SpriteBatch>> Draws = new List<Action<SpriteBatch>>();
 	public static Vector2 GasCenter;
+	public static Vector2 GasVelocity;
 
 	[InitializedInLoad]
 	private ManagedRenderTarget target;
@@ -65,20 +66,18 @@ public class DarkeningMistSystem : ILoadable
 		Main.spriteBatch.End(out SpriteBatchSnapshot ss);
 		Main.instance.GraphicsDevice.SetRenderTarget(swapTarget.Value);
 		Main.instance.GraphicsDevice.Clear(Color.Transparent);
-		Main.spriteBatch.Begin(ss with { SortMode = SpriteSortMode.Immediate });
+		Main.spriteBatch.Begin(ss with { SortMode = SpriteSortMode.Immediate, TransformMatrix = Matrix.identity });
 
-		Effect effect = Assets.Shaders.Misc.DarkeningMistShader.Asset.Value;
-		if (effect is not null)
-		{
-			effect.Parameters["uScreenPosition"]?.SetValue(Main.screenPosition);
-			effect.Parameters["uScreenSize"]?.SetValue(target.Value.Size());
-			effect.Parameters["uTime"]?.SetValue(Main.GlobalTimeWrappedHourly / 3f);
-			effect.Parameters["uTexture0"]?.SetValue(Assets.Images.Extras.MistNoise.Asset.Value);
-			effect.Parameters["uGasCenter"]?.SetValue((GasCenter - Main.screenPosition) / new Vector2(Main.screenWidth, Main.screenHeight));
-			effect.Parameters["uLoss"]?.SetValue(0.95f);
-			effect.Parameters["uPropDistance"]?.SetValue(1.5f);
-			effect.CurrentTechnique.Passes[0].Apply();
-		}
+		var effect = Assets.Shaders.Misc.DarkeningMistShader.CreateStripShader();
+		effect.Parameters.uScreenPosition = Main.screenPosition;
+		effect.Parameters.uScreenSize = target.Value.Size();
+		effect.Parameters.uTime = Main.GlobalTimeWrappedHourly / 3f;
+		effect.Parameters.uTexture0 = Assets.Images.Extras.MistNoise.Asset.Value;
+		effect.Parameters.uGasCenter = (GasCenter - Main.screenPosition) / new Vector2(Main.screenWidth, Main.screenHeight);
+		effect.Parameters.uGasVelocity = GasVelocity;
+		effect.Parameters.uLoss = 0.95f;
+		effect.Parameters.uPropDistance = 1f;
+		effect.Apply();
 
 		Main.spriteBatch.Draw(target.Value, Vector2.Zero, Color.White);
 
@@ -98,7 +97,12 @@ public class DarkeningMistSystem : ILoadable
 
 		Main.spriteBatch.End(out ss);
 		Main.instance.GraphicsDevice.SetRenderTargets(bindings);
-		Main.spriteBatch.Begin(ss with { BlendState = MultiplyBlendState });
+
+		var pixel = Assets.Shaders.Misc.BasicPixelizationShader.CreateStripShader();
+		pixel.Parameters.uSize = target.Value.Size();
+		pixel.Parameters.uPixel = 2f;
+		Main.spriteBatch.Begin(ss with { SortMode = SpriteSortMode.Immediate, BlendState = MultiplyBlendState, TransformMatrix = Main.Transform });
+		pixel.Apply();
 
 		Main.spriteBatch.Draw(target.Value, Vector2.Zero, Color.White);
 

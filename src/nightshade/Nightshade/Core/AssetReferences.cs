@@ -86,15 +86,6 @@ internal static class AssetReferences
                     private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
                 }
 
-                public static class HardGlow
-                {
-                    public const string KEY = "Nightshade/Assets/Images/Extras/HardGlow";
-
-                    public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
-
-                    private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
-                }
-
                 public static class MistNoise
                 {
                     public const string KEY = "Nightshade/Assets/Images/Extras/MistNoise";
@@ -249,6 +240,15 @@ internal static class AssetReferences
                 {
                     public static class RaA
                     {
+                        public static class MistBall
+                        {
+                            public const string KEY = "Nightshade/Assets/Images/NPCs/Bosses/RaA/MistBall";
+
+                            public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
+
+                            private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
+                        }
+
                         public static class YogSothoth
                         {
                             public const string KEY = "Nightshade/Assets/Images/NPCs/Bosses/RaA/YogSothoth";
@@ -2328,7 +2328,11 @@ internal static class AssetReferences
 
                         public Microsoft.Xna.Framework.Vector2 uGasCenter { get; set; }
 
+                        public Microsoft.Xna.Framework.Vector2 uGasVelocity { get; set; }
+
                         public float uLoss { get; set; }
+
+                        public float uPropDistance { get; set; }
 
                         public void Apply(Microsoft.Xna.Framework.Graphics.EffectParameterCollection parameters)
                         {
@@ -2339,7 +2343,9 @@ internal static class AssetReferences
                             parameters["uScreenPosition"]?.SetValue(uScreenPosition);
                             parameters["uScreenSize"]?.SetValue(uScreenSize);
                             parameters["uGasCenter"]?.SetValue(uGasCenter);
+                            parameters["uGasVelocity"]?.SetValue(uGasVelocity);
                             parameters["uLoss"]?.SetValue(uLoss);
+                            parameters["uPropDistance"]?.SetValue(uPropDistance);
                         }
                     }
 

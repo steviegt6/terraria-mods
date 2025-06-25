@@ -487,7 +487,7 @@ NPCs: {
 	PlatinumSquirrelNpc.DisplayName: Platinum Squirrel
 	PlatinumWaterStriderNpc.DisplayName: Platinum Water Strider
 	PlatinumWormNpc.DisplayName: Platinum Worm
-	YogSothoth.DisplayName: Yog-Sothoth
+	YogSothoth.DisplayName: "[starspeak:RegressireAdAstra]"
 }
 
-Tiles.CoconutChestTile: Mods.Nightshade.Tiles.CoconutChestTile
+Tiles.CoconutChestTile: Coconut Chest

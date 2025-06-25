@@ -86,15 +86,18 @@ public sealed partial class YogSothoth : ModNPC
 		if (!NPC.IsABestiaryIconDummy)
 		{
 			DarkeningMistSystem.GasCenter = NPC.Center;
+			DarkeningMistSystem.GasVelocity = NPC.velocity / 128f;
 			DarkeningMistSystem.Draws.Add(DrawToMist);
 		}
 	}
 
 	private void DrawToMist(SpriteBatch spriteBatch)
 	{
-		Texture2D glowTexture = Assets.Images.Extras.HardGlow.Asset.Value;
-		float spin = Main.GlobalTimeWrappedHourly * MathHelper.Pi * NPC.direction;
-		spriteBatch.Draw(glowTexture, NPC.Center + new Vector2(0, -86) - Main.screenPosition, glowTexture.Frame(), Color.White with { A = 112 }, NPC.rotation + spin, glowTexture.Size() / 2, NPC.scale / 2f, 0, 0);
+		Texture2D glowTexture = Assets.Images.NPCs.Bosses.RaA.MistBall.Asset.Value;
+		float spin = MathF.Sin(Main.GlobalTimeWrappedHourly * MathHelper.TwoPi) * 2;
+
+		Color color = Main.hslToRgb(Main.GlobalTimeWrappedHourly % 1f, 0.7f, 0.9f, 50);
+		spriteBatch.Draw(glowTexture, NPC.Center + new Vector2(0, -86) - Main.screenPosition, glowTexture.Frame(), color, NPC.rotation + spin, glowTexture.Size() / 2, NPC.scale * 0.66f, 0, 0);
 	}
 
 	public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
@@ -107,7 +110,7 @@ public sealed partial class YogSothoth : ModNPC
 
 		RestartSpriteBatch(spriteBatch, SpriteSortMode.Deferred, DarkeningMistSystem.MultiplyBlendState, NPC.IsABestiaryIconDummy);
 
-		spriteBatch.Draw(glow, NPC.Center - screenPos + new Vector2(0, -50), glow.Frame(), Color.White * 0.5f, NPC.rotation, glow.Size() / 2, NPC.scale * 1.2f, 0, 0);
+		spriteBatch.Draw(glow, NPC.Center - screenPos + new Vector2(0, -50), glow.Frame(), Color.White * 0.6f, NPC.rotation, glow.Size() / 2, NPC.scale * 1.2f, 0, 0);
 
 		RestartSpriteBatch(spriteBatch, SpriteSortMode.Deferred, BlendState.AlphaBlend, NPC.IsABestiaryIconDummy);
 
