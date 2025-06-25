@@ -26,11 +26,15 @@ public class ThawBoss : ModNPC
     [InitializedInLoad]
     private static WrapperShaderData<Assets.Shaders.Misc.FlameShader.Parameters>? flameShader;
     [InitializedInLoad]
+    private static WrapperShaderData<Assets.Shaders.Misc.FourPointLightingShader.Parameters>? lightingShader;
+    [InitializedInLoad]
     private static ManagedRenderTarget? managedRenderTarget;
     public override void Load()
     {
         Main.QueueMainThreadAction(() =>
         {
+            lightingShader = Assets.Shaders.Misc.FourPointLightingShader.CreateStripShader();
+
             flameShader = Assets.Shaders.Misc.FlameShader.CreateStripShader();
             flameShader.Parameters.uIntensity = 10f;
 
@@ -122,6 +126,7 @@ public class ThawBoss : ModNPC
     }
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
+        Debug.Assert(lightingShader is not null);
         Texture2D body = TextureAssets.Npc[Type].Value;
         Texture2D head = Assets.Images.NPCs.ThawBoss_Head.Asset.Value;
         Texture2D orb = Assets.Images.NPCs.ThawBoss_Orb.Asset.Value;
@@ -134,8 +139,18 @@ public class ThawBoss : ModNPC
 
         // cloth stuff here
 
+        var ss = new SpriteBatchSnapshot(spriteBatch);
         float bodyRotation = NPC.rotation + MathHelper.Clamp(NPC.velocity.X * 0.01f, -2.5f, .8f); // ice side is heavier, cool details!!
-        Main.EntitySpriteDraw(body, NPC.Center - screenPos, null, drawColor, bodyRotation, body.Size() / 2 + new Vector2(24, -24), NPC.scale, SpriteEffects.None);
+        spriteBatch.End();
+        spriteBatch.Begin(ss.SortMode, ss.BlendState, ss.SamplerState, ss.DepthStencilState, ss.RasterizerState, lightingShader.Shader, ss.TransformMatrix);
+        lightingShader.Parameters.colorTL = new Vector4(Lighting.GetSubLight(NPC.Center - body.Size() / 2), 1);
+        lightingShader.Parameters.colorTR = new Vector4(Lighting.GetSubLight(NPC.Center + new Vector2(body.Width, -body.Height) / 2), 1);
+        lightingShader.Parameters.colorBL = new Vector4(Lighting.GetSubLight(NPC.Center + new Vector2(-body.Width, body.Height) / 2), 1);
+        lightingShader.Parameters.colorBR = new Vector4(Lighting.GetSubLight(NPC.Center + body.Size() / 2), 1);
+        lightingShader.Apply();
+        Main.EntitySpriteDraw(body, NPC.Center - screenPos, null, Color.White, bodyRotation, body.Size() / 2 + new Vector2(24, -24), NPC.scale, SpriteEffects.None);
+        spriteBatch.Restart(in ss);
+
         Main.EntitySpriteDraw(head, NPC.Center + new Vector2(0, BreathMult() * -4) - screenPos, NPC.frame, drawColor, 0, new Vector2(160 / 2, 126), NPC.scale, SpriteEffects.None);
         return false;
     }

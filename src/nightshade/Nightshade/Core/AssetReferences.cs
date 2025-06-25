@@ -1854,6 +1854,42 @@ internal static class AssetReferences
                     }
                 }
 
+                public static class FourPointLightingShader
+                {
+                    public sealed class Parameters : IShaderParameters
+                    {
+                        public Microsoft.Xna.Framework.Graphics.Texture2D? uImage0 { get; set; }
+
+                        public Microsoft.Xna.Framework.Vector4 colorTL { get; set; }
+
+                        public Microsoft.Xna.Framework.Vector4 colorTR { get; set; }
+
+                        public Microsoft.Xna.Framework.Vector4 colorBL { get; set; }
+
+                        public Microsoft.Xna.Framework.Vector4 colorBR { get; set; }
+
+                        public void Apply(Microsoft.Xna.Framework.Graphics.EffectParameterCollection parameters)
+                        {
+                            parameters["uImage0"]?.SetValue(uImage0);
+                            parameters["colorTL"]?.SetValue(colorTL);
+                            parameters["colorTR"]?.SetValue(colorTR);
+                            parameters["colorBL"]?.SetValue(colorBL);
+                            parameters["colorBR"]?.SetValue(colorBR);
+                        }
+                    }
+
+                    public const string KEY = "Nightshade/Assets/Shaders/Misc/FourPointLightingShader";
+
+                    public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Effect> Asset => lazy.Value;
+
+                    private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Effect>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Effect>(KEY));
+
+                    public static WrapperShaderData<Parameters> CreateStripShader()
+                    {
+                        return new WrapperShaderData<Parameters>(Asset, "StripShader");
+                    }
+                }
+
                 public static class VanillaVertexStripShader
                 {
                     public sealed class Parameters : IShaderParameters
