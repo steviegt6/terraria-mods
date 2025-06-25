@@ -16,12 +16,4 @@
         <ProjectReference Include="..\..\libs\Daybreak\Daybreak.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Assets\Images\Dusts\" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Include="Content\Particles\GlowSplashParticle.cs" />
-    </ItemGroup>
-
 </Project>

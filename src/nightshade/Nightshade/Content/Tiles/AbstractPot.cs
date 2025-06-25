@@ -1,5 +1,9 @@
 using System.Collections.Generic;
 
+using Daybreak.Common.Features.PotLoot;
+
+using Nightshade.Common.Features;
+
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -7,8 +11,10 @@ using Terraria.ObjectData;
 
 namespace Nightshade.Content.Tiles;
 
-internal abstract class AbstractPot : ModTile
+internal abstract class AbstractPot : ModTile, IHasPotBehavior
 {
+    public abstract PotBehavior Behavior { get; }
+    
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
@@ -29,8 +35,14 @@ internal abstract class AbstractPot : ModTile
         
         HitSound = SoundID.Shatter;
     }
-    
-    // Drops are handled separately. TODO
+
+    public override bool TileFrame(int i, int j, ref bool resetFrame, ref bool noBreak)
+    {
+        WorldGen.CheckPot(i, j, Type);
+        return false;
+    }
+
+    // Drops are handled separately.
     public override IEnumerable<Item> GetItemDrops(int i, int j)
     {
         return [];

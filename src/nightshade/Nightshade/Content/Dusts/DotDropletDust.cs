@@ -11,32 +11,28 @@ public class DotDropletDust : ModDust
 
 	public override bool Update(Dust dust)
 	{
-		//Vector2 collision = Collision.TileCollision(dust.position - new Vector2(2), dust.velocity, 4, 4);
-		//if (Math.Abs(collision.X - dust.velocity.X) > 0)
-		//{
-		//	dust.velocity.X *= -0.1f;
-		//	dust.scale *= 0.4f;
-		//}
-
-		//if (Math.Abs(collision.Y - dust.velocity.Y) > 0)
-		//{
-		//	dust.velocity.Y *= -0.1f;
-		//	dust.scale *= 0.4f;
-		//}
+		bool noGrav = false;
+		if (Collision.WetCollision(dust.position - new Vector2(6), 12, 12))
+		{
+			dust.velocity.Y *= 0.9f; 
+			dust.velocity.Y -= 0.3f;
+			dust.scale *= 0.95f;
+			noGrav = true;
+		}
 
 		if (Collision.SolidCollision(dust.position - new Vector2(6), 12, 12))
 		{
-			dust.scale *= 0.7f;
-			dust.velocity *= 0.3f;
+			dust.scale *= 0.5f;
+			dust.velocity *= 0.1f;
 		}
 
-		if (!dust.noGravity)
+		if (!dust.noGravity && !noGrav)
 		{
-			dust.velocity.Y += 0.4f;
+			dust.velocity.Y += 0.35f;
 
-			if (dust.velocity.Y > 16f)
+			if (dust.velocity.Y > 22f)
 			{
-				dust.velocity.Y = 16f;
+				dust.velocity.Y = 22f;
 			}
 		}
 

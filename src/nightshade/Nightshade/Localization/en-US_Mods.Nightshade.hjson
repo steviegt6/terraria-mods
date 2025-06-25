@@ -1,3 +1,19 @@
+AuthorTags: {
+	BabyBlueSheep.DisplayName: babybluesheep
+	Blockaroz.DisplayName: Blockaroz
+	Citrus.DisplayName: Citrus
+	Dreitone.DisplayName: dreitone
+	Ebonfly.DisplayName: Ebonfly
+	Fred.DisplayName: Fred
+	Haram64.DisplayName: Haram! 64
+	SixtyDegrees.DisplayName: sixtydegrees
+	Tomat.DisplayName: tomat
+	Triangle.DisplayName: Triangle
+	Tyeski.DisplayName: TYESKI (Universe)
+	Tyrant.DisplayName: Tyrant
+	Wymsical.DisplayName: Wymsical
+}
+
 UI: {
 	ModIcon: {
 		AprilFools.ModName: NAMELESS MOD OF NIGHT
@@ -285,6 +301,156 @@ Items: {
 		DisplayName: Time Cursor
 		Tooltip: ""
 	}
+
+	PlatinumBirdCageItem: {
+		DisplayName: Platinum Bird Cage
+		Tooltip: ""
+	}
+
+	PlatinumBirdItem: {
+		DisplayName: Platinum Bird
+		Tooltip: ""
+	}
+
+	PlatinumBunnyCageItem: {
+		DisplayName: Platinum Bunny Cage
+		Tooltip: ""
+	}
+
+	PlatinumBunnyItem: {
+		DisplayName: Platinum Bunny
+		Tooltip: ""
+	}
+
+	PlatinumButterflyCageItem: {
+		DisplayName: Platinum Butterfly Jar
+		Tooltip: ""
+	}
+
+	PlatinumButterflyItem: {
+		DisplayName: Platinum Butterfly
+		Tooltip: Can be used as bait indefinitely
+	}
+
+	PlatinumDragonflyCageItem: {
+		DisplayName: Platinum Dragonfly Jar
+		Tooltip: ""
+	}
+
+	PlatinumDragonflyItem: {
+		DisplayName: Platinum Dragonfly
+		Tooltip: Can be used as bait indefinitely
+	}
+
+	PlatinumFrogCageItem: {
+		DisplayName: Platinum Frog Cage
+		Tooltip: ""
+	}
+
+	PlatinumFrogItem: {
+		DisplayName: Platinum Frog
+		Tooltip: ""
+	}
+
+	PlatinumGoldfishCageItem: {
+		DisplayName: Platinum Fish Bowl
+		Tooltip: ""
+	}
+
+	PlatinumGoldfishItem: {
+		DisplayName: Platinum Goldfish
+		Tooltip: ""
+	}
+
+	PlatinumGrasshopperCageItem: {
+		DisplayName: Platinum Grasshopper Cage
+		Tooltip: ""
+	}
+
+	PlatinumGrasshopperItem: {
+		DisplayName: Platinum Grasshopper
+		Tooltip: Can be used as bait indefinitely
+	}
+
+	PlatinumLadyBugCageItem: {
+		DisplayName: Platinum Ladybug Cage
+		Tooltip: ""
+	}
+
+	PlatinumLadyBugItem: {
+		DisplayName: Platinum Ladybug
+		Tooltip: Can be used as bait indefinitely
+	}
+
+	PlatinumMouseCageItem: {
+		DisplayName: Platinum Mouse Cage
+		Tooltip: ""
+	}
+
+	PlatinumMouseItem: {
+		DisplayName: Platinum Mouse
+		Tooltip: ""
+	}
+
+	PlatinumSeahorseCageItem: {
+		DisplayName: Platinum Seahorse Cage
+		Tooltip: ""
+	}
+
+	PlatinumSeahorseItem: {
+		DisplayName: Platinum Seahorse
+		Tooltip: ""
+	}
+
+	PlatinumSquirrelCageItem: {
+		DisplayName: Platinum Squirrel Cage
+		Tooltip: ""
+	}
+
+	PlatinumSquirrelItem: {
+		DisplayName: Platinum Squirrel
+		Tooltip: ""
+	}
+
+	PlatinumWaterStriderCageItem: {
+		DisplayName: Platinum Water Strider Cage
+		Tooltip: ""
+	}
+
+	PlatinumWaterStriderItem: {
+		DisplayName: Platinum Water Strider
+		Tooltip: Can be used as bait indefinitely
+	}
+
+	PlatinumWormCageItem: {
+		DisplayName: Platinum Worm Cage
+		Tooltip: ""
+	}
+
+	PlatinumWormItem: {
+		DisplayName: Platinum Worm
+		Tooltip: Can be used as bait indefinitely
+	}
+
+	ReflectivePlatinumDyeItem: {
+		DisplayName: Reflective Platinum Dye
+		Tooltip: ""
+	}
+
+	HangingCoconutItem: {
+		DisplayName: Hanging Coconut Item
+		Tooltip: ""
+	}
+
+	LivingPalmLeafWand: {
+		DisplayName: Living Palm Leaf Wand
+		Tooltip: ""
+	}
+
+	LivingPalmWoodWand: {
+		DisplayName: Living Palm Wood Wand
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
@@ -298,6 +464,7 @@ Projectiles: {
 	StarFragmentProjSpawner.DisplayName: Star Fragment Proj Spawner
 	PreDigesterHeldProj.DisplayName: Pre Digester Held Proj
 	CactusSplashJugThrown.DisplayName: Cactus Splash Jug Thrown
+	FallingCoconutProjectile.DisplayName: Falling Coconut Projectile
 }
 
 Configs.DummyConfig.DisplayName: Dummy Config
@@ -320,3 +487,24 @@ Achievements: {
 }
 
 NPCs.ThawBoss.DisplayName: Thaw
+
+Bestiary.PlatinumCritterText: Even rarer are platinum critters; a treasure for which even the stingiest of merchants would pay a fortune!
+
+NPCs: {
+	PlatinumBirdNpc.DisplayName: Platinum Bird
+	PlatinumBunnyNpc.DisplayName: Platinum Bunny
+	PlatinumButterflyNpc.DisplayName: Platinum Butterfly
+	PlatinumDragonflyNpc.DisplayName: Platinum Dragonfly
+	PlatinumFrogNpc.DisplayName: Platinum Frog
+	PlatinumGoldfishNpc.DisplayName: Platinum Goldfish
+	PlatinumWalkerGoldfishNpc.DisplayName: Platinum Goldfish
+	PlatinumGrasshopperNpc.DisplayName: Platinum Grasshopper
+	PlatinumLadyBugNpc.DisplayName: Platinum Lady Bug
+	PlatinumMouseNpc.DisplayName: Platinum Mouse
+	PlatinumSeahorseNpc.DisplayName: Platinum Seahorse
+	PlatinumSquirrelNpc.DisplayName: Platinum Squirrel
+	PlatinumWaterStriderNpc.DisplayName: Platinum Water Strider
+	PlatinumWormNpc.DisplayName: Platinum Worm
+}
+
+Tiles.CoconutChestTile: Mods.Nightshade.Tiles.CoconutChestTile

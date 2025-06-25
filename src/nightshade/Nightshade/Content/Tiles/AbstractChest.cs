@@ -74,6 +74,8 @@ internal abstract class AbstractChest : ModTile
         Chest.DestroyChest(i, j);
     }
 
+    public override LocalizedText DefaultContainerName(int frameX, int frameY) => Mod.GetLocalization($"Tiles.{GetType().Name}", PrettyPrintName);
+
     public override bool RightClick(int i, int j)
     {
         var player = Main.LocalPlayer;
