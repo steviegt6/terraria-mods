@@ -38,7 +38,7 @@ public class DarkeningMistSystem : ILoadable
 	public static Vector2 GasCenter;
 
 	[InitializedInLoad]
-	public ManagedRenderTarget target;
+	private ManagedRenderTarget target;
 
 	[InitializedInLoad]
 	private ManagedRenderTarget swapTarget;
