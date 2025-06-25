@@ -486,11 +486,8 @@ Achievements: {
 	}
 }
 
-NPCs.ThawBoss.DisplayName: Thaw
-
-Bestiary.PlatinumCritterText: Even rarer are platinum critters; a treasure for which even the stingiest of merchants would pay a fortune!
-
 NPCs: {
+	ThawBoss.DisplayName: Thaw
 	PlatinumBirdNpc.DisplayName: Platinum Bird
 	PlatinumBunnyNpc.DisplayName: Platinum Bunny
 	PlatinumButterflyNpc.DisplayName: Platinum Butterfly
@@ -507,4 +504,5 @@ NPCs: {
 	PlatinumWormNpc.DisplayName: Platinum Worm
 }
 
+Bestiary.PlatinumCritterText: Even rarer are platinum critters; a treasure for which even the stingiest of merchants would pay a fortune!
 Tiles.CoconutChestTile: Mods.Nightshade.Tiles.CoconutChestTile

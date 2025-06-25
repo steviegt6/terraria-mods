@@ -6551,47 +6551,6 @@ internal static class LocalizationReferences
                 }
             }
 
-            public static class Bestiary
-            {
-                public const string KEY = "Mods.Nightshade.Bestiary";
-
-                public static LocalizedText GetChildText(string childKey)
-                {
-                    return Language.GetText(KEY + '.' + childKey);
-                }
-
-                public static string GetChildTextValue(string childKey, params object?[] values)
-                {
-                    return Language.GetTextValue(KEY + '.' + childKey, values);
-                }
-
-                public static class PlatinumCritterText
-                {
-                    public const string KEY = "Mods.Nightshade.Bestiary.PlatinumCritterText";
-                    public const int ARG_COUNT = 0;
-
-                    public static LocalizedText GetText()
-                    {
-                        return Language.GetText(KEY);
-                    }
-
-                    public static string GetTextValue()
-                    {
-                        return Language.GetTextValue(KEY);
-                    }
-
-                    public static LocalizedText GetChildText(string childKey)
-                    {
-                        return Language.GetText(KEY + '.' + childKey);
-                    }
-
-                    public static string GetChildTextValue(string childKey, params object?[] values)
-                    {
-                        return Language.GetTextValue(KEY + '.' + childKey, values);
-                    }
-                }
-            }
-
             public static class NPCs
             {
                 public const string KEY = "Mods.Nightshade.NPCs";
@@ -6604,6 +6563,47 @@ internal static class LocalizationReferences
                 public static string GetChildTextValue(string childKey, params object?[] values)
                 {
                     return Language.GetTextValue(KEY + '.' + childKey, values);
+                }
+
+                public static class ThawBoss
+                {
+                    public const string KEY = "Mods.Nightshade.NPCs.ThawBoss";
+
+                    public static LocalizedText GetChildText(string childKey)
+                    {
+                        return Language.GetText(KEY + '.' + childKey);
+                    }
+
+                    public static string GetChildTextValue(string childKey, params object?[] values)
+                    {
+                        return Language.GetTextValue(KEY + '.' + childKey, values);
+                    }
+
+                    public static class DisplayName
+                    {
+                        public const string KEY = "Mods.Nightshade.NPCs.ThawBoss.DisplayName";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
                 }
 
                 public static class PlatinumBirdNpc
@@ -7181,6 +7181,47 @@ internal static class LocalizationReferences
                 }
             }
 
+            public static class Bestiary
+            {
+                public const string KEY = "Mods.Nightshade.Bestiary";
+
+                public static LocalizedText GetChildText(string childKey)
+                {
+                    return Language.GetText(KEY + '.' + childKey);
+                }
+
+                public static string GetChildTextValue(string childKey, params object?[] values)
+                {
+                    return Language.GetTextValue(KEY + '.' + childKey, values);
+                }
+
+                public static class PlatinumCritterText
+                {
+                    public const string KEY = "Mods.Nightshade.Bestiary.PlatinumCritterText";
+                    public const int ARG_COUNT = 0;
+
+                    public static LocalizedText GetText()
+                    {
+                        return Language.GetText(KEY);
+                    }
+
+                    public static string GetTextValue()
+                    {
+                        return Language.GetTextValue(KEY);
+                    }
+
+                    public static LocalizedText GetChildText(string childKey)
+                    {
+                        return Language.GetText(KEY + '.' + childKey);
+                    }
+
+                    public static string GetChildTextValue(string childKey, params object?[] values)
+                    {
+                        return Language.GetTextValue(KEY + '.' + childKey, values);
+                    }
+                }
+            }
+
             public static class Tiles
             {
                 public const string KEY = "Mods.Nightshade.Tiles";
@@ -7218,62 +7259,6 @@ internal static class LocalizationReferences
                     public static string GetChildTextValue(string childKey, params object?[] values)
                     {
                         return Language.GetTextValue(KEY + '.' + childKey, values);
-                    }
-                }
-            }
-
-            public static class NPCs
-            {
-                public const string KEY = "Mods.Nightshade.NPCs";
-
-                public static LocalizedText GetChildText(string childKey)
-                {
-                    return Language.GetText(KEY + '.' + childKey);
-                }
-
-                public static string GetChildTextValue(string childKey, params object?[] values)
-                {
-                    return Language.GetTextValue(KEY + '.' + childKey, values);
-                }
-
-                public static class ThawBoss
-                {
-                    public const string KEY = "Mods.Nightshade.NPCs.ThawBoss";
-
-                    public static LocalizedText GetChildText(string childKey)
-                    {
-                        return Language.GetText(KEY + '.' + childKey);
-                    }
-
-                    public static string GetChildTextValue(string childKey, params object?[] values)
-                    {
-                        return Language.GetTextValue(KEY + '.' + childKey, values);
-                    }
-
-                    public static class DisplayName
-                    {
-                        public const string KEY = "Mods.Nightshade.NPCs.ThawBoss.DisplayName";
-                        public const int ARG_COUNT = 0;
-
-                        public static LocalizedText GetText()
-                        {
-                            return Language.GetText(KEY);
-                        }
-
-                        public static string GetTextValue()
-                        {
-                            return Language.GetTextValue(KEY);
-                        }
-
-                        public static LocalizedText GetChildText(string childKey)
-                        {
-                            return Language.GetText(KEY + '.' + childKey);
-                        }
-
-                        public static string GetChildTextValue(string childKey, params object?[] values)
-                        {
-                            return Language.GetTextValue(KEY + '.' + childKey, values);
-                        }
                     }
                 }
             }

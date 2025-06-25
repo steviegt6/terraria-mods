@@ -143,6 +143,33 @@ internal static class AssetReferences
                     private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
                 }
 
+                public static class ThawBoss_FlameMask
+                {
+                    public const string KEY = "Nightshade/Assets/Images/NPCs/ThawBoss_FlameMask";
+
+                    public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
+
+                    private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
+                }
+
+                public static class ThawBoss_Head
+                {
+                    public const string KEY = "Nightshade/Assets/Images/NPCs/ThawBoss_Head";
+
+                    public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
+
+                    private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
+                }
+
+                public static class ThawBoss_Orb
+                {
+                    public const string KEY = "Nightshade/Assets/Images/NPCs/ThawBoss_Orb";
+
+                    public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
+
+                    private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
+                }
+
                 public static class PlatinumCritters
                 {
                     public static class Bird
@@ -235,24 +262,6 @@ internal static class AssetReferences
                         private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
                     }
 
-                public static class ThawBoss_FlameMask
-                {
-                    public const string KEY = "Nightshade/Assets/Images/NPCs/ThawBoss_FlameMask";
-
-                    public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
-
-                    private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
-                }
-
-                public static class ThawBoss_Head
-                {
-                    public const string KEY = "Nightshade/Assets/Images/NPCs/ThawBoss_Head";
-
-                    public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
-
-                    private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
-                }
-
                     public static class Seahorse
                     {
                         public const string KEY = "Nightshade/Assets/Images/NPCs/PlatinumCritters/Seahorse";
@@ -288,16 +297,6 @@ internal static class AssetReferences
 
                         private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
                     }
-                }
-            }
-
-                public static class ThawBoss_Orb
-                {
-                    public const string KEY = "Nightshade/Assets/Images/NPCs/ThawBoss_Orb";
-
-                    public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
-
-                    private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
                 }
             }
 
@@ -2383,45 +2382,6 @@ internal static class AssetReferences
                     }
                 }
 
-                public static class ReflectivePlatinumShader
-                {
-                    public sealed class Parameters : IShaderParameters
-                    {
-                        public Microsoft.Xna.Framework.Graphics.Texture2D? uImage0 { get; set; }
-
-                        public Microsoft.Xna.Framework.Vector2 uImageSize0 { get; set; }
-
-                        public Microsoft.Xna.Framework.Vector3 uColor { get; set; }
-
-                        public Microsoft.Xna.Framework.Vector3 uLightSource { get; set; }
-
-                        public Microsoft.Xna.Framework.Vector3 color1 { get; set; }
-
-                        public Microsoft.Xna.Framework.Vector3 color2 { get; set; }
-
-                        public void Apply(Microsoft.Xna.Framework.Graphics.EffectParameterCollection parameters)
-                        {
-                            parameters["uImage0"]?.SetValue(uImage0);
-                            parameters["uImageSize0"]?.SetValue(uImageSize0);
-                            parameters["uColor"]?.SetValue(uColor);
-                            parameters["uLightSource"]?.SetValue(uLightSource);
-                            parameters["color1"]?.SetValue(color1);
-                            parameters["color2"]?.SetValue(color2);
-                        }
-                    }
-
-                    public const string KEY = "Nightshade/Assets/Shaders/Misc/ReflectivePlatinumShader";
-
-                    public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Effect> Asset => lazy.Value;
-
-                    private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Effect>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Effect>(KEY));
-
-                    public static WrapperShaderData<Parameters> CreateArmorReflectiveColor()
-                    {
-                        return new WrapperShaderData<Parameters>(Asset, "ArmorReflectiveColor");
-                    }
-                }
-
                 public static class FlameShader
                 {
                     public sealed class Parameters : IShaderParameters
@@ -2503,6 +2463,45 @@ internal static class AssetReferences
                     public static WrapperShaderData<Parameters> CreateStripShader()
                     {
                         return new WrapperShaderData<Parameters>(Asset, "StripShader");
+                    }
+                }
+
+                public static class ReflectivePlatinumShader
+                {
+                    public sealed class Parameters : IShaderParameters
+                    {
+                        public Microsoft.Xna.Framework.Graphics.Texture2D? uImage0 { get; set; }
+
+                        public Microsoft.Xna.Framework.Vector2 uImageSize0 { get; set; }
+
+                        public Microsoft.Xna.Framework.Vector3 uColor { get; set; }
+
+                        public Microsoft.Xna.Framework.Vector3 uLightSource { get; set; }
+
+                        public Microsoft.Xna.Framework.Vector3 color1 { get; set; }
+
+                        public Microsoft.Xna.Framework.Vector3 color2 { get; set; }
+
+                        public void Apply(Microsoft.Xna.Framework.Graphics.EffectParameterCollection parameters)
+                        {
+                            parameters["uImage0"]?.SetValue(uImage0);
+                            parameters["uImageSize0"]?.SetValue(uImageSize0);
+                            parameters["uColor"]?.SetValue(uColor);
+                            parameters["uLightSource"]?.SetValue(uLightSource);
+                            parameters["color1"]?.SetValue(color1);
+                            parameters["color2"]?.SetValue(color2);
+                        }
+                    }
+
+                    public const string KEY = "Nightshade/Assets/Shaders/Misc/ReflectivePlatinumShader";
+
+                    public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Effect> Asset => lazy.Value;
+
+                    private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Effect>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Effect>(KEY));
+
+                    public static WrapperShaderData<Parameters> CreateArmorReflectiveColor()
+                    {
+                        return new WrapperShaderData<Parameters>(Asset, "ArmorReflectiveColor");
                     }
                 }
 
