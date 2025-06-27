@@ -465,6 +465,7 @@ Projectiles: {
 	PreDigesterHeldProj.DisplayName: Pre Digester Held Proj
 	CactusSplashJugThrown.DisplayName: Cactus Splash Jug Thrown
 	FallingCoconutProjectile.DisplayName: Falling Coconut Projectile
+	ThawSlash.DisplayName: Thaw Slash
 }
 
 Configs.DummyConfig.DisplayName: Dummy Config

@@ -116,60 +116,6 @@ internal static class AssetReferences
                     private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
                 }
 
-                public static class ThawBoss_Blade
-                {
-                    public const string KEY = "Nightshade/Assets/Images/NPCs/ThawBoss_Blade";
-
-                    public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
-
-                    private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
-                }
-
-                public static class ThawBoss_Bone
-                {
-                    public const string KEY = "Nightshade/Assets/Images/NPCs/ThawBoss_Bone";
-
-                    public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
-
-                    private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
-                }
-
-                public static class ThawBoss_Cloth
-                {
-                    public const string KEY = "Nightshade/Assets/Images/NPCs/ThawBoss_Cloth";
-
-                    public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
-
-                    private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
-                }
-
-                public static class ThawBoss_FlameMask
-                {
-                    public const string KEY = "Nightshade/Assets/Images/NPCs/ThawBoss_FlameMask";
-
-                    public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
-
-                    private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
-                }
-
-                public static class ThawBoss_Head
-                {
-                    public const string KEY = "Nightshade/Assets/Images/NPCs/ThawBoss_Head";
-
-                    public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
-
-                    private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
-                }
-
-                public static class ThawBoss_Orb
-                {
-                    public const string KEY = "Nightshade/Assets/Images/NPCs/ThawBoss_Orb";
-
-                    public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
-
-                    private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
-                }
-
                 public static class PlatinumCritters
                 {
                     public static class Bird
@@ -298,6 +244,72 @@ internal static class AssetReferences
                         private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
                     }
                 }
+
+                public static class Thaw
+                {
+                    public static class ThawBoss
+                    {
+                        public const string KEY = "Nightshade/Assets/Images/NPCs/Thaw/ThawBoss";
+
+                        public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
+
+                        private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
+                    }
+
+                    public static class ThawBoss_Blade
+                    {
+                        public const string KEY = "Nightshade/Assets/Images/NPCs/Thaw/ThawBoss_Blade";
+
+                        public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
+
+                        private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
+                    }
+
+                    public static class ThawBoss_Bone
+                    {
+                        public const string KEY = "Nightshade/Assets/Images/NPCs/Thaw/ThawBoss_Bone";
+
+                        public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
+
+                        private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
+                    }
+
+                    public static class ThawBoss_Cloth
+                    {
+                        public const string KEY = "Nightshade/Assets/Images/NPCs/Thaw/ThawBoss_Cloth";
+
+                        public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
+
+                        private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
+                    }
+
+                    public static class ThawBoss_FlameMask
+                    {
+                        public const string KEY = "Nightshade/Assets/Images/NPCs/Thaw/ThawBoss_FlameMask";
+
+                        public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
+
+                        private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
+                    }
+
+                    public static class ThawBoss_Head
+                    {
+                        public const string KEY = "Nightshade/Assets/Images/NPCs/Thaw/ThawBoss_Head";
+
+                        public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
+
+                        private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
+                    }
+
+                    public static class ThawBoss_Orb
+                    {
+                        public const string KEY = "Nightshade/Assets/Images/NPCs/Thaw/ThawBoss_Orb";
+
+                        public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
+
+                        private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
+                    }
+                }
             }
 
             public static class Particles
@@ -344,6 +356,15 @@ internal static class AssetReferences
                 public static class StarFragmentSpawner
                 {
                     public const string KEY = "Nightshade/Assets/Images/Projectiles/StarFragmentSpawner";
+
+                    public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
+
+                    private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
+                }
+
+                public static class ThawSlash
+                {
+                    public const string KEY = "Nightshade/Assets/Images/Projectiles/ThawSlash";
 
                     public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
@@ -2658,23 +2679,14 @@ internal static class AssetReferences
 
                 private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
             }
-        }
 
-        public static class NPCs
-        {
-            public static class Bosses
+            public static class ThawSparkles
             {
-                public static class Thaw
-                {
-                    public static class ThawBoss
-                    {
-                        public const string KEY = "Nightshade/Content/NPCs/Bosses/Thaw/ThawBoss";
+                public const string KEY = "Nightshade/Content/Dusts/ThawSparkles";
 
-                        public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
+                public static ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D> Asset => lazy.Value;
 
-                        private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
-                    }
-                }
+                private static readonly System.Lazy<ReLogic.Content.Asset<Microsoft.Xna.Framework.Graphics.Texture2D>> lazy = new(() => Terraria.ModLoader.ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(KEY));
             }
         }
     }

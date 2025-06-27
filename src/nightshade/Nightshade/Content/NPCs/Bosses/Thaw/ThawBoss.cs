@@ -1,14 +1,16 @@
 ﻿using Daybreak.Common.Rendering;
-using Microsoft.Build.Construction;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Nightshade.Common.Rendering;
+using Nightshade.Content.Dusts;
+using Nightshade.Content.Projectiles.Enemy.Thaw;
 using Nightshade.Core;
 using Nightshade.Core.Attributes;
 using System;
 using System.Diagnostics;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.Graphics.CameraModifiers;
 using Terraria.ID;
@@ -43,6 +45,7 @@ public class ThawBoss : ModNPC
         managedRenderTarget = new ManagedRenderTarget(reinitOnResolutionChange: true);
         Main.QueueMainThreadAction(() => managedRenderTarget.Initialize(Main.screenWidth, Main.screenHeight));
     }
+    public override string Texture => Assets.Images.NPCs.Thaw.ThawBoss.KEY;
     public override void SetStaticDefaults()
     {
         Main.npcFrameCount[Type] = 3;
@@ -64,7 +67,7 @@ public class ThawBoss : ModNPC
     public void DrawFlame(SpriteBatch spriteBatch, Vector2 screenPos) // hell torture
     {
         if (Main.GameUpdateCount % 5 == 0 && !Main.gameInactive) flameProgress += 0.05f;
-        Texture2D flame = Assets.Images.NPCs.ThawBoss_FlameMask.Asset.Value;
+        Texture2D flame = Assets.Images.NPCs.Thaw.ThawBoss_FlameMask.Asset.Value;
         Texture2D flameNoise = Assets.Images.Noise.SmearNoise.Asset.Value;
         Texture2D flameBase = Assets.Images.Particles.Glow.Asset.Value;
 
@@ -89,7 +92,7 @@ public class ThawBoss : ModNPC
         flameShader.Apply();
         for (int j = 0; j < 2; j++)
         {
-            float rotation = NPC.velocity.X * -0.02f;
+            float rotation = NPC.velocity.X * MathHelper.Lerp(-0.01f, -0.02f, possessionProgress);
             if (possessionProgress < 1)
             {
                 if (j == 1)
@@ -148,9 +151,9 @@ public class ThawBoss : ModNPC
     {
         Debug.Assert(lightingShader is not null);
         Texture2D body = TextureAssets.Npc[Type].Value;
-        Texture2D head = Assets.Images.NPCs.ThawBoss_Head.Asset.Value;
-        Texture2D orb = Assets.Images.NPCs.ThawBoss_Orb.Asset.Value;
-        Texture2D cloth = Assets.Images.NPCs.ThawBoss_Cloth.Asset.Value;
+        Texture2D head = Assets.Images.NPCs.Thaw.ThawBoss_Head.Asset.Value;
+        Texture2D orb = Assets.Images.NPCs.Thaw.ThawBoss_Orb.Asset.Value;
+        Texture2D cloth = Assets.Images.NPCs.Thaw.ThawBoss_Cloth.Asset.Value;
 
         if (!NPC.IsABestiaryIconDummy)
             DrawFlame(spriteBatch, screenPos);
@@ -181,10 +184,10 @@ public class ThawBoss : ModNPC
     }
     public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
-        Texture2D boneArm = Assets.Images.NPCs.ThawBoss_Bone.Asset.Value;
-        Texture2D bladeArm = Assets.Images.NPCs.ThawBoss_Blade.Asset.Value;
+        Texture2D boneArm = Assets.Images.NPCs.Thaw.ThawBoss_Bone.Asset.Value;
+        Texture2D bladeArm = Assets.Images.NPCs.Thaw.ThawBoss_Blade.Asset.Value;
 
-        Vector2 boneArmPos = bodyCenter + new Vector2(66, 48);
+        boneArmPos = bodyCenter + new Vector2(66, 48);
         if (bodyCenter == NPC.Center)
         {
             for (int i = NPC.oldPos.Length - 1; i > 0; i--)
@@ -237,11 +240,81 @@ public class ThawBoss : ModNPC
                     }
                     break;
                 }
+            case 3:
+                {
+                    if (NPC.frameCounter % 5 == 0)
+                    {
+                        if (NPC.frame.Y < 2 * frameHeight && Timer < 70 && Timer > 30)
+                            NPC.frame.Y += frameHeight;
+                        else if (Timer > 120 && NPC.frame.Y > 0)
+                            NPC.frame.Y -= frameHeight;
+                    }
+                }
+                break;
         }
+    }
+    public bool BladeArmHitCheck()
+    {
+        bool hit = false;
+        for (float i = 0; i < 1.5f; i += 0.5f)
+        {
+            Vector2 center = Vector2.Lerp(bladeArmPos, BladeArmTip(), i - 0.1f);
+            if (i > 1)
+                center = Vector2.Lerp(boneArmPos, bladeArmPos, i - 1f);
+            Rectangle hitbox = new Rectangle((int)(center.X - 70 / 2), (int)(center.Y - 70 / 2), 70, 70);
+            foreach (Player p in Main.ActivePlayers)
+            {
+                if (p.Hitbox.Intersects(hitbox))
+                {
+                    p.Hurt(PlayerDeathReason.ByNPC(NPC.whoAmI), NPC.damage, MathF.Sign(hitbox.Center().DirectionTo(p.Center).X));
+                    hit = true;
+                }
+            }
+        }
+        return hit;
+    }
+    public bool BodyhitCheck()
+    {
+        bool hit = false;
+        Rectangle hitbox = new Rectangle((int)bodyCenter.X - 90, (int)bodyCenter.Y - 35, 140, 130);
+        foreach (Player p in Main.ActivePlayers)
+        {
+            if (p.Hitbox.Intersects(hitbox))
+            {
+                p.Hurt(PlayerDeathReason.ByNPC(NPC.whoAmI), NPC.damage, MathF.Sign(hitbox.Center().DirectionTo(p.Center).X));
+                hit = true;
+            }
+        }
+        return hit;
+    }
+    public void AmbientVFX()
+    {
+        if (Main.rand.NextBool(20))
+        {
+            Vector2 vel = new Vector2(Main.rand.NextFloat(-0.1f, 0.1f), Main.rand.NextFloat(-0.01f, -.7f));
+            float y = 90 - Main.rand.NextFloat(30);
+            float x = Main.rand.NextFloat(24, 37) * Main.rand.NextBool().ToDirectionInt();
+            if (y > 88)
+                x = Main.rand.NextFloat(-40, 40);
+            Vector2 pos = NPC.Center - Vector2.Lerp(new Vector2(x, y), new Vector2(0, 40) + Main.rand.NextVector2Circular(20, 4), possessionProgress);
+            Color color = Color.Lerp(Color.Lerp(new Color(255, 147, 3), new Color(255, 147, 3), Main.rand.Next(3) / 2f), Color.White, MathHelper.Clamp(Main.rand.Next(3) / 2f + possessionProgress, 0, 1));
+            Dust.NewDustPerfect(pos, ModContent.DustType<ThawSparkles>(), vel, 0, color);
+        }
+        if (Main.rand.NextBool(500))
+            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center - new Vector2(20 * Main.rand.NextBool().ToDirectionInt(), MathHelper.Lerp(80, 20, possessionProgress)), -Vector2.UnitY.RotatedByRandom(1) * Main.rand.NextFloat(5, 10), ProjectileID.GreekFire1, 20, 0);
+        visualArmTarget = Vector2.Lerp(visualArmTarget, armTarget, visualArmTargetSpeed);
+        Lighting.AddLight(NPC.Center, 0.4f, 0.3f, 0);
+    }
+    public void BasicIdleMovement(Vector2? target = null)
+    {
+        float wobble = MathF.Sin(new UnifiedRandom((int)State).Next(2000) + Timer * 0.04f);
+        NPC.velocity = Vector2.Lerp(NPC.velocity, ((target ?? (player.Center - new Vector2(wobble * 40, 200 - MathHelper.SmoothStep(0, 30, MathF.Abs(wobble))))) - NPC.Center) * 0.05f, 0.025f);
+
+        armTarget = NPC.Center + new Vector2(66, 450).RotatedBy(NPC.velocity.X * 0.1f - BreathMult() * 0.05f);
     }
     public int OrbDirection = 1;
     public Rectangle OrbFrame = new Rectangle(0, 0, 42, 44);
-    public Vector2 armTarget, visualArmTarget, bladeArmPos, storedPlayerPosition, bodyCenter, bodyVelocity;
+    public Vector2 armTarget, visualArmTarget, boneArmPos, bladeArmPos, storedPlayerPosition, bodyCenter, bodyVelocity;
     public float visualArmTargetSpeed = 0.1f, possessionProgress;
     public float State { get => NPC.ai[0]; set => NPC.ai[0] = value; }
     public float Timer { get => NPC.ai[1]; set => NPC.ai[1] = value; }
@@ -263,12 +336,13 @@ public class ThawBoss : ModNPC
             if (State == 2)
                 Timer = 120;
         }
+
         if (possessionProgress <= 0.01f)
             bodyCenter = NPC.Center + NPC.velocity;
 
         if (Main.mouseRight)
         {
-            Timer = -200;
+            Timer = -50;
             possessionProgress = 0;
             NPC.Center = Main.MouseWorld;
             ExtraTimer = 0;
@@ -291,23 +365,10 @@ public class ThawBoss : ModNPC
                 0 => SpawnAnim(),
                 1 => FlamingHail(),
                 2 => LungeAttack(),
+                3 => FrostburnSlash(),
                 _ => State,
             };
         }
-    }
-    public void AmbientVFX()
-    {
-        if (Main.rand.NextBool(500))
-            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center - new Vector2(20 * Main.rand.NextBool().ToDirectionInt(), MathHelper.Lerp(80, 20, possessionProgress)), -Vector2.UnitY.RotatedByRandom(1) * Main.rand.NextFloat(5, 10), ProjectileID.GreekFire1, 20, 0);
-        visualArmTarget = Vector2.Lerp(visualArmTarget, armTarget, visualArmTargetSpeed);
-        Lighting.AddLight(NPC.Center, 0.4f, 0.3f, 0);
-    }
-    public void BasicIdleMovement(Vector2? target = null)
-    {
-        float wobble = MathF.Sin(new UnifiedRandom((int)State).Next(2000) + Timer * 0.04f);
-        NPC.velocity = Vector2.Lerp(NPC.velocity, ((target ?? (player.Center - new Vector2(wobble * 40, 200 - MathHelper.SmoothStep(0, 30, MathF.Abs(wobble))))) - NPC.Center) * 0.05f, 0.025f);
-
-        armTarget = NPC.Center + new Vector2(66, 450).RotatedBy(NPC.velocity.X * 0.1f - BreathMult() * 0.05f);
     }
     public void Idle()
     {
@@ -329,7 +390,7 @@ public class ThawBoss : ModNPC
     }
     public float SpawnAnim()
     {
-        return 2;
+        return 3;
         return SetState(0, 1, 300, -300);
     }
     public float FlamingHail()
@@ -360,8 +421,12 @@ public class ThawBoss : ModNPC
             float rotation = -0.6f - MathHelper.PiOver4 * 3 + MathHelper.Pi * 3 / 2 * progress;
             armTarget = NPC.Center + rotation.ToRotationVector2() * 250;
 
-            if (Timer > 82 && Main.netMode != NetmodeID.MultiplayerClient)
-                Projectile.NewProjectile(NPC.GetSource_FromThis(), BladeArmTip(), NPC.Center.DirectionTo(BladeArmTip()) * Main.rand.NextFloat(5, 10), ProjectileID.GreekFire1, 20, 0);
+            if (Timer > 82)
+            {
+                BladeArmHitCheck();
+                if (Main.netMode != NetmodeID.MultiplayerClient)
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), BladeArmTip(), NPC.Center.DirectionTo(BladeArmTip()) * Main.rand.NextFloat(5, 10), ProjectileID.GreekFire1, 20, 0);
+            }
         }
         else if (Timer > 110)
         {
@@ -402,6 +467,7 @@ public class ThawBoss : ModNPC
         {
             if (bodyVelocity.Length() > 0)
             {
+                BodyhitCheck();
                 NPC.velocity = (bodyCenter - NPC.Center) * 0.01f;
                 bodyVelocity = Vector2.Lerp(bodyVelocity, Vector2.UnitY * 30, 0.01f);
                 if (bodyCenter.Distance(player.Center) < 700 && ExtraTimer <= 0)
@@ -421,10 +487,11 @@ public class ThawBoss : ModNPC
 
                     if (ExtraTimer > 10)
                     {
+                        BladeArmHitCheck();
                         for (int i = 0; i < 5; i++)
                         {
                             Vector2 vel = Main.rand.NextVector2Circular(5, 5);
-                            Dust.NewDustPerfect(BladeArmTip(), DustID.IceTorch, vel, Scale: 2).noGravity = true;
+                            Dust.NewDustPerfect(BladeArmTip(), ModContent.DustType<ThawSparkles>(), bladeArmPos.DirectionTo(visualArmTarget).RotatedBy(i - 2.5f) * i, newColor: new Color(227, 229, 234));
                         }
                     }
                 }
@@ -445,6 +512,76 @@ public class ThawBoss : ModNPC
             }
         }
         return SetState(2, 3, 300);
+    }
+    public float FrostburnSlash()
+    {
+        if (Timer == 1)
+            ExtraTimer = Main.rand.Next(-1, 1);
+        if (Timer > 60)
+            NPC.velocity *= 0.9f;
+
+        if (Timer < 60)
+        {
+            BasicIdleMovement(player.Center + new Vector2(400 * (ExtraTimer == -1 ? -1 : 1), -200));
+
+            visualArmTargetSpeed = 0.1f;
+            armTarget = NPC.Center + new Vector2(NPC.DirectionTo(player.Center).X * 250, -250);
+
+            if (Timer == 30)
+                SoundEngine.PlaySound(SoundID.Item109, BladeArmTip());
+            if (Timer > 30)
+            {
+                for (float i = 0.4f; i < 1; i += 0.1f)
+                {
+                    Vector2 pos = Vector2.Lerp(bladeArmPos, BladeArmTip(), i) + Main.rand.NextVector2Circular(50, 50) * i;
+                    Vector2 vel = pos.DirectionTo(Vector2.Lerp(bladeArmPos, BladeArmTip(), i)) * Main.rand.NextFloat(1, 5) * i;
+                    Dust.NewDustPerfect(pos, DustID.IceTorch, vel, Scale: 0.5f + i).noGravity = true;
+                    if (i > 0.9f && Timer > 40 && Timer % 2 == 0)
+                        Dust.NewDustPerfect(BladeArmTip() + Main.rand.NextVector2Circular(10, 10), ModContent.DustType<ThawSparkles>(), Vector2.Zero, newColor: Color.White).noGravity = true;
+                }
+            }
+        }
+        else if (Timer == 60)
+        {
+            storedPlayerPosition = player.Center;
+            SoundEngine.PlaySound(SoundID.NPCHit5.WithPitchOffset(-0.5f), BladeArmTip());
+        }
+        else if (Timer < 100)
+        {
+            float t = MathF.Pow((Timer - (Timer < 80 ? 60 : 80)) / 20f, 2);
+            float progress = MathHelper.SmoothStep(0, 1, t);
+            visualArmTargetSpeed = MathHelper.Clamp(progress * 3, 0.2f, 0.7f);
+            float rotation = bodyCenter.DirectionTo(storedPlayerPosition).ToRotation() - MathHelper.PiOver4 * 3 + MathHelper.Pi * 3 / 2 * progress;
+            if (NPC.DirectionTo(player.Center).X * (Timer < 80 ? 1 : -1) < 0)
+                rotation = bodyCenter.DirectionTo(storedPlayerPosition).ToRotation() + MathHelper.PiOver4 * 3 - MathHelper.Pi * 3 / 2 * progress;
+            armTarget = bodyCenter + rotation.ToRotationVector2() * 250;
+
+            if (Timer == 80)
+                SoundEngine.PlaySound(SoundID.NPCHit5.WithPitchOffset(-0.5f), BladeArmTip());
+
+            if (Timer == 70 || Timer == 90)
+                NPC.velocity = bodyCenter.DirectionTo(storedPlayerPosition) * -10;
+
+            if ((Timer > 70 && Timer < 80) || Timer > 90)
+            {
+                BladeArmHitCheck();
+                for (int i = 0; i < 5; i++)
+                {
+                    Vector2 vel = Main.rand.NextVector2Circular(5, 5);
+                    Dust.NewDustPerfect(BladeArmTip(), ModContent.DustType<ThawSparkles>(), bladeArmPos.DirectionTo(visualArmTarget).RotatedBy(i - 2.5f) * i, newColor: new Color(227, 229, 234));
+                }
+                if (Timer % 2 == 0)
+                {
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), BladeArmTip(), rotation.ToRotationVector2() * 5, ModContent.ProjectileType<ThawSlash>(), 20, 0, player.whoAmI);
+                }
+            }
+        }
+        else if (Timer > 120)
+        {
+            visualArmTargetSpeed = 0.1f;
+            BasicIdleMovement(NPC.Center);
+        }
+        return SetState(3, 4, 200);
     }
     public float SetState(float curState, float nextState, float timeLimit, float resetTime = -150)
     {
