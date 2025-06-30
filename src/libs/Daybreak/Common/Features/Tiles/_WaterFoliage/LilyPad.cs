@@ -2,6 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 
 using Daybreak.Common.CIL;
 using Daybreak.Common.Features.Hooks;
+using Daybreak.Common.IDs;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -47,7 +48,7 @@ public abstract class LilyPadTile : ModTile, ILilyPad
         Main.tileFrameImportant[Type] = true;
         Main.tileNoFail[Type] = true;
 
-        On_TileDrawing.GetTileDrawData += GetTileDrawData_UseLilyPadDrawData;
+        DaybreakTileSets.OtherTileDrawDataToCopy[Type] = TileID.LilyPad;
     }
 
     public override bool TileFrame(int i, int j, ref bool resetFrame, ref bool noBreak)
@@ -55,56 +56,9 @@ public abstract class LilyPadTile : ModTile, ILilyPad
         WorldGen.CheckLilyPad(i, j);
         return false;
     }
-
-    private void GetTileDrawData_UseLilyPadDrawData(
-        On_TileDrawing.orig_GetTileDrawData orig,
-        TileDrawing self,
-        int x,
-        int y,
-        Tile tileCache,
-        ushort typeCache,
-        ref short tileFrameX,
-        ref short tileFrameY,
-        out int tileWidth,
-        out int tileHeight,
-        out int tileTop,
-        out int halfBrickHeight,
-        out int addFrX,
-        out int addFrY,
-        out SpriteEffects tileSpriteEffect,
-        out Texture2D glowTexture,
-        out Rectangle glowSourceRect,
-        out Color glowColor
-    )
-    {
-        if (typeCache == Type)
-        {
-            typeCache = TileID.LilyPad;
-        }
-
-        orig(
-            self,
-            x,
-            y,
-            tileCache,
-            typeCache,
-            ref tileFrameX,
-            ref tileFrameY,
-            out tileWidth,
-            out tileHeight,
-            out tileTop,
-            out halfBrickHeight,
-            out addFrX,
-            out addFrY,
-            out tileSpriteEffect,
-            out glowTexture,
-            out glowSourceRect,
-            out glowColor
-        );
-    }
 }
 
-internal partial static class WaterFoliageHandler
+internal static partial class WaterFoliageHandler
 {
     [OnLoad]
     public static void Load_LilyPads()
