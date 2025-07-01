@@ -11,7 +11,7 @@ internal sealed class GrassTileHandler : GlobalTile
     [OnLoad]
     public static void ModifyVanilla()
     {
-        IL_DelegateMethods.SpreadDirt += SpreadDirt_CountTilesConvertibleToDirtOnHit;
+        /*IL_DelegateMethods.SpreadDirt += SpreadDirt_CountTilesConvertibleToDirtOnHit;
         IL_SmartCursorHelper.Step_AlchemySeeds += PermitHerbPlacementSmartCursor;
         IL_SmartCursorHelper.Step_PumpkinSeeds += PermitPumpkinSeedPlacementSmartCursor;
         IL_Liquid.DelWater += DelWater_KillGrass;
@@ -41,6 +41,6 @@ internal sealed class GrassTileHandler : GlobalTile
 
         On_TreePaintSystemData.GetTileSettings += UseDirtSettingsForGrassPaintingSettings;
         On_Player.DoBootsEffect_PlaceFlowersOnTile += PlaceGrassPlantsFromFlowerBoots;
-        On_WorldGen.IsFitToPlaceFlowerIn += MakeFitToPlaceFlowerIn;
+        On_WorldGen.IsFitToPlaceFlowerIn += MakeFitToPlaceFlowerIn;*/
     }
 }
