@@ -36,7 +36,7 @@ public interface ILilyPad
 public abstract class LilyPadTile : ModTile, ILilyPad
 {
     bool ILilyPad.VanillaDrawTileInWater => true;
-
+    
     /// <inheritdoc />
     public override void SetStaticDefaults()
     {
@@ -50,6 +50,16 @@ public abstract class LilyPadTile : ModTile, ILilyPad
 
         DaybreakTileSets.OtherTileDrawDataToCopy[Type] = TileID.LilyPad;
     }
+
+    /// <inheritdoc />
+    public override bool TileFrame(int i, int j, ref bool resetFrame, ref bool noBreak)
+    {
+        CheckLilyPad(i, j);
+        return false;
+    }
+
+    /// <inheritdoc />
+    public abstract void CheckLilyPad(int x, int y);
 }
 
 internal static partial class WaterFoliageHandler

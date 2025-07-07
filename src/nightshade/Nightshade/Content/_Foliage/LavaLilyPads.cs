@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 
 using Daybreak.Common.Features.Hooks;
@@ -41,20 +40,9 @@ public sealed class LavaLilyPads : LilyPadTile
         base.Load();
 
         ModSystemHooks.ModifyWorldGenTasks.Event += GenPasses;
-        
-        On_WorldGen.KillTile += On_WorldGenOnKillTile;
     }
 
-    private void On_WorldGenOnKillTile(On_WorldGen.orig_KillTile orig, int i, int j, bool fail, bool effectOnly, bool noItem)
-    {
-        if (Main.tile[i, j].TileType == Type)
-        {
-            Console.WriteLine("a");
-        }
-        orig(i, j, fail, effectOnly, noItem);
-    }
-
-    private void GenPasses(ModSystem self, List<GenPass> tasks, ref double totalWeight)
+    private static void GenPasses(ModSystem self, List<GenPass> tasks, ref double totalWeight)
     {
         var waterPlantsPass = tasks.FindIndex(x => x.Name == "Water Plants");
         if (waterPlantsPass == -1)
@@ -124,12 +112,6 @@ public sealed class LavaLilyPads : LilyPadTile
         );
     }
 
-    public override bool TileFrame(int i, int j, ref bool resetFrame, ref bool noBreak)
-    {
-        CheckLilyPad(i, j);
-        return false;
-    }
-
     public override void RandomUpdate(int i, int j)
     {
         base.RandomUpdate(i, j);
@@ -149,27 +131,27 @@ public sealed class LavaLilyPads : LilyPadTile
         }
     }
 
-    private static void CheckLilyPad(int i, int j)
+    public override void CheckLilyPad(int x, int y)
     {
         if (Main.netMode == NetmodeID.MultiplayerClient)
         {
             return;
         }
 
-        if (Main.tile[i, j].liquidType() != LiquidID.Lava)
+        if (Main.tile[x, y].liquidType() != LiquidID.Lava)
         {
-            WorldGen.KillTile(i, j);
+            WorldGen.KillTile(x, y);
 
             if (Main.netMode == NetmodeID.Server)
             {
-                NetMessage.SendData(MessageID.TileManipulation, -1, -1, null, 0, i, j);
+                NetMessage.SendData(MessageID.TileManipulation, -1, -1, null, 0, x, y);
             }
 
             return;
         }
 
-        var num = j;
-        while ((!Main.tile[i, num].active() || !Main.tileSolid[Main.tile[i, num].type] || Main.tileSolidTop[Main.tile[i, num].type]) && num < Main.maxTilesY - 50)
+        var num = y;
+        while ((!Main.tile[x, num].active() || !Main.tileSolid[Main.tile[x, num].type] || Main.tileSolidTop[Main.tile[x, num].type]) && num < Main.maxTilesY - 50)
         {
             num++;
         }
@@ -195,71 +177,71 @@ public sealed class LavaLilyPads : LilyPadTile
 
         if (num2 >= 0)
         {
-            if (num2 != Main.tile[i, j].frameY)
+            if (num2 != Main.tile[x, y].frameY)
             {
-                Main.tile[i, j].frameY = (short)num2;
+                Main.tile[x, y].frameY = (short)num2;
                 if (Main.netMode == NetmodeID.Server)
                 {
-                    NetMessage.SendTileSquare(-1, i, j);
+                    NetMessage.SendTileSquare(-1, x, y);
                 }
             }
 
-            if (Main.tile[i, j - 1].liquid > 0 && !Main.tile[i, j - 1].active())
+            if (Main.tile[x, y - 1].liquid > 0 && !Main.tile[x, y - 1].active())
             {
-                Main.tile[i, j - 1].active(active: true);
-                Main.tile[i, j - 1].type = (ushort)ModContent.TileType<LavaLilyPads>();
-                Main.tile[i, j - 1].frameX = Main.tile[i, j].frameX;
-                Main.tile[i, j - 1].frameY = Main.tile[i, j].frameY;
-                Main.tile[i, j - 1].halfBrick(halfBrick: false);
-                Main.tile[i, j - 1].slope(0);
-                Main.tile[i, j].active(active: false);
-                Main.tile[i, j].type = 0;
-                WorldGen.SquareTileFrame(i, j - 1, resetFrame: false);
+                Main.tile[x, y - 1].active(active: true);
+                Main.tile[x, y - 1].type = (ushort)ModContent.TileType<LavaLilyPads>();
+                Main.tile[x, y - 1].frameX = Main.tile[x, y].frameX;
+                Main.tile[x, y - 1].frameY = Main.tile[x, y].frameY;
+                Main.tile[x, y - 1].halfBrick(halfBrick: false);
+                Main.tile[x, y - 1].slope(0);
+                Main.tile[x, y].active(active: false);
+                Main.tile[x, y].type = 0;
+                WorldGen.SquareTileFrame(x, y - 1, resetFrame: false);
                 if (Main.netMode == NetmodeID.Server)
                 {
-                    NetMessage.SendTileSquare(-1, i, j - 1, 1, 2);
+                    NetMessage.SendTileSquare(-1, x, y - 1, 1, 2);
                 }
             }
             else
             {
-                if (Main.tile[i, j].liquid != 0)
+                if (Main.tile[x, y].liquid != 0)
                 {
                     return;
                 }
 
-                var tileSafely = Framing.GetTileSafely(i, j + 1);
+                var tileSafely = Framing.GetTileSafely(x, y + 1);
                 if (!tileSafely.active())
                 {
-                    Main.tile[i, j + 1].active(active: true);
-                    Main.tile[i, j + 1].type = (ushort)ModContent.TileType<LavaLilyPads>();
-                    Main.tile[i, j + 1].frameX = Main.tile[i, j].frameX;
-                    Main.tile[i, j + 1].frameY = Main.tile[i, j].frameY;
-                    Main.tile[i, j + 1].halfBrick(halfBrick: false);
-                    Main.tile[i, j + 1].slope(0);
-                    Main.tile[i, j].active(active: false);
-                    Main.tile[i, j].type = 0;
-                    WorldGen.SquareTileFrame(i, j + 1, resetFrame: false);
+                    Main.tile[x, y + 1].active(active: true);
+                    Main.tile[x, y + 1].type = (ushort)ModContent.TileType<LavaLilyPads>();
+                    Main.tile[x, y + 1].frameX = Main.tile[x, y].frameX;
+                    Main.tile[x, y + 1].frameY = Main.tile[x, y].frameY;
+                    Main.tile[x, y + 1].halfBrick(halfBrick: false);
+                    Main.tile[x, y + 1].slope(0);
+                    Main.tile[x, y].active(active: false);
+                    Main.tile[x, y].type = 0;
+                    WorldGen.SquareTileFrame(x, y + 1, resetFrame: false);
                     if (Main.netMode == NetmodeID.Server)
                     {
-                        NetMessage.SendTileSquare(-1, i, j, 1, 2);
+                        NetMessage.SendTileSquare(-1, x, y, 1, 2);
                     }
                 }
                 else if (tileSafely.active() && !TileID.Sets.Platforms[tileSafely.type] && (!Main.tileSolid[tileSafely.type] || Main.tileSolidTop[tileSafely.type]))
                 {
-                    WorldGen.KillTile(i, j);
+                    WorldGen.KillTile(x, y);
                     if (Main.netMode == NetmodeID.Server)
                     {
-                        NetMessage.SendData(MessageID.TileManipulation, -1, -1, null, 0, i, j);
+                        NetMessage.SendData(MessageID.TileManipulation, -1, -1, null, 0, x, y);
                     }
                 }
             }
         }
         else
         {
-            WorldGen.KillTile(i, j);
+            WorldGen.KillTile(x, y);
             if (Main.netMode == NetmodeID.Server)
             {
-                NetMessage.SendData(MessageID.TileManipulation, -1, -1, null, 0, i, j);
+                NetMessage.SendData(MessageID.TileManipulation, -1, -1, null, 0, x, y);
             }
         }
     }
