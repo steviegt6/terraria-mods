@@ -14,6 +14,8 @@ AuthorTags: {
 	Wymsical.DisplayName: Wymsical
 }
 
+WorldGen.Passes.LavaLilies: Planting lava lilies...
+
 UI: {
 	ModIcon: {
 		AprilFools.ModName: NAMELESS MOD OF NIGHT

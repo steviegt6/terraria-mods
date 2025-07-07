@@ -621,6 +621,62 @@ internal static class LocalizationReferences
                 }
             }
 
+            public static class WorldGen
+            {
+                public const string KEY = "Mods.Nightshade.WorldGen";
+
+                public static LocalizedText GetChildText(string childKey)
+                {
+                    return Language.GetText(KEY + '.' + childKey);
+                }
+
+                public static string GetChildTextValue(string childKey, params object?[] values)
+                {
+                    return Language.GetTextValue(KEY + '.' + childKey, values);
+                }
+
+                public static class Passes
+                {
+                    public const string KEY = "Mods.Nightshade.WorldGen.Passes";
+
+                    public static LocalizedText GetChildText(string childKey)
+                    {
+                        return Language.GetText(KEY + '.' + childKey);
+                    }
+
+                    public static string GetChildTextValue(string childKey, params object?[] values)
+                    {
+                        return Language.GetTextValue(KEY + '.' + childKey, values);
+                    }
+
+                    public static class LavaLilies
+                    {
+                        public const string KEY = "Mods.Nightshade.WorldGen.Passes.LavaLilies";
+                        public const int ARG_COUNT = 0;
+
+                        public static LocalizedText GetText()
+                        {
+                            return Language.GetText(KEY);
+                        }
+
+                        public static string GetTextValue()
+                        {
+                            return Language.GetTextValue(KEY);
+                        }
+
+                        public static LocalizedText GetChildText(string childKey)
+                        {
+                            return Language.GetText(KEY + '.' + childKey);
+                        }
+
+                        public static string GetChildTextValue(string childKey, params object?[] values)
+                        {
+                            return Language.GetTextValue(KEY + '.' + childKey, values);
+                        }
+                    }
+                }
+            }
+
             public static class UI
             {
                 public const string KEY = "Mods.Nightshade.UI";

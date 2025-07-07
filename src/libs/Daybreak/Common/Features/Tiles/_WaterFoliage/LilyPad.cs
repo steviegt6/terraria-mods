@@ -23,6 +23,11 @@ public interface ILilyPad
     ///     If enabled, this also disabled regular solid tile drawing.
     /// </remarks>
     bool VanillaDrawTileInWater { get; }
+
+    /// <summary>
+    ///     Checks validity of the tile and kills it if it isn't valid.
+    /// </summary>
+    void CheckLilyPad(int x, int y);
 }
 
 /// <summary>
@@ -56,6 +61,7 @@ internal static partial class WaterFoliageHandler
         IL_Main.DrawTileInWater += DrawTileInWater_UseLilyPadDrawLogicForAllLilyPads;
 
         IL_Liquid.DelWater += DelWater_CheckLilyPads;
+        On_WorldGen.CheckLilyPad += CheckLilyPad_UseModdedChecks;
 
         IL_WorldGen.UpdateWorld_OvergroundTile += UpdateWorld_OvergroundTile_AllowBambooToGrowThroughLilyPads;
     }
@@ -82,6 +88,11 @@ internal static partial class WaterFoliageHandler
 
         c.GotoNext(MoveType.Before, x => x.MatchLdcI4(TileID.LilyPad));
         c.Substitute(TileID.LilyPad, type => TileLoader.GetTile(type) is ILilyPad);
+    }
+    
+    private static void CheckLilyPad_UseModdedChecks(On_WorldGen.orig_CheckLilyPad orig, int x, int y)
+    {
+        orig(x, y);
     }
 
     private static void UpdateWorld_OvergroundTile_AllowBambooToGrowThroughLilyPads(ILContext il)
