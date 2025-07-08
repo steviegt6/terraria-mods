@@ -11,7 +11,7 @@ using Terraria.WorldBuilding;
 
 namespace Nightshade.Content;
 
-public sealed class LavaLilyPads : LilyPadTile
+public sealed class LavaLilyPads : LilyPadTile, IPlaceTileHook
 {
     private sealed class LavaLilyPadGlobalTile : GlobalTile
     {
@@ -24,7 +24,7 @@ public sealed class LavaLilyPads : LilyPadTile
                 return;
             }
 
-            PlaceTile(i, j);
+            WorldGen.PlaceTile(i, j, ModContent.TileType<LavaLilyPads>());
 
             if (Main.netMode == NetmodeID.Server)
             {
@@ -53,7 +53,7 @@ public sealed class LavaLilyPads : LilyPadTile
         tasks.Insert(
             waterPlantsPass + 1,
             new PassLegacy(
-                "Lava Lilies",
+                "Lava Plants",
                 (progress, _) =>
                 {
                     progress.Message = Mods.Nightshade.WorldGen.Passes.LavaLilies.GetTextValue();
@@ -70,22 +70,22 @@ public sealed class LavaLilyPads : LilyPadTile
                                 {
                                     if (WorldGen.genRand.NextBool(2))
                                     {
-                                        PlaceTile(x, y);
+                                        WorldGen.PlaceTile(x, y, ModContent.TileType<LavaLilyPads>());
                                     }
-                                    /*else
+                                    else
                                     {
-                                        Point point = PlaceCatTail(x, y);
-                                        if (InWorld(point.X, point.Y))
+                                        var point = ModContent.GetInstance<LavaCattails>().PlaceTile(x, y);
+                                        if (WorldGen.InWorld(point.X, point.Y))
                                         {
-                                            int num31 = genRand.Next(14);
-                                            for (int num32 = 0; num32 < num31; num32++)
+                                            var num31 = WorldGen.genRand.Next(14);
+                                            for (var num32 = 0; num32 < num31; num32++)
                                             {
-                                                GrowCatTail(point.X, point.Y);
+                                                ModContent.GetInstance<LavaCattails>().GrowCattail(point.X, point.Y);
                                             }
 
-                                            SquareTileFrame(point.X, point.Y);
+                                            WorldGen.SquareTileFrame(point.X, point.Y);
                                         }
-                                    }*/
+                                    }
                                 }
 
                                 /*if ((!Main.tile[x, y].active() || Main.tile[x, y].type == 61 || Main.tile[x, y].type == 74) && PlaceBamboo(x, y))
@@ -246,7 +246,7 @@ public sealed class LavaLilyPads : LilyPadTile
         }
     }
 
-    private static void PlaceTile(int x, int j)
+    public void PlaceTile(int x, int j, bool mute, bool forced, int plr, int style)
     {
         var num = j;
         if (x < 50 || x > Main.maxTilesX - 50 || num < 50 || num > Main.maxTilesY - 50)
@@ -296,10 +296,10 @@ public sealed class LavaLilyPads : LilyPadTile
         int l;
         for (l = num; (!Main.tile[x, l].active() || !Main.tileSolid[Main.tile[x, l].type] || Main.tileSolidTop[Main.tile[x, l].type]) && l < Main.maxTilesY - 50; l++)
         {
-            /*if (Main.tile[x, l].active() && Main.tile[x, l].type == 519)
+            if (Main.tile[x, l].active() && Main.tile[x, l].type == ModContent.TileType<LavaCattails>())
             {
-                return false;
-            }*/
+                return;
+            }
         }
 
         var num4 = 12;
