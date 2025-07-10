@@ -1,3 +1,4 @@
+using Daybreak.Common.IDs;
 using Daybreak.Common.Rendering;
 
 using Microsoft.Xna.Framework;
@@ -36,7 +37,7 @@ public abstract class PlatinumCritterTile<TCageItem>(string critterName) : ModTi
         DustType = DustID.Glass;
         HitSound = SoundID.Shatter;
 
-        On_TileDrawing.GetTileDrawData += GetTileDrawData_StealDataOfVanillaTile;
+        DaybreakTileSets.OtherTileDrawDataToCopy[Type] = TileType;
     }
 
     private SpriteBatchSnapshot ss;
@@ -67,53 +68,6 @@ public abstract class PlatinumCritterTile<TCageItem>(string critterName) : ModTi
         spriteBatch.Restart(in ss);
 
         base.PostDraw(i, j, spriteBatch);
-    }
-
-    private void GetTileDrawData_StealDataOfVanillaTile(
-        On_TileDrawing.orig_GetTileDrawData orig,
-        TileDrawing self,
-        int x,
-        int y,
-        Tile tileCache,
-        ushort typeCache,
-        ref short tileFrameX,
-        ref short tileFrameY,
-        out int tileWidth,
-        out int tileHeight,
-        out int tileTop,
-        out int halfBrickHeight,
-        out int addFrX,
-        out int addFrY,
-        out SpriteEffects tileSpriteEffect,
-        out Texture2D glowTexture,
-        out Rectangle glowSourceRect,
-        out Color glowColor
-    )
-    {
-        if (typeCache == Type)
-        {
-            typeCache = (ushort)TileType;
-        }
-
-        orig(
-            self,
-            x,
-            y,
-            tileCache,
-            typeCache,
-            ref tileFrameX,
-            ref tileFrameY,
-            out tileWidth,
-            out tileHeight,
-            out tileTop,
-            out halfBrickHeight,
-            out addFrX,
-            out addFrY,
-            out tileSpriteEffect,
-            out glowTexture,
-            out glowSourceRect,
-            out glowColor
-        );
     }
 
     private static string MakeTexturePath(string name)

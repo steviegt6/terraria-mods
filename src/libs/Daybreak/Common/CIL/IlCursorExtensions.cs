@@ -1,3 +1,5 @@
+using System;
+
 using JetBrains.Annotations;
 
 using Mono.Cecil;
@@ -95,4 +97,9 @@ public static class IlCursorExtensions
         return variable;
     }
 #endregion
+    
+    public static void Substitute<T>(this ILCursor @this, T substitute, Func<T, bool> shouldSubstitute)
+    {
+        @this.EmitDelegate((T val) => shouldSubstitute(val) ? substitute : val);
+    }
 }
