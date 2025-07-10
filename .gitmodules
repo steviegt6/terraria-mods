@@ -4,3 +4,6 @@
 [submodule "src/shader-reader"]
 	path = src/shader-reader
 	url = https://github.com/steviegt6/shader-reader
+[submodule "broken-wings"]
+	path = broken-wings
+	url = https://github.com/cadmium-colors/broken-wings
