@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-    <Import Project="../../common/Mod.targets"/>
+    <Import Project="..\..\..\broken-wings\src\Mod.targets"/>
 
     <PropertyGroup>
         <AssemblyName>CrowsWhoMow</AssemblyName>

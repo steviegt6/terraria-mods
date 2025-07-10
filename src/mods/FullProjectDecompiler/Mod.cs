@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Tomat.TML.Mod.FullProjectDecompiler;
 
-partial class Mod
+partial class ModImpl
 {
     private sealed class JitFilter : PreJITFilter
     {
@@ -14,7 +14,7 @@ partial class Mod
         }
     }
 
-    public Mod()
+    public ModImpl()
     {
         PreJITFilter = new JitFilter();
     }

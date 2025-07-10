@@ -17,9 +17,6 @@ using Terraria.WorldBuilding;
 namespace Tomat.TML.Mod.UnlockedZoom;
 
 [UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
-public sealed class UzMod : global::Terraria.ModLoader.Mod;
-
-[UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
 internal sealed class ZoomAndScreenParamOverride : ModSystem
 {
     private int oldMaxScreenW;
