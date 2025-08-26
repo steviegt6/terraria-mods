@@ -11,12 +11,14 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
 
+using Tomat.TML.Mod.CrowsWhoMow.Core;
+
 namespace Tomat.TML.Mod.CrowsWhoMow;
 
 [UsedImplicitly(ImplicitUseKindFlags.InstantiatedNoFixedConstructorSignature)]
 public sealed class CrowThatMows : ModNPC
 {
-    public override string Texture => "CrowsWhoMow/CrowThatMows";
+    public override string Texture => Assets.Images.Content.CrowThatMows_NPC.KEY;
 
     public override void SetStaticDefaults()
     {
@@ -24,9 +26,9 @@ public sealed class CrowThatMows : ModNPC
 
         Main.npcFrameCount[Type] = 4;
 
-        NPCID.Sets.CountsAsCritter[Type]                             = true;
+        NPCID.Sets.CountsAsCritter[Type] = true;
         NPCID.Sets.TakesDamageFromHostilesWithoutBeingFriendly[Type] = true;
-        NPCID.Sets.TownCritter[Type]                                 = true;
+        NPCID.Sets.TownCritter[Type] = true;
 
         NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Confused] = true;
     }
@@ -46,7 +48,7 @@ public sealed class CrowThatMows : ModNPC
         bestiaryEntry.AddTags(
             BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface,
             BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.TheHallow,
-            new FlavorTextBestiaryInfoElement("those who know vs crows who mow")
+            new FlavorTextBestiaryInfoElement(Mods.CrowsWhoMow.NPCs.CrowThatMows.BestiaryDescription.KEY)
         );
     }
 
@@ -88,7 +90,7 @@ public sealed class CrowThatMows : ModNPC
         }
 
         NPC.frameCounter = 0;
-        NPC.frame.Y      = (NPC.frame.Y + frameHeight) % (Main.npcFrameCount[NPC.type] * frameHeight);
+        NPC.frame.Y = (NPC.frame.Y + frameHeight) % (Main.npcFrameCount[NPC.type] * frameHeight);
     }
 
     public override void ModifyNPCLoot(NPCLoot npcLoot)
@@ -101,7 +103,7 @@ public sealed class CrowThatMows : ModNPC
     private static void MowGrassTile(Vector2 pos)
     {
         var point = pos.ToTileCoordinates();
-        var tile  = Framing.GetTileSafely(point);
+        var tile = Framing.GetTileSafely(point);
         if (!WorldGen.CanKillTile(point.X, point.Y, WorldGen.SpecialKillTileContext.MowingTheGrass))
         {
             return;
@@ -109,9 +111,9 @@ public sealed class CrowThatMows : ModNPC
 
         var resType = tile.TileType switch
         {
-            TileID.Grass         => TileID.GolfGrass,
+            TileID.Grass => TileID.GolfGrass,
             TileID.HallowedGrass => TileID.GolfGrassHallowed,
-            _                    => (ushort)0,
+            _ => (ushort)0,
         };
 
         if (resType == 0)
