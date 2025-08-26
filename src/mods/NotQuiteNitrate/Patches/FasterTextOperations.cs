@@ -23,6 +23,8 @@ internal sealed class FasterTextOperations : ModSystem
     {
         base.Load();
 
+        return;
+
         MonoModHooks.Add(
             typeof(DynamicSpriteFont).GetMethod(nameof(DynamicSpriteFont.MeasureString), BindingFlags.Public | BindingFlags.Instance),
             DynamicSpriteFontMeasureString
