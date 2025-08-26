@@ -1,33 +1,48 @@
 Configs: {
 	GrammarConfig: {
-		DisplayName: Grammar Config
+		DisplayName: Prefix Grammar Config
 
 		PrefixFormatting: {
 			Label: Prefix Formatting
-			Tooltip: ""
+			Tooltip:
+				'''
+				Additional options to control formatting in cases where the item name starts with a prefix name
+				(e.g. Lucky Horseshoe, which may be rendered as Arcane Lucky Horseshoe)
+
+				Default: No behavior
+				Replace: Replace the default prefix in the item name with the real reforge (e.g. Arcane Lucky Horseshoe -> Arcane Horseshoe)
+				After (swap): Swap the two prefixes (e.g. Arcane Lucky Horseshoe -> Lucky Arcane Horseshoe)
+				'''
 		}
 
 		DoubleFormatting: {
 			Label: Double Formatting
-			Tooltip: ""
+			Tooltip:
+				'''
+				Additional options to control formatting in cases where the item name starts with the same word as the prefix it has
+				(e.g. Lucky Horseshoe, which may be rendered as Lucky Lucky Horseshoe)
+
+				Default: No behavior
+				Prepend 'Doubly-': Prepend 'Doubly-' Prepends 'Doubly-' to the prefix and removes the duplicate (e.g. Lucky Lucky Horseshoe -> Doubly-Lucky Horseshoe)
+				'''
 		}
 
 		InsertComma: {
-			Label: Insert Comma
-			Tooltip: ""
+			Label: Insert Punctuation
+			Tooltip: Whether to insert punctuation (such as a comma in English) if applicable (e.g. Lucky, Lucky Horseshoe)
 		}
 	}
 
 	PrefixOptions: {
 		Tooltip: ""
-		Default.Label: Default
+		Default.Label: Default (no behavior)
 		Replace.Label: Replace
-		After.Label: After
+		After.Label: After (swap)
 	}
 
 	DoubleOptions: {
 		Tooltip: ""
-		Default.Label: Default
-		Doubly.Label: Doubly
+		Default.Label: Default (no behavior)
+		Doubly.Label: Prepend 'Doubly-'
 	}
 }

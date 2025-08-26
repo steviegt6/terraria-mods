@@ -1,3 +1,5 @@
+using System.ComponentModel;
+
 using Terraria.ModLoader.Config;
 
 namespace Tomat.TML.Mod.PrefixGrammar;
@@ -19,9 +21,13 @@ public sealed class GrammarConfig : ModConfig
     
     public override ConfigScope Mode => ConfigScope.ClientSide;
     
+    [DrawTicks]
+    [DefaultValue(PrefixOptions.Default)]
     public PrefixOptions PrefixFormatting { get; set; } = PrefixOptions.Default;
     
-    public DoubleOptions DoubleFormatting { get; set; } = DoubleOptions.Default;
+    [DrawTicks]
+    [DefaultValue(DoubleOptions.Doubly)]
+    public DoubleOptions DoubleFormatting { get; set; } = DoubleOptions.Doubly;
 
     public bool InsertComma { get; set; } = false;
 }
