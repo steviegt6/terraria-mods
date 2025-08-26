@@ -1,0 +1,33 @@
+Configs: {
+	GrammarConfig: {
+		DisplayName: Grammar Config
+
+		PrefixFormatting: {
+			Label: Prefix Formatting
+			Tooltip: ""
+		}
+
+		DoubleFormatting: {
+			Label: Double Formatting
+			Tooltip: ""
+		}
+
+		InsertComma: {
+			Label: Insert Comma
+			Tooltip: ""
+		}
+	}
+
+	PrefixOptions: {
+		Tooltip: ""
+		Default.Label: Default
+		Replace.Label: Replace
+		After.Label: After
+	}
+
+	DoubleOptions: {
+		Tooltip: ""
+		Default.Label: Default
+		Doubly.Label: Doubly
+	}
+}

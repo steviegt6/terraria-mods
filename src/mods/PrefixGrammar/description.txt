@@ -1,0 +1,17 @@
+Changes how prefixes are rendered in item names to be more grammatical.
+
+Prefixes will be inserted after articles (e.g. Unreal The Undertaker -> The Unreal Undertaker).
+
+Additionally, you can also optionally choose to change how item names that start with a prefix name are handled (such as the Lucky Horseshoe):
+- default (Arcane Lucky Horseshoe)
+- replace (Arcane Horseshoe)
+- after (Lucky Arcane Horseshoe).
+
+For the rare cases where an item name begins with the same name as a prefix, additional options are provided for their handling:
+- default (Lucky Lucky Horseshoe),
+- doubly (Doubly-Lucky Horseshoe).
+
+In either case (aside from replace and doubly), there is also a case to insert a comma between the two prefixes.
+
+Currently, only support for English is featured. Get in contact with me through the homepage if you'd like support for other languages.
+Some other languages are pretty straightforward, but I don't know the rules of others (so I'd rather native speakers help directly).

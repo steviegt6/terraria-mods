@@ -1,0 +1,10 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <Import Project="..\..\..\broken-wings\src\Mod.targets"/>
+
+    <PropertyGroup>
+        <AssemblyName>PrefixGrammar</AssemblyName>
+        <RootNamespace>Tomat.TML.Mod.PrefixGrammar</RootNamespace>
+    </PropertyGroup>
+
+</Project>
