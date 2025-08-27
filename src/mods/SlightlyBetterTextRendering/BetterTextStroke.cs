@@ -22,10 +22,10 @@ public sealed class BetterTextStroke : ModSystem
     {
         base.Load();
 
-        IL_ChatManager.DrawColorCodedStringWithShadow_SpriteBatch_DynamicSpriteFont_string_Vector2_Color_float_Vector2_Vector2_float_float                          += DarkenStrokeIfDefault;
-        IL_ChatManager.DrawColorCodedStringWithShadow_SpriteBatch_DynamicSpriteFont_string_Vector2_Color_Color_float_Vector2_Vector2_float_float                    += DarkenStrokeIfDefault;
-        IL_ChatManager.DrawColorCodedStringWithShadow_SpriteBatch_DynamicSpriteFont_TextSnippetArray_Vector2_float_Vector2_Vector2_refInt32_float_float             += DarkenStrokeIfDefault;
-        IL_ChatManager.DrawColorCodedStringWithShadow_SpriteBatch_DynamicSpriteFont_TextSnippetArray_Vector2_float_Color_Vector2_Vector2_refInt32_float_float       += DarkenStrokeIfDefault;
+        IL_ChatManager.DrawColorCodedStringWithShadow_SpriteBatch_DynamicSpriteFont_string_Vector2_Color_float_Vector2_Vector2_float_float += DarkenStrokeIfDefault;
+        IL_ChatManager.DrawColorCodedStringWithShadow_SpriteBatch_DynamicSpriteFont_string_Vector2_Color_Color_float_Vector2_Vector2_float_float += DarkenStrokeIfDefault;
+        IL_ChatManager.DrawColorCodedStringWithShadow_SpriteBatch_DynamicSpriteFont_TextSnippetArray_Vector2_float_Vector2_Vector2_refInt32_float_float += DarkenStrokeIfDefault;
+        IL_ChatManager.DrawColorCodedStringWithShadow_SpriteBatch_DynamicSpriteFont_TextSnippetArray_Vector2_float_Color_Vector2_Vector2_refInt32_float_float += DarkenStrokeIfDefault;
         IL_ChatManager.DrawColorCodedStringWithShadow_SpriteBatch_DynamicSpriteFont_TextSnippetArray_Vector2_float_Color_Color_Vector2_Vector2_refInt32_float_float += DarkenStrokeIfDefault;
     }
 
@@ -33,7 +33,7 @@ public sealed class BetterTextStroke : ModSystem
     {
         var c = new ILCursor(il);
 
-        var color = il.Method.Parameters.FirstOrDefault(x => string.Equals(x.Name, "color",     StringComparison.InvariantCultureIgnoreCase))
+        var color = il.Method.Parameters.FirstOrDefault(x => string.Equals(x.Name, "color", StringComparison.InvariantCultureIgnoreCase))
                  ?? il.Method.Parameters.FirstOrDefault(x => string.Equals(x.Name, "baseColor", StringComparison.InvariantCultureIgnoreCase));
         var shadowColor = il.Method.Parameters.FirstOrDefault(x => string.Equals(x.Name, "shadowColor", StringComparison.InvariantCultureIgnoreCase));
 
@@ -50,8 +50,7 @@ public sealed class BetterTextStroke : ModSystem
             c.EmitPop();
 
             EmitColor(c, color);
-            c.EmitDelegate(
-                static (Color color) => DarkenColor(color)
+            c.EmitDelegate(static (Color color) => DarkenColor(color)
             );
         }
         else
@@ -64,8 +63,7 @@ public sealed class BetterTextStroke : ModSystem
 
             EmitColor(c, color);
             c.EmitLdarg(shadowColor.Index);
-            c.EmitDelegate(
-                static (Color color, Color shadowColor) => shadowColor == Color.Black ? DarkenColor(color) : color
+            c.EmitDelegate(static (Color color, Color shadowColor) => shadowColor == Color.Black ? DarkenColor(color) : color
             );
             c.EmitStarg(shadowColor.Index);
         }
