@@ -57,28 +57,29 @@ public sealed class SonarText : ModSystem
             text = text + " (" + popupText.stack + ")";
         }
 
-        var itemId = ContentSamples.ItemsByType[sonarItemType].type;
-
-        /*if (true)
-        {
-            for (var k = 0; k < 4; k++)
-            {
-                var offsetPos = Vector2.UnitY.RotatedBy(MathHelper.PiOver2 * k) * 2;
-                Main.spriteBatch.Draw(TextureAssets.Item[itemId].Value.ToFlatColor(Color.White, Main.spriteBatch.GraphicsDevice), new Vector2(text.position.X - Main.screenPosition.X + (int)(FontAssets.ItemStack.Value.MeasureString(text.name).X / 2f), text.position.Y - Main.screenPosition.Y - 5 - (TextureAssets.Item[itemID].Width() / 2f)) + offsetPos, null, Color.White, 0f, TextureAssets.Item[itemID].Size() / 2f, text.scale, SpriteEffects.None, 0f);
-            }
-        }*/
-
         var halfSize = FontAssets.MouseText.Value.MeasureString(text).X / 2f;
         var pos = new Vector2(
             popupText.position.X - Main.screenPosition.X + halfSize,
-            popupText.position.Y - Main.screenPosition.Y - 16
+            popupText.position.Y - Main.screenPosition.Y - 20
         );
 
-        DrawItem(ContentSamples.ItemsByType[sonarItemType], pos, popupText.scale);
+        // TODO: An option to draw the item like a text, using a shader to
+        //       grayscale the texture and tint the body and outlines
+        //       accordingly (blue outline, rarity-colored body).
+        /*if (true)
+        {
+            for (var i = 0; i < 4; i++)
+            {
+                var offsetPos = Vector2.UnitY.RotatedBy(MathHelper.PiOver2 * i) * 2;
+                DrawItem(ContentSamples.ItemsByType[sonarItemType], pos + offsetPos, popupText.scale, Color.White);
+            }
+        }*/
+
+        DrawItem(ContentSamples.ItemsByType[sonarItemType], pos, popupText.scale, Color.White);
 
         return;
 
-        static void DrawItem(Item item, Vector2 position, float scale)
+        static void DrawItem(Item item, Vector2 position, float scale, Color color)
         {
             var itemType = item.type;
 
@@ -94,7 +95,7 @@ public sealed class SonarText : ModSystem
             scale *= 0.75f;
 
             position.Y += frame.Height / 2f * (1f - scale);
-            ItemSlot.DrawItemIcon(item, 14, Main.spriteBatch, position, scale, 32f, Color.White);
+            ItemSlot.DrawItemIcon(item, 14, Main.spriteBatch, position, scale, 32f, color);
         }
     }
 
