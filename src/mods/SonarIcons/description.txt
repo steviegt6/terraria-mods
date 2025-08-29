@@ -1,0 +1,3 @@
+Icon by z_e_n_.
+
+Adds an item icon next to the popup text of Sonar Potions.
