@@ -95,6 +95,7 @@ public sealed class FasterRenderBlack : ModSystem
             return;
         }
 
+        var liquidSlopeFix = LiquidEdgeRenderer.Active;
         var showInvisibleWalls = Main.ShouldShowInvisibleWalls();
 
         FastParallel.For(
@@ -119,6 +120,11 @@ public sealed class FasterRenderBlack : ModSystem
                             var brightness = Lighting.Brightness(x, y);
 
                             var liquidAmount = tile.LiquidAmount;
+
+                            if (liquidSlopeFix && LiquidRenderer.Instance.HasFullWater(x, y) && ((tile.Slope != SlopeType.Solid || tile.IsHalfBlock) && brightness >= 5f / 255f || brightness > 5f / 255f))
+                            {
+                                break;
+                            }
 
                             var isDarkTile = brightness <= brightnessThreshold && (
                                 (!isUnderworld && liquidAmount < 250)
