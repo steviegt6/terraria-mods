@@ -1,1 +1,10 @@
+Configs: {
+	Config: {
+		DisplayName: Config
 
+		GrayscaleItems: {
+			Label: Grayscale Items
+			Tooltip: ""
+		}
+	}
+}

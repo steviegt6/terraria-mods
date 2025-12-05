@@ -1,19 +1,102 @@
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using Daybreak.Common.Assets;
 using Daybreak.Common.Features.Hooks;
+using Daybreak.Common.Features.Models;
+using Daybreak.Common.Rendering;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using MonoMod.Cil;
+using ReLogic.Content;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.Config;
 using Terraria.UI;
 
 namespace SonarIcons;
 
+internal sealed class Config : ModConfig
+{
+    public override ConfigScope Mode => ConfigScope.ClientSide;
+
+    [DefaultValue(true)]
+    public bool GrayscaleItems { get; set; } = true;
+}
+
 internal static class SonarText
 {
+    private sealed class GrayscaleItemCache : IStatic<GrayscaleItemCache>
+    {
+        public required Asset<Effect> GrayscaleEffect { get; init; }
+
+        private readonly Dictionary<int, RenderTarget2D> targets = [];
+
+        public Texture2D GetGrayscaleItem(int itemType)
+        {
+            if (targets.TryGetValue(itemType, out var target))
+            {
+                return target;
+            }
+
+            Main.spriteBatch.End(out var ss);
+
+            Main.instance.LoadItem(itemType);
+            var asset = TextureAssets.Item[itemType].Value;
+
+            target = RenderTargetDescriptor.DefaultPreserveContents.Create(
+                Main.instance.GraphicsDevice,
+                asset.Width,
+                asset.Height
+            );
+            using (target.Scope(clearColor: Color.Transparent))
+            {
+                Main.spriteBatch.Begin(
+                    SpriteSortMode.Immediate,
+                    BlendState.AlphaBlend,
+                    SamplerState.PointClamp,
+                    DepthStencilState.None,
+                    RasterizerState.CullNone,
+                    GrayscaleEffect.Value,
+                    Matrix.Identity
+                );
+                Main.spriteBatch.Draw(asset, Vector2.Zero, Color.White);
+                Main.spriteBatch.End();
+            }
+
+            Main.spriteBatch.Begin(ss);
+
+            return targets[itemType] = target;
+        }
+
+        public static GrayscaleItemCache LoadData(Mod mod)
+        {
+            return new GrayscaleItemCache
+            {
+                GrayscaleEffect = Assets.Shaders.ItemGrayscale.Asset,
+            };
+        }
+
+        public static void UnloadData(GrayscaleItemCache data)
+        {
+            Main.QueueMainThreadAction(
+                () =>
+                {
+                    foreach (var target in data.targets.Values)
+                    {
+                        target.Dispose();
+                    }
+
+                    data.targets.Clear();
+                }
+            );
+        }
+    }
+
     private sealed class PopupTextSonar
     {
         public required int SonarItemType { get; init; } = -1;
@@ -38,7 +121,7 @@ internal static class SonarText
         {
             wh.Y += 32f * self.scale;
         }
-        
+
         return wh;
     }
 
@@ -72,19 +155,24 @@ internal static class SonarText
                 popupText.position.Y - Main.screenPosition.Y - 20
             );
 
-            // TODO: An option to draw the item like a text, using a shader to
-            //       grayscale the texture and tint the body and outlines
-            //       accordingly (blue outline, rarity-colored body).
-            /*if (true)
+            var item = ContentSamples.ItemsByType[sonarText.SonarItemType];
+            if (ModContent.GetInstance<Config>().GrayscaleItems)
             {
-                for (var i = 0; i < 4; i++)
+                using (AssetReplacer.Replace(TextureAssets.Item[item.type], IStatic<GrayscaleItemCache>.Instance.GetGrayscaleItem(item.type)))
                 {
-                    var offsetPos = Vector2.UnitY.RotatedBy(MathHelper.PiOver2 * i) * 2;
-                    DrawItem(ContentSamples.ItemsByType[sonarItemType], pos + offsetPos, popupText.scale, Color.White);
-                }
-            }*/
+                    for (var i = 0; i < 4; i++)
+                    {
+                        var offsetPos = Vector2.UnitY.RotatedBy(MathHelper.PiOver2 * i) * 2;
+                        DrawItem(item, pos + offsetPos, popupText.scale, Color.Blue * 0.4f);
+                    }
 
-            DrawItem(ContentSamples.ItemsByType[sonarText.SonarItemType], pos, popupText.scale, Color.White);
+                    DrawItem(item, pos, popupText.scale, Color.White);
+                }
+            }
+            else
+            {
+                DrawItem(item, pos, popupText.scale, Color.White);
+            }
         }
 
         return;
