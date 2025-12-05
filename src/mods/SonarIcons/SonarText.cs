@@ -166,7 +166,7 @@ internal static class SonarText
                         DrawItem(item, pos + offsetPos, popupText.scale, Color.Blue * 0.4f);
                     }
 
-                    DrawItem(item, pos, popupText.scale, Color.White);
+                    DrawItem(item, pos, popupText.scale, popupText.color);
                 }
             }
             else
