@@ -24,8 +24,16 @@ internal static class SonarText
     [OnLoad]
     private static void ApplyEdits()
     {
+        On_PopupText.ResetText += ResetText_ResetSonarItem;
         On_Main.DrawItemTextPopups += DrawItemTextPopups_DrawSonarItemIcon;
         IL_Projectile.FishingCheck += FishingCheck_WrapAssignAsSonarText;
+    }
+
+    private static void ResetText_ResetSonarItem(On_PopupText.orig_ResetText orig, PopupText text)
+    {
+        orig(text);
+
+        _ = sonar_texts.Remove(text);
     }
 
     private static void DrawItemTextPopups_DrawSonarItemIcon(On_Main.orig_DrawItemTextPopups orig, float scaleTarget)
