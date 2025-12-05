@@ -1,3 +1,4 @@
+/*
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -18,8 +19,6 @@ internal sealed class FasterTextOperations : ModSystem
     public override void Load()
     {
         base.Load();
-
-        return;
 
         MonoModHooks.Add(
             typeof(DynamicSpriteFont).GetMethod(nameof(DynamicSpriteFont.MeasureString), BindingFlags.Public | BindingFlags.Instance),
@@ -197,3 +196,6 @@ internal sealed class FasterTextOperations : ModSystem
         return cache[text] = orig(self, text);
     }
 }
+*/
+
+
