@@ -1,10 +1,8 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics.PackedVector;
-
 using Terraria;
 using Terraria.Chat;
 using Terraria.DataStructures;
@@ -18,54 +16,60 @@ using Terraria.Social;
 
 namespace VanillaNetworking;
 
-partial class NetworkOverrideSystem
+internal partial class NetworkOverrideSystem
 {
     private static void NetMessage_SendData(
         On_NetMessage.orig_SendData orig,
-        int                         msgType,
-        int                         remoteClient,
-        int                         ignoreClient,
-        NetworkText?                text,
-        int                         number,
-        float                       number2,
-        float                       number3,
-        float                       number4,
-        int                         number5,
-        int                         number6,
-        int                         number7
+        int msgType,
+        int remoteClient,
+        int ignoreClient,
+        NetworkText? text,
+        int number,
+        float number2,
+        float number3,
+        float number4,
+        int number5,
+        int number6,
+        int number7
     )
     {
         if (Main.netMode == 0)
         {
             return;
         }
+
         if (msgType == 21 && (Main.item[number].shimmerTime > 0f || Main.item[number].shimmered))
         {
             msgType = 145;
         }
-        int num = 256;
+
+        var num = 256;
         if (text == null)
         {
             text = NetworkText.Empty;
         }
+
         if (Main.netMode == 2 && remoteClient >= 0)
         {
             num = remoteClient;
         }
+
         if (ModNet.HijackSendData(num, msgType, remoteClient, ignoreClient, text, number, number2, number3, number4, number5, number6, number7))
         {
             return;
         }
+
         lock (NetMessage.buffer[num])
         {
-            BinaryWriter writer = NetMessage.buffer[num].writer;
+            var writer = NetMessage.buffer[num].writer;
             if (writer == null)
             {
                 NetMessage.buffer[num].ResetWriter();
                 writer = NetMessage.buffer[num].writer;
             }
+
             writer.BaseStream.Position = 0L;
-            long position = writer.BaseStream.Position;
+            var position = writer.BaseStream.Position;
             writer.BaseStream.Position += 2L;
             writer.Write((byte)msgType);
             switch (msgType)
@@ -81,6 +85,7 @@ partial class NetworkOverrideSystem
                     {
                         Logging.ServerConsoleLine(Language.GetTextValue("CLI.ClientWasBooted", Netplay.Clients[num].Socket.GetRemoteAddress().ToString(), text));
                     }
+
                     break;
 
                 case 3:
@@ -90,7 +95,7 @@ partial class NetworkOverrideSystem
 
                 case 4:
                 {
-                    Player player4 = Main.player[number];
+                    var player4 = Main.player[number];
                     writer.Write((byte)number);
                     writer.Write((byte)player4.skinVariant);
                     writer.Write((byte)player4.hair);
@@ -106,7 +111,7 @@ partial class NetworkOverrideSystem
                     writer.WriteRGB(player4.underShirtColor);
                     writer.WriteRGB(player4.pantsColor);
                     writer.WriteRGB(player4.shoeColor);
-                    BitsByte bitsByte16 = (byte)0;
+                    BitsByte bitsByte16 = 0;
                     if (player4.difficulty == 1)
                     {
                         bitsByte16[0] = true;
@@ -119,16 +124,17 @@ partial class NetworkOverrideSystem
                     {
                         bitsByte16[3] = true;
                     }
+
                     bitsByte16[2] = player4.extraAccessory;
                     writer.Write(bitsByte16);
-                    BitsByte bitsByte17 = (byte)0;
+                    BitsByte bitsByte17 = 0;
                     bitsByte17[0] = player4.UsingBiomeTorches;
                     bitsByte17[1] = player4.happyFunTorchTime;
                     bitsByte17[2] = player4.unlockedBiomeTorches;
                     bitsByte17[3] = player4.unlockedSuperCart;
                     bitsByte17[4] = player4.enabledSuperCart;
                     writer.Write(bitsByte17);
-                    BitsByte bitsByte18 = (byte)0;
+                    BitsByte bitsByte18 = 0;
                     bitsByte18[0] = player4.usedAegisCrystal;
                     bitsByte18[1] = player4.usedAegisFruit;
                     bitsByte18[2] = player4.usedArcaneCrystal;
@@ -144,27 +150,44 @@ partial class NetworkOverrideSystem
                 {
                     writer.Write((byte)number);
                     writer.Write((short)number2);
-                    Player player5 = Main.player[number];
-                    Item   item6   = null;
-                    item6 = ((number2 >= (float)PlayerItemSlotID.Loadout3_Dye_0)
+                    var player5 = Main.player[number];
+                    Item item6 = null;
+                    item6 = (number2 >= PlayerItemSlotID.Loadout3_Dye_0)
                         ? player5.Loadouts[2].Dye[(int)number2 - PlayerItemSlotID.Loadout3_Dye_0]
-                        : ((number2 >= (float)PlayerItemSlotID.Loadout3_Armor_0)
+                        : (number2 >= PlayerItemSlotID.Loadout3_Armor_0)
                             ? player5.Loadouts[2].Armor[(int)number2 - PlayerItemSlotID.Loadout3_Armor_0]
-                            : ((number2 >= (float)PlayerItemSlotID.Loadout2_Dye_0)
+                            : (number2 >= PlayerItemSlotID.Loadout2_Dye_0)
                                 ? player5.Loadouts[1].Dye[(int)number2 - PlayerItemSlotID.Loadout2_Dye_0]
-                                : ((number2 >= (float)PlayerItemSlotID.Loadout2_Armor_0)
+                                : (number2 >= PlayerItemSlotID.Loadout2_Armor_0)
                                     ? player5.Loadouts[1].Armor[(int)number2 - PlayerItemSlotID.Loadout2_Armor_0]
-                                    : ((number2 >= (float)PlayerItemSlotID.Loadout1_Dye_0)
+                                    : (number2 >= PlayerItemSlotID.Loadout1_Dye_0)
                                         ? player5.Loadouts[0].Dye[(int)number2 - PlayerItemSlotID.Loadout1_Dye_0]
-                                        : ((number2 >= (float)PlayerItemSlotID.Loadout1_Armor_0)
+                                        : (number2 >= PlayerItemSlotID.Loadout1_Armor_0)
                                             ? player5.Loadouts[0].Armor[(int)number2 - PlayerItemSlotID.Loadout1_Armor_0]
-                                            : ((number2 >= (float)PlayerItemSlotID.Bank4_0)
+                                            : (number2 >= PlayerItemSlotID.Bank4_0)
                                                 ? player5.bank4.item[(int)number2 - PlayerItemSlotID.Bank4_0]
-                                                : ((number2 >= (float)PlayerItemSlotID.Bank3_0) ? player5.bank3.item[(int)number2 - PlayerItemSlotID.Bank3_0] : ((number2 >= (float)PlayerItemSlotID.TrashItem) ? player5.trashItem : ((number2 >= (float)PlayerItemSlotID.Bank2_0) ? player5.bank2.item[(int)number2 - PlayerItemSlotID.Bank2_0] : ((number2 >= (float)PlayerItemSlotID.Bank1_0) ? player5.bank.item[(int)number2 - PlayerItemSlotID.Bank1_0] : ((number2 >= (float)PlayerItemSlotID.MiscDye0) ? player5.miscDyes[(int)number2 - PlayerItemSlotID.MiscDye0] : ((number2 >= (float)PlayerItemSlotID.Misc0) ? player5.miscEquips[(int)number2 - PlayerItemSlotID.Misc0] : ((number2 >= (float)PlayerItemSlotID.Dye0) ? player5.dye[(int)number2 - PlayerItemSlotID.Dye0] : ((!(number2 >= (float)PlayerItemSlotID.Armor0)) ? player5.inventory[(int)number2 - PlayerItemSlotID.Inventory0] : player5.armor[(int)number2 - PlayerItemSlotID.Armor0])))))))))))))));
+                                                : (number2 >= PlayerItemSlotID.Bank3_0)
+                                                    ? player5.bank3.item[(int)number2 - PlayerItemSlotID.Bank3_0]
+                                                    : (number2 >= PlayerItemSlotID.TrashItem)
+                                                        ? player5.trashItem
+                                                        : (number2 >= PlayerItemSlotID.Bank2_0)
+                                                            ? player5.bank2.item[(int)number2 - PlayerItemSlotID.Bank2_0]
+                                                            : (number2 >= PlayerItemSlotID.Bank1_0)
+                                                                ? player5.bank.item[(int)number2 - PlayerItemSlotID.Bank1_0]
+                                                                : (number2 >= PlayerItemSlotID.MiscDye0)
+                                                                    ? player5.miscDyes[(int)number2 - PlayerItemSlotID.MiscDye0]
+                                                                    : (number2 >= PlayerItemSlotID.Misc0)
+                                                                        ? player5.miscEquips[(int)number2 - PlayerItemSlotID.Misc0]
+                                                                        : (number2 >= PlayerItemSlotID.Dye0)
+                                                                            ? player5.dye[(int)number2 - PlayerItemSlotID.Dye0]
+                                                                            : !(number2 >= PlayerItemSlotID.Armor0)
+                                                                                ? player5.inventory[(int)number2 - PlayerItemSlotID.Inventory0]
+                                                                                : player5.armor[(int)number2 - PlayerItemSlotID.Armor0];
                     if (item6.Name == "" || item6.stack == 0 || item6.type == 0)
                     {
                         item6.SetDefaults(0, noMatCheck: true);
                     }
+
                     _ = item6.stack;
                     _ = item6.netID;
                     _ = 0;
@@ -180,7 +203,7 @@ partial class NetworkOverrideSystem
                 case 7:
                 {
                     writer.Write((int)Main.time);
-                    BitsByte bitsByte5 = (byte)0;
+                    BitsByte bitsByte5 = 0;
                     bitsByte5[0] = Main.dayTime;
                     bitsByte5[1] = Main.bloodMoon;
                     bitsByte5[2] = Main.eclipse;
@@ -216,29 +239,34 @@ partial class NetworkOverrideSystem
                     writer.Write((byte)Main.hellBackStyle);
                     writer.Write(Main.windSpeedTarget);
                     writer.Write((byte)Main.numClouds);
-                    for (int n = 0; n < 3; n++)
+                    for (var n = 0; n < 3; n++)
                     {
                         writer.Write(Main.treeX[n]);
                     }
-                    for (int num8 = 0; num8 < 4; num8++)
+
+                    for (var num8 = 0; num8 < 4; num8++)
                     {
                         writer.Write((byte)Main.treeStyle[num8]);
                     }
-                    for (int num9 = 0; num9 < 3; num9++)
+
+                    for (var num9 = 0; num9 < 3; num9++)
                     {
                         writer.Write(Main.caveBackX[num9]);
                     }
-                    for (int num10 = 0; num10 < 4; num10++)
+
+                    for (var num10 = 0; num10 < 4; num10++)
                     {
                         writer.Write((byte)Main.caveBackStyle[num10]);
                     }
+
                     WorldGen.TreeTops.SyncSend(writer);
                     if (!Main.raining)
                     {
                         Main.maxRaining = 0f;
                     }
+
                     writer.Write(Main.maxRaining);
-                    BitsByte bitsByte6 = (byte)0;
+                    BitsByte bitsByte6 = 0;
                     bitsByte6[0] = WorldGen.shadowOrbSmashed;
                     bitsByte6[1] = NPC.downedBoss1;
                     bitsByte6[2] = NPC.downedBoss2;
@@ -247,7 +275,7 @@ partial class NetworkOverrideSystem
                     bitsByte6[5] = NPC.downedClown;
                     bitsByte6[7] = NPC.downedPlantBoss;
                     writer.Write(bitsByte6);
-                    BitsByte bitsByte7 = (byte)0;
+                    BitsByte bitsByte7 = 0;
                     bitsByte7[0] = NPC.downedMechBoss1;
                     bitsByte7[1] = NPC.downedMechBoss2;
                     bitsByte7[2] = NPC.downedMechBoss3;
@@ -257,7 +285,7 @@ partial class NetworkOverrideSystem
                     bitsByte7[6] = Main.pumpkinMoon;
                     bitsByte7[7] = Main.snowMoon;
                     writer.Write(bitsByte7);
-                    BitsByte bitsByte8 = (byte)0;
+                    BitsByte bitsByte8 = 0;
                     bitsByte8[1] = Main.fastForwardTimeToDawn;
                     bitsByte8[2] = Main.slimeRain;
                     bitsByte8[3] = NPC.downedSlimeKing;
@@ -266,7 +294,7 @@ partial class NetworkOverrideSystem
                     bitsByte8[6] = NPC.downedMartians;
                     bitsByte8[7] = NPC.downedAncientCultist;
                     writer.Write(bitsByte8);
-                    BitsByte bitsByte9 = (byte)0;
+                    BitsByte bitsByte9 = 0;
                     bitsByte9[0] = NPC.downedMoonlord;
                     bitsByte9[1] = NPC.downedHalloweenKing;
                     bitsByte9[2] = NPC.downedHalloweenTree;
@@ -276,7 +304,7 @@ partial class NetworkOverrideSystem
                     bitsByte9[6] = NPC.downedGolemBoss;
                     bitsByte9[7] = BirthdayParty.PartyIsUp;
                     writer.Write(bitsByte9);
-                    BitsByte bitsByte10 = (byte)0;
+                    BitsByte bitsByte10 = 0;
                     bitsByte10[0] = NPC.downedPirates;
                     bitsByte10[1] = NPC.downedFrost;
                     bitsByte10[2] = NPC.downedGoblins;
@@ -286,7 +314,7 @@ partial class NetworkOverrideSystem
                     bitsByte10[6] = DD2Event.DownedInvasionT2;
                     bitsByte10[7] = DD2Event.DownedInvasionT3;
                     writer.Write(bitsByte10);
-                    BitsByte bitsByte11 = (byte)0;
+                    BitsByte bitsByte11 = 0;
                     bitsByte11[0] = NPC.combatBookWasUsed;
                     bitsByte11[1] = LanternNight.LanternsUp;
                     bitsByte11[2] = NPC.downedTowerSolar;
@@ -296,7 +324,7 @@ partial class NetworkOverrideSystem
                     bitsByte11[6] = Main.forceHalloweenForToday;
                     bitsByte11[7] = Main.forceXMasForToday;
                     writer.Write(bitsByte11);
-                    BitsByte bitsByte12 = (byte)0;
+                    BitsByte bitsByte12 = 0;
                     bitsByte12[0] = NPC.boughtCat;
                     bitsByte12[1] = NPC.boughtDog;
                     bitsByte12[2] = NPC.boughtBunny;
@@ -306,7 +334,7 @@ partial class NetworkOverrideSystem
                     bitsByte12[6] = NPC.downedQueenSlime;
                     bitsByte12[7] = Main.getGoodWorld;
                     writer.Write(bitsByte12);
-                    BitsByte bitsByte13 = (byte)0;
+                    BitsByte bitsByte13 = 0;
                     bitsByte13[0] = Main.tenthAnniversaryWorld;
                     bitsByte13[1] = Main.dontStarveWorld;
                     bitsByte13[2] = NPC.downedDeerclops;
@@ -316,7 +344,7 @@ partial class NetworkOverrideSystem
                     bitsByte13[6] = NPC.combatBookVolumeTwoWasUsed;
                     bitsByte13[7] = NPC.peddlersSatchelWasUsed;
                     writer.Write(bitsByte13);
-                    BitsByte bitsByte14 = (byte)0;
+                    BitsByte bitsByte14 = 0;
                     bitsByte14[0] = NPC.unlockedSlimeGreenSpawn;
                     bitsByte14[1] = NPC.unlockedSlimeOldSpawn;
                     bitsByte14[2] = NPC.unlockedSlimePurpleSpawn;
@@ -326,7 +354,7 @@ partial class NetworkOverrideSystem
                     bitsByte14[6] = NPC.unlockedSlimeCopperSpawn;
                     bitsByte14[7] = Main.fastForwardTimeToDusk;
                     writer.Write(bitsByte14);
-                    BitsByte bitsByte15 = (byte)0;
+                    BitsByte bitsByte15 = 0;
                     bitsByte15[0] = Main.noTrapsWorld;
                     bitsByte15[1] = Main.zenithWorld;
                     bitsByte15[2] = NPC.unlockedTruffleSpawn;
@@ -349,6 +377,7 @@ partial class NetworkOverrideSystem
                     {
                         writer.Write(0uL);
                     }
+
                     writer.Write(Sandstorm.IntendedSeverity);
                     WorldIO.SendModData(writer);
                     break;
@@ -381,7 +410,7 @@ partial class NetworkOverrideSystem
 
                 case 12:
                 {
-                    Player player6 = Main.player[number];
+                    var player6 = Main.player[number];
                     writer.Write((byte)number);
                     writer.Write((short)player6.SpawnX);
                     writer.Write((short)player6.SpawnY);
@@ -394,9 +423,9 @@ partial class NetworkOverrideSystem
 
                 case 13:
                 {
-                    Player player7 = Main.player[number];
+                    var player7 = Main.player[number];
                     writer.Write((byte)number);
-                    BitsByte bitsByte25 = (byte)0;
+                    BitsByte bitsByte25 = 0;
                     bitsByte25[0] = player7.controlUp;
                     bitsByte25[1] = player7.controlDown;
                     bitsByte25[2] = player7.controlLeft;
@@ -405,7 +434,7 @@ partial class NetworkOverrideSystem
                     bitsByte25[5] = player7.controlUseItem;
                     bitsByte25[6] = player7.direction == 1;
                     writer.Write(bitsByte25);
-                    BitsByte bitsByte26 = (byte)0;
+                    BitsByte bitsByte26 = 0;
                     bitsByte26[0] = player7.pulley;
                     bitsByte26[1] = player7.pulley && player7.pulleyDir == 2;
                     bitsByte26[2] = player7.velocity != Vector2.Zero;
@@ -414,7 +443,7 @@ partial class NetworkOverrideSystem
                     bitsByte26[5] = player7.shieldRaised;
                     bitsByte26[6] = player7.ghost;
                     writer.Write(bitsByte26);
-                    BitsByte bitsByte27 = (byte)0;
+                    BitsByte bitsByte27 = 0;
                     bitsByte27[0] = player7.tryKeepingHoveringUp;
                     bitsByte27[1] = player7.IsVoidVaultEnabled;
                     bitsByte27[2] = player7.sitting.isSitting;
@@ -424,7 +453,7 @@ partial class NetworkOverrideSystem
                     bitsByte27[6] = player7.PotionOfReturnOriginalUsePosition.HasValue;
                     bitsByte27[7] = player7.tryKeepingHoveringDown;
                     writer.Write(bitsByte27);
-                    BitsByte bitsByte28 = (byte)0;
+                    BitsByte bitsByte28 = 0;
                     bitsByte28[0] = player7.sleeping.isSleeping;
                     bitsByte28[1] = player7.autoReuseAllWeapons;
                     bitsByte28[2] = player7.controlDownHold;
@@ -437,11 +466,13 @@ partial class NetworkOverrideSystem
                     {
                         writer.WriteVector2(player7.velocity);
                     }
+
                     if (bitsByte27[6])
                     {
                         writer.WriteVector2(player7.PotionOfReturnOriginalUsePosition.Value);
                         writer.WriteVector2(player7.PotionOfReturnHomePosition.Value);
                     }
+
                     break;
                 }
 
@@ -465,7 +496,7 @@ partial class NetworkOverrideSystem
                     break;
 
                 case 18:
-                    writer.Write(Main.dayTime ? ((byte)1) : ((byte)0));
+                    writer.Write(Main.dayTime ? (byte)1 : (byte)0);
                     writer.Write((int)Main.time);
                     writer.Write(Main.sunModY);
                     writer.Write(Main.moonModY);
@@ -475,54 +506,60 @@ partial class NetworkOverrideSystem
                     writer.Write((byte)number);
                     writer.Write((short)number2);
                     writer.Write((short)number3);
-                    writer.Write((number4 == 1f) ? ((byte)1) : ((byte)0));
+                    writer.Write((number4 == 1f) ? (byte)1 : (byte)0);
                     break;
 
                 case 20:
                 {
-                    int num13 = number;
-                    int num14 = (int)number2;
-                    int num15 = (int)number3;
+                    var num13 = number;
+                    var num14 = (int)number2;
+                    var num15 = (int)number3;
                     if (num15 < 0)
                     {
                         num15 = 0;
                     }
-                    int num16 = (int)number4;
+
+                    var num16 = (int)number4;
                     if (num16 < 0)
                     {
                         num16 = 0;
                     }
+
                     if (num13 < num15)
                     {
                         num13 = num15;
                     }
+
                     if (num13 >= Main.maxTilesX + num15)
                     {
                         num13 = Main.maxTilesX - num15 - 1;
                     }
+
                     if (num14 < num16)
                     {
                         num14 = num16;
                     }
+
                     if (num14 >= Main.maxTilesY + num16)
                     {
                         num14 = Main.maxTilesY - num16 - 1;
                     }
+
                     writer.Write((short)num13);
                     writer.Write((short)num14);
                     writer.Write((byte)num15);
                     writer.Write((byte)num16);
                     writer.Write((byte)number5);
-                    for (int num17 = num13; num17 < num13 + num15; num17++)
+                    for (var num17 = num13; num17 < num13 + num15; num17++)
                     {
-                        for (int num18 = num14; num18 < num14 + num16; num18++)
+                        for (var num18 = num14; num18 < num14 + num16; num18++)
                         {
-                            BitsByte bitsByte19 = (byte)0;
-                            BitsByte bitsByte20 = (byte)0;
-                            BitsByte bitsByte21 = (byte)0;
-                            byte     b3         = 0;
-                            byte     b4         = 0;
-                            Tile     tile2      = Main.tile[num17, num18];
+                            BitsByte bitsByte19 = 0;
+                            BitsByte bitsByte20 = 0;
+                            BitsByte bitsByte21 = 0;
+                            byte b3 = 0;
+                            byte b4 = 0;
+                            var tile2 = Main.tile[num17, num18];
                             bitsByte19[0] = tile2.active();
                             bitsByte19[2] = tile2.wall > 0;
                             bitsByte19[3] = tile2.liquid > 0 && Main.netMode == 2;
@@ -535,14 +572,16 @@ partial class NetworkOverrideSystem
                             if (tile2.active() && tile2.color() > 0)
                             {
                                 bitsByte20[2] = true;
-                                b3            = tile2.color();
+                                b3 = tile2.color();
                             }
+
                             if (tile2.wall > 0 && tile2.wallColor() > 0)
                             {
                                 bitsByte20[3] = true;
-                                b4            = tile2.wallColor();
+                                b4 = tile2.wallColor();
                             }
-                            bitsByte20    = (byte)((byte)bitsByte20 + (byte)(tile2.slope() << 4));
+
+                            bitsByte20 = (byte)((byte)bitsByte20 + (byte)(tile2.slope() << 4));
                             bitsByte20[7] = tile2.wire4();
                             bitsByte21[0] = tile2.fullbrightBlock();
                             bitsByte21[1] = tile2.fullbrightWall();
@@ -555,10 +594,12 @@ partial class NetworkOverrideSystem
                             {
                                 writer.Write(b3);
                             }
+
                             if (b4 > 0)
                             {
                                 writer.Write(b4);
                             }
+
                             if (tile2.active())
                             {
                                 writer.Write(tile2.type);
@@ -568,10 +609,12 @@ partial class NetworkOverrideSystem
                                     writer.Write(tile2.frameY);
                                 }
                             }
+
                             if (tile2.wall > 0)
                             {
                                 writer.Write(tile2.wall);
                             }
+
                             if (tile2.liquid > 0 && Main.netMode == 2)
                             {
                                 writer.Write(tile2.liquid);
@@ -579,6 +622,7 @@ partial class NetworkOverrideSystem
                             }
                         }
                     }
+
                     break;
                 }
 
@@ -587,7 +631,7 @@ partial class NetworkOverrideSystem
                 case 145:
                 case 148:
                 {
-                    Item item3 = Main.item[number];
+                    var item3 = Main.item[number];
                     writer.Write((short)number);
                     writer.WriteVector2(item3.position);
                     writer.WriteVector2(item3.velocity);
@@ -601,16 +645,19 @@ partial class NetworkOverrideSystem
                     {
                         value2 = (short)item3.netID;
                     }
+
                     writer.Write(value2);
                     if (msgType == 145)
                     {
                         writer.Write(item3.shimmered);
                         writer.Write(item3.shimmerTime);
                     }
+
                     if (msgType == 148)
                     {
                         writer.Write((byte)MathHelper.Clamp(item3.timeLeftInWhichTheItemCannotBeTakenByEnemies, 0f, 255f));
                     }
+
                     // ItemIO.SendModData(item3, writer);
                     break;
                 }
@@ -622,33 +669,35 @@ partial class NetworkOverrideSystem
 
                 case 23:
                 {
-                    NPC nPC2 = Main.npc[number];
+                    var nPC2 = Main.npc[number];
                     writer.Write((short)number);
                     writer.WriteVector2(nPC2.position);
                     writer.WriteVector2(nPC2.velocity);
                     writer.Write((ushort)nPC2.target);
-                    int num4 = nPC2.life;
+                    var num4 = nPC2.life;
                     if (!nPC2.active)
                     {
                         num4 = 0;
                     }
+
                     if (!nPC2.active || nPC2.life <= 0)
                     {
                         nPC2.netSkip = 0;
                     }
-                    short    value3    = (short)nPC2.netID;
-                    bool[]   array     = new bool[4];
-                    BitsByte bitsByte3 = (byte)0;
-                    bitsByte3[0] = nPC2.direction  > 0;
+
+                    var value3 = (short)nPC2.netID;
+                    var array = new bool[4];
+                    BitsByte bitsByte3 = 0;
+                    bitsByte3[0] = nPC2.direction > 0;
                     bitsByte3[1] = nPC2.directionY > 0;
-                    bitsByte3[2] = (array[0] = nPC2.ai[0] != 0f);
-                    bitsByte3[3] = (array[1] = nPC2.ai[1] != 0f);
-                    bitsByte3[4] = (array[2] = nPC2.ai[2] != 0f);
-                    bitsByte3[5] = (array[3] = nPC2.ai[3] != 0f);
+                    bitsByte3[2] = array[0] = nPC2.ai[0] != 0f;
+                    bitsByte3[3] = array[1] = nPC2.ai[1] != 0f;
+                    bitsByte3[4] = array[2] = nPC2.ai[2] != 0f;
+                    bitsByte3[5] = array[3] = nPC2.ai[3] != 0f;
                     bitsByte3[6] = nPC2.spriteDirection > 0;
-                    bitsByte3[7] = num4                 == nPC2.lifeMax;
+                    bitsByte3[7] = num4 == nPC2.lifeMax;
                     writer.Write(bitsByte3);
-                    BitsByte bitsByte4 = (byte)0;
+                    BitsByte bitsByte4 = 0;
                     bitsByte4[0] = nPC2.statsAreScaledForThisManyPlayers > 1;
                     bitsByte4[1] = nPC2.SpawnedFromStatue;
                     bitsByte4[2] = nPC2.strengthMultiplier != 1f;
@@ -658,22 +707,25 @@ partial class NetworkOverrideSystem
                     // bitsByte4[3] = hasExtraAI; // This bit is unused by vanilla
 
                     writer.Write(bitsByte4);
-                    for (int m = 0; m < NPC.maxAI; m++)
+                    for (var m = 0; m < NPC.maxAI; m++)
                     {
                         if (array[m])
                         {
                             writer.Write(nPC2.ai[m]);
                         }
                     }
+
                     writer.Write(value3);
                     if (bitsByte4[0])
                     {
                         writer.Write((byte)nPC2.statsAreScaledForThisManyPlayers);
                     }
+
                     if (bitsByte4[2])
                     {
                         writer.Write(nPC2.strengthMultiplier);
                     }
+
                     if (!bitsByte3[7])
                     {
                         byte b2 = 1;
@@ -685,6 +737,7 @@ partial class NetworkOverrideSystem
                         {
                             b2 = 2;
                         }
+
                         writer.Write(b2);
                         switch (b2)
                         {
@@ -701,6 +754,7 @@ partial class NetworkOverrideSystem
                                 break;
                         }
                     }
+
                     if (nPC2.type >= 0 && nPC2.type < NPCID.Count && Main.npcCatchable[nPC2.type])
                     {
                         writer.Write((byte)nPC2.releaseOwner);
@@ -728,14 +782,14 @@ partial class NetworkOverrideSystem
 
                 case 27:
                 {
-                    Projectile projectile = Main.projectile[number];
+                    var projectile = Main.projectile[number];
                     writer.Write((short)projectile.identity);
                     writer.WriteVector2(projectile.position);
                     writer.WriteVector2(projectile.velocity);
                     writer.Write((byte)projectile.owner);
                     writer.Write((short)projectile.type);
-                    BitsByte bitsByte23 = (byte)0;
-                    BitsByte bitsByte24 = (byte)0;
+                    BitsByte bitsByte23 = 0;
+                    BitsByte bitsByte24 = 0;
                     bitsByte23[0] = projectile.ai[0] != 0f;
                     bitsByte23[1] = projectile.ai[1] != 0f;
                     bitsByte24[0] = projectile.ai[2] != 0f;
@@ -743,65 +797,80 @@ partial class NetworkOverrideSystem
                     {
                         bitsByte23[3] = true;
                     }
+
                     if (projectile.damage != 0)
                     {
                         bitsByte23[4] = true;
                     }
+
                     if (projectile.knockBack != 0f)
                     {
                         bitsByte23[5] = true;
                     }
+
                     if (projectile.type > 0 && projectile.type < ProjectileID.Count && ProjectileID.Sets.NeedsUUID[projectile.type])
                     {
                         bitsByte23[7] = true;
                     }
+
                     if (projectile.originalDamage != 0)
                     {
                         bitsByte23[6] = true;
                     }
+
                     // byte[] extraAI    = ProjectileLoader.WriteExtraAI(projectile);
                     // bool   hasExtraAI = (bitsByte24[1] = extraAI != null && extraAI.Length != 0);
                     if ((byte)bitsByte24 != 0)
                     {
                         bitsByte23[2] = true;
                     }
+
                     writer.Write(bitsByte23);
                     if (bitsByte23[2])
                     {
                         writer.Write(bitsByte24);
                     }
+
                     if (bitsByte23[0])
                     {
                         writer.Write(projectile.ai[0]);
                     }
+
                     if (bitsByte23[1])
                     {
                         writer.Write(projectile.ai[1]);
                     }
+
                     if (bitsByte23[3])
                     {
                         writer.Write((ushort)projectile.bannerIdToRespondTo);
                     }
+
                     if (bitsByte23[4])
                     {
                         writer.Write((short)projectile.damage);
                     }
+
                     if (bitsByte23[5])
                     {
                         writer.Write(projectile.knockBack);
                     }
+
                     if (bitsByte23[6])
                     {
                         writer.Write((short)projectile.originalDamage);
                     }
+
                     if (bitsByte23[7])
                     {
                         writer.Write((short)projectile.projUUID);
                     }
+
                     if (bitsByte24[0])
                     {
                         writer.Write(projectile.ai[2]);
                     }
+
                     // if (hasExtraAI)
                     // {
                     //     ProjectileLoader.SendExtraAI(writer, extraAI);
@@ -829,12 +898,12 @@ partial class NetworkOverrideSystem
                     // writer.Write(hit.Knockback);
                     // BitsByte flags = new BitsByte(hit.Crit, hit.InstantKill, hit.HideCombatText);
                     // writer.Write(flags);
-                    
+
                     // writer.Write((short)number2);
                     // writer.Write(number3);
                     // writer.Write((byte)(number4 + 1f));
                     // writer.Write((byte)number5);
-                    
+
                     var hit = number7 == 1 ? NetMessage._currentStrike : NetMessage._lastLegacyStrike;
                     writer.Write((short)hit.Damage);
                     writer.Write(number3);
@@ -860,14 +929,16 @@ partial class NetworkOverrideSystem
 
                 case 32:
                 {
-                    Item item7 = Main.chest[number].item[(byte)number2];
+                    var item7 = Main.chest[number].item[(byte)number2];
                     writer.Write((short)number);
                     writer.Write((byte)number2);
                     // ItemIO.Send(item7, writer, writeStack: true);
 
-                    short value4 = (short)item7.netID;
+                    var value4 = (short)item7.netID;
                     if (item7.Name == null)
+                    {
                         value4 = 0;
+                    }
 
                     writer.Write((short)item7.stack);
                     writer.Write((byte)item7.prefix);
@@ -877,18 +948,19 @@ partial class NetworkOverrideSystem
 
                 case 33:
                 {
-                    int    num5  = 0;
-                    int    num6  = 0;
-                    int    num7  = 0;
+                    var num5 = 0;
+                    var num6 = 0;
+                    var num7 = 0;
                     string text2 = null;
                     if (number > -1)
                     {
                         num5 = Main.chest[number].x;
                         num6 = Main.chest[number].y;
                     }
+
                     if (number2 == 1f)
                     {
-                        string text3 = text.ToString();
+                        var text3 = text.ToString();
                         num7 = (byte)text3.Length;
                         if (num7 == 0 || num7 > /*63*/ 20)
                         {
@@ -899,6 +971,7 @@ partial class NetworkOverrideSystem
                             text2 = text3;
                         }
                     }
+
                     writer.Write((short)number);
                     writer.Write((short)num5);
                     writer.Write((short)num6);
@@ -907,6 +980,7 @@ partial class NetworkOverrideSystem
                     {
                         writer.Write(text2);
                     }
+
                     break;
                 }
 
@@ -925,6 +999,7 @@ partial class NetworkOverrideSystem
                     {
                         writer.Write((short)0);
                     }
+
                     // if (number >= 100)
                     // {
                     //     writer.Write((ushort)number6);
@@ -938,7 +1013,7 @@ partial class NetworkOverrideSystem
 
                 case 36:
                 {
-                    Player player3 = Main.player[number];
+                    var player3 = Main.player[number];
                     writer.Write((byte)number);
                     writer.Write(player3.zone1);
                     writer.Write(player3.zone2);
@@ -1000,7 +1075,7 @@ partial class NetworkOverrideSystem
 
                 case 48:
                 {
-                    Tile tile = Main.tile[number, (int)number2];
+                    var tile = Main.tile[number, (int)number2];
                     writer.Write((short)number);
                     writer.Write((short)number2);
                     writer.Write(tile.liquid);
@@ -1011,10 +1086,11 @@ partial class NetworkOverrideSystem
                 case 50:
                 {
                     writer.Write((byte)number);
-                    for (int l = 0; l < Player.maxBuffs; l++)
+                    for (var l = 0; l < Player.maxBuffs; l++)
                     {
                         writer.Write((ushort)Main.player[number].buffType[l]);
                     }
+
                     break;
                 }
 
@@ -1038,11 +1114,12 @@ partial class NetworkOverrideSystem
                 case 54:
                 {
                     writer.Write((short)number);
-                    for (int k = 0; k < NPC.maxBuffs; k++)
+                    for (var k = 0; k < NPC.maxBuffs; k++)
                     {
                         writer.Write((ushort)Main.npc[number].buffType[k]);
                         writer.Write((short)Main.npc[number].buffTime[k]);
                     }
+
                     break;
                 }
 
@@ -1056,10 +1133,11 @@ partial class NetworkOverrideSystem
                     writer.Write((short)number);
                     if (Main.netMode == 2)
                     {
-                        string givenName = Main.npc[number].GivenName;
+                        var givenName = Main.npc[number].GivenName;
                         writer.Write(givenName);
                         writer.Write(Main.npc[number].townNpcVariationIndex);
                     }
+
                     break;
 
                 case 57:
@@ -1105,11 +1183,11 @@ partial class NetworkOverrideSystem
 
                 case 65:
                 {
-                    BitsByte bitsByte29 = (byte)0;
+                    BitsByte bitsByte29 = 0;
                     bitsByte29[0] = (number & 1) == 1;
                     bitsByte29[1] = (number & 2) == 2;
-                    bitsByte29[2] = number6      == 1;
-                    bitsByte29[3] = number7      != 0;
+                    bitsByte29[2] = number6 == 1;
+                    bitsByte29[3] = number7 != 0;
                     writer.Write(bitsByte29);
                     writer.Write((short)number2);
                     writer.Write(number3);
@@ -1119,6 +1197,7 @@ partial class NetworkOverrideSystem
                     {
                         writer.Write(number7);
                     }
+
                     break;
                 }
 
@@ -1154,10 +1233,11 @@ partial class NetworkOverrideSystem
 
                 case 72:
                 {
-                    for (int num20 = 0; num20 < 40; num20++)
+                    for (var num20 = 0; num20 < 40; num20++)
                     {
                         writer.Write((short)Main.travelShop[num20]);
                     }
+
                     break;
                 }
 
@@ -1168,7 +1248,7 @@ partial class NetworkOverrideSystem
                 case 74:
                 {
                     writer.Write((byte)Main.anglerQuest);
-                    bool value7 = Main.anglerWhoFinishedToday.Contains(text.ToString());
+                    var value7 = Main.anglerWhoFinishedToday.Contains(text.ToString());
                     writer.Write(value7);
                     break;
                 }
@@ -1212,7 +1292,7 @@ partial class NetworkOverrideSystem
                 {
                     writer.Write(number2);
                     writer.Write(number3);
-                    Color c2 = default(Color);
+                    var c2 = default(Color);
                     c2.PackedValue = (uint)number;
                     writer.WriteRGB(c2);
                     writer.Write((int)number4);
@@ -1223,7 +1303,7 @@ partial class NetworkOverrideSystem
                 {
                     writer.Write(number2);
                     writer.Write(number3);
-                    Color c = default(Color);
+                    var c = default(Color);
                     c.PackedValue = (uint)number;
                     writer.WriteRGB(c);
                     text.Serialize(writer);
@@ -1232,12 +1312,13 @@ partial class NetworkOverrideSystem
 
                 case 83:
                 {
-                    int num19 = number;
+                    var num19 = number;
                     if (num19 < 0 && num19 >= 290)
                     {
                         num19 = 1;
                     }
-                    int value6 = NPC.killCount[num19];
+
+                    var value6 = NPC.killCount[num19];
                     writer.Write((short)num19);
                     writer.Write(value6);
                     break;
@@ -1245,8 +1326,8 @@ partial class NetworkOverrideSystem
 
                 case 84:
                 {
-                    byte  b5      = (byte)number;
-                    float stealth = Main.player[b5].stealth;
+                    var b5 = (byte)number;
+                    var stealth = Main.player[b5].stealth;
                     writer.Write(b5);
                     writer.Write(stealth);
                     break;
@@ -1254,7 +1335,7 @@ partial class NetworkOverrideSystem
 
                 case 85:
                 {
-                    short value5 = (short)number;
+                    var value5 = (short)number;
                     writer.Write(value5);
                     break;
                 }
@@ -1262,12 +1343,13 @@ partial class NetworkOverrideSystem
                 case 86:
                 {
                     writer.Write(number);
-                    bool flag3 = TileEntity.ByID.ContainsKey(number);
+                    var flag3 = TileEntity.ByID.ContainsKey(number);
                     writer.Write(flag3);
                     if (flag3)
                     {
                         TileEntity.Write(writer, TileEntity.ByID[number], networkSend: true /*, lightSend: true*/);
                     }
+
                     break;
                 }
 
@@ -1279,39 +1361,46 @@ partial class NetworkOverrideSystem
 
                 case 88:
                 {
-                    BitsByte bitsByte  = (byte)number2;
+                    BitsByte bitsByte = (byte)number2;
                     BitsByte bitsByte2 = (byte)number3;
                     writer.Write((short)number);
                     writer.Write(bitsByte);
-                    Item item5 = Main.item[number];
+                    var item5 = Main.item[number];
                     if (bitsByte[0])
                     {
                         writer.Write(item5.color.PackedValue);
                     }
+
                     if (bitsByte[1])
                     {
                         writer.Write((ushort)item5.damage);
                     }
+
                     if (bitsByte[2])
                     {
                         writer.Write(item5.knockBack);
                     }
+
                     if (bitsByte[3])
                     {
                         writer.Write((ushort)item5.useAnimation);
                     }
+
                     if (bitsByte[4])
                     {
                         writer.Write((ushort)item5.useTime);
                     }
+
                     if (bitsByte[5])
                     {
                         writer.Write((short)item5.shoot);
                     }
+
                     if (bitsByte[6])
                     {
                         writer.Write(item5.shootSpeed);
                     }
+
                     if (bitsByte[7])
                     {
                         writer.Write(bitsByte2);
@@ -1319,27 +1408,33 @@ partial class NetworkOverrideSystem
                         {
                             writer.Write((ushort)item5.width);
                         }
+
                         if (bitsByte2[1])
                         {
                             writer.Write((ushort)item5.height);
                         }
+
                         if (bitsByte2[2])
                         {
                             writer.Write(item5.scale);
                         }
+
                         if (bitsByte2[3])
                         {
                             writer.Write((short)item5.ammo);
                         }
+
                         if (bitsByte2[4])
                         {
                             writer.Write((short)item5.useAmmo);
                         }
+
                         if (bitsByte2[5])
                         {
                             writer.Write(item5.notAmmo);
                         }
                     }
+
                     break;
                 }
 
@@ -1349,7 +1444,7 @@ partial class NetworkOverrideSystem
                     // ItemIO.Send(Main.player[(int)number4].inventory[(int)number3], writer);
                     // writer.Write7BitEncodedInt(number5);
 
-                    Item item4 = Main.player[(int)number4].inventory[(int)number3];
+                    var item4 = Main.player[(int)number4].inventory[(int)number3];
                     writer.Write((short)item4.netID);
                     writer.Write((byte)item4.prefix);
                     writer.Write((short)number5);
@@ -1372,6 +1467,7 @@ partial class NetworkOverrideSystem
                             writer.Write((short)number6);
                         }
                     }
+
                     break;
 
                 case 92:
@@ -1389,7 +1485,7 @@ partial class NetworkOverrideSystem
                 case 96:
                 {
                     writer.Write((byte)number);
-                    Player player2 = Main.player[number];
+                    var player2 = Main.player[number];
                     writer.Write((short)number4);
                     writer.Write(number2);
                     writer.Write(number3);
@@ -1418,7 +1514,7 @@ partial class NetworkOverrideSystem
                 case 100:
                 {
                     writer.Write((ushort)number);
-                    NPC nPC = Main.npc[number];
+                    var nPC = Main.npc[number];
                     writer.Write((short)number4);
                     writer.Write(number2);
                     writer.Write(number3);
@@ -1510,8 +1606,8 @@ partial class NetworkOverrideSystem
                     {
                         writer.Write(byte.MaxValue);
                         writer.Write((byte)number);
-                        Player.HurtInfo args = NetMessage._currentPlayerHurtInfo;
-                        BitsByte        pack = new BitsByte(args.PvP, args.Dodgeable, args.DustDisabled, args.SoundDisabled);
+                        var args = NetMessage._currentPlayerHurtInfo;
+                        var pack = new BitsByte(args.PvP, args.Dodgeable, args.DustDisabled, args.SoundDisabled);
                         writer.Write(pack);
                         args.DamageSource.WriteSelfTo(writer);
                         writer.Write((sbyte)args.CooldownCounter);
@@ -1520,18 +1616,16 @@ partial class NetworkOverrideSystem
                         writer.Write((sbyte)args.HitDirection);
                         writer.Write(args.Knockback);
                     }
-                    else
-                    {
-                        var deathReason = number7 == 1 ? NetMessage._currentPlayerHurtInfo.DamageSource : NetMessage._currentPlayerDeathReason;
-                        Debug.Assert(deathReason != null, "deathReason != null");
-                        
-                        writer.Write((byte)number);
-                        deathReason.WriteSelfTo(writer);
-                        writer.Write((short)number2);
-                        writer.Write((byte)(number3 + 1f));
-                        writer.Write((byte)number4);
-                        writer.Write((sbyte)number5);
-                    }
+
+                    var deathReason = number7 == 1 ? NetMessage._currentPlayerHurtInfo.DamageSource : NetMessage._currentPlayerDeathReason;
+                    Debug.Assert(deathReason != null, "deathReason != null");
+
+                    writer.Write((byte)number);
+                    deathReason.WriteSelfTo(writer);
+                    writer.Write((short)number2);
+                    writer.Write((byte)(number3 + 1f));
+                    writer.Write((byte)number4);
+                    writer.Write((sbyte)number5);
                     break;
 
                 case 118:
@@ -1549,12 +1643,13 @@ partial class NetworkOverrideSystem
 
                 case 121:
                 {
-                    int  num3  = (int)number3;
-                    bool flag2 = number4 == 1f;
+                    var num3 = (int)number3;
+                    var flag2 = number4 == 1f;
                     if (flag2)
                     {
                         num3 += 8;
                     }
+
                     writer.Write((byte)number);
                     writer.Write((int)number2);
                     writer.Write((byte)num3);
@@ -1563,6 +1658,7 @@ partial class NetworkOverrideSystem
                         tEDisplayDoll.WriteItem((int)number3, writer, flag2);
                         break;
                     }
+
                     writer.Write(0);
                     writer.Write((byte)0);
                     break;
@@ -1578,7 +1674,7 @@ partial class NetworkOverrideSystem
                     writer.Write((short)number2);
                     // ItemIO.Send(Main.player[(int)number4].inventory[(int)number3], writer, writeStack: true);
 
-                    Item item2 = Main.player[(int)number4].inventory[(int)number3];
+                    var item2 = Main.player[(int)number4].inventory[(int)number3];
                     writer.Write((short)item2.netID);
                     writer.Write((byte)item2.prefix);
                     writer.Write((short)number5);
@@ -1586,12 +1682,13 @@ partial class NetworkOverrideSystem
 
                 case 124:
                 {
-                    int  num2 = (int)number3;
-                    bool flag = number4 == 1f;
+                    var num2 = (int)number3;
+                    var flag = number4 == 1f;
                     if (flag)
                     {
                         num2 += 2;
                     }
+
                     writer.Write((byte)number);
                     writer.Write((int)number2);
                     writer.Write((byte)num2);
@@ -1600,6 +1697,7 @@ partial class NetworkOverrideSystem
                         tEHatRack.WriteItem((int)number3, writer, flag);
                         break;
                     }
+
                     writer.Write(0);
                     writer.Write((byte)0);
                     break;
@@ -1642,6 +1740,7 @@ partial class NetworkOverrideSystem
                         writer.Write((int)number3);
                         writer.Write((short)number4);
                     }
+
                     break;
 
                 case 132:
@@ -1653,7 +1752,7 @@ partial class NetworkOverrideSystem
                     writer.Write((short)number2);
                     // ItemIO.Send(Main.player[(int)number4].inventory[(int)number3], writer, writeStack: true);
 
-                    Item item = Main.player[(int)number4].inventory[(int)number3];
+                    var item = Main.player[(int)number4].inventory[(int)number3];
                     writer.Write((short)item.netID);
                     writer.Write((byte)item.prefix);
                     writer.Write((short)number5);
@@ -1662,7 +1761,7 @@ partial class NetworkOverrideSystem
                 case 134:
                 {
                     writer.Write((byte)number);
-                    Player player = Main.player[number];
+                    var player = Main.player[number];
                     writer.Write(player.ladyBugLuckTimeLeft);
                     writer.Write(player.torchLuck);
                     writer.Write(player.luckPotion);
@@ -1678,13 +1777,14 @@ partial class NetworkOverrideSystem
 
                 case 136:
                 {
-                    for (int i = 0; i < 2; i++)
+                    for (var i = 0; i < 2; i++)
                     {
-                        for (int j = 0; j < 3; j++)
+                        for (var j = 0; j < 3; j++)
                         {
                             writer.Write((ushort)NPC.cavernMonsterType[i, j]);
                         }
                     }
+
                     break;
                 }
 
@@ -1696,7 +1796,7 @@ partial class NetworkOverrideSystem
                 case 139:
                 {
                     writer.Write((byte)number);
-                    bool value = number2 == 1f;
+                    var value = number2 == 1f;
                     writer.Write(value);
                     break;
                 }
@@ -1718,7 +1818,7 @@ partial class NetworkOverrideSystem
                 case 142:
                 {
                     writer.Write((byte)number);
-                    Player obj = Main.player[number];
+                    var obj = Main.player[number];
                     obj.piggyBankProjTracker.Write(writer);
                     obj.voidLensChest.Write(writer);
                     break;
@@ -1741,6 +1841,7 @@ partial class NetworkOverrideSystem
                             writer.Write((int)number2);
                             break;
                     }
+
                     break;
 
                 case 147:
@@ -1749,20 +1850,24 @@ partial class NetworkOverrideSystem
                     NetMessage.WriteAccessoryVisibility(writer, Main.player[number].hideVisibleAccessory);
                     break;
             }
-            int num21 = (int)writer.BaseStream.Position;
+
+            var num21 = (int)writer.BaseStream.Position;
             if (num21 > 65535)
             {
                 throw new Exception("Maximum packet length exceeded. id: " + msgType + " length: " + num21);
             }
+
             writer.BaseStream.Position = position;
             if (num21 > 65535)
             {
                 throw new IndexOutOfRangeException($"Maximum packet length exceeded {num21} > {65535}");
             }
+
             if (ModNet.DetailedLogging)
             {
                 ModNet.LogSend(remoteClient, ignoreClient, $"SendData {MessageID.GetName(msgType)}({msgType})", num21);
             }
+
             writer.Write((ushort)num21);
             writer.BaseStream.Position = num21;
             if (Main.netMode == 1)
@@ -1785,7 +1890,7 @@ partial class NetworkOverrideSystem
                     case 34:
                     case 69:
                     {
-                        for (int num23 = 0; num23 < 256; num23++)
+                        for (var num23 = 0; num23 < 256; num23++)
                         {
                             if (num23 != ignoreClient && NetMessage.buffer[num23].broadcast && Netplay.Clients[num23].IsConnected())
                             {
@@ -1798,12 +1903,13 @@ partial class NetworkOverrideSystem
                                 catch { }
                             }
                         }
+
                         break;
                     }
 
                     case 20:
                     {
-                        for (int num27 = 0; num27 < 256; num27++)
+                        for (var num27 = 0; num27 < 256; num27++)
                         {
                             if (num27 != ignoreClient && NetMessage.buffer[num27].broadcast && Netplay.Clients[num27].IsConnected() && Netplay.Clients[num27].SectionRange((int)Math.Max(number3, number4), number, (int)number2))
                             {
@@ -1816,30 +1922,32 @@ partial class NetworkOverrideSystem
                                 catch { }
                             }
                         }
+
                         break;
                     }
 
                     case 23:
                     {
-                        NPC nPC4 = Main.npc[number];
-                        for (int num28 = 0; num28 < 256; num28++)
+                        var nPC4 = Main.npc[number];
+                        for (var num28 = 0; num28 < 256; num28++)
                         {
                             if (num28 == ignoreClient || !NetMessage.buffer[num28].broadcast || !Netplay.Clients[num28].IsConnected())
                             {
                                 continue;
                             }
-                            bool flag6 = false;
+
+                            var flag6 = false;
                             if (nPC4.boss || nPC4.netAlways || nPC4.townNPC || !nPC4.active)
                             {
                                 flag6 = true;
                             }
                             else if (nPC4.netSkip <= 0)
                             {
-                                Rectangle rect5 = Main.player[num28].getRect();
-                                Rectangle rect6 = nPC4.getRect();
-                                rect6.X      -= 2500;
-                                rect6.Y      -= 2500;
-                                rect6.Width  += 5000;
+                                var rect5 = Main.player[num28].getRect();
+                                var rect6 = nPC4.getRect();
+                                rect6.X -= 2500;
+                                rect6.Y -= 2500;
+                                rect6.Width += 5000;
                                 rect6.Height += 5000;
                                 if (rect5.Intersects(rect6))
                                 {
@@ -1850,6 +1958,7 @@ partial class NetworkOverrideSystem
                             {
                                 flag6 = true;
                             }
+
                             if (flag6)
                             {
                                 try
@@ -1861,41 +1970,45 @@ partial class NetworkOverrideSystem
                                 catch { }
                             }
                         }
+
                         nPC4.netSkip++;
                         if (nPC4.netSkip > 4)
                         {
                             nPC4.netSkip = 0;
                         }
+
                         break;
                     }
 
                     case 28:
                     {
-                        NPC nPC3 = Main.npc[number];
-                        for (int num25 = 0; num25 < 256; num25++)
+                        var nPC3 = Main.npc[number];
+                        for (var num25 = 0; num25 < 256; num25++)
                         {
                             if (num25 == ignoreClient || !NetMessage.buffer[num25].broadcast || !Netplay.Clients[num25].IsConnected())
                             {
                                 continue;
                             }
-                            bool flag5 = false;
+
+                            var flag5 = false;
                             if (nPC3.life <= 0)
                             {
                                 flag5 = true;
                             }
                             else
                             {
-                                Rectangle rect3 = Main.player[num25].getRect();
-                                Rectangle rect4 = nPC3.getRect();
-                                rect4.X      -= 3000;
-                                rect4.Y      -= 3000;
-                                rect4.Width  += 6000;
+                                var rect3 = Main.player[num25].getRect();
+                                var rect4 = nPC3.getRect();
+                                rect4.X -= 3000;
+                                rect4.Y -= 3000;
+                                rect4.Width += 6000;
                                 rect4.Height += 6000;
                                 if (rect3.Intersects(rect4))
                                 {
                                     flag5 = true;
                                 }
                             }
+
                             if (flag5)
                             {
                                 try
@@ -1907,12 +2020,13 @@ partial class NetworkOverrideSystem
                                 catch { }
                             }
                         }
+
                         break;
                     }
 
                     case 13:
                     {
-                        for (int num26 = 0; num26 < 256; num26++)
+                        for (var num26 = 0; num26 < 256; num26++)
                         {
                             if (num26 != ignoreClient && NetMessage.buffer[num26].broadcast && Netplay.Clients[num26].IsConnected())
                             {
@@ -1925,41 +2039,45 @@ partial class NetworkOverrideSystem
                                 catch { }
                             }
                         }
+
                         Main.player[number].netSkip++;
                         if (Main.player[number].netSkip > 2)
                         {
                             Main.player[number].netSkip = 0;
                         }
+
                         break;
                     }
 
                     case 27:
                     {
-                        Projectile projectile2 = Main.projectile[number];
-                        for (int num24 = 0; num24 < 256; num24++)
+                        var projectile2 = Main.projectile[number];
+                        for (var num24 = 0; num24 < 256; num24++)
                         {
                             if (num24 == ignoreClient || !NetMessage.buffer[num24].broadcast || !Netplay.Clients[num24].IsConnected())
                             {
                                 continue;
                             }
-                            bool flag4 = false;
+
+                            var flag4 = false;
                             if (projectile2.type == 12 || Main.projPet[projectile2.type] || projectile2.aiStyle == 11 || projectile2.netImportant)
                             {
                                 flag4 = true;
                             }
                             else
                             {
-                                Rectangle rect  = Main.player[num24].getRect();
-                                Rectangle rect2 = projectile2.getRect();
-                                rect2.X      -= 5000;
-                                rect2.Y      -= 5000;
-                                rect2.Width  += 10000;
+                                var rect = Main.player[num24].getRect();
+                                var rect2 = projectile2.getRect();
+                                rect2.X -= 5000;
+                                rect2.Y -= 5000;
+                                rect2.Width += 10000;
                                 rect2.Height += 10000;
                                 if (rect.Intersects(rect2))
                                 {
                                     flag4 = true;
                                 }
                             }
+
                             if (flag4)
                             {
                                 try
@@ -1971,12 +2089,13 @@ partial class NetworkOverrideSystem
                                 catch { }
                             }
                         }
+
                         break;
                     }
 
                     default:
                     {
-                        for (int num22 = 0; num22 < 256; num22++)
+                        for (var num22 = 0; num22 < 256; num22++)
                         {
                             if (num22 != ignoreClient && (NetMessage.buffer[num22].broadcast || (Netplay.Clients[num22].State >= 3 && msgType == 10)) && Netplay.Clients[num22].IsConnected())
                             {
@@ -1989,6 +2108,7 @@ partial class NetworkOverrideSystem
                                 catch { }
                             }
                         }
+
                         break;
                     }
                 }
@@ -2003,14 +2123,17 @@ partial class NetworkOverrideSystem
                 }
                 catch { }
             }
+
             if (Main.verboseNetplay)
             {
-                for (int num29 = 0; num29 < num21; num29++) { }
-                for (int num30 = 0; num30 < num21; num30++)
+                for (var num29 = 0; num29 < num21; num29++) { }
+
+                for (var num30 = 0; num30 < num21; num30++)
                 {
                     _ = NetMessage.buffer[num].writeBuffer[num30];
                 }
             }
+
             NetMessage.buffer[num].writeLocked = false;
             if (msgType == 2 && Main.netMode == 2)
             {
@@ -2022,18 +2145,18 @@ partial class NetworkOverrideSystem
 
     private static void NetMessage_DecompressTileBlock_Inner(
         On_NetMessage.orig_DecompressTileBlock_Inner orig,
-        BinaryReader                                 reader,
-        int                                          xStart,
-        int                                          yStart,
-        int                                          width,
-        int                                          height
+        BinaryReader reader,
+        int xStart,
+        int yStart,
+        int width,
+        int height
     )
     {
-        Tile tile = default(Tile);
-        int  num  = 0;
-        for (int i = yStart; i < yStart + height; i++)
+        var tile = default(Tile);
+        var num = 0;
+        for (var i = yStart; i < yStart + height; i++)
         {
-            for (int j = xStart; j < xStart + width; j++)
+            for (var j = xStart; j < xStart + width; j++)
             {
                 if (num != 0)
                 {
@@ -2041,45 +2164,50 @@ partial class NetworkOverrideSystem
                     Main.tile[j, i].CopyFrom(tile);
                     continue;
                 }
+
                 byte b2;
                 byte b;
-                byte b3 = (b2 = (b = 0));
+                var b3 = b2 = b = 0;
                 tile = Main.tile[j, i];
                 if (tile == null)
                 {
-                    tile = (Main.tile[j, i] = default(Tile));
+                    tile = Main.tile[j, i] = default(Tile);
                 }
                 else
                 {
                     tile.ClearEverything();
                 }
-                byte b4   = reader.ReadByte();
-                bool flag = false;
+
+                var b4 = reader.ReadByte();
+                var flag = false;
                 if ((b4 & 1) == 1)
                 {
                     flag = true;
-                    b3   = reader.ReadByte();
+                    b3 = reader.ReadByte();
                 }
-                bool flag2 = false;
+
+                var flag2 = false;
                 if (flag && (b3 & 1) == 1)
                 {
                     flag2 = true;
-                    b2    = reader.ReadByte();
+                    b2 = reader.ReadByte();
                 }
+
                 if (flag2 && (b2 & 1) == 1)
                 {
                     b = reader.ReadByte();
                 }
-                bool flag3 = tile.active();
+
+                var flag3 = tile.active();
                 byte b5;
                 if ((b4 & 2) == 2)
                 {
                     tile.active(active: true);
-                    ushort type = tile.type;
-                    int    num2;
+                    var type = tile.type;
+                    int num2;
                     if ((b4 & 0x20) == 32)
                     {
-                        b5   = reader.ReadByte();
+                        b5 = reader.ReadByte();
                         num2 = reader.ReadByte();
                         num2 = (num2 << 8) | b5;
                     }
@@ -2087,6 +2215,7 @@ partial class NetworkOverrideSystem
                     {
                         num2 = reader.ReadByte();
                     }
+
                     tile.type = (ushort)num2;
                     if (Main.tileFrameImportant[num2])
                     {
@@ -2098,11 +2227,13 @@ partial class NetworkOverrideSystem
                         tile.frameX = -1;
                         tile.frameY = -1;
                     }
+
                     if ((b2 & 8) == 8)
                     {
                         tile.color(reader.ReadByte());
                     }
                 }
+
                 if ((b4 & 4) == 4)
                 {
                     tile.wall = reader.ReadByte();
@@ -2111,6 +2242,7 @@ partial class NetworkOverrideSystem
                         tile.wallColor(reader.ReadByte());
                     }
                 }
+
                 b5 = (byte)((b4 & 0x18) >> 3);
                 if (b5 != 0)
                 {
@@ -2131,20 +2263,24 @@ partial class NetworkOverrideSystem
                         }
                     }
                 }
+
                 if (b3 > 1)
                 {
                     if ((b3 & 2) == 2)
                     {
                         tile.wire(wire: true);
                     }
+
                     if ((b3 & 4) == 4)
                     {
                         tile.wire2(wire2: true);
                     }
+
                     if ((b3 & 8) == 8)
                     {
                         tile.wire3(wire3: true);
                     }
+
                     b5 = (byte)((b3 & 0x70) >> 4);
                     if (b5 != 0 && Main.tileSolid[tile.type])
                     {
@@ -2158,45 +2294,54 @@ partial class NetworkOverrideSystem
                         }
                     }
                 }
+
                 if (b2 > 1)
                 {
                     if ((b2 & 2) == 2)
                     {
                         tile.actuator(actuator: true);
                     }
+
                     if ((b2 & 4) == 4)
                     {
                         tile.inActive(inActive: true);
                     }
+
                     if ((b2 & 0x20) == 32)
                     {
                         tile.wire4(wire4: true);
                     }
+
                     if ((b2 & 0x40) == 64)
                     {
-                        b5        = reader.ReadByte();
+                        b5 = reader.ReadByte();
                         tile.wall = (ushort)((b5 << 8) | tile.wall);
                     }
                 }
+
                 if (b > 1)
                 {
                     if ((b & 2) == 2)
                     {
                         tile.invisibleBlock(invisibleBlock: true);
                     }
+
                     if ((b & 4) == 4)
                     {
                         tile.invisibleWall(invisibleWall: true);
                     }
+
                     if ((b & 8) == 8)
                     {
                         tile.fullbrightBlock(fullbrightBlock: true);
                     }
+
                     if ((b & 0x10) == 16)
                     {
                         tile.fullbrightWall(fullbrightWall: true);
                     }
                 }
+
                 num = (byte)((b4 & 0xC0) >> 6) switch
                 {
                     0 => 0,
@@ -2205,160 +2350,187 @@ partial class NetworkOverrideSystem
                 };
             }
         }
-        short num3 = reader.ReadInt16();
-        for (int k = 0; k < num3; k++)
+
+        var num3 = reader.ReadInt16();
+        for (var k = 0; k < num3; k++)
         {
-            short  num4 = reader.ReadInt16();
-            short  x    = reader.ReadInt16();
-            short  y    = reader.ReadInt16();
-            string name = reader.ReadString();
+            var num4 = reader.ReadInt16();
+            var x = reader.ReadInt16();
+            var y = reader.ReadInt16();
+            var name = reader.ReadString();
             if (num4 >= 0 && num4 < 8000)
             {
                 if (Main.chest[num4] == null)
                 {
                     Main.chest[num4] = new Chest();
                 }
+
                 Main.chest[num4].name = name;
-                Main.chest[num4].x    = x;
-                Main.chest[num4].y    = y;
+                Main.chest[num4].x = x;
+                Main.chest[num4].y = y;
             }
         }
+
         num3 = reader.ReadInt16();
-        for (int l = 0; l < num3; l++)
+        for (var l = 0; l < num3; l++)
         {
-            short  num5 = reader.ReadInt16();
-            short  x2   = reader.ReadInt16();
-            short  y2   = reader.ReadInt16();
-            string text = reader.ReadString();
+            var num5 = reader.ReadInt16();
+            var x2 = reader.ReadInt16();
+            var y2 = reader.ReadInt16();
+            var text = reader.ReadString();
             if (num5 >= 0 && num5 < 1000)
             {
                 if (Main.sign[num5] == null)
                 {
                     Main.sign[num5] = new Sign();
                 }
+
                 Main.sign[num5].text = text;
-                Main.sign[num5].x    = x2;
-                Main.sign[num5].y    = y2;
+                Main.sign[num5].x = x2;
+                Main.sign[num5].y = y2;
             }
         }
+
         num3 = reader.ReadInt16();
-        for (int m = 0; m < num3; m++)
+        for (var m = 0; m < num3; m++)
         {
-            TileEntity tileEntity = TileEntity.Read(reader /*, networkSend: true*/);
-            TileEntity.ByID[tileEntity.ID]             = tileEntity;
+            var tileEntity = TileEntity.Read(reader /*, networkSend: true*/);
+            TileEntity.ByID[tileEntity.ID] = tileEntity;
             TileEntity.ByPosition[tileEntity.Position] = tileEntity;
         }
+
         Main.sectionManager.SetTilesLoaded(xStart, yStart, xStart + width - 1, yStart + height - 1);
     }
-    
+
     private static void NetMessage_SyncOnePlayer(On_NetMessage.orig_SyncOnePlayer orig, int plr, int toWho, int fromWho)
     {
-        int num = 0;
-		if (Main.player[plr].active)
-			num = 1;
+        var num = 0;
+        if (Main.player[plr].active)
+        {
+            num = 1;
+        }
 
-		if (Netplay.Clients[plr].State == 10) {
-			NetMessage.SendData(14, toWho, fromWho, null, plr, num);
-			NetMessage.SendData(4, toWho, fromWho, null, plr);
-			NetMessage.SendData(13, toWho, fromWho, null, plr);
-			if (Main.player[plr].statLife <= 0)
+        if (Netplay.Clients[plr].State == 10)
+        {
+            NetMessage.SendData(14, toWho, fromWho, null, plr, num);
+            NetMessage.SendData(4, toWho, fromWho, null, plr);
+            NetMessage.SendData(13, toWho, fromWho, null, plr);
+            if (Main.player[plr].statLife <= 0)
+            {
                 NetMessage.SendData(135, toWho, fromWho, null, plr);
+            }
 
-			NetMessage.SendData(16, toWho, fromWho, null, plr);
-			NetMessage.SendData(30, toWho, fromWho, null, plr);
-			NetMessage.SendData(45, toWho, fromWho, null, plr);
-			NetMessage.SendData(42, toWho, fromWho, null, plr);
-			NetMessage.SendData(50, toWho, fromWho, null, plr);
-			NetMessage.SendData(80, toWho, fromWho, null, plr, Main.player[plr].chest);
-			NetMessage.SendData(142, toWho, fromWho, null, plr);
-			NetMessage.SendData(147, toWho, fromWho, null, plr, Main.player[plr].CurrentLoadoutIndex);
-			for (int i = 0; i < 59; i++) {
-                NetMessage.SendData(5, toWho, fromWho, null, plr, PlayerItemSlotID.Inventory0 + i, (int)Main.player[plr].inventory[i].prefix);
-			}
+            NetMessage.SendData(16, toWho, fromWho, null, plr);
+            NetMessage.SendData(30, toWho, fromWho, null, plr);
+            NetMessage.SendData(45, toWho, fromWho, null, plr);
+            NetMessage.SendData(42, toWho, fromWho, null, plr);
+            NetMessage.SendData(50, toWho, fromWho, null, plr);
+            NetMessage.SendData(80, toWho, fromWho, null, plr, Main.player[plr].chest);
+            NetMessage.SendData(142, toWho, fromWho, null, plr);
+            NetMessage.SendData(147, toWho, fromWho, null, plr, Main.player[plr].CurrentLoadoutIndex);
+            for (var i = 0; i < 59; i++)
+            {
+                NetMessage.SendData(5, toWho, fromWho, null, plr, PlayerItemSlotID.Inventory0 + i, Main.player[plr].inventory[i].prefix);
+            }
 
-			for (int j = 0; j < Main.player[plr].armor.Length; j++) {
-                NetMessage.SendData(5, toWho, fromWho, null, plr, PlayerItemSlotID.Armor0 + j, (int)Main.player[plr].armor[j].prefix);
-			}
+            for (var j = 0; j < Main.player[plr].armor.Length; j++)
+            {
+                NetMessage.SendData(5, toWho, fromWho, null, plr, PlayerItemSlotID.Armor0 + j, Main.player[plr].armor[j].prefix);
+            }
 
-			for (int k = 0; k < Main.player[plr].dye.Length; k++) {
-                NetMessage.SendData(5, toWho, fromWho, null, plr, PlayerItemSlotID.Dye0 + k, (int)Main.player[plr].dye[k].prefix);
-			}
+            for (var k = 0; k < Main.player[plr].dye.Length; k++)
+            {
+                NetMessage.SendData(5, toWho, fromWho, null, plr, PlayerItemSlotID.Dye0 + k, Main.player[plr].dye[k].prefix);
+            }
 
-			NetMessage.SyncOnePlayer_ItemArray(plr, toWho, fromWho, Main.player[plr].miscEquips, PlayerItemSlotID.Misc0);
-			NetMessage.SyncOnePlayer_ItemArray(plr, toWho, fromWho, Main.player[plr].miscDyes, PlayerItemSlotID.MiscDye0);
-			NetMessage.SyncOnePlayer_ItemArray(plr, toWho, fromWho, Main.player[plr].Loadouts[0].Armor, PlayerItemSlotID.Loadout1_Armor_0);
-			NetMessage.SyncOnePlayer_ItemArray(plr, toWho, fromWho, Main.player[plr].Loadouts[0].Dye, PlayerItemSlotID.Loadout1_Dye_0);
-			NetMessage.SyncOnePlayer_ItemArray(plr, toWho, fromWho, Main.player[plr].Loadouts[1].Armor, PlayerItemSlotID.Loadout2_Armor_0);
-			NetMessage.SyncOnePlayer_ItemArray(plr, toWho, fromWho, Main.player[plr].Loadouts[1].Dye, PlayerItemSlotID.Loadout2_Dye_0);
-			NetMessage.SyncOnePlayer_ItemArray(plr, toWho, fromWho, Main.player[plr].Loadouts[2].Armor, PlayerItemSlotID.Loadout3_Armor_0);
-			NetMessage.SyncOnePlayer_ItemArray(plr, toWho, fromWho, Main.player[plr].Loadouts[2].Dye, PlayerItemSlotID.Loadout3_Dye_0);
+            NetMessage.SyncOnePlayer_ItemArray(plr, toWho, fromWho, Main.player[plr].miscEquips, PlayerItemSlotID.Misc0);
+            NetMessage.SyncOnePlayer_ItemArray(plr, toWho, fromWho, Main.player[plr].miscDyes, PlayerItemSlotID.MiscDye0);
+            NetMessage.SyncOnePlayer_ItemArray(plr, toWho, fromWho, Main.player[plr].Loadouts[0].Armor, PlayerItemSlotID.Loadout1_Armor_0);
+            NetMessage.SyncOnePlayer_ItemArray(plr, toWho, fromWho, Main.player[plr].Loadouts[0].Dye, PlayerItemSlotID.Loadout1_Dye_0);
+            NetMessage.SyncOnePlayer_ItemArray(plr, toWho, fromWho, Main.player[plr].Loadouts[1].Armor, PlayerItemSlotID.Loadout2_Armor_0);
+            NetMessage.SyncOnePlayer_ItemArray(plr, toWho, fromWho, Main.player[plr].Loadouts[1].Dye, PlayerItemSlotID.Loadout2_Dye_0);
+            NetMessage.SyncOnePlayer_ItemArray(plr, toWho, fromWho, Main.player[plr].Loadouts[2].Armor, PlayerItemSlotID.Loadout3_Armor_0);
+            NetMessage.SyncOnePlayer_ItemArray(plr, toWho, fromWho, Main.player[plr].Loadouts[2].Dye, PlayerItemSlotID.Loadout3_Dye_0);
 
-			// PlayerLoader.SyncPlayer(Main.player[plr], toWho, fromWho, false);
+            // PlayerLoader.SyncPlayer(Main.player[plr], toWho, fromWho, false);
 
-			if (!Netplay.Clients[plr].IsAnnouncementCompleted) {
-				Netplay.Clients[plr].IsAnnouncementCompleted = true;
-				ChatHelper.BroadcastChatMessage(NetworkText.FromKey(Lang.mp[19].Key, Main.player[plr].name), new Color(255, 240, 20), plr);
-				if (Main.dedServ)
-					Logging.ServerConsoleLine(Lang.mp[19].Format(Main.player[plr].name));
-			}
+            if (!Netplay.Clients[plr].IsAnnouncementCompleted)
+            {
+                Netplay.Clients[plr].IsAnnouncementCompleted = true;
+                ChatHelper.BroadcastChatMessage(NetworkText.FromKey(Lang.mp[19].Key, Main.player[plr].name), new Color(255, 240, 20), plr);
+                if (Main.dedServ)
+                {
+                    Logging.ServerConsoleLine(Lang.mp[19].Format(Main.player[plr].name));
+                }
+            }
 
-			return;
-		}
+            return;
+        }
 
-		num = 0;
-		NetMessage.SendData(14, -1, plr, null, plr, num);
-		if (Netplay.Clients[plr].IsAnnouncementCompleted) {
-			Netplay.Clients[plr].IsAnnouncementCompleted = false;
-			ChatHelper.BroadcastChatMessage(NetworkText.FromKey(Lang.mp[20].Key, Netplay.Clients[plr].Name), new Color(255, 240, 20), plr);
-			if (Main.dedServ)
-				Logging.ServerConsoleLine(Lang.mp[20].Format(Netplay.Clients[plr].Name));
+        num = 0;
+        NetMessage.SendData(14, -1, plr, null, plr, num);
+        if (Netplay.Clients[plr].IsAnnouncementCompleted)
+        {
+            Netplay.Clients[plr].IsAnnouncementCompleted = false;
+            ChatHelper.BroadcastChatMessage(NetworkText.FromKey(Lang.mp[20].Key, Netplay.Clients[plr].Name), new Color(255, 240, 20), plr);
+            if (Main.dedServ)
+            {
+                Logging.ServerConsoleLine(Lang.mp[20].Format(Netplay.Clients[plr].Name));
+            }
 
-			Netplay.Clients[plr].Name = "Anonymous";
-		}
+            Netplay.Clients[plr].Name = "Anonymous";
+        }
 
-		Player.Hooks.PlayerDisconnect(plr);
+        Player.Hooks.PlayerDisconnect(plr);
     }
-    
+
     private static void PlayerDeathReason_WriteSelfTo(On_PlayerDeathReason.orig_WriteSelfTo orig, PlayerDeathReason self, BinaryWriter writer)
     {
-        BitsByte bitsByte = (byte)0;
-        bitsByte[0] = self._sourcePlayerIndex          != -1;
-        bitsByte[1] = self._sourceNPCIndex             != -1;
+        BitsByte bitsByte = 0;
+        bitsByte[0] = self._sourcePlayerIndex != -1;
+        bitsByte[1] = self._sourceNPCIndex != -1;
         bitsByte[2] = self._sourceProjectileLocalIndex != -1;
-        bitsByte[3] = self._sourceOtherIndex           != -1;
-        bitsByte[4] = self._sourceProjectileType       != 0;
-        bitsByte[5] = self._sourceItemType             != 0;
-        bitsByte[6] = self._sourceItemPrefix           != 0;
-        bitsByte[7] = self._sourceCustomReason         != null;
+        bitsByte[3] = self._sourceOtherIndex != -1;
+        bitsByte[4] = self._sourceProjectileType != 0;
+        bitsByte[5] = self._sourceItemType != 0;
+        bitsByte[6] = self._sourceItemPrefix != 0;
+        bitsByte[7] = self._sourceCustomReason != null;
         writer.Write(bitsByte);
         if (bitsByte[0])
         {
             writer.Write((short)self._sourcePlayerIndex);
         }
+
         if (bitsByte[1])
         {
             writer.Write((short)self._sourceNPCIndex);
         }
+
         if (bitsByte[2])
         {
             writer.Write((short)self._sourceProjectileLocalIndex);
         }
+
         if (bitsByte[3])
         {
             writer.Write((byte)self._sourceOtherIndex);
         }
+
         if (bitsByte[4])
         {
             writer.Write((short)self._sourceProjectileType);
         }
+
         if (bitsByte[5])
         {
             writer.Write((short)self._sourceItemType);
         }
+
         if (bitsByte[6])
         {
             writer.Write((byte)self._sourceItemPrefix);
         }
+
         if (bitsByte[7])
         {
             writer.Write(self._sourceCustomReason);

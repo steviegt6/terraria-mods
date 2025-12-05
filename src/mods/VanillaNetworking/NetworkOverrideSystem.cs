@@ -4,9 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading;
-
 using MonoMod.RuntimeDetour;
-
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
@@ -15,38 +13,8 @@ namespace VanillaNetworking;
 
 internal sealed partial class NetworkOverrideSystem : ModSystem
 {
-#pragma warning disable CS0618 // Type or member is obsolete
-    public static bool AllowVanillaClients
-    {
-        get => ModNet.AllowVanillaClients;
-        set => allow_vanilla_clients_property.SetValue(null, value);
-    }
-
-    private static readonly PropertyInfo allow_vanilla_clients_property = typeof(ModNet).GetProperty(nameof(ModNet.AllowVanillaClients), BindingFlags.Public | BindingFlags.Static)!;
-#pragma warning restore CS0618 // Type or member is obsolete
-
-    private static          Hook?      modContentLoadHook;
+    private static Hook? modContentLoadHook;
     private static readonly List<Hook> hooks = [];
-
-#pragma warning disable CA2255
-    [ModuleInitializer]
-    public static void SetAllowVanillaClientsToTrue()
-    {
-        // We are supposedly the only ones modifying this.
-        // Debug.Assert(!AllowVanillaClients);
-
-        AllowVanillaClients = true;
-    }
-
-    [ModuleInitializer]
-    public static void PerformEarlyHooks()
-    {
-        modContentLoadHook = new Hook(
-            typeof(ModContent).GetMethod("Load", BindingFlags.NonPublic | BindingFlags.Static)!,
-            ModContent_Load
-        );
-    }
-#pragma warning restore CA2255
 
     public override void Load()
     {
@@ -86,19 +54,19 @@ internal sealed partial class NetworkOverrideSystem : ModSystem
             );
         };*/
 
-        On_NetMessage.SendData                  += NetMessage_SendData;
+        On_NetMessage.SendData += NetMessage_SendData;
         On_NetMessage.DecompressTileBlock_Inner += NetMessage_DecompressTileBlock_Inner;
-        On_NetMessage.SyncOnePlayer             += NetMessage_SyncOnePlayer;
-        On_MessageBuffer.GetData                += MessageBuffer_GetData;
-        On_PlayerDeathReason.FromReader         += PlayerDeathReason_FromReader;
-        On_PlayerDeathReason.WriteSelfTo        += PlayerDeathReason_WriteSelfTo;
+        On_NetMessage.SyncOnePlayer += NetMessage_SyncOnePlayer;
+        On_MessageBuffer.GetData += MessageBuffer_GetData;
+        On_PlayerDeathReason.FromReader += PlayerDeathReason_FromReader;
+        On_PlayerDeathReason.WriteSelfTo += PlayerDeathReason_WriteSelfTo;
 
         var playerLoaderType = typeof(PlayerLoader);
         var playerLoaderMethods = new (MethodInfo, Delegate)[]
         {
-            (playerLoaderType.GetMethod("SyncPlayer",        BindingFlags.Public | BindingFlags.Static)!, (Player player, int    toWho, int fromWho, bool newPlayer) => { }),
+            (playerLoaderType.GetMethod("SyncPlayer", BindingFlags.Public | BindingFlags.Static)!, (Player player, int toWho, int fromWho, bool newPlayer) => { }),
             (playerLoaderType.GetMethod("SendClientChanges", BindingFlags.Public | BindingFlags.Static)!, (Player player, Player clientPlayer) => { }),
-            (playerLoaderType.GetMethod("CopyClientState",   BindingFlags.Public | BindingFlags.Static)!, (Player player, Player targetCopy) => { }),
+            (playerLoaderType.GetMethod("CopyClientState", BindingFlags.Public | BindingFlags.Static)!, (Player player, Player targetCopy) => { }),
         };
 
         foreach (var meth in playerLoaderMethods)
@@ -141,4 +109,33 @@ internal sealed partial class NetworkOverrideSystem : ModSystem
 
         orig(token);
     }
+#pragma warning disable CS0618 // Type or member is obsolete
+    public static bool AllowVanillaClients
+    {
+        get => ModNet.AllowVanillaClients;
+        set => allow_vanilla_clients_property.SetValue(null, value);
+    }
+
+    private static readonly PropertyInfo allow_vanilla_clients_property = typeof(ModNet).GetProperty(nameof(ModNet.AllowVanillaClients), BindingFlags.Public | BindingFlags.Static)!;
+#pragma warning restore CS0618 // Type or member is obsolete
+
+#pragma warning disable CA2255
+    [ModuleInitializer]
+    public static void SetAllowVanillaClientsToTrue()
+    {
+        // We are supposedly the only ones modifying this.
+        // Debug.Assert(!AllowVanillaClients);
+
+        AllowVanillaClients = true;
+    }
+
+    [ModuleInitializer]
+    public static void PerformEarlyHooks()
+    {
+        modContentLoadHook = new Hook(
+            typeof(ModContent).GetMethod("Load", BindingFlags.NonPublic | BindingFlags.Static)!,
+            ModContent_Load
+        );
+    }
+#pragma warning restore CA2255
 }

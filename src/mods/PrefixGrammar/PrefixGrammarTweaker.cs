@@ -30,7 +30,7 @@ public sealed class PrefixGrammarTweaker : ModSystem
         var prefixOptions = config.PrefixFormatting;
         var doubleOptions = config.DoubleFormatting;
         var insertComma = config.InsertComma;
-        
+
         return LanguageRules.GetRulesForLanguage(Language.ActiveCulture).FormatString(
             text,
             prefixOptions,

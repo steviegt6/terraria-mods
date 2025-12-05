@@ -2,13 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
-
 using JetBrains.Annotations;
-
+using NotQuiteNitrate.Utilities.Numerics;
 using Terraria;
 using Terraria.ModLoader;
-
-using NotQuiteNitrate.Utilities.Numerics;
 
 namespace NotQuiteNitrate.Patches;
 
@@ -24,7 +21,7 @@ namespace NotQuiteNitrate.Patches;
 [UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
 internal sealed class FasterBfsPlotTile : ModSystem
 {
-    private static readonly ThreadLocal<Queue<PackedPoint32>>   tl_queue   = new(() => new Queue<PackedPoint32>(100));
+    private static readonly ThreadLocal<Queue<PackedPoint32>> tl_queue = new(() => new Queue<PackedPoint32>(100));
     private static readonly ThreadLocal<HashSet<PackedPoint32>> tl_visited = new(() => new HashSet<PackedPoint32>(100));
 
     public override void Load()
@@ -36,9 +33,9 @@ internal sealed class FasterBfsPlotTile : ModSystem
 
     private static bool PlotTileArea(
         On_Utils.orig_PlotTileArea orig,
-        int                        xInt,
-        int                        yInt,
-        Utils.TileActionAttempt    plot
+        int xInt,
+        int yInt,
+        Utils.TileActionAttempt plot
     )
     {
         Debug.Assert(xInt <= short.MaxValue && yInt <= short.MaxValue);
@@ -77,8 +74,8 @@ internal sealed class FasterBfsPlotTile : ModSystem
             [
                 new PackedPoint32((short)(current.X - 1), current.Y),
                 new PackedPoint32((short)(current.X + 1), current.Y),
-                new PackedPoint32(current.X,              (short)(current.Y - 1)),
-                new PackedPoint32(current.X,              (short)(current.Y + 1)),
+                new PackedPoint32(current.X, (short)(current.Y - 1)),
+                new PackedPoint32(current.X, (short)(current.Y + 1)),
             ];
 
             foreach (var neighbor in neighbors)

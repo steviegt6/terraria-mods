@@ -6,14 +6,11 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
 using ReLogic.Content;
 using ReLogic.Content.Readers;
 using ReLogic.Utilities;
-
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Assets;
@@ -41,7 +38,7 @@ internal sealed class FasterAssetLoading : ModSystem
                 stream.ReadExactly(buf);
             }
 
-            var width  = BinaryPrimitives.ReadInt32LittleEndian(buf[4..]);
+            var width = BinaryPrimitives.ReadInt32LittleEndian(buf[4..]);
             var height = BinaryPrimitives.ReadInt32LittleEndian(buf[8..]);
 
             var byteCount = width * height * 4;

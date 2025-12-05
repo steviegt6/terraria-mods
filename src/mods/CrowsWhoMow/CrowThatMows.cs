@@ -1,17 +1,12 @@
 using System;
-
 using JetBrains.Annotations;
-
 using Microsoft.Xna.Framework;
-
 using Terraria;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
-
-using CrowsWhoMow.Core;
 
 namespace CrowsWhoMow;
 
@@ -126,6 +121,7 @@ public sealed class CrowThatMows : ModNPC
         {
             WorldGen.KillTile_MakeTileDust(point.X, point.Y, tile);
         }
+
         tile.TileType = resType;
 
         if (Main.netMode == NetmodeID.MultiplayerClient)

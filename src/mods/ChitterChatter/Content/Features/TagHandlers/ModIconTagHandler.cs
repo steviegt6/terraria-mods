@@ -1,19 +1,13 @@
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-
+using ChitterChatter.Common.Loading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
 using ReLogic.Content;
 using ReLogic.Graphics;
-
 using Terraria;
 using Terraria.GameContent.Bestiary;
 using Terraria.ModLoader;
 using Terraria.UI.Chat;
-
-using ChitterChatter.Common.Loading;
 
 namespace ChitterChatter.Content.Features.TagHandlers;
 
@@ -21,7 +15,7 @@ internal sealed class ModIconTagHandler : ILoadableTagHandler<ModIconTagHandler>
 {
     private readonly record struct ModCache(
         Asset<Texture2D>? Icon,
-        string?           DisplayName
+        string? DisplayName
     );
 
     private static class ModIconCache
@@ -73,19 +67,19 @@ internal sealed class ModIconTagHandler : ILoadableTagHandler<ModIconTagHandler>
         private readonly ModCache modCache = ModIconCache.GetModCache(modName);
 
         public override bool UniqueDraw(
-            bool        justCheckingString,
+            bool justCheckingString,
             out Vector2 size,
             SpriteBatch spriteBatch,
-            Vector2     position = default,
-            Color       color    = default,
-            float       scale    = 1
+            Vector2 position = default,
+            Color color = default,
+            float scale = 1
         )
         {
             if (!justCheckingString && color != Color.Black)
             {
                 if (modName == "Terraria")
                 {
-                    var icon      = Main.Assets.Request<Texture2D>("Images/UI/Bestiary/Icon_Tags_Shadow", AssetRequestMode.ImmediateLoad);
+                    var icon = Main.Assets.Request<Texture2D>("Images/UI/Bestiary/Icon_Tags_Shadow", AssetRequestMode.ImmediateLoad);
                     var condition = BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface;
 
                     var frame = condition._filterIconFrame;
@@ -119,9 +113,9 @@ internal sealed class ModIconTagHandler : ILoadableTagHandler<ModIconTagHandler>
         }
     }
 
-    public string[] TagNames { get; } = ["mi", "modicon"];
-
     private const float icon_size = 26f;
+
+    public string[] TagNames { get; } = ["mi", "modicon"];
 
     TextSnippet ITagHandler.Parse(string text, Color baseColor, string? options)
     {

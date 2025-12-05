@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 namespace ChitterChatter.Content.Features.ChatMonitor.Rooms;
 
 /// <summary>
-///     A chat room within a <see cref="CustomChatMonitor"/>.
+///     A chat room within a <see cref="CustomChatMonitor" />.
 /// </summary>
 public interface IChatRoom
 {

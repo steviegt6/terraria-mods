@@ -1,13 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Text.RegularExpressions;
-
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
 using ReLogic.Graphics;
-
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.UI.Chat;
@@ -17,7 +13,7 @@ namespace NotQuiteNitrate.Patches;
 internal sealed class FasterTextOperations : ModSystem
 {
     private static readonly Dictionary<DynamicSpriteFont, Dictionary<string, Vector2>> dsf_measure_string_cache = [];
-    private static readonly Dictionary<SpriteFont, Dictionary<string, Vector2>>        sf_measure_string_cache  = [];
+    private static readonly Dictionary<SpriteFont, Dictionary<string, Vector2>> sf_measure_string_cache = [];
 
     public override void Load()
     {
@@ -36,25 +32,25 @@ internal sealed class FasterTextOperations : ModSystem
         );
 
         On_ChatManager.DrawColorCodedString_SpriteBatch_DynamicSpriteFont_TextSnippetArray_Vector2_Color_float_Vector2_Vector2_refInt32_float_bool += (
-            On_ChatManager.orig_DrawColorCodedString_SpriteBatch_DynamicSpriteFont_TextSnippetArray_Vector2_Color_float_Vector2_Vector2_refInt32_float_bool orig,
-            SpriteBatch                                                                                                                                     spriteBatch,
-            DynamicSpriteFont                                                                                                                               font,
-            TextSnippet[]                                                                                                                                   snippets,
-            Vector2                                                                                                                                         position,
-            Color                                                                                                                                           baseColor,
-            float                                                                                                                                           rotation,
-            Vector2                                                                                                                                         origin,
-            Vector2                                                                                                                                         baseScale,
-            out int                                                                                                                                         hoveredSnippet,
-            float                                                                                                                                           maxWidth,
-            bool                                                                                                                                            ignoreColors
+            orig,
+            spriteBatch,
+            font,
+            snippets,
+            position,
+            baseColor,
+            rotation,
+            origin,
+            baseScale,
+            out hoveredSnippet,
+            maxWidth,
+            ignoreColors
         ) =>
         {
             var mousePos = new Vector2(Main.mouseX, Main.mouseY);
 
             var fontHeight = font.MeasureString(" ").X;
 
-            var startPos  = position;
+            var startPos = position;
             var resultPos = startPos;
 
             var drawColor = baseColor;
@@ -71,6 +67,7 @@ internal sealed class FasterTextOperations : ModSystem
                 {
                     drawColor = textSnippet.GetVisibleColor();
                 }
+
                 var snippetScale = textSnippet.Scale;
                 if (textSnippet.UniqueDraw(justCheckingString: false, out var size, spriteBatch, startPos, drawColor, baseScale.X * snippetScale))
                 {
@@ -78,62 +75,71 @@ internal sealed class FasterTextOperations : ModSystem
                     {
                         hoveredSnippetIndex = i;
                     }
-                    startPos.X  += size.X;
-                    resultPos.X =  Math.Max(resultPos.X, startPos.X);
+
+                    startPos.X += size.X;
+                    resultPos.X = Math.Max(resultPos.X, startPos.X);
                     continue;
                 }
+
                 // var array = Regex.Split(textSnippet.Text, "(\n)");
                 var array = textSnippet.Text.Split('\n');
-                var flag  = true;
+                var flag = true;
                 foreach (var obj in array)
                 {
                     var array3 = obj.Split(' ');
                     if (obj == "\n")
                     {
-                        startPos.Y  += font.LineSpacing * num3 * baseScale.Y;
-                        startPos.X  =  position.X;
-                        resultPos.Y =  Math.Max(resultPos.Y, startPos.Y);
-                        num3        =  0f;
-                        flag        =  false;
+                        startPos.Y += font.LineSpacing * num3 * baseScale.Y;
+                        startPos.X = position.X;
+                        resultPos.Y = Math.Max(resultPos.Y, startPos.Y);
+                        num3 = 0f;
+                        flag = false;
                         continue;
                     }
+
                     for (var k = 0; k < array3.Length; k++)
                     {
                         if (k != 0)
                         {
                             startPos.X += fontHeight * baseScale.X * snippetScale;
                         }
+
                         if (maxWidth > 0f)
                         {
                             var num4 = font.MeasureString(array3[k]).X * baseScale.X * snippetScale;
                             if (startPos.X - position.X + num4 > maxWidth)
                             {
-                                startPos.X  =  position.X;
-                                startPos.Y  += font.LineSpacing * num3 * baseScale.Y;
-                                resultPos.Y =  Math.Max(resultPos.Y, startPos.Y);
-                                num3        =  0f;
+                                startPos.X = position.X;
+                                startPos.Y += font.LineSpacing * num3 * baseScale.Y;
+                                resultPos.Y = Math.Max(resultPos.Y, startPos.Y);
+                                num3 = 0f;
                             }
                         }
+
                         if (num3 < snippetScale)
                         {
                             num3 = snippetScale;
                         }
+
                         spriteBatch.DrawString(font, array3[k], startPos, drawColor, rotation, origin, baseScale * textSnippet.Scale * snippetScale, SpriteEffects.None, 0f);
                         var vector2 = font.MeasureString(array3[k]);
                         if (mousePos.Between(startPos, startPos + vector2))
                         {
                             hoveredSnippetIndex = i;
                         }
-                        startPos.X  += vector2.X * baseScale.X * snippetScale;
-                        resultPos.X =  Math.Max(resultPos.X, startPos.X);
+
+                        startPos.X += vector2.X * baseScale.X * snippetScale;
+                        resultPos.X = Math.Max(resultPos.X, startPos.X);
                     }
+
                     if (array.Length > 1 && flag)
                     {
-                        startPos.Y  += font.LineSpacing * num3 * baseScale.Y;
-                        startPos.X  =  position.X;
-                        resultPos.Y =  Math.Max(resultPos.Y, startPos.Y);
-                        num3        =  0f;
+                        startPos.Y += font.LineSpacing * num3 * baseScale.Y;
+                        startPos.X = position.X;
+                        resultPos.Y = Math.Max(resultPos.Y, startPos.Y);
+                        num3 = 0f;
                     }
+
                     flag = true;
                 }
             }
@@ -145,8 +151,8 @@ internal sealed class FasterTextOperations : ModSystem
 
     private static Vector2 DynamicSpriteFontMeasureString(
         Func<DynamicSpriteFont, string, Vector2> orig,
-        DynamicSpriteFont                        self,
-        string                                   text
+        DynamicSpriteFont self,
+        string text
     )
     {
         if (text.Length == 0)
@@ -169,8 +175,8 @@ internal sealed class FasterTextOperations : ModSystem
 
     private static Vector2 SpriteFontMeasureString(
         Func<SpriteFont, string, Vector2> orig,
-        SpriteFont                        self,
-        string                            text
+        SpriteFont self,
+        string text
     )
     {
         if (text.Length == 0)

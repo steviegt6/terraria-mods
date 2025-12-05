@@ -1,7 +1,5 @@
 using System.ComponentModel;
-
 using JetBrains.Annotations;
-
 using Terraria.ModLoader.Config;
 
 namespace SlightlyBetterTextRendering;

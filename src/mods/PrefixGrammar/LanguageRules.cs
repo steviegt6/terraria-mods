@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using Terraria;
 using Terraria.Localization;
 
@@ -11,13 +10,14 @@ public abstract class LanguageRules
 {
     private sealed class English : LanguageRules
     {
+        private const string doubly_prefix = "Doubly-";
+
+        private const string separating_punctuation = ",";
+
         // TODO: Handle indefinites ('a', 'an'), which may require detecting the
         //       correct form for prefixes (we can perhaps hardcode a list of
         //       correct forms for known prefixes).
         private static readonly string[] articles = ["The"];
-
-        private const string doubly_prefix = "Doubly-";
-        private const string separating_punctuation = ",";
 
         public override string FormatString(
             string text,
@@ -90,6 +90,7 @@ public abstract class LanguageRules
                     {
                         parts[realIdx] += separating_punctuation;
                     }
+
                     break;
 
                 case GrammarConfig.PrefixOptions.Replace:
@@ -103,6 +104,7 @@ public abstract class LanguageRules
                     {
                         parts[realIdx] += separating_punctuation;
                     }
+
                     break;
 
                 default:

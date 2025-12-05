@@ -1,15 +1,9 @@
 using System;
 using System.Linq;
-
 using JetBrains.Annotations;
-
 using Microsoft.Xna.Framework;
-
 using Mono.Cecil;
-using Mono.Cecil.Cil;
-
 using MonoMod.Cil;
-
 using Terraria.ModLoader;
 using Terraria.UI.Chat;
 
@@ -47,10 +41,12 @@ public sealed class BetterTextStroke : ModSystem
             {
                 throw new InvalidOperationException("Could not find Color::get_Black or Color::.ctor(int32, int32, int32, int32) in simple case");
             }
+
             c.EmitPop();
 
             EmitColor(c, color);
-            c.EmitDelegate(static (Color color) => DarkenColor(color)
+            c.EmitDelegate(
+                static (Color color) => DarkenColor(color)
             );
         }
         else
@@ -63,7 +59,8 @@ public sealed class BetterTextStroke : ModSystem
 
             EmitColor(c, color);
             c.EmitLdarg(shadowColor.Index);
-            c.EmitDelegate(static (Color color, Color shadowColor) => shadowColor == Color.Black ? DarkenColor(color) : color
+            c.EmitDelegate(
+                static (Color color, Color shadowColor) => shadowColor == Color.Black ? DarkenColor(color) : color
             );
             c.EmitStarg(shadowColor.Index);
         }

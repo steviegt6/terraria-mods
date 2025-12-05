@@ -1,5 +1,4 @@
 using JetBrains.Annotations;
-
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 

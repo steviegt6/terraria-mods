@@ -1,10 +1,7 @@
 using System;
 using System.Reflection;
-
 using JetBrains.Annotations;
-
 using Microsoft.Xna.Framework.Graphics;
-
 using Terraria.ModLoader;
 
 namespace NotQuiteNitrate.Fixes;

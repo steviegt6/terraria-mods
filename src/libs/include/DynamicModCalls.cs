@@ -68,21 +68,18 @@
 #define INCLUDE_ANNOTATIONS
 #endif
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Emit;
-
 #if INCLUDE_ANNOTATIONS
 using JetBrains.Annotations;
 #endif
 
-using Terraria.ModLoader;
-
 #if INCLUDE_METADATA
 using Tomat.Runtime.CompilerServices;
 #endif
-
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection.Emit;
+using Terraria.ModLoader;
 using TmlMod = Terraria.ModLoader.Mod;
 
 namespace Tomat.TML.Library.DynamicModCalls;
@@ -90,7 +87,7 @@ namespace Tomat.TML.Library.DynamicModCalls;
 #if INCLUDE_METADATA
 file static class Meta
 {
-    public const string NAME    = "DynamicModCalls";
+    public const string NAME = "DynamicModCalls";
     public const string VERSION = "1.0.0";
 }
 #endif
@@ -185,7 +182,7 @@ internal sealed class CallHandler : ModSystem
 #endif
         private Func<object?[], object?> GetOrCreateInvoke(ModCall call, object?[]? args)
         {
-            var method     = call.Delegate.Method;
+            var method = call.Delegate.Method;
             var parameters = method.GetParameters();
 
             if (args is null || args.Length != parameters.Length)
@@ -219,8 +216,8 @@ internal sealed class CallHandler : ModSystem
                     il.Emit(OpCodes.Isinst, parameters[i].ParameterType);
                     var label = il.DefineLabel();
                     il.Emit(OpCodes.Brtrue_S, label);
-                    il.Emit(OpCodes.Ldstr,    $"Argument {i} is not of type {parameters[i].ParameterType}.");
-                    il.Emit(OpCodes.Newobj,   typeof(ArgumentException).GetConstructor([typeof(string)])!);
+                    il.Emit(OpCodes.Ldstr, $"Argument {i} is not of type {parameters[i].ParameterType}.");
+                    il.Emit(OpCodes.Newobj, typeof(ArgumentException).GetConstructor([typeof(string)])!);
                     il.Emit(OpCodes.Throw);
                     il.MarkLabel(label);
                 }

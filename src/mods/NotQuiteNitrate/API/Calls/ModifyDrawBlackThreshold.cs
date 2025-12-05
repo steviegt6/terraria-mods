@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
-
-using Tomat.TML.Library.DynamicModCalls;
 using NotQuiteNitrate.Patches;
+using Tomat.TML.Library.DynamicModCalls;
 
 namespace NotQuiteNitrate.API.Calls;
 

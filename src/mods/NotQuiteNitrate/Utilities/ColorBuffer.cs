@@ -1,7 +1,5 @@
 using System;
-
 using Microsoft.Xna.Framework;
-
 using Terraria;
 using Terraria.Graphics.Light;
 
@@ -42,9 +40,9 @@ public static class ColorBuffer
     /// </param>
     public static void GetPlus(
         ILightingEngine engine,
-        int             x,
-        int             y,
-        Span<Vector3>   colors
+        int x,
+        int y,
+        Span<Vector3> colors
     )
     {
         GetBuffer(engine, x, y, colors, plus_offsets);
@@ -62,19 +60,19 @@ public static class ColorBuffer
     /// </param>
     public static void GetSquare(
         ILightingEngine engine,
-        int             x,
-        int             y,
-        Span<Vector3>   colors
+        int x,
+        int y,
+        Span<Vector3> colors
     )
     {
         GetBuffer(engine, x, y, colors, square_offsets);
     }
 
     private static void GetBuffer(
-        ILightingEngine  engine,
-        int              x,
-        int              y,
-        Span<Vector3>    colors,
+        ILightingEngine engine,
+        int x,
+        int y,
+        Span<Vector3> colors,
         (int x, int y)[] offsets
     )
     {
@@ -83,12 +81,12 @@ public static class ColorBuffer
             case LegacyLighting legacy:
             {
                 var realX = x - legacy._requestedRectLeft + Lighting.OffScreenTiles;
-                var realY = y - legacy._requestedRectTop  + Lighting.OffScreenTiles;
+                var realY = y - legacy._requestedRectTop + Lighting.OffScreenTiles;
 
                 // TODO: Squeeze out nanoseconds by not duplicating OffScreenTiles?
                 var unscaledSize = legacy._camera.UnscaledSize;
-                var unscaledX    = unscaledSize.X / 16f + Lighting.OffScreenTiles * 2 + 10;
-                var unscaledY    = unscaledSize.Y / 16f + Lighting.OffScreenTiles * 2;
+                var unscaledX = unscaledSize.X / 16f + Lighting.OffScreenTiles * 2 + 10;
+                var unscaledY = unscaledSize.Y / 16f + Lighting.OffScreenTiles * 2;
 
                 // Simplify the condition by taking advantage of obvious logic
                 // of a bounding box.
@@ -125,6 +123,7 @@ public static class ColorBuffer
                         }
                     }
                 }
+
                 break;
             }
 
@@ -166,6 +165,7 @@ public static class ColorBuffer
                         }
                     }
                 }
+
                 break;
             }
         }

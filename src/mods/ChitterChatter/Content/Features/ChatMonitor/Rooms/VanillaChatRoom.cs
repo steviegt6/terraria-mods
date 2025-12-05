@@ -2,15 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-
+using ChitterChatter.Content.Features.TagHandlers;
 using Microsoft.Xna.Framework;
-
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ModLoader;
 using Terraria.UI.Chat;
-
-using ChitterChatter.Content.Features.TagHandlers;
 
 namespace ChitterChatter.Content.Features.ChatMonitor.Rooms;
 
@@ -18,6 +15,36 @@ internal sealed class VanillaChatRoom : IChatRoom
 {
     private sealed class ChatMessageContainer
     {
+        private static readonly TextSnippet space_snippet = new(" ");
+        private readonly Color color;
+        private readonly TextSnippet modSourceSnippet;
+
+        private readonly List<TextSnippet[]> parsedText;
+        private readonly string? text;
+        private readonly int widthLimitInPixels;
+
+        private int timeLeft;
+
+        public ChatMessageContainer(
+            string text,
+            Color color,
+            int widthLimitInPixels,
+            string? modSource,
+            DateTime utcTime
+        )
+        {
+            this.text = text;
+            this.color = color;
+            this.widthLimitInPixels = widthLimitInPixels;
+            parsedText = [];
+            timeLeft = 600;
+            modSourceSnippet = ModIconTagHandler.CreateSnippet(modSource);
+            UtcTime = utcTime;
+
+            MarkToNeedRefresh();
+            Refresh();
+        }
+
         public int LineCount => parsedText.Count;
 
         public bool CanBeShownWhenChatIsClosed => timeLeft > 0;
@@ -25,36 +52,6 @@ internal sealed class VanillaChatRoom : IChatRoom
         public bool Prepared { get; private set; }
 
         public DateTime UtcTime { get; }
-
-        private int timeLeft;
-
-        private readonly List<TextSnippet[]> parsedText;
-        private readonly string?             text;
-        private readonly int                 widthLimitInPixels;
-        private readonly Color               color;
-        private readonly TextSnippet         modSourceSnippet;
-
-        private static readonly TextSnippet space_snippet = new(" ");
-
-        public ChatMessageContainer(
-            string   text,
-            Color    color,
-            int      widthLimitInPixels,
-            string?  modSource,
-            DateTime utcTime
-        )
-        {
-            this.text               = text;
-            this.color              = color;
-            this.widthLimitInPixels = widthLimitInPixels;
-            parsedText              = [];
-            timeLeft                = 600;
-            modSourceSnippet        = ModIconTagHandler.CreateSnippet(modSource);
-            this.UtcTime            = utcTime;
-
-            MarkToNeedRefresh();
-            Refresh();
-        }
 
         public void MarkToNeedRefresh()
         {
@@ -111,12 +108,12 @@ internal sealed class VanillaChatRoom : IChatRoom
 
     private static readonly Dictionary<Type, string?> mod_source_cache = [];
 
-    private int messagesToShow = 10;
-    private int startMessageIdx;
+    private readonly List<ChatMessageContainer> messages = [];
+
+    private readonly int messagesToShow = 10;
 
     private bool isDirty;
-
-    private readonly List<ChatMessageContainer> messages = [];
+    private int startMessageIdx;
 
     public void AddMessage(string text, Color textColor)
     {
@@ -151,7 +148,7 @@ internal sealed class VanillaChatRoom : IChatRoom
                 {
                     var stackFrames = new StackTrace().GetFrames();
 
-                    var foundNewText    = false;
+                    var foundNewText = false;
                     var postNewIndexIdx = -1;
                     foreach (var frame in stackFrames)
                     {
@@ -214,15 +211,15 @@ internal sealed class VanillaChatRoom : IChatRoom
     public void RenderChat(bool extendedChatWindow)
     {
         var remainingLines = startMessageIdx;
-        var messageIndex   = 0;
-        var lineOffset     = 0;
+        var messageIndex = 0;
+        var lineOffset = 0;
 
         while (remainingLines > 0 && messageIndex < messages.Count)
         {
             var linesToProcess = Math.Min(remainingLines, messages[messageIndex].LineCount);
             {
                 remainingLines -= linesToProcess;
-                lineOffset     =  linesToProcess;
+                lineOffset = linesToProcess;
             }
 
             if (lineOffset != messages[messageIndex].LineCount)
@@ -234,9 +231,9 @@ internal sealed class VanillaChatRoom : IChatRoom
             messageIndex++;
         }
 
-        var displayedLines      = 0;
+        var displayedLines = 0;
         var hoveredMessageIndex = default(int?);
-        var snippetIndex        = -1;
+        var snippetIndex = -1;
         var hoveredSnippetIndex = default(int?);
 
         while (displayedLines < messagesToShow && messageIndex < messages.Count)
@@ -293,7 +290,7 @@ internal sealed class VanillaChatRoom : IChatRoom
             {
                 hoveredSnippetIndex = hoveredSnippet;
                 hoveredMessageIndex = messageIndex;
-                snippetIndex        = lineOffset;
+                snippetIndex = lineOffset;
             }
 
             displayedLines++;
@@ -315,7 +312,7 @@ internal sealed class VanillaChatRoom : IChatRoom
 
         {
             var snippets = messages[hoveredMessageIndex.Value].GetSnippetWithInversedIndex(snippetIndex);
-            var snippet  = snippets[hoveredSnippetIndex.Value];
+            var snippet = snippets[hoveredSnippetIndex.Value];
             {
                 snippet.OnHover();
             }
@@ -361,9 +358,9 @@ internal sealed class VanillaChatRoom : IChatRoom
         void ClampMessageIndex()
         {
             var totalProcessedLines = 0;
-            var messageIndex        = 0;
-            var lineOffset          = 0;
-            var targetLineCount     = startMessageIdx + messagesToShow;
+            var messageIndex = 0;
+            var lineOffset = 0;
+            var targetLineCount = startMessageIdx + messagesToShow;
 
             while (totalProcessedLines < targetLineCount && messageIndex < messages.Count)
             {

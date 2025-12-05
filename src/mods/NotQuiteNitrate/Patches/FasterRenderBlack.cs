@@ -3,13 +3,9 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-
 using JetBrains.Annotations;
-
 using Microsoft.Xna.Framework;
-
 using ReLogic.Threading;
-
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.Liquid;
@@ -56,14 +52,14 @@ public sealed class FasterRenderBlack : ModSystem
 
         var stopwatch = Stopwatch.StartNew();
 
-        var screenOffset     = Main.drawToScreen ? 0f : Main.offScreenRange;
+        var screenOffset = Main.drawToScreen ? 0f : Main.offScreenRange;
         var averageTileColor = (Main.tileColor.R + Main.tileColor.G + Main.tileColor.B) / 3;
 
         var minBrightness = Lighting.Mode switch
         {
-            LightMode.Retro  => Math.Max((Main.tileColor.R - 55) / 255f, 0f),
+            LightMode.Retro => Math.Max((Main.tileColor.R - 55) / 255f, 0f),
             LightMode.Trippy => Math.Max((averageTileColor - 55) / 255f, 0f),
-            _                => (float)(averageTileColor         * 0.4) / 255f,
+            _ => (float)(averageTileColor * 0.4) / 255f,
         };
 
         minBrightness = CALLBACKS.Aggregate(minBrightness, (current, callback) => callback(current));
@@ -74,21 +70,21 @@ public sealed class FasterRenderBlack : ModSystem
             -Main.offScreenRange / 16 + screenOverdrawOffset.Y
         );
 
-        var startX = Math.Max((int)((Main.screenPosition.X - screenOffset)                     / 16f - 1f) + tileOffset.X, tileOffset.X);
-        var endX   = Math.Min((int)((Main.screenPosition.X + Main.screenWidth + screenOffset)  / 16f) + 2  - tileOffset.X, Main.maxTilesX - tileOffset.X);
-        var startY = Math.Max((int)((Main.screenPosition.Y - screenOffset)                     / 16f - 1f) + tileOffset.Y, tileOffset.Y);
-        var endY   = Math.Min((int)((Main.screenPosition.Y + Main.screenHeight + screenOffset) / 16f) + 5  - tileOffset.Y, Main.maxTilesY - tileOffset.Y);
+        var startX = Math.Max((int)((Main.screenPosition.X - screenOffset) / 16f - 1f) + tileOffset.X, tileOffset.X);
+        var endX = Math.Min((int)((Main.screenPosition.X + Main.screenWidth + screenOffset) / 16f) + 2 - tileOffset.X, Main.maxTilesX - tileOffset.X);
+        var startY = Math.Max((int)((Main.screenPosition.Y - screenOffset) / 16f - 1f) + tileOffset.Y, tileOffset.Y);
+        var endY = Math.Min((int)((Main.screenPosition.Y + Main.screenHeight + screenOffset) / 16f) + 5 - tileOffset.Y, Main.maxTilesY - tileOffset.Y);
 
         if (!force)
         {
             if (startY < Main.maxTilesY / 2)
             {
-                endY   = Math.Min(endY,   (int)Main.worldSurface + 1);
+                endY = Math.Min(endY, (int)Main.worldSurface + 1);
                 startY = Math.Min(startY, (int)Main.worldSurface + 1);
             }
             else
             {
-                endY   = Math.Max(endY,   Main.UnderworldLayer);
+                endY = Math.Max(endY, Main.UnderworldLayer);
                 startY = Math.Max(startY, Main.UnderworldLayer);
             }
         }
@@ -108,7 +104,7 @@ public sealed class FasterRenderBlack : ModSystem
             {
                 for (var y = relativeStartY; y < relativeEndY; y++)
                 {
-                    var isUnderworld        = y >= Main.UnderworldLayer;
+                    var isUnderworld = y >= Main.UnderworldLayer;
                     var brightnessThreshold = isUnderworld ? 0.2f : minBrightness;
 
                     for (var x = startX; x < endX; x++)
@@ -126,7 +122,7 @@ public sealed class FasterRenderBlack : ModSystem
 
                             var isDarkTile = brightness <= brightnessThreshold && (
                                 (!isUnderworld && liquidAmount < 250)
-                             || (liquidAmount                  >= 200 && brightness == 0f)
+                             || (liquidAmount >= 200 && brightness == 0f)
                              || SolidTile(tile)
                             );
                             if (!isDarkTile)
@@ -135,17 +131,18 @@ public sealed class FasterRenderBlack : ModSystem
                             }
 
                             var isBlockingLight = Main.tileBlockLight[tile.type] &&
-                                                  tile.HasTile                   &&
+                                                  tile.HasTile &&
                                                   (showInvisibleWalls || !tile.IsTileInvisible);
 
                             var hasWall = !WallID.Sets.Transparent[tile.wall] &&
                                           (showInvisibleWalls || !tile.IsWallInvisible);
 
-                            if ((!hasWall           && !isBlockingLight)
+                            if ((!hasWall && !isBlockingLight)
                              || (!Main.drawToScreen && LiquidRenderer.Instance.HasFullWater(x, y) && tile is { WallType: 0, IsHalfBlock: false } && y <= Main.worldSurface))
                             {
                                 break;
                             }
+
                             x++;
                         }
 

@@ -1,5 +1,4 @@
 using System.Reflection;
-
 using Terraria.ModLoader;
 
 namespace NotQuiteNitrate.Utilities;

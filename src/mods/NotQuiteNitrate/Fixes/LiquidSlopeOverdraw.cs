@@ -1,11 +1,9 @@
 using System;
 using System.Diagnostics;
-
 using JetBrains.Annotations;
-
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
+using NotQuiteNitrate.Utilities;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.Drawing;
@@ -13,8 +11,6 @@ using Terraria.GameContent.Liquid;
 using Terraria.Graphics;
 using Terraria.ID;
 using Terraria.ModLoader;
-
-using NotQuiteNitrate.Utilities;
 
 namespace NotQuiteNitrate.Fixes;
 
@@ -38,13 +34,13 @@ internal sealed class LiquidSlopeOverdraw : ModSystem
 
     private static void DrawPartialLiquid(
         On_TileDrawing.orig_DrawPartialLiquid orig,
-        TileDrawing                           self,
-        bool                                  behindBlocks,
-        Tile                                  tile,
-        ref Vector2                           position,
-        ref Rectangle                         liquidSize,
-        int                                   liquidType,
-        ref VertexColors                      colors
+        TileDrawing self,
+        bool behindBlocks,
+        Tile tile,
+        ref Vector2 position,
+        ref Rectangle liquidSize,
+        int liquidType,
+        ref VertexColors colors
     )
     {
         if (!Enabled)
@@ -53,15 +49,15 @@ internal sealed class LiquidSlopeOverdraw : ModSystem
             return;
         }
 
-        var slope           = tile.Slope;
+        var slope = tile.Slope;
         var drawBehindBlock = behindBlocks && !TileID.Sets.BlocksWaterDrawingBehindSelf[tile.TileType];
 
         var opacity = drawBehindBlock ? 1f : LiquidRenderer.DEFAULT_OPACITY[tile.LiquidType];
         {
-            colors.BottomLeftColor  *= opacity;
+            colors.BottomLeftColor *= opacity;
             colors.BottomRightColor *= opacity;
-            colors.TopLeftColor     *= opacity;
-            colors.TopRightColor    *= opacity;
+            colors.TopLeftColor *= opacity;
+            colors.TopRightColor *= opacity;
         }
 
         if (drawBehindBlock || slope == SlopeType.Solid)
@@ -107,11 +103,11 @@ internal sealed class LiquidSlopeOverdraw : ModSystem
     // of tiles on the edges.
     private static void DrawLiquid(
         On_Main.orig_DrawLiquid orig,
-        Main                    self,
-        bool                    bg,
-        int                     waterStyle,
-        float                   alpha,
-        bool                    drawSinglePassLiquids
+        Main self,
+        bool bg,
+        int waterStyle,
+        float alpha,
+        bool drawSinglePassLiquids
     )
     {
         if (!Enabled)

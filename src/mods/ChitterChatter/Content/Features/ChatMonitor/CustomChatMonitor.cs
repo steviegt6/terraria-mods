@@ -1,13 +1,10 @@
 using System;
-
+using ChitterChatter.Common.Loading;
+using ChitterChatter.Content.Features.ChatMonitor.Rooms;
 using Microsoft.Xna.Framework;
-
 using Terraria;
 using Terraria.GameContent.UI.Chat;
 using Terraria.ModLoader;
-
-using ChitterChatter.Common.Loading;
-using ChitterChatter.Content.Features.ChatMonitor.Rooms;
 
 namespace ChitterChatter.Content.Features.ChatMonitor;
 
@@ -19,7 +16,7 @@ internal sealed class CustomChatMonitor : IChatMonitor
 
         void IInitializer.Load()
         {
-            oldMonitor       = Main.chatMonitor;
+            oldMonitor = Main.chatMonitor;
             Main.chatMonitor = new CustomChatMonitor();
         }
 
@@ -29,10 +26,10 @@ internal sealed class CustomChatMonitor : IChatMonitor
         }
     }
 
-    private int selectedChatRoom;
-
     private readonly IChatRoom[] chatRooms;
-    private readonly IChatRoom   vanillaChatRoom;
+    private readonly IChatRoom vanillaChatRoom;
+
+    private int selectedChatRoom;
 
     public CustomChatMonitor()
     {
@@ -41,36 +38,6 @@ internal sealed class CustomChatMonitor : IChatMonitor
             vanillaChatRoom = new VanillaChatRoom(),
         ];
     }
-
-    public IChatRoom GetSelectedChatRoom()
-    {
-        selectedChatRoom = Math.Clamp(selectedChatRoom, 0, chatRooms.Length - 1);
-        return chatRooms[selectedChatRoom];
-    }
-
-    public void SetChatRoom(int index)
-    {
-        selectedChatRoom = index;
-    }
-
-    public void CycleChatRoom(int direction)
-    {
-        selectedChatRoom = (selectedChatRoom + direction + chatRooms.Length) % chatRooms.Length;
-    }
-
-#region NewText
-    void IChatMonitor.NewText(string newText, byte r, byte g, byte b)
-    {
-        // TODO: Is it fine to send all of these to the vanilla chat room?
-        vanillaChatRoom.AddMessage(newText, new Color(r, g, b));
-    }
-
-    void IChatMonitor.NewTextMultiline(string text, bool force, Color c, int widthLimit)
-    {
-        // TODO: Is it fine to send all of these to the vanilla chat room?
-        vanillaChatRoom.AddMultilineMessage(text, c, widthLimit);
-    }
-#endregion
 
     public void DrawChat(bool drawingPlayerChat)
     {
@@ -103,4 +70,34 @@ internal sealed class CustomChatMonitor : IChatMonitor
     {
         GetSelectedChatRoom().MarkChatDirty();
     }
+
+    public IChatRoom GetSelectedChatRoom()
+    {
+        selectedChatRoom = Math.Clamp(selectedChatRoom, 0, chatRooms.Length - 1);
+        return chatRooms[selectedChatRoom];
+    }
+
+    public void SetChatRoom(int index)
+    {
+        selectedChatRoom = index;
+    }
+
+    public void CycleChatRoom(int direction)
+    {
+        selectedChatRoom = (selectedChatRoom + direction + chatRooms.Length) % chatRooms.Length;
+    }
+
+#region NewText
+    void IChatMonitor.NewText(string newText, byte r, byte g, byte b)
+    {
+        // TODO: Is it fine to send all of these to the vanilla chat room?
+        vanillaChatRoom.AddMessage(newText, new Color(r, g, b));
+    }
+
+    void IChatMonitor.NewTextMultiline(string text, bool force, Color c, int widthLimit)
+    {
+        // TODO: Is it fine to send all of these to the vanilla chat room?
+        vanillaChatRoom.AddMultilineMessage(text, c, widthLimit);
+    }
+#endregion
 }
