@@ -49,7 +49,7 @@ public sealed class CrowThatMows : ModNPC
 
     public override float SpawnChance(NPCSpawnInfo spawnInfo)
     {
-        return Math.Max(SpawnCondition.OverworldDay.Chance * 0.1f, Main.dayTime ? SpawnCondition.OverworldHallow.Chance * 0.1f : 0f);
+        return Math.Max(SpawnCondition.OverworldDay.Chance * 0.01f, Main.dayTime ? SpawnCondition.OverworldHallow.Chance * 0.01f : 0f);
     }
 
     public override void HitEffect(NPC.HitInfo hit)
