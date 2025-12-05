@@ -1,5 +1,5 @@
 displayName = Crows Who Mow
 author = Tomat
-version = 1.0.2
+version = 1.0.3
 homepage = https://discord.gg/UTXC8fM3NK
 side = Both
