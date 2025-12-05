@@ -24,9 +24,22 @@ internal static class SonarText
     [OnLoad]
     private static void ApplyEdits()
     {
+        On_PopupText.GetTextHitbox += GetTextHitbox_AddItemHitbox;
         On_PopupText.ResetText += ResetText_ResetSonarItem;
         On_Main.DrawItemTextPopups += DrawItemTextPopups_DrawSonarItemIcon;
         IL_Projectile.FishingCheck += FishingCheck_WrapAssignAsSonarText;
+    }
+
+    private static Vector2 GetTextHitbox_AddItemHitbox(On_PopupText.orig_GetTextHitbox orig, PopupText self)
+    {
+        var wh = orig(self);
+
+        if (sonar_texts.TryGetValue(self, out var sonarText) && sonarText.SonarItemType != -1)
+        {
+            wh.Y += 32f * self.scale;
+        }
+        
+        return wh;
     }
 
     private static void ResetText_ResetSonarItem(On_PopupText.orig_ResetText orig, PopupText text)
@@ -42,7 +55,7 @@ internal static class SonarText
 
         foreach (var popupText in Main.popupText)
         {
-            if (!popupText.active || !popupText.sonar || !sonar_texts.TryGetValue(popupText, out var sonarText))
+            if (!popupText.active || !popupText.sonar || !sonar_texts.TryGetValue(popupText, out var sonarText) || sonarText.SonarItemType == -1)
             {
                 continue;
             }
