@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using Daybreak.Common.Features.Hooks;
 using Microsoft.Xna.Framework;
 using MonoMod.Cil;
@@ -13,61 +14,57 @@ namespace SonarIcons;
 
 internal static class SonarText
 {
-    private static int sonarItemType = -1;
+    private sealed class PopupTextSonar
+    {
+        public required int SonarItemType { get; init; } = -1;
+    }
+
+    private static readonly ConditionalWeakTable<PopupText, PopupTextSonar> sonar_texts = [];
 
     [OnLoad]
     private static void ApplyEdits()
     {
-        On_PopupText.ClearSonarText += ClearSonarText_ClearSonarItem;
         On_Main.DrawItemTextPopups += DrawItemTextPopups_DrawSonarItemIcon;
         IL_Projectile.FishingCheck += FishingCheck_WrapAssignAsSonarText;
-    }
-
-    private static void ClearSonarText_ClearSonarItem(On_PopupText.orig_ClearSonarText orig)
-    {
-        sonarItemType = -1;
     }
 
     private static void DrawItemTextPopups_DrawSonarItemIcon(On_Main.orig_DrawItemTextPopups orig, float scaleTarget)
     {
         orig(scaleTarget);
 
-        if (sonarItemType == -1 || PopupText.sonarText == -1 || !Main.popupText[PopupText.sonarText].sonar)
+        foreach (var popupText in Main.popupText)
         {
-            return;
-        }
-
-        var popupText = Main.popupText[PopupText.sonarText];
-        if (!popupText.active)
-        {
-            return;
-        }
-
-        var text = popupText.name;
-        if (popupText.stack > 1)
-        {
-            text = text + " (" + popupText.stack + ")";
-        }
-
-        var halfSize = FontAssets.MouseText.Value.MeasureString(text).X / 2f;
-        var pos = new Vector2(
-            popupText.position.X - Main.screenPosition.X + halfSize,
-            popupText.position.Y - Main.screenPosition.Y - 20
-        );
-
-        // TODO: An option to draw the item like a text, using a shader to
-        //       grayscale the texture and tint the body and outlines
-        //       accordingly (blue outline, rarity-colored body).
-        /*if (true)
-        {
-            for (var i = 0; i < 4; i++)
+            if (!popupText.active || !popupText.sonar || !sonar_texts.TryGetValue(popupText, out var sonarText))
             {
-                var offsetPos = Vector2.UnitY.RotatedBy(MathHelper.PiOver2 * i) * 2;
-                DrawItem(ContentSamples.ItemsByType[sonarItemType], pos + offsetPos, popupText.scale, Color.White);
+                continue;
             }
-        }*/
 
-        DrawItem(ContentSamples.ItemsByType[sonarItemType], pos, popupText.scale, Color.White);
+            var text = popupText.name;
+            if (popupText.stack > 1)
+            {
+                text = text + " (" + popupText.stack + ")";
+            }
+
+            var halfSize = FontAssets.MouseText.Value.MeasureString(text).X / 2f;
+            var pos = new Vector2(
+                popupText.position.X - Main.screenPosition.X + halfSize,
+                popupText.position.Y - Main.screenPosition.Y - 20
+            );
+
+            // TODO: An option to draw the item like a text, using a shader to
+            //       grayscale the texture and tint the body and outlines
+            //       accordingly (blue outline, rarity-colored body).
+            /*if (true)
+            {
+                for (var i = 0; i < 4; i++)
+                {
+                    var offsetPos = Vector2.UnitY.RotatedBy(MathHelper.PiOver2 * i) * 2;
+                    DrawItem(ContentSamples.ItemsByType[sonarItemType], pos + offsetPos, popupText.scale, Color.White);
+                }
+            }*/
+
+            DrawItem(ContentSamples.ItemsByType[sonarText.SonarItemType], pos, popupText.scale, Color.White);
+        }
 
         return;
 
@@ -142,6 +139,12 @@ internal static class SonarText
         }
 
         // popupText.name = $"[i:{attempt.rolledItemDrop}] " + popupText.name;
-        sonarItemType = attempt.rolledItemDrop;
+        sonar_texts.AddOrUpdate(
+            popupText,
+            new PopupTextSonar
+            {
+                SonarItemType = attempt.rolledItemDrop,
+            }
+        );
     }
 }
