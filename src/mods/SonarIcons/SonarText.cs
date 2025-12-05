@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using Daybreak.Common.Features.Hooks;
 using Microsoft.Xna.Framework;
 using MonoMod.Cil;
 using Terraria;
@@ -10,14 +11,13 @@ using Terraria.UI;
 
 namespace SonarIcons;
 
-public sealed class SonarText : ModSystem
+internal static class SonarText
 {
     private static int sonarItemType = -1;
 
-    public override void Load()
+    [OnLoad]
+    private static void ApplyEdits()
     {
-        base.Load();
-
         On_PopupText.ClearSonarText += ClearSonarText_ClearSonarItem;
         On_Main.DrawItemTextPopups += DrawItemTextPopups_DrawSonarItemIcon;
         IL_Projectile.FishingCheck += FishingCheck_WrapAssignAsSonarText;
