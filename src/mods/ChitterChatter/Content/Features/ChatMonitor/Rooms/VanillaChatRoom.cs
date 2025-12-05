@@ -10,9 +10,9 @@ using Terraria.GameContent;
 using Terraria.ModLoader;
 using Terraria.UI.Chat;
 
-using Tomat.TML.Mod.ChitterChatter.Content.Features.TagHandlers;
+using ChitterChatter.Content.Features.TagHandlers;
 
-namespace Tomat.TML.Mod.ChitterChatter.Content.Features.ChatMonitor.Rooms;
+namespace ChitterChatter.Content.Features.ChatMonitor.Rooms;
 
 internal sealed class VanillaChatRoom : IChatRoom
 {

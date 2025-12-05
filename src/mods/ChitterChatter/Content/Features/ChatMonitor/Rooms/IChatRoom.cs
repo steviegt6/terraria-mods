@@ -1,6 +1,6 @@
 using Microsoft.Xna.Framework;
 
-namespace Tomat.TML.Mod.ChitterChatter.Content.Features.ChatMonitor.Rooms;
+namespace ChitterChatter.Content.Features.ChatMonitor.Rooms;
 
 /// <summary>
 ///     A chat room within a <see cref="CustomChatMonitor"/>.

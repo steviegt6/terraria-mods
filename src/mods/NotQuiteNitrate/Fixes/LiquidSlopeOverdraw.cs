@@ -14,9 +14,9 @@ using Terraria.Graphics;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-using Tomat.TML.Mod.NotQuiteNitrate.Utilities;
+using NotQuiteNitrate.Utilities;
 
-namespace Tomat.TML.Mod.NotQuiteNitrate.Fixes;
+namespace NotQuiteNitrate.Fixes;
 
 /// <summary>
 ///     Fixes liquid rendering to render actual liquid behind tiles in corners

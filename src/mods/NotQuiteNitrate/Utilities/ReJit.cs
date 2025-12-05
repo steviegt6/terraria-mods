@@ -2,7 +2,7 @@ using System.Reflection;
 
 using Terraria.ModLoader;
 
-namespace Tomat.TML.Mod.NotQuiteNitrate.Utilities;
+namespace NotQuiteNitrate.Utilities;
 
 internal static class ReJit
 {

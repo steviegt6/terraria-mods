@@ -7,9 +7,9 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
 
-using Tomat.TML.Mod.NotQuiteNitrate.Utilities;
+using NotQuiteNitrate.Utilities;
 
-namespace Tomat.TML.Mod.NotQuiteNitrate.Patches;
+namespace NotQuiteNitrate.Patches;
 
 // TODO(perf): We can vectorize (SIMD) the totalX >= totalY ? colorA : colorB
 //             conditions.

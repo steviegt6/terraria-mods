@@ -2,7 +2,7 @@ using Terraria;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
-namespace Tomat.TML.Mod.PrefixGrammar;
+namespace PrefixGrammar;
 
 public sealed class PrefixGrammarTweaker : ModSystem
 {

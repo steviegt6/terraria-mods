@@ -3,7 +3,7 @@ using JetBrains.Annotations;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 
-namespace Tomat.TML.Mod.NotQuiteNitrate;
+namespace NotQuiteNitrate;
 
 [UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
 internal sealed class Config : ModConfig

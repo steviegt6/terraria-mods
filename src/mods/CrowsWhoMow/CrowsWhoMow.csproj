@@ -1,10 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
-    <Import Project="..\..\..\broken-wings\src\Mod.targets"/>
+﻿<Project Sdk="Tomat.Terraria.ModLoader.Sdk">
 
     <PropertyGroup>
-        <AssemblyName>CrowsWhoMow</AssemblyName>
-        <RootNamespace>Tomat.TML.Mod.CrowsWhoMow</RootNamespace>
+        <TmlBuildUseDefaultModImpl>true</TmlBuildUseDefaultModImpl>
     </PropertyGroup>
 
 </Project>

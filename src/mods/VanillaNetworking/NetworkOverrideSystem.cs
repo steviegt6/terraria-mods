@@ -11,7 +11,7 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
 
-namespace Tomat.TML.Mod.VanillaNetworking;
+namespace VanillaNetworking;
 
 internal sealed partial class NetworkOverrideSystem : ModSystem
 {

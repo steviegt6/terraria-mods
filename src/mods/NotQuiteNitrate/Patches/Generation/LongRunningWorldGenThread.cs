@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 using Terraria.Utilities;
 using Terraria.WorldBuilding;
 
-namespace Tomat.TML.Mod.NotQuiteNitrate.Patches.Generation;
+namespace NotQuiteNitrate.Patches.Generation;
 
 // I'm not confident this provides a notable boost, but it doesn't hurt to have.
 [UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]

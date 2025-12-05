@@ -6,10 +6,10 @@ using Terraria;
 using Terraria.GameContent.UI.Chat;
 using Terraria.ModLoader;
 
-using Tomat.TML.Mod.ChitterChatter.Common.Loading;
-using Tomat.TML.Mod.ChitterChatter.Content.Features.ChatMonitor.Rooms;
+using ChitterChatter.Common.Loading;
+using ChitterChatter.Content.Features.ChatMonitor.Rooms;
 
-namespace Tomat.TML.Mod.ChitterChatter.Content.Features.ChatMonitor;
+namespace ChitterChatter.Content.Features.ChatMonitor;
 
 internal sealed class CustomChatMonitor : IChatMonitor
 {

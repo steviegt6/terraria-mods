@@ -16,7 +16,7 @@ using Terraria.ModLoader;
 using Terraria.UI;
 using Terraria.UI.Chat;
 
-namespace Tomat.TML.Mod.SonarIcons;
+namespace SonarIcons;
 
 public sealed class SonarText : ModSystem
 {

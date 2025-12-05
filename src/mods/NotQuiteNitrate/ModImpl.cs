@@ -1,6 +1,6 @@
 using Tomat.TML.Library.DynamicModCalls;
 
-namespace Tomat.TML.Mod.NotQuiteNitrate;
+namespace NotQuiteNitrate;
 
 partial class ModImpl
 {

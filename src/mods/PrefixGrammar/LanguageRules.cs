@@ -5,7 +5,7 @@ using System.Linq;
 using Terraria;
 using Terraria.Localization;
 
-namespace Tomat.TML.Mod.PrefixGrammar;
+namespace PrefixGrammar;
 
 public abstract class LanguageRules
 {

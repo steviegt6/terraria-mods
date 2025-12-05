@@ -1,10 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
-    <Import Project="..\..\..\broken-wings\src\Mod.targets"/>
+﻿<Project Sdk="Tomat.Terraria.ModLoader.Sdk">
 
     <PropertyGroup>
-        <AssemblyName>SonarIcons</AssemblyName>
-        <RootNamespace>Tomat.TML.Mod.SonarIcons</RootNamespace>
+        <TmlBuildUseDefaultModImpl>true</TmlBuildUseDefaultModImpl>
     </PropertyGroup>
 
 </Project>

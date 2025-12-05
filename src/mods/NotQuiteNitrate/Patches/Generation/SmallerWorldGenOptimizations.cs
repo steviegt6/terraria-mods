@@ -15,7 +15,7 @@ using Terraria.ModLoader;
 using Terraria.Utilities;
 using Terraria.WorldBuilding;
 
-namespace Tomat.TML.Mod.NotQuiteNitrate.Patches.Generation;
+namespace NotQuiteNitrate.Patches.Generation;
 
 [UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
 internal sealed class SmallerWorldGenOptimizations : ModSystem

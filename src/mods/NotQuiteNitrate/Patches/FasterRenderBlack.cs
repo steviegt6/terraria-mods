@@ -17,7 +17,7 @@ using Terraria.Graphics.Light;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Tomat.TML.Mod.NotQuiteNitrate.Patches;
+namespace NotQuiteNitrate.Patches;
 
 /// <summary>
 ///     Reimplements DrawBlack (part of RenderBlack) to be ~3x faster through

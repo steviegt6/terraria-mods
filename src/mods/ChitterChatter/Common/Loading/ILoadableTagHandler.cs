@@ -1,6 +1,6 @@
 using Terraria.UI.Chat;
 
-namespace Tomat.TML.Mod.ChitterChatter.Common.Loading;
+namespace ChitterChatter.Common.Loading;
 
 public interface ILoadableTagHandler<TSelf> : ITagHandler, IInitializer
     where TSelf : ILoadableTagHandler<TSelf>, new()

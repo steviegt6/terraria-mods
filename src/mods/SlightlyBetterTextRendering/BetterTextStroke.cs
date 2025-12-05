@@ -13,7 +13,7 @@ using MonoMod.Cil;
 using Terraria.ModLoader;
 using Terraria.UI.Chat;
 
-namespace Tomat.TML.Mod.SlightlyBetterTextRendering;
+namespace SlightlyBetterTextRendering;
 
 [UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
 public sealed class BetterTextStroke : ModSystem

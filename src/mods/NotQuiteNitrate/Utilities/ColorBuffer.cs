@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Graphics.Light;
 
-namespace Tomat.TML.Mod.NotQuiteNitrate.Utilities;
+namespace NotQuiteNitrate.Utilities;
 
 public static class ColorBuffer
 {

@@ -1,6 +1,6 @@
 using Terraria;
 
-namespace Tomat.TML.Mod.NotQuiteNitrate.Utilities;
+namespace NotQuiteNitrate.Utilities;
 
 internal static class TilemapHelper
 {

@@ -2,7 +2,7 @@ using JetBrains.Annotations;
 
 using Terraria.ModLoader;
 
-namespace Tomat.TML.Mod.ChitterChatter.Common.Loading;
+namespace ChitterChatter.Common.Loading;
 
 /// <summary>
 ///     Provides a default implementation for loading and unloading, exposing

@@ -11,9 +11,9 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
 
-using Tomat.TML.Mod.CrowsWhoMow.Core;
+using CrowsWhoMow.Core;
 
-namespace Tomat.TML.Mod.CrowsWhoMow;
+namespace CrowsWhoMow;
 
 [UsedImplicitly(ImplicitUseKindFlags.InstantiatedNoFixedConstructorSignature)]
 public sealed class CrowThatMows : ModNPC

@@ -13,9 +13,9 @@ using Terraria.GameContent.Bestiary;
 using Terraria.ModLoader;
 using Terraria.UI.Chat;
 
-using Tomat.TML.Mod.ChitterChatter.Common.Loading;
+using ChitterChatter.Common.Loading;
 
-namespace Tomat.TML.Mod.ChitterChatter.Content.Features.TagHandlers;
+namespace ChitterChatter.Content.Features.TagHandlers;
 
 internal sealed class ModIconTagHandler : ILoadableTagHandler<ModIconTagHandler>
 {

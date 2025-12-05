@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace Tomat.TML.Mod.NotQuiteNitrate.Utilities.Numerics;
+namespace NotQuiteNitrate.Utilities.Numerics;
 
 [StructLayout(LayoutKind.Explicit)]
 internal readonly struct PackedPoint32(short x, short y) : IEquatable<PackedPoint32>

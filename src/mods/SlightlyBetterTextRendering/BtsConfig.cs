@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 
 using Terraria.ModLoader.Config;
 
-namespace Tomat.TML.Mod.SlightlyBetterTextRendering;
+namespace SlightlyBetterTextRendering;
 
 [UsedImplicitly(ImplicitUseKindFlags.InstantiatedNoFixedConstructorSignature)]
 public sealed class BtsConfig : ModConfig

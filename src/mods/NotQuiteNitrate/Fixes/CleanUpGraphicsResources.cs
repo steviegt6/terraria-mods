@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 using Terraria.ModLoader;
 
-namespace Tomat.TML.Mod.NotQuiteNitrate.Fixes;
+namespace NotQuiteNitrate.Fixes;
 
 [UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
 internal sealed class CleanUpGraphicsResources : ModSystem

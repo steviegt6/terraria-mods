@@ -2,7 +2,7 @@ using System.ComponentModel;
 
 using Terraria.ModLoader.Config;
 
-namespace Tomat.TML.Mod.PrefixGrammar;
+namespace PrefixGrammar;
 
 public sealed class GrammarConfig : ModConfig
 {

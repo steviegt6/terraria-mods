@@ -10,10 +10,10 @@ using Terraria.Graphics.Light;
 using Terraria.Map;
 using Terraria.ModLoader;
 
-using Tomat.TML.Mod.NotQuiteNitrate.Utilities;
-using Tomat.TML.Mod.NotQuiteNitrate.Utilities.Numerics;
+using NotQuiteNitrate.Utilities;
+using NotQuiteNitrate.Utilities.Numerics;
 
-namespace Tomat.TML.Mod.NotQuiteNitrate.Patches;
+namespace NotQuiteNitrate.Patches;
 
 /// <summary>
 ///     Rewrites <see cref="WorldMap"/> to used a chunked backing store.

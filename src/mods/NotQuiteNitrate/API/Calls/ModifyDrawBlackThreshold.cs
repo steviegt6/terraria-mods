@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 
 using Tomat.TML.Library.DynamicModCalls;
-using Tomat.TML.Mod.NotQuiteNitrate.Patches;
+using NotQuiteNitrate.Patches;
 
-namespace Tomat.TML.Mod.NotQuiteNitrate.API.Calls;
+namespace NotQuiteNitrate.API.Calls;
 
 internal sealed class ModifyDrawBlackThreshold : ModCall
 {

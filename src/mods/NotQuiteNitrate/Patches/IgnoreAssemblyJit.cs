@@ -9,7 +9,7 @@ using JetBrains.Annotations;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
 
-namespace Tomat.TML.Mod.NotQuiteNitrate.Patches;
+namespace NotQuiteNitrate.Patches;
 
 // TODO(conf): Add configuration option once our own system is added.
 

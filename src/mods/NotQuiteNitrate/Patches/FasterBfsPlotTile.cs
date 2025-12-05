@@ -8,9 +8,9 @@ using JetBrains.Annotations;
 using Terraria;
 using Terraria.ModLoader;
 
-using Tomat.TML.Mod.NotQuiteNitrate.Utilities.Numerics;
+using NotQuiteNitrate.Utilities.Numerics;
 
-namespace Tomat.TML.Mod.NotQuiteNitrate.Patches;
+namespace NotQuiteNitrate.Patches;
 
 // TODO(perf): Look into scrapping ThreadLocal<T>s in favor of manually managing
 //             ThreadStatic values (saves additional get_Value overhead).

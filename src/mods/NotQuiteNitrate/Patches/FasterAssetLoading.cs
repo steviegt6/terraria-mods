@@ -18,7 +18,7 @@ using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Assets;
 
-namespace Tomat.TML.Mod.NotQuiteNitrate.Patches;
+namespace NotQuiteNitrate.Patches;
 
 /// <summary>
 ///     Takes preliminary action to disable thread checks in FNA3D methods.
