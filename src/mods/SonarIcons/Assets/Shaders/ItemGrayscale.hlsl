@@ -1,6 +1,5 @@
 sampler uImage0 : register(s0);
 
-
 float3 naive_grayscale(float3 c)
 {
     return ((c.r + c.g + c.b) / 3).xxx;
@@ -12,7 +11,9 @@ float3 luminosity_grayscale(float3 c)
 #define COLOR_FACTOR 0.0
 
     float gray = 0.21 * c.r + 0.71 * c.g + 0.07 * c.b;
-    return float3(c.r * COLOR_FACTOR + gray * (1.0 - COLOR_FACTOR), c.g * COLOR_FACTOR + gray * (1.0 - COLOR_FACTOR), c.b * COLOR_FACTOR + gray * (1.0 - COLOR_FACTOR)) * 1.2;
+    float3 grayscale = float3(c.r * COLOR_FACTOR + gray * (1.0 - COLOR_FACTOR), c.g * COLOR_FACTOR + gray * (1.0 - COLOR_FACTOR), c.b * COLOR_FACTOR + gray * (1.0 - COLOR_FACTOR));
+    
+    return sqrt(grayscale);
 }
 
 #define GRAYSCALE luminosity_grayscale
@@ -20,7 +21,7 @@ float3 luminosity_grayscale(float3 c)
 float4 main(float2 coords : TEXCOORD0) : COLOR0
 {
     float4 c = tex2D(uImage0, coords);
-    return float4(GRAYSCALE(c.rgb), c.a);
+    return float4(GRAYSCALE(c.rgb), c.a) * c.a;
 }
 
 #ifdef FX

@@ -1,6 +1,6 @@
 displayName = Sonar Text Icons
 author = Tomat
-version = 1.0.0
+version = 1.1.0
 homepage = https://discord.gg/6Fm4ZTHVub
 side = Client
 modReferences = Daybreak

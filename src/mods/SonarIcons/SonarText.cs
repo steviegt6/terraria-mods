@@ -25,7 +25,10 @@ internal sealed class Config : ModConfig
     public override ConfigScope Mode => ConfigScope.ClientSide;
 
     [DefaultValue(true)]
-    public bool GrayscaleItems { get; set; } = true;
+    public bool GrayscaleItems { get; set; } = false;
+
+    [DefaultValue(true)]
+    public bool ItemOutlines { get; set; } = true;
 }
 
 internal static class SonarText
@@ -36,7 +39,7 @@ internal static class SonarText
 
         private readonly Dictionary<int, RenderTarget2D> targets = [];
 
-        public Texture2D GetGrayscaleItem(int itemType)
+        public Texture2D GetItem(int itemType)
         {
             if (targets.TryGetValue(itemType, out var target))
             {
@@ -82,6 +85,73 @@ internal static class SonarText
         }
 
         public static void UnloadData(GrayscaleItemCache data)
+        {
+            Main.QueueMainThreadAction(
+                () =>
+                {
+                    foreach (var target in data.targets.Values)
+                    {
+                        target.Dispose();
+                    }
+
+                    data.targets.Clear();
+                }
+            );
+        }
+    }
+
+    private sealed class FullbrightItemCache : IStatic<FullbrightItemCache>
+    {
+        public required Asset<Effect> FullbrightEffect { get; init; }
+
+        private readonly Dictionary<int, RenderTarget2D> targets = [];
+
+        public Texture2D GetItem(int itemType)
+        {
+            if (targets.TryGetValue(itemType, out var target))
+            {
+                return target;
+            }
+
+            Main.spriteBatch.End(out var ss);
+
+            Main.instance.LoadItem(itemType);
+            var asset = TextureAssets.Item[itemType].Value;
+
+            target = RenderTargetDescriptor.DefaultPreserveContents.Create(
+                Main.instance.GraphicsDevice,
+                asset.Width,
+                asset.Height
+            );
+            using (target.Scope(clearColor: Color.Transparent))
+            {
+                Main.spriteBatch.Begin(
+                    SpriteSortMode.Immediate,
+                    BlendState.AlphaBlend,
+                    SamplerState.PointClamp,
+                    DepthStencilState.None,
+                    RasterizerState.CullNone,
+                    FullbrightEffect.Value,
+                    Matrix.Identity
+                );
+                Main.spriteBatch.Draw(asset, Vector2.Zero, Color.White);
+                Main.spriteBatch.End();
+            }
+
+            Main.spriteBatch.Begin(ss);
+
+            return targets[itemType] = target;
+        }
+
+        public static FullbrightItemCache LoadData(Mod mod)
+        {
+            return new FullbrightItemCache
+            {
+                FullbrightEffect = Assets.Shaders.ItemFullbright.Asset,
+            };
+        }
+
+        public static void UnloadData(FullbrightItemCache data)
         {
             Main.QueueMainThreadAction(
                 () =>
@@ -156,16 +226,26 @@ internal static class SonarText
             );
 
             var item = ContentSamples.ItemsByType[sonarText.SonarItemType];
-            if (ModContent.GetInstance<Config>().GrayscaleItems)
+
+            if (ModContent.GetInstance<Config>().ItemOutlines)
             {
-                using (AssetReplacer.Replace(TextureAssets.Item[item.type], IStatic<GrayscaleItemCache>.Instance.GetGrayscaleItem(item.type)))
+                var fullbrightItem = IStatic<FullbrightItemCache>.Instance.GetItem(item.type);
+                using (AssetReplacer.Replace(TextureAssets.Item[item.type], fullbrightItem))
                 {
                     for (var i = 0; i < 4; i++)
                     {
                         var offsetPos = Vector2.UnitY.RotatedBy(MathHelper.PiOver2 * i) * 2;
                         DrawItem(item, pos + offsetPos, popupText.scale, Color.Blue * 0.4f);
                     }
+                }
+            }
 
+            if (ModContent.GetInstance<Config>().GrayscaleItems)
+            {
+                var grayscaleItem = IStatic<GrayscaleItemCache>.Instance.GetItem(item.type);
+
+                using (AssetReplacer.Replace(TextureAssets.Item[item.type], grayscaleItem))
+                {
                     DrawItem(item, pos, popupText.scale, popupText.color);
                 }
             }

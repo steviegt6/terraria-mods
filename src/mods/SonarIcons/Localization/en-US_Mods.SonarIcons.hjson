@@ -3,8 +3,13 @@ Configs: {
 		DisplayName: Config
 
 		GrayscaleItems: {
-			Label: Grayscale Items
-			Tooltip: ""
+			Label: Tint Items Sonar Color
+			Tooltip: Makes Sonar Text items render with the same color effects the text has
+		}
+
+		ItemOutlines: {
+			Label: Sonar Item Outlines
+			Tooltip: Gives items the same blue outline sonar text has
 		}
 	}
 }
