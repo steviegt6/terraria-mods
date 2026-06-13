@@ -11,7 +11,6 @@
   <Folder Name="/mods/">
     <Project Path="mods/ChitterChatter/ChitterChatter.csproj" />
     <Project Path="mods/CrowsWhoMow/CrowsWhoMow.csproj" />
-    <Project Path="mods/NotQuiteNitrate/NotQuiteNitrate.csproj" />
     <Project Path="mods/PrefixGrammar/PrefixGrammar.csproj" />
     <Project Path="mods/SlightlyBetterTextRendering/SlightlyBetterTextRendering.csproj" />
     <Project Path="mods/SonarIcons/SonarIcons.csproj" />
