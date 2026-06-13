@@ -1,0 +1,20 @@
+<Solution>
+  <Folder Name="/daybreak-mod/">
+    <Project Path="daybreak-mod/src/Daybreak.CodeAnalysis/Daybreak.CodeAnalysis.csproj" />
+    <Project Path="daybreak-mod/src/Daybreak/Daybreak.csproj" />
+  </Folder>
+  <Folder Name="/libs/" />
+  <Folder Name="/libs/include/">
+    <File Path="libs/include/DynamicModCalls.cs" />
+    <File Path="libs/include/README.txt" />
+  </Folder>
+  <Folder Name="/mods/">
+    <Project Path="mods/ChitterChatter/ChitterChatter.csproj" />
+    <Project Path="mods/CrowsWhoMow/CrowsWhoMow.csproj" />
+    <Project Path="mods/NotQuiteNitrate/NotQuiteNitrate.csproj" />
+    <Project Path="mods/PrefixGrammar/PrefixGrammar.csproj" />
+    <Project Path="mods/SlightlyBetterTextRendering/SlightlyBetterTextRendering.csproj" />
+    <Project Path="mods/SonarIcons/SonarIcons.csproj" />
+    <Project Path="mods/VanillaNetworking/VanillaNetworking.csproj" />
+  </Folder>
+</Solution>
