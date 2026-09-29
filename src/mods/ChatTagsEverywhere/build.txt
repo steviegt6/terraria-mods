@@ -1,0 +1,6 @@
+displayName = Chat Tags Everywhere!
+author = tomat
+version = 1.0.0
+homepage = https://discord.gg/yog
+side = Client
+modReferences = Daybreak

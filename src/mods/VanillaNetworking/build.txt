@@ -1,5 +1,5 @@
 displayName = Tomat's Vanilla Server Compat
-author = Tomat
+author = tomat
 version = 0.1.2
-homepage = https://discord.gg/UTXC8fM3NK
+homepage = https://discord.gg/yog
 side = Client

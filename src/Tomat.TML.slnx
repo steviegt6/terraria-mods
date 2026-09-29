@@ -1,6 +1,7 @@
 <Solution>
   <Folder Name="/daybreak-mod/">
     <Project Path="daybreak-mod/src/Daybreak.CodeAnalysis/Daybreak.CodeAnalysis.csproj" />
+    <Project Path="daybreak-mod/src/Daybreak.SourceGen/Daybreak.SourceGen.csproj" />
     <Project Path="daybreak-mod/src/Daybreak/Daybreak.csproj" />
   </Folder>
   <Folder Name="/libs/" />
@@ -9,6 +10,7 @@
     <File Path="libs/include/README.txt" />
   </Folder>
   <Folder Name="/mods/">
+    <Project Path="mods/ChatTagsEverywhere/ChatTagsEverywhere.csproj" />
     <Project Path="mods/ChitterChatter/ChitterChatter.csproj" />
     <Project Path="mods/CrowsWhoMow/CrowsWhoMow.csproj" />
     <Project Path="mods/PrefixGrammar/PrefixGrammar.csproj" />
