@@ -1,18 +1,17 @@
-﻿using Daybreak.Common.Features.Hooks;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoMod.Cil;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.UI;
+using Terraria.ModLoader;
 using Terraria.UI.Chat;
 
 namespace ChatTagsEverywhere;
 
-public static class Patches
+public sealed class Patches : ModSystem
 {
-    [OnLoad]
-    private static void ApplyHooks()
+    public override void Load()
     {
         // TODO
         /*
